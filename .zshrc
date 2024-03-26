@@ -24,6 +24,13 @@ zi light-mode lucid for \
 # Load my OMZ theme
 zi light cameronr/zsh-cam
 
+# Load additional completions
+zinit light zsh-users/zsh-completions
+
+# Make sure completion system is initialized
+autoload -Uz compinit
+compinit
+
 zi load zsh-users/zsh-autosuggestions
 zi load zsh-users/zsh-syntax-highlighting
 
