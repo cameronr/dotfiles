@@ -49,3 +49,6 @@ setopt    appendhistory     # Append history to the history file (no overwriting
 unsetopt  sharehistory      # Don't share history across terminals
 setopt    incappendhistory  # Immediately append to the history file, not just when a term is killed
 
+
+# Shopify Hydrogen alias to local projects
+alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
