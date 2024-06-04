@@ -65,8 +65,10 @@ zinit cdreplay -q
 export EDITOR=vim
 
 # Load local aliases
-[[ ! -f ~/.local_aliases ]] ||source ~/.local_aliases
+[[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
 
-# set up zoxide and use it as cd
-eval "$(zoxide init --cmd cd zsh)"
+# set up zoxide and use it as cd (if installed
+if [ -z `which zoxide` ]; then
+  eval "$(zoxide init --cmd cd zsh)"
+fi
 
