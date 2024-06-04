@@ -51,7 +51,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # set up fzf if installed
-if [ -f ~/.fzf.zsh ]; then
+if [[ -f ~/.fzf.zsh ]]; then
   zinit light Aloxaf/fzf-tab
   source ~/.fzf.zsh
   zstyle ':completion:*' menu no
@@ -68,7 +68,7 @@ export EDITOR=vim
 [[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
 
 # set up zoxide and use it as cd (if installed
-if [ -z `which zoxide` ]; then
+if [[ ! -z `which zoxide` ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 
