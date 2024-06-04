@@ -68,7 +68,7 @@ export EDITOR=vim
 [[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
 
 # set up zoxide and use it as cd (if installed
-if [[ ! -z `which zoxide` ]]; then
+if [[ (( $commands[zoxide] )) ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 
