@@ -18,7 +18,6 @@ zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
 
 # Add in snippets
 zinit snippet OMZP::git
@@ -33,11 +32,8 @@ zinit snippet OMZL::grep.zsh                # highlighting
 # Make sure completion system is initialized
 autoload -Uz compinit && compinit
 
-zinit cdreplay -q
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 
 # Set up history
 HISTDUP=erase
@@ -53,14 +49,17 @@ setopt    hist_find_no_dups    # Don't write duplicate entries in the history fi
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
-
-alias ls='ls --color=auto'
 
 # set up fzf if installed
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f ~/.fzf.zsh ]; then
+  zinit light Aloxaf/fzf-tab
+  source ~/.fzf.zsh
+  zstyle ':completion:*' menu no
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+  zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+fi
+
+zinit cdreplay -q
 
 # set vim as editor
 export EDITOR=vim
