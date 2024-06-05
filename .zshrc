@@ -32,9 +32,6 @@ zinit snippet OMZL::grep.zsh                # highlighting
 # Make sure completion system is initialized
 autoload -Uz compinit && compinit
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 # Set up history
 HISTDUP=erase
 setopt    appendhistory        # Append history to the history file (no overwriting)
@@ -67,8 +64,12 @@ export EDITOR=vim
 # Load local aliases
 [[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
 
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
+[[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
+
 # set up zoxide and use it as cd (if installed
 if [[ (( $commands[zoxide] )) ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
+
 
