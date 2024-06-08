@@ -55,6 +55,10 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 if [[ -f ~/.fzf.zsh ]]; then
   zinit light Aloxaf/fzf-tab
   source ~/.fzf.zsh
+
+  # Tokyonight-night fzf theme
+  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.zsh
+ 
   # disable sort when completing `git checkout`
   zstyle ':completion:*:git-checkout:*' sort false
   # set descriptions format to enable group support
