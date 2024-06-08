@@ -19,6 +19,10 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 
+# Better ssh completion
+# if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
+zinit light sunlei/zsh-ssh
+
 # Add in snippets
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
