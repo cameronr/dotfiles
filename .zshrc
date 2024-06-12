@@ -29,6 +29,8 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
 zinit snippet OMZL::grep.zsh                # highlighting
+zinit snippet OMZL::functions.zsh           # for omz_urlencode
+zinit snippet OMZL::termsupport.zsh         # set titlebar
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
 # zinit snippet OMZP::kubectx
