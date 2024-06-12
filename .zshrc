@@ -58,8 +58,7 @@ if [[ (( $commands[fzf] )) ]]; then
   source <(fzf --zsh)
 
   # Tokyonight-night fzf theme
-  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.zsh
- 
+  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
   # disable sort when completing `git checkout`
   zstyle ':completion:*:git-checkout:*' sort false
   # set descriptions format to enable group support
