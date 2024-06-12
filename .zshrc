@@ -52,9 +52,10 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # set up fzf if installed
-if [[ -f ~/.fzf.zsh ]]; then
+if [[ (( $commands[fzf] )) ]]; then
   zinit light Aloxaf/fzf-tab
-  source ~/.fzf.zsh
+
+  source <(fzf --zsh)
 
   # Tokyonight-night fzf theme
   zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.zsh
