@@ -12,9 +12,6 @@ alias wft='ssh -A cam@test.dandelionchocolate.com'
 # Shopify Hydrogen alias to local projects
 alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
 
-alias vim='nvim'
-alias vi='nvim'
-
 export BAT_THEME=tokyonight_night
 alias cat='bat'
 

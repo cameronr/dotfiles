@@ -77,6 +77,11 @@ zinit cdreplay -q
 
 # set vim as editor
 export EDITOR=vim
+alias vi='vim'
+
+if [[ (( $commands[vim] )) ]]; then
+  alias vim='nvim'
+fi
 
 # Load local aliases
 [[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
