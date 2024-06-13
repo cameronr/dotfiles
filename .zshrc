@@ -67,6 +67,8 @@ if [[ (( $commands[fzf] )) ]]; then
 
   source <(fzf --zsh)
 
+  bindkey '^N' fzf-cd-widget
+
   # Tokyonight-night fzf theme
   zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
   # disable sort when completing `git checkout`
@@ -84,6 +86,7 @@ if [[ (( $commands[fzf] )) ]]; then
 fi
 
 zinit cdreplay -q
+
 
 # set vim as editor
 export EDITOR=vim
@@ -107,6 +110,14 @@ fi
 if [[ (( $commands[bat] )) ]]; then
   export BAT_THEME=tokyonight_night
   alias cat='bat'
+fi
+
+# set up fd, if installed
+if [[ (( $commands[fd] )) ]]; then
+  export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+
+  # It's a bummer that type=d doesn't pick up symlinks to directories
+  export FZF_ALT_C_COMMAND="fd --type=d --type=symlink --hidden --strip-cwd-prefix --exclude .git"
 fi
 
 # set up thefuck, if installed
