@@ -31,6 +31,14 @@ zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
 zinit snippet OMZL::grep.zsh                # highlighting
 zinit snippet OMZL::functions.zsh           # for omz_urlencode
 zinit snippet OMZL::termsupport.zsh         # set titlebar
+
+# Put the machine hostname in the terminal titlebar
+ZSH_THEME_TERM_TAB_TITLE_IDLE="%n@%m:%15<..<%~%<<" #15 char left truncated PWD
+ZSH_THEME_TERM_TITLE_IDLE="%n@%m:%~"
+
+# Don't need this hook (set by termsupport.sh) since p10k already does it (and it causes a visual glitch)
+add-zsh-hook -d precmd omz_termsupport_cwd 
+
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
 # zinit snippet OMZP::kubectx
@@ -85,15 +93,27 @@ if [[ (( $commands[vim] )) ]]; then
   alias vim='nvim'
 fi
 
-# Load local aliases
-[[ ! -f ~/.local_aliases ]] || source ~/.local_aliases
-
-# To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
-[[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
-
 # set up zoxide and use it as cd (if installed
 if [[ (( $commands[zoxide] )) ]]; then
   eval "$(zoxide init --cmd cd zsh)"
 fi
 
+# set up eza, if installed
+if [[ (( $commands[eza] )) ]]; then
+  alias ls='eza -F'
+fi
+
+# set up bat, if installed
+if [[ (( $commands[bat] )) ]]; then
+  export BAT_THEME=tokyonight_night
+  alias cat='bat'
+fi
+
+# set up thefuck, if installed
+if [[ (( $commands[bat] )) ]]; then
+  eval $(thefuck --alias fk)
+fi
+
+# To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
+[[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
 
