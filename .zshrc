@@ -32,11 +32,30 @@ zinit snippet OMZL::grep.zsh                # highlighting
 zinit snippet OMZL::functions.zsh           # for omz_urlencode
 zinit snippet OMZL::termsupport.zsh         # set titlebar
 
-# Put the machine hostname in the terminal titlebar
-ZSH_THEME_TERM_TAB_TITLE_IDLE="%n@%m:%15<..<%~%<<" #15 char left truncated PWD
-ZSH_THEME_TERM_TITLE_IDLE="%n@%m:%~"
+# OMZ doesn't have any configuration for the title when running a command. For the idle title, we could set
+# ZSH_THEME_TERM_TAB_TITLE_IDLE / ZSH_THEME_TERM_TITLE_IDLE but that won't help with long 
+# running commands. To work around this limitation, we copy the function 'title' to 'omz_title'
+# so we can intercept it and change the parameters, adding the user/machine if it's not included.
+# It might be cleaner to just fork and modify the code but here we are.
+# Can set ALWAYS_SHOW_HOST_IN_TITLE to false in .zprofile to prevent this behavior
 
-# Don't need this hook (set by termsupport.sh) since p10k already does it (and it causes a visual glitch)
+if [[ "${ALWAYS_SHOW_HOST_IN_TITLE:-true}" == true ]]; then
+  functions -c title omz_title
+  title () {
+    local CMD=$1
+    local LINE=$2
+    if [[ $1 != *"%m"* ]]; then
+      CMD="%n@%m:$1"
+    fi
+    if [[ $2 != *"%m"* ]]; then
+      LINE="%n@%m:$2"
+    fi
+    omz_title $CMD $LINE
+  }
+fi
+
+# We also don't need the cwd hook as p10k handles all of that for us (and having this hook 
+# introduces a visual glitch)
 add-zsh-hook -d precmd omz_termsupport_cwd 
 
 # zinit snippet OMZP::aws
