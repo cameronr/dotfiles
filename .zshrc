@@ -49,7 +49,7 @@ autoload -Uz compinit && compinit
 # Set up history
 HISTDUP=erase
 setopt    appendhistory        # Append history to the history file (no overwriting)
-unsetopt  sharehistory         # Don't share history across terminals
+setopt    sharehistory         # Don't share history across terminals
 setopt    incappendhistory     # Immediately append to the history file, not just when a term is killed
 setopt    hist_ignore_space    # don't log history with a leading space
 setopt    hist_ignore_all_dups # Delete old recorded entry if new entry is a duplicate.
@@ -60,32 +60,6 @@ setopt    hist_find_no_dups    # Don't write duplicate entries in the history fi
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-
-# set up fzf if installed
-if [[ (( $commands[fzf] )) ]]; then
-  zinit light Aloxaf/fzf-tab
-
-  source <(fzf --zsh)
-
-  bindkey '^N' fzf-cd-widget
-
-  # Tokyonight-night fzf theme
-  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
-  # disable sort when completing `git checkout`
-  zstyle ':completion:*:git-checkout:*' sort false
-  # set descriptions format to enable group support
-  # NOTE: don't use escape sequences here, fzf-tab will ignore them
-  zstyle ':completion:*:descriptions' format '[%d]'
-  # set list-colors to enable filename colorizing
-  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-  # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-  zstyle ':completion:*' menu no
-  # preview directory's content with eza when completing cd
-  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-  zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
-fi
-
-zinit cdreplay -q
 
 
 # set vim as editor
@@ -104,12 +78,14 @@ fi
 # set up eza, if installed
 if [[ (( $commands[eza] )) ]]; then
   alias ls='eza -F'
+  FZF_DIR_PREVIEW='eza --tree --color=always {} | head -500'
 fi
 
 # set up bat, if installed
 if [[ (( $commands[bat] )) ]]; then
   export BAT_THEME=tokyonight_night
   alias cat='bat'
+  FZF_FILE_PREVIEW="bat -n --color=always --line-range :500 {}"
 fi
 
 # set up fd, if installed
@@ -124,6 +100,51 @@ fi
 if [[ (( $commands[bat] )) ]]; then
   eval $(thefuck --alias fk)
 fi
+
+# set up fzf if installed
+if [[ (( $commands[fzf] )) ]]; then
+
+  # Load main fzf integration
+  source <(fzf --zsh)
+
+  # Load fzf-tab on top
+  zinit light Aloxaf/fzf-tab
+
+  # Custom keybind instead of ALT-c/ESC-c
+  bindkey '^N' fzf-cd-widget
+
+  # Just as a note, default keybind for scrolling the preview window is shift up/down
+
+  # Defaults for when eza/bat/fd not installed
+  : ${FZF_FILE_PREVIEW="head -500 {}"}
+  : ${FZF_DIR_PREVIEW="ls --color=always {} | head -500"}
+
+  # Set up a preview that can handle files and directories
+  show_file_or_dir_preview="if [ -d {} ]; then $FZF_DIR_PREVIEW; else $FZF_FILE_PREVIEW; fi"
+  export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+
+  # Tokyonight-night fzf theme
+  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
+
+  # disable sort when completing `git checkout`
+  zstyle ':completion:*:git-checkout:*' sort false
+
+  # Disabling groups as I don't really understand them and a unified search feels more natural
+  # set descriptions format to enable group support
+  # NOTE: don't use escape sequences here, fzf-tab will ignore them
+  # zstyle ':completion:*:descriptions' format '[%d]'
+  # zstyle ':fzf-tab:*' switch-group '<' '>'
+
+  # set list-colors to enable filename colorizing
+  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+  # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+  zstyle ':completion:*' menu no
+  # preview directory's content with eza when completing cd
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+  zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+fi
+
+zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
 [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
