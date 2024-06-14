@@ -66,6 +66,9 @@ add-zsh-hook -d precmd omz_termsupport_cwd
 autoload -Uz compinit && compinit
 
 # Set up history
+HISTFILE=~/.zhistory
+SAVEHIST=100000
+HISTSIZE=100000
 HISTDUP=erase
 setopt    appendhistory        # Append history to the history file (no overwriting)
 setopt    sharehistory         # Don't share history across terminals
