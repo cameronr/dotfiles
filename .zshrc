@@ -88,7 +88,8 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 export EDITOR=vim
 alias vi='vim'
 
-if [[ (( $commands[vim] )) ]]; then
+if [[ (( $commands[nvim] )) ]]; then
+  export EDITOR=nvim
   alias vim='nvim'
 fi
 
