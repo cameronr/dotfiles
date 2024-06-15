@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Zinit initialization
@@ -33,30 +33,30 @@ zinit snippet OMZL::functions.zsh           # for omz_urlencode
 zinit snippet OMZL::termsupport.zsh         # set titlebar
 
 # OMZ doesn't have any configuration for the title when running a command. For the idle title, we could set
-# ZSH_THEME_TERM_TAB_TITLE_IDLE / ZSH_THEME_TERM_TITLE_IDLE but that won't help with long 
+# ZSH_THEME_TERM_TAB_TITLE_IDLE / ZSH_THEME_TERM_TITLE_IDLE but that won't help with long
 # running commands. To work around this limitation, we copy the function 'title' to 'omz_title'
 # so we can intercept it and change the parameters, adding the user/machine if it's not included.
 # It might be cleaner to just fork and modify the code but here we are.
 # Can set ALWAYS_SHOW_HOST_IN_TITLE to false in .zprofile to prevent this behavior
 
 if [[ "${ALWAYS_SHOW_HOST_IN_TITLE:-true}" == true ]]; then
-  functions -c title omz_title
-  title () {
-    local CMD=$1
-    local LINE=$2
-    if [[ $1 != *"%m"* ]]; then
-      CMD="%n@%m:$1"
-    fi
-    if [[ $2 != *"%m"* ]]; then
-      LINE="%n@%m:$2"
-    fi
-    omz_title $CMD $LINE
-  }
+    functions -c title omz_title
+    title () {
+        local CMD=$1
+        local LINE=$2
+        if [[ $1 != *"%m"* ]]; then
+            CMD="%n@%m:$1"
+        fi
+        if [[ $2 != *"%m"* ]]; then
+            LINE="%n@%m:$2"
+        fi
+        omz_title $CMD $LINE
+    }
 fi
 
-# We also don't need the cwd hook as p10k handles all of that for us (and having this hook 
+# We also don't need the cwd hook as p10k handles all of that for us (and having this hook
 # introduces a visual glitch)
-add-zsh-hook -d precmd omz_termsupport_cwd 
+add-zsh-hook -d precmd omz_termsupport_cwd
 
 # zinit snippet OMZP::aws
 # zinit snippet OMZP::kubectl
@@ -89,82 +89,82 @@ export EDITOR=vim
 alias vi='vim'
 
 if [[ (( $commands[nvim] )) ]]; then
-  export EDITOR=nvim
-  alias vim='nvim'
+    export EDITOR=nvim
+    alias vim='nvim'
 fi
 
 # set up zoxide and use it as cd (if installed
 if [[ (( $commands[zoxide] )) ]]; then
-  eval "$(zoxide init --cmd cd zsh)"
+    eval "$(zoxide init --cmd cd zsh)"
 fi
 
 # set up eza, if installed
 if [[ (( $commands[eza] )) ]]; then
-  alias ls='eza -F'
-  FZF_DIR_PREVIEW='eza --tree --color=always {} | head -500'
+    alias ls='eza -F'
+    FZF_DIR_PREVIEW='eza --tree --color=always {} | head -500'
 fi
 
 # set up bat, if installed
 if [[ (( $commands[bat] )) ]]; then
-  export BAT_THEME=tokyonight_night
-  alias cat='bat'
-  FZF_FILE_PREVIEW="bat -n --color=always --line-range :500 {}"
+    export BAT_THEME=tokyonight_night
+    alias cat='bat'
+    FZF_FILE_PREVIEW="bat -n --color=always --line-range :500 {}"
 fi
 
 # set up fd, if installed
 if [[ (( $commands[fd] )) ]]; then
-  export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+    export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
 
-  # It's a bummer that type=d doesn't pick up symlinks to directories
-  export FZF_ALT_C_COMMAND="fd --type=d --type=symlink --hidden --strip-cwd-prefix --exclude .git"
+    # It's a bummer that type=d doesn't pick up symlinks to directories
+    export FZF_ALT_C_COMMAND="fd --type=d --type=symlink --hidden --strip-cwd-prefix --exclude .git"
 fi
 
 # set up thefuck, if installed
 if [[ (( $commands[bat] )) ]]; then
-  eval $(thefuck --alias fk)
+    eval $(thefuck --alias fk)
 fi
 
 # set up fzf if installed
 if [[ (( $commands[fzf] )) ]]; then
 
-  # Load main fzf integration
-  source <(fzf --zsh)
+    # Load main fzf integration
+    source <(fzf --zsh)
 
-  # Load fzf-tab on top
-  zinit light Aloxaf/fzf-tab
+    # Load fzf-tab on top
+    zinit light Aloxaf/fzf-tab
 
-  # Custom keybind instead of ALT-c/ESC-c
-  bindkey '^N' fzf-cd-widget
+    # Custom keybind instead of ALT-c/ESC-c
+    bindkey '^N' fzf-cd-widget
 
-  # Just as a note, default keybind for scrolling the preview window is shift up/down
+    # Just as a note, default keybind for scrolling the preview window is shift up/down
 
-  # Defaults for when eza/bat/fd not installed
-  : ${FZF_FILE_PREVIEW="head -500 {}"}
-  : ${FZF_DIR_PREVIEW="ls --color=always {} | head -500"}
+    # Defaults for when eza/bat/fd not installed
+    : ${FZF_FILE_PREVIEW="head -500 {}"}
+    : ${FZF_DIR_PREVIEW="ls --color=always {} | head -500"}
 
-  # Set up a preview that can handle files and directories
-  show_file_or_dir_preview="if [ -d {} ]; then $FZF_DIR_PREVIEW; else $FZF_FILE_PREVIEW; fi"
-  export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+    # Set up a preview that can handle files and directories
+    show_file_or_dir_preview="if [ -d {} ]; then $FZF_DIR_PREVIEW; else $FZF_FILE_PREVIEW; fi"
+    export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
 
-  # Tokyonight-night fzf theme
-  zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
+    # Tokyonight-night fzf theme
+    zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
 
-  # disable sort when completing `git checkout`
-  zstyle ':completion:*:git-checkout:*' sort false
+    # disable sort when completing `git checkout`
+    zstyle ':completion:*:git-checkout:*' sort false
 
-  # Disabling groups as I don't really understand them and a unified search feels more natural
-  # set descriptions format to enable group support
-  # NOTE: don't use escape sequences here, fzf-tab will ignore them
-  # zstyle ':completion:*:descriptions' format '[%d]'
-  # zstyle ':fzf-tab:*' switch-group '<' '>'
+    # Disabling groups as I don't really understand them and a unified search feels more natural
+    # set descriptions format to enable group support
+    # NOTE: don't use escape sequences here, fzf-tab will ignore them
+    # zstyle ':completion:*:descriptions' format '[%d]'
+    # zstyle ':fzf-tab:*' switch-group '<' '>'
 
-  # set list-colors to enable filename colorizing
-  zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-  # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-  zstyle ':completion:*' menu no
-  # preview directory's content with eza when completing cd
-  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
-  zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+    # set list-colors to enable filename colorizing
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+    # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+    zstyle ':completion:*' menu no
+    # preview directory's content with eza when completing cd
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
+    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 fi
 
 zinit cdreplay -q
