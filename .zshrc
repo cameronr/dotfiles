@@ -29,8 +29,12 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
 zinit snippet OMZL::grep.zsh                # highlighting
-zinit snippet OMZL::functions.zsh           # for omz_urlencode
+zinit snippet OMZL::functions.zsh           # for omz_urlencode, used by termsupport.zsh
 zinit snippet OMZL::termsupport.zsh         # set titlebar
+
+zinit snippet OMZP::docker-compose          # docker completions
+zinit ice as"completion"
+zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
 # OMZ doesn't have any configuration for the title when running a command. For the idle title, we could set
 # ZSH_THEME_TERM_TAB_TITLE_IDLE / ZSH_THEME_TERM_TITLE_IDLE but that won't help with long
