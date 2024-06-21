@@ -1,3 +1,5 @@
+DOTFILES="${XDG_DATA_HOME:-${HOME}/dotfiles}"
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -94,6 +96,11 @@ alias vi='vim'
 if [[ (( $commands[nvim] )) ]]; then
     export EDITOR=nvim
     alias vim='nvim'
+
+    NVIM_HOME="${XDG_DATA_HOME:-${HOME}/.config/nvim}"
+    if [[ ! -d "$NVIM_HOME" ]]; then
+        ln -sn $DOTFILES/nvim "$NVIM_HOME"
+    fi
 fi
 
 # set up zoxide and use it as cd (if installed
