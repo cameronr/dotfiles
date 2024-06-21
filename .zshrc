@@ -75,8 +75,7 @@ SAVEHIST=100000
 HISTSIZE=100000
 HISTDUP=erase
 setopt    appendhistory        # Append history to the history file (no overwriting)
-setopt    sharehistory         # Don't share history across terminals
-setopt    incappendhistory     # Immediately append to the history file, not just when a term is killed
+setopt    sharehistory         # Share history across terminals
 setopt    hist_ignore_space    # don't log history with a leading space
 setopt    hist_ignore_all_dups # Delete old recorded entry if new entry is a duplicate.
 setopt    hist_save_no_dups    # Don't write duplicate entries in the history file.
