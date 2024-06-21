@@ -110,7 +110,7 @@ fi
 
 # set up eza, if installed
 if [[ (( $commands[eza] )) ]]; then
-    alias ls='eza -F'
+    alias ls='eza -F --color=always --icons=always'
     FZF_DIR_PREVIEW='eza --tree --color=always {} | head -500'
 fi
 
