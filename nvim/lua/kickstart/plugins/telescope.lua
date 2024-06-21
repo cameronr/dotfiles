@@ -29,6 +29,8 @@ return {
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'debugloop/telescope-undo.nvim' },
+      { 'aaronhallaert/advanced-git-search.nvim', cmd = { 'AdvancedGitSearch' } },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -52,6 +54,7 @@ return {
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local actions = require 'telescope.actions'
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -61,10 +64,40 @@ return {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        defaults = {
+          path_display = { truncate = 1 },
+          mappings = {
+            --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+            i = { ['<esc>'] = actions.close }, -- close on first esc
+          },
+        },
+        pickers = {
+          buffers = {
+            sort_mru = true,
+            ignore_current_buffer = true,
+            mappings = {
+              i = {
+                ['<c-d>'] = actions.delete_buffer + actions.move_to_top, -- delete buffer
+              },
+            },
+          },
+          builtin = {
+            include_extensions = false,
+          },
+          colorscheme = {
+            enable_preview = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
+          },
+          advanced_git_search = {
+            browse_command = 'GBrowse {commit_hash}',
+            diff_plugin = 'diffview',
+            entry_default_author_or_date = 'author',
+
+            -- See Config
           },
         },
       }
@@ -72,28 +105,54 @@ return {
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
+      pcall(require('telescope').load_extension, 'undo')
+      pcall(require('telescope').load_extension, 'advanced_git_search')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
+      vim.keymap.set('n', '<leader>sl', builtin.help_tags, { desc = '[S]earch he[L]p' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      -- vim.keymap.set('n', '<leader>sa', function()
+      --   builtin.find_files { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } }
+      -- end, { desc = '[S]earch [Al] Files (no git)' })
+      vim.keymap.set('n', '<leader>sf', function()
+        builtin.find_files { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } }
+      end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>/', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [R]ip grep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      -- My Additions
+      vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = '[S]earch [C]ommands' })
+      vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>>', { desc = '[S]earch [U]ndo' })
+      vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = '[S]earch [P]opup Notifications' })
+      vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = '[S]earch [T]odos' })
+
+      -- Git options
+      vim.keymap.set('n', '<leader>shc', '<cmd>Telescope git_commits<CR>', { desc = '[S]earch [G]it [C]ommits' })
+      vim.keymap.set('n', '<leader>shb', '<cmd>Telescope git_branches<CR>', { desc = '[S]earch [G]it [B]ranches' })
+      vim.keymap.set('n', '<leader>shs', '<cmd>Telescope git_status<CR>', { desc = '[S]earch [G]it [S]tatus' })
+      vim.keymap.set('n', '<leader>shh', '<cmd>Telescope git_stash<CR>', { desc = '[S]earch [G]it stas[H]' })
+      vim.keymap.set('n', '<leader>shf', '<cmd>Telescope git_bcommits<CR>', { desc = '[S]earch [G]it bu[F]fer commits' })
+
+      vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = '[S]earch [T]odos' })
+
+      -- Ctrl-r for command history in command mode (like with zsh+fzf)
+      vim.keymap.set('c', '<C-r>', builtin.command_history, { desc = '[S]earch [C]ommands' })
+
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
-        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
-      end, { desc = '[/] Fuzzily search in current buffer' })
+      -- vim.keymap.set('n', '<leader>/', function()
+      --   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+      --   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      --     winblend = 10,
+      --     previewer = false,
+      --   })
+      -- end, { desc = '[/] Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
