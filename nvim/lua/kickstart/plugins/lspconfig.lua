@@ -35,8 +35,6 @@ return {
           })
         end,
       },
-      -- For catching file renames
-      { 'antosha417/nvim-lsp-file-operations', config = true },
     },
     config = function()
       -- Brief aside: **What is LSP?**
