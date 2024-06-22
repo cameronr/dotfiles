@@ -18,20 +18,35 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard:append 'unnamedplus'
 
--- Set up clipboard for ssh
-vim.g.clipboard = {
-  name = 'OSC 52',
-  copy = {
-    ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-    ['*'] = require('vim.ui.clipboard.osc52').copy '*',
-  },
-  paste = {
-    ['+'] = require('vim.ui.clipboard.osc52').paste '+',
-    ['*'] = require('vim.ui.clipboard.osc52').paste '*',
-  },
-}
+-- Fix "waiting for osc52 response from terminal" message
+-- https://github.com/neovim/neovim/issues/28611
+
+if vim.env.SSH_TTY ~= nil then
+  -- Set up clipboard for ssh
+
+  local function my_paste(_)
+    return function(_)
+      local content = vim.fn.getreg '"'
+      return vim.split(content, '\n')
+    end
+  end
+
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+    },
+    paste = {
+      -- No OSC52 paste action since wezterm doesn't support it
+      -- Should still paste from nvim
+      ['+'] = my_paste '+',
+      ['*'] = my_paste '*',
+    },
+  }
+end
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -77,9 +92,7 @@ vim.opt.formatoptions:remove { 'o' }
 
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
-  callback = function()
-    vim.opt.formatoptions:remove { 'o' }
-  end,
+  callback = function() vim.opt.formatoptions:remove { 'o' } end,
   desc = 'Disable New Line Comment',
 })
 
@@ -105,9 +118,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   desc = 'Open file at the last position it was edited earlier',
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
-    if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then
-      vim.api.nvim_win_set_cursor(0, mark)
-    end
+    if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then vim.api.nvim_win_set_cursor(0, mark) end
   end,
 })
 
@@ -117,9 +128,7 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   group = vim.api.nvim_create_augroup('help_window_right', {}),
   pattern = { '*.txt' },
   callback = function()
-    if vim.o.filetype == 'help' then
-      vim.cmd.wincmd 'L'
-    end
+    if vim.o.filetype == 'help' then vim.cmd.wincmd 'L' end
   end,
 })
 
