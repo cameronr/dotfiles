@@ -35,10 +35,12 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Some more convenient keymaps for split management
-vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = '[W]indow split [V]ertically' })
-vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = '[W]indow split [H]orizontally' })
-vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make [W]indow splits [E]qual size' })
-vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = '[Q]uit window' })
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Window split vertically' })
+vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Window split horizontally' })
+vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal size' })
+vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>q', '<cmd>close<CR>', { desc = 'Quit window' })
+vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -49,9 +51,7 @@ vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = '[Q]uit window' })
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+  callback = function() vim.highlight.on_yank() end,
 })
 
 -- Able to use semicolon in normal mode
@@ -71,9 +71,7 @@ vim.keymap.set('n', 'q:', ':q')
 
 -- And now kill it with fire (unless brought up by ctrl-f). Credit to:
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
-local function escape(keys)
-  return vim.api.nvim_replace_termcodes(keys, true, false, true)
-end
+local function escape(keys) return vim.api.nvim_replace_termcodes(keys, true, false, true) end
 
 vim.keymap.set('c', '<C-f>', function()
   vim.g.requested_cmdwin = true

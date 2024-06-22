@@ -25,7 +25,16 @@ return {
           ft = 'lua', -- only load on lua files
         },
       },
-
+      { -- optional completion source for require statements and module annotations
+        'hrsh7th/nvim-cmp',
+        opts = function(_, opts)
+          opts.sources = opts.sources or {}
+          table.insert(opts.sources, {
+            name = 'lazydev',
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          })
+        end,
+      },
       -- For catching file renames
       { 'antosha417/nvim-lsp-file-operations', config = true },
     },
@@ -67,9 +76,7 @@ return {
           --
           -- In this case, we create a function that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
+          local map = function(keys, func, desc) vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc }) end
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
@@ -146,9 +153,7 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>ch', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            end, '[C]ode toggle inlay [H]ints')
+            map('<leader>ch', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, '[C]ode toggle inlay [H]ints')
           end
         end,
       })
@@ -254,9 +259,7 @@ return {
         'stylua', -- Used to format Lua code
       })
 
-      if not vim.g.no_mason_autoinstall then
-        require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-      end
+      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup { ensure_installed = ensure_installed } end
 
       require('mason-lspconfig').setup {
         handlers = {
@@ -272,9 +275,7 @@ return {
       }
 
       -- Install Conform formatters
-      if not vim.g.no_mason_autoinstall then
-        require('mason-conform').setup {}
-      end
+      if not vim.g.no_mason_autoinstall then require('mason-conform').setup {} end
     end,
   },
 }

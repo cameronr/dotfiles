@@ -2,7 +2,11 @@ return {
   'stevearc/oil.nvim',
 
   keys = {
-    { '<Bslash><Bslash>', '<cmd>lua require("oil").toggle_float()<CR>', desc = 'Oil popup' },
+    {
+      '<Bslash><Bslash>',
+      function() require('oil').toggle_float() end,
+      desc = 'Oil popup',
+    },
   },
   opts = {
     default_file_explorer = true,
@@ -11,9 +15,7 @@ return {
     view_options = {
       show_hidden = true,
       natural_order = true,
-      is_always_hidden = function(name, _)
-        return name == '..' or name == '.git'
-      end,
+      is_always_hidden = function(name, _) return name == '..' or name == '.git' end,
     },
     float = {
       padding = 2,
