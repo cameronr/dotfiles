@@ -120,7 +120,8 @@ return {
         builtin.find_files { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } }
       end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>/', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
+      -- vim.keymap.set('n', '<leader>/', builtin.grep_string, { desc = '[S]earch current Word' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [R]ip grep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
@@ -129,7 +130,7 @@ return {
 
       -- My Additions
       vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = '[S]earch [C]ommands' })
-      vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>>', { desc = '[S]earch [U]ndo' })
+      vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>', { desc = '[S]earch [U]ndo' })
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = '[S]earch [P]opup Notifications' })
       vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = '[S]earch [T]odos' })
 
@@ -146,13 +147,13 @@ return {
       vim.keymap.set('c', '<C-r>', builtin.command_history, { desc = '[S]earch [C]ommands' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      -- vim.keymap.set('n', '<leader>/', function()
-      --   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-      --   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-      --     winblend = 10,
-      --     previewer = false,
-      --   })
-      -- end, { desc = '[/] Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>/', function()
+        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+          winblend = 10,
+          previewer = false,
+        })
+      end, { desc = '[/] Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
