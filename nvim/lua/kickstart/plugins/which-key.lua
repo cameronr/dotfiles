@@ -22,18 +22,21 @@ return {
 
       -- Document existing key chains
       require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        ['<leader>b'] = { name = 'Buffer', _ = 'which_key_ignore' },
+        ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+
+        -- NOTE: g is currently unused, could use it for git maybe?
+        ['<leader>h'] = { name = 'Git Hunk', _ = 'which_key_ignore' },
         -- ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         -- ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]indow', _ = 'which_key_ignore' },
-        -- ['<leader>t'] = { name = '[]oggle', _ = 'which_key_ignore' },
-        ['<leader>h'] = { name = 'Git [H]unk', _ = 'which_key_ignore' },
+        ['<leader>s'] = { name = 'Search', _ = 'which_key_ignore' },
+        ['<leader>t'] = { name = 'Tab / Tools', _ = 'which_key_ignore' },
+        ['<leader>w'] = { name = 'Window / Workspace', _ = 'which_key_ignore' },
         ['<leader>x'] = { name = 'Trouble', _ = 'which_key_ignore' },
       }
       -- visual mode
       require('which-key').register({
-        ['<leader>h'] = { 'Git [H]unk' },
+        ['<leader>h'] = { 'Git Hunk' },
       }, { mode = 'v' })
     end,
   },

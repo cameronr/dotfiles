@@ -6,10 +6,10 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>m', vim.diagnostic.open_float, { desc = 'Show diagnostic error [M]essages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>m', vim.diagnostic.open_float, { desc = 'Show diagnostic error messages' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic quickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -34,6 +34,7 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- <leader>w
 -- Some more convenient keymaps for split management
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Window split vertically' })
 vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Window split horizontally' })
@@ -90,14 +91,6 @@ vim.api.nvim_create_autocmd('CmdWinEnter', {
   end,
 })
 
--- Put things removed by d into the blackhole register
--- vim.keymap.set({ 'n', 'v' }, 'd', '"_d')
--- Same with x but only in normal mode (x in visual mode is still cut)
--- vim.keymap.set('n', 'x', '"_x')
-
--- Special case single line cut. I know it's horribly inconsistent
--- vim.keymap.set({ 'n', 'v' }, 'dd', '"*dd')
-
 -- Put change into the blackhole register
 vim.keymap.set('n', 'c', '"_c')
 
@@ -110,17 +103,21 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 vim.keymap.set('n', '<S-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
 vim.keymap.set('n', '<C-S-R>', '<cmd>later 1f<CR>', { desc = 'Redo to last saved' })
 
+-- <leader>t
 -- -- Next/prev tabs
-vim.keymap.set('n', '[t', '<cmd>:tabprevious<CR>', { desc = 'Go to previous [T]ab' })
-vim.keymap.set('n', ']t', '<cmd>:tabnext<CR>', { desc = 'Go to next [T]ab' })
-vim.keymap.set('n', '<leader>tq', '<cmd>:tclose<CR>', { desc = 'Close [T]ab' })
+vim.keymap.set('n', '[t', '<cmd>:tabprevious<CR>', { desc = 'Previous tab' })
+vim.keymap.set('n', ']t', '<cmd>:tabnext<CR>', { desc = 'Next tab' })
+vim.keymap.set('n', '<leader>tq', '<cmd>:tabclose<CR>', { desc = 'Close tab' })
+
+vim.keymap.set('n', '<leader>tl', '<cmd>Lazy<CR>', { desc = 'Open Lazy' })
+vim.keymap.set('n', '<leader>tm', '<cmd>Mason<CR>', { desc = 'Open Mason' })
 
 -- Next/prev buffer
-vim.keymap.set('n', '[b', '<cmd>:bprevious<CR>', { desc = 'Go to previous [B]uffer' })
-vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Go to next [B]uffer' })
--- vim.keymap.set('n', '<leader>v', '<cmd>:bprevious<CR>', { desc = 'Go to previous [B]uffer' })
--- vim.keymap.set('n', '<leader>b', '<cmd>:bnext<CR>', { desc = 'Go to next [B]uffer' })
-vim.keymap.set('n', '<leader>bq', '<cmd>:bdelete<CR>', { desc = 'Close [B]uffer' })
+vim.keymap.set('n', '[b', '<cmd>:bprevious<CR>', { desc = 'Previous buffer' })
+vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
+
+-- <leader>b
+vim.keymap.set('n', '<leader>bq', '<cmd>:bdelete<CR>', { desc = 'Close buffer' })
 
 -- Shortcute for surrounding a word (inner) with a '
 vim.keymap.set('n', 'wq', "waiw'", { desc = "Wrap word with '", remap = true })

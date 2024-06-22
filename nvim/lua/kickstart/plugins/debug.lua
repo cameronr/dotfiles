@@ -55,12 +55,12 @@ return {
     {
       '<leader>cb',
       function() require('dap').toggle_breakpoint() end,
-      desc = '[C]ode Debug: Toggle [B]reakpoint',
+      desc = 'Code Debug: Toggle Breakpoint',
     },
     {
       '<leader>cB',
       function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end,
-      desc = '[C]ode Debug: Set [B]reakpoint',
+      desc = 'Code Debug: Set Breakpoint',
     },
   },
   config = function()

@@ -58,7 +58,7 @@ return {
         callback = function() require('lint').try_lint() end,
       })
 
-      vim.keymap.set('n', '<leader>l', function() lint.try_lint() end, { desc = '[L]int current file' })
+      vim.keymap.set('n', '<leader>l', function() lint.try_lint() end, { desc = 'Lint current file' })
     end,
   },
 }

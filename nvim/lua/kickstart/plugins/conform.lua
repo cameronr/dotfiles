@@ -11,11 +11,9 @@ return {
   keys = {
     {
       '<leader>f',
-      function()
-        require('conform').format { async = true, lsp_fallback = true }
-      end,
+      function() require('conform').format { async = true, lsp_fallback = true } end,
       mode = '',
-      desc = '[F]ormat buffer',
+      desc = 'Format buffer',
     },
   },
   config = function()
@@ -59,9 +57,7 @@ return {
       -- support a global format disable
       format_on_save = function(bufnr)
         -- Disable with a global or buffer-local variable
-        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-          return
-        end
+        if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then return end
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.

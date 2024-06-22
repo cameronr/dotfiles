@@ -8,8 +8,9 @@ return {
     'nvim-telescope/telescope.nvim', -- optional
   },
   keys = {
-    { '<leader>n', ':Neogit<CR>', desc = '[N]eoGit' },
+    { '<leader>n', ':Neogit<CR>', desc = 'NeoGit' },
   },
+  cmd = 'NeoGit',
   config = function()
     require('neogit').setup {
       ---@diagnostic disable-next-line: missing-fields
