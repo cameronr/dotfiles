@@ -37,9 +37,7 @@ return {
               local buffer = vim.api.nvim_win_get_buf(window)
               local filetype = vim.api.nvim_get_option_value('filetype', { buf = buffer })
               for _, v in ipairs(fts_to_match) do
-                if string.find(filetype, '^' .. v) then
-                  return true
-                end
+                if string.find(filetype, '^' .. v) then return true end
               end
             end
             return false
@@ -58,10 +56,10 @@ return {
     }
     local keymap = vim.keymap
     -- restore last workspace session for current directory
-    keymap.set('n', '<leader>wr', require('auto-session.session-lens').search_session, { desc = '[W]orkspace [R]estore session' })
+    keymap.set('n', '<leader>wr', require('auto-session.session-lens').search_session, { desc = 'Workspace restore session' })
 
     -- save workspace session for current working directory
-    keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = '[W]orkspace [S]ave session root dir' })
+    keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Workspace save session' })
 
     -- keymap.set('n', '<leader>sW', require('auto-session.session-lens').search_session, {
     --   desc = 'Search [W]orkspace session',

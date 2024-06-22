@@ -1,8 +1,11 @@
 return {
   'numToStr/Comment.nvim',
-  event = { 'BufReadPre', 'BufNewFile' },
+  -- event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring',
+  },
+  keys = {
+    { '<Bslash>x', desc = 'Toggle comment' },
   },
   config = function()
     -- import comment plugin safely
