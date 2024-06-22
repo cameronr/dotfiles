@@ -59,15 +59,15 @@ return {
     },
     {
       '<leader>cB',
-      function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end,
+      function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
       desc = 'Code Debug: Set Breakpoint',
     },
   },
   config = function()
-    local dap = require 'dap'
-    local dapui = require 'dapui'
+    local dap = require('dap')
+    local dapui = require('dapui')
 
-    require('mason-nvim-dap').setup {
+    require('mason-nvim-dap').setup({
       -- Makes a best effort to setup the various debuggers with
       -- reasonable debug configurations
       automatic_installation = true,
@@ -82,7 +82,7 @@ return {
         -- Update this to ensure that you have the debuggers for the langs you want
         -- 'delve',
       },
-    }
+    })
 
     -- Basic debugging keymaps, feel free to change to your liking!
     -- vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Debug: Start/Continue' })
@@ -97,7 +97,7 @@ return {
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     ---@diagnostic disable-next-line: missing-fields
-    dapui.setup {
+    dapui.setup({
       -- Set icons to characters that are more likely to work in every terminal.
       --    Feel free to remove or use ones that you like more! :)
       --    Don't feel like these are good choices.
@@ -116,7 +116,7 @@ return {
           disconnect = '⏏',
         },
       },
-    }
+    })
 
     -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
     vim.keymap.set('n', '<F7>', dapui.toggle, { desc = 'Debug: See last session result.' })
@@ -133,5 +133,33 @@ return {
     --     detached = vim.fn.has 'win32' == 0,
     --   },
     -- }
+
+    -- local dap_utils = require 'user.plugins.configs.dap.utils'
+    local BASH_DEBUG_ADAPTER_BIN = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/bash-debug-adapter'
+    local BASHDB_DIR = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir'
+
+    dap.adapters.sh = {
+      type = 'executable',
+      command = BASH_DEBUG_ADAPTER_BIN,
+    }
+    dap.configurations.sh = {
+      {
+        name = 'Launch Bash debugger',
+        type = 'sh',
+        request = 'launch',
+        program = '${file}',
+        cwd = '${fileDirname}',
+        pathBashdb = BASHDB_DIR .. '/bashdb',
+        pathBashdbLib = BASHDB_DIR,
+        pathBash = 'bash',
+        pathCat = 'cat',
+        pathMkfifo = 'mkfifo',
+        pathPkill = 'pkill',
+        env = {},
+        args = {},
+        -- showDebugOutput = true,
+        -- trace = true,
+      },
+    }
   end,
 }
