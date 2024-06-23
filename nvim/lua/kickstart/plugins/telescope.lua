@@ -21,7 +21,7 @@ return {
 
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
-        cond = function() return vim.fn.executable 'make' == 1 end,
+        cond = function() return vim.fn.executable('make') == 1 end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
@@ -29,6 +29,7 @@ return {
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
       { 'debugloop/telescope-undo.nvim' },
       { 'aaronhallaert/advanced-git-search.nvim', cmd = { 'AdvancedGitSearch' } },
+      { 'AckslD/nvim-neoclip.lua' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -52,8 +53,8 @@ return {
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
-      local actions = require 'telescope.actions'
-      require('telescope').setup {
+      local actions = require('telescope.actions')
+      require('telescope').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
@@ -98,16 +99,17 @@ return {
             -- See Config
           },
         },
-      }
+      })
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'undo')
       pcall(require('telescope').load_extension, 'advanced_git_search')
+      pcall(require('telescope').load_extension, 'neoclip')
 
       -- See `:help telescope.builtin`
-      local builtin = require 'telescope.builtin'
+      local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>sl', builtin.help_tags, { desc = 'Search help' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Search keymaps' })
       -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
@@ -117,7 +119,7 @@ return {
       vim.keymap.set(
         'n',
         '<leader>sf',
-        function() builtin.find_files { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } } end,
+        function() builtin.find_files({ find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } }) end,
         { desc = 'Search files' }
       )
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = 'Search telescope' })
@@ -143,15 +145,15 @@ return {
       vim.keymap.set('n', '<leader>shf', '<cmd>Telescope git_bcommits<CR>', { desc = 'Search git buffer commits' })
 
       -- Ctrl-r for command history in command mode (like with zsh+fzf)
-      vim.keymap.set('c', '<C-r>', builtin.command_history, { desc = 'Search commands' })
+      vim.keymap.set('n', '<leader>s"', '<cmd>Telescope neoclip<CR>', { desc = 'Search yanks' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
           winblend = 10,
           previewer = false,
-        })
+        }))
       end, { desc = 'Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
@@ -160,16 +162,19 @@ return {
         'n',
         '<leader>s/',
         function()
-          builtin.live_grep {
+          builtin.live_grep({
             grep_open_files = true,
             prompt_title = 'Live Grep in Open Files',
-          }
+          })
         end,
         { desc = 'Search in Open Files' }
       )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = 'Search neovim files' })
+      vim.keymap.set('n', '<leader>sn', function() builtin.find_files({ cwd = vim.fn.stdpath('config') }) end, { desc = 'Search neovim files' })
+
+      -- Ctrl-r for command history in command mode (like with zsh+fzf)
+      vim.keymap.set('c', '<C-r>', builtin.command_history, { desc = 'Search commands' })
     end,
   },
 }
