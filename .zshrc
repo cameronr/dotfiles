@@ -21,10 +21,6 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 
-# Better ssh completion
-# if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
-zinit light sunlei/zsh-ssh
-
 # Add in snippets
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
@@ -33,6 +29,10 @@ zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
 zinit snippet OMZL::grep.zsh                # highlighting
 zinit snippet OMZL::functions.zsh           # for omz_urlencode, used by termsupport.zsh
 zinit snippet OMZL::termsupport.zsh         # set titlebar
+
+# Better ssh completion
+# if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
+zinit light sunlei/zsh-ssh
 
 zinit snippet OMZP::docker-compose          # docker completions
 zinit ice as"completion"
@@ -181,4 +181,3 @@ zinit cdreplay -q
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
 [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
-

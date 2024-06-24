@@ -37,7 +37,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- <leader>w
 -- Some more convenient keymaps for split management
 vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Window split vertically' })
+vim.keymap.set('n', '<leader>w<Bslash>', '<C-w>v', { desc = 'Window split vertically' })
 vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Window split horizontally' })
+vim.keymap.set('n', '<leader>w-', '<C-w>s', { desc = 'Window split horizontally' })
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>q', '<cmd>close<CR>', { desc = 'Quit window' })
