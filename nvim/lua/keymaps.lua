@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 
 -- Map jk as alternate escape sequence
-vim.keymap.set('i', 'jk', '<Esc>', { desc = 'Exit insert mode with jk' })
+vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
 -- Sloppy aliases for accidental capital commands
 vim.api.nvim_create_user_command('Qa', 'qa', {})
@@ -76,7 +76,7 @@ local function escape(keys) return vim.api.nvim_replace_termcodes(keys, true, fa
 
 vim.keymap.set('c', '<C-f>', function()
   vim.g.requested_cmdwin = true
-  vim.api.nvim_feedkeys(escape '<C-f>', 'n', false)
+  vim.api.nvim_feedkeys(escape('<C-f>'), 'n', false)
 end)
 
 vim.api.nvim_create_autocmd('CmdWinEnter', {
@@ -86,7 +86,7 @@ vim.api.nvim_create_autocmd('CmdWinEnter', {
     if vim.g.requested_cmdwin then
       vim.g.requested_cmdwin = nil
     else
-      vim.api.nvim_feedkeys(escape ':q<CR>:', 'm', false)
+      vim.api.nvim_feedkeys(escape(':q<CR>:'), 'm', false)
     end
   end,
 })
@@ -101,7 +101,8 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 
 -- Undo all changes since last save
 vim.keymap.set('n', '<S-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
-vim.keymap.set('n', '<C-S-R>', '<cmd>later 1f<CR>', { desc = 'Redo to last saved' })
+vim.keymap.set('n', '<M-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
+vim.keymap.set('n', '<M-r>', '<cmd>later 1f<CR>', { desc = 'Redo to last saved' })
 
 -- <leader>t
 -- -- Next/prev tabs
@@ -120,8 +121,8 @@ vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>bq', '<cmd>:bdelete<CR>', { desc = 'Close buffer' })
 
 -- Shortcute for surrounding a word (inner) with a '
-vim.keymap.set('n', 'wq', "waiw'", { desc = "Wrap word with '", remap = true })
-vim.keymap.set('n', 'wb', 'waaw}', { desc = 'Wrap word with {}', remap = true })
+vim.keymap.set('n', 'Sq', "Saiw'", { desc = "Wrap word with '", remap = true })
+vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end)
