@@ -25,6 +25,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit snippet OMZP::git
 zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
+zinit snippet OMZP::magic-enter
 zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
 zinit snippet OMZL::grep.zsh                # highlighting
 zinit snippet OMZL::functions.zsh           # for omz_urlencode, used by termsupport.zsh
