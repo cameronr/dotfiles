@@ -18,7 +18,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard:append 'unnamedplus'
+vim.opt.clipboard:append('unnamedplus')
 
 -- Fix "waiting for osc52 response from terminal" message
 -- https://github.com/neovim/neovim/issues/28611
@@ -28,7 +28,7 @@ if vim.env.SSH_TTY ~= nil then
 
   local function my_paste(_)
     return function(_)
-      local content = vim.fn.getreg '"'
+      local content = vim.fn.getreg('"')
       return vim.split(content, '\n')
     end
   end
@@ -36,14 +36,14 @@ if vim.env.SSH_TTY ~= nil then
   vim.g.clipboard = {
     name = 'OSC 52',
     copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
     },
     paste = {
       -- No OSC52 paste action since wezterm doesn't support it
       -- Should still paste from nvim
-      ['+'] = my_paste '+',
-      ['*'] = my_paste '*',
+      ['+'] = my_paste('+'),
+      ['*'] = my_paste('*'),
     },
   }
 end
@@ -88,19 +88,19 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 4
 
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
-vim.opt.formatoptions:remove { 'o' }
+vim.opt.formatoptions:remove({ 'o' })
 
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
-  callback = function() vim.opt.formatoptions:remove { 'o' } end,
+  callback = function() vim.opt.formatoptions:remove({ 'o' }) end,
   desc = 'Disable New Line Comment',
 })
 
 -- Wrap arrow keys
-vim.opt.whichwrap:append '<,>,[,]'
+vim.opt.whichwrap:append('<,>,[,]')
 
 -- Add characters to set used to identify words
-vim.opt.iskeyword:append { '-', '/', ':' }
+vim.opt.iskeyword:append({ '-', '/', ':' })
 
 -- Don't show ~ at end of buffer
 vim.opt.fillchars = { eob = ' ' }
@@ -128,12 +128,12 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   group = vim.api.nvim_create_augroup('help_window_right', {}),
   pattern = { '*.txt' },
   callback = function()
-    if vim.o.filetype == 'help' then vim.cmd.wincmd 'L' end
+    if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
   end,
 })
 
 -- Set nice diff fill chars
-vim.opt.fillchars:append 'diff:╱'
+vim.opt.fillchars:append('diff:╱')
 
 -- Set default tab options (but they should be overridden by sleuth)
 vim.o.expandtab = true
@@ -143,6 +143,6 @@ vim.o.shiftround = true
 vim.o.smartindent = true
 
 -- Recommended session options from auto-sessions
-vim.o.sessionoptions = 'buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions = 'buffers,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
 -- vim: ts=2 sts=2 sw=2 et
