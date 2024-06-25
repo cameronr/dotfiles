@@ -112,6 +112,8 @@ fi
 if [[ (( $commands[eza] )) ]]; then
     alias ls='eza -F --color=always --icons=always --no-quotes'
     FZF_DIR_PREVIEW='eza -F --color=always --icons=always --no-quotes --tree {} | head -500'
+else
+    alias ls='ls -F --color=always'
 fi
 
 # set up bat, if installed
