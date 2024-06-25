@@ -72,7 +72,7 @@ add-zsh-hook -d precmd omz_termsupport_cwd
 autoload -Uz compinit && compinit
 
 # Set up history
-HISTFILE=~/.zhistory
+HISTFILE=~/.zsh_history
 SAVEHIST=100000
 HISTSIZE=100000
 HISTDUP=erase
