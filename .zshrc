@@ -43,6 +43,8 @@ zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_
 # Override OMZ's title function for two reasons:
 # 1. If we're in an ssh session, add the machine name
 # 2. Add an icon for the currently running command (if we have one)
+
+source $DOTFILES/zsh/get-icon-for-command.zsh
 functions -c title omz_title
 title () {
     local CMD=$1
@@ -59,34 +61,11 @@ title () {
         fi
     fi
     # echo "title cmd:'$CMD' line:'$LINE'"
-    local ICON=$(_get_icon_for_command "$1")
+    local ICON=$(get_icon_for_command "$1")
     local CMD_WITH_ICON="${ICON}$CMD"
 
     # Not actually using $LINE currently
     omz_title $CMD_WITH_ICON
-}
-
-# Return an icon for a command (to show in a terminal title)
-_get_icon_for_command() {
-    # echo "icon for $1"
-    case "$1" in
-        nvim)
-            echo ' '
-            ;;
-        vim|vi)
-            echo ' '
-            ;;
-        python|python3|python2)
-            echo ' '
-            ;;
-        zsh|bash|sh)
-            # not currently used
-            echo '  '
-            ;;
-        *)
-            echo ''
-            ;;
-    esac
 }
 
 
