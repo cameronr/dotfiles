@@ -39,27 +39,56 @@ zinit snippet OMZP::docker-compose          # docker completions
 zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
-# OMZ doesn't have any configuration for the title when running a command. For the idle title, we could set
-# ZSH_THEME_TERM_TAB_TITLE_IDLE / ZSH_THEME_TERM_TITLE_IDLE but that won't help with long
-# running commands. To work around this limitation, we copy the function 'title' to 'omz_title'
-# so we can intercept it and change the parameters, adding the user/machine if it's not included.
-# It might be cleaner to just fork and modify the code but here we are.
-# Can set ALWAYS_SHOW_HOST_IN_TITLE to false in .zprofile to prevent this behavior
 
-if [[ "${ALWAYS_SHOW_HOST_IN_TITLE:-true}" == true ]]; then
-    functions -c title omz_title
-    title () {
-        local CMD=$1
-        local LINE=$2
+# Override OMZ's title function for two reasons:
+# 1. If we're in an ssh session, add the machine name
+# 2. Add an icon for the currently running command (if we have one)
+functions -c title omz_title
+title () {
+    local CMD=$1
+
+    # ALways add the machine name if we're in an ssh session
+    if [[ -n "$SSH_TTY" ]]; then
         if [[ $1 != *"%m"* ]]; then
-            CMD="%n@%m:$1"
+            # %n is the user, but i don't think we need it
+            # CMD="%n@%m:$1"
+            CMD="%m:$1"
         fi
         if [[ $2 != *"%m"* ]]; then
-            LINE="%n@%m:$2"
+            LINE="%m:$2"
         fi
-        omz_title $CMD $LINE
-    }
-fi
+    fi
+    # echo "title cmd:'$CMD' line:'$LINE'"
+    local ICON=$(_get_icon_for_command "$1")
+    local CMD_WITH_ICON="${ICON}$CMD"
+
+    # Not actually using $LINE currently
+    omz_title $CMD_WITH_ICON
+}
+
+# Return an icon for a command (to show in a terminal title)
+_get_icon_for_command() {
+    # echo "icon for $1"
+    case "$1" in
+        nvim)
+            echo ' '
+            ;;
+        vim|vi)
+            echo ' '
+            ;;
+        python|python3|python2)
+            echo ' '
+            ;;
+        zsh|bash|sh)
+            # not currently used
+            echo '  '
+            ;;
+        *)
+            echo ''
+            ;;
+    esac
+}
+
 
 # We also don't need the cwd hook as p10k handles all of that for us (and having this hook
 # introduces a visual glitch)
