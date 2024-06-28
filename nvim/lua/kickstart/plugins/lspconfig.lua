@@ -141,7 +141,7 @@ return {
               group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds({ group = 'kickstart-lsp-highlight', buffer = event2.buf })
               end,
             })
           end
@@ -170,6 +170,11 @@ return {
         local hl = 'DiagnosticSign' .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
       end
+
+      -- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = 'rounded',
+      })
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -208,7 +213,9 @@ return {
               -- diagnostics = { disable = { 'missing-fields' } },
               diagnostics = {
                 -- Get the language server to recognize the `vim` global
-                globals = { 'vim' },
+                globals = {
+                  'vim',
+                },
               },
             },
           },
@@ -257,9 +264,9 @@ return {
         'stylua', -- Used to format Lua code
       })
 
-      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup { ensure_installed = ensure_installed } end
+      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
 
-      require('mason-lspconfig').setup {
+      require('mason-lspconfig').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -270,10 +277,10 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
         },
-      }
+      })
 
       -- Install Conform formatters
-      if not vim.g.no_mason_autoinstall then require('mason-conform').setup {} end
+      if not vim.g.no_mason_autoinstall then require('mason-conform').setup({}) end
     end,
   },
 }
