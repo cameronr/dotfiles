@@ -8,7 +8,7 @@ local config = wezterm.config_builder()
 config = {
 
 	font = wezterm.font("MesloLGS Nerd Font"),
-	font_size = 14,
+	font_size = 15,
 
 	-- For example, changing the color scheme:
 	color_scheme = "tokyonight_night",
