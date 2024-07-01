@@ -30,6 +30,7 @@ declare -A PALLETE=(
     [magenta2]="#ff007c"
     [orange]="#ff9e64"
     [yellow]="#e0af68"
+    [yellow2]="#f1b355"
     [green]="#9ece6a"
     [green1]="#73daca"
     [green2]="#41a6b5"
