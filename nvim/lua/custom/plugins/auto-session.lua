@@ -1,26 +1,26 @@
 return {
   'rmagatti/auto-session',
   config = function()
-    local auto_session = require 'auto-session'
-
-    auto_session.setup {
+    require('auto-session').setup({
       -- don't save when it's just the dashboard, or a nvim-notify buffer
       bypass_session_save_file_types = { 'alpha', 'notify' },
       auto_restore_enabled = true,
       auto_save_enabled = true,
 
-      -- auto_restore_lazy_delay_enabled = true,
-      -- close_unsupported_windows = true,
       -- log_level = 'debug',
 
       auto_session_suppress_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop' },
+      -- auto_session_root_dir = '/tmp/sessions/',
+
       session_lens = {
-        -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
-        load_on_setup = true,
-        theme_conf = { border = true },
+        previewer = true,
       },
       -- cwd_change_handling = {
-      --   restore_upcoming_session = true,
+      --   restore_upcoming_session = false,
+      -- },
+      --
+      -- save_extra_cmds = {
+      --   function() return [[echo "hello world"]] end,
       -- },
 
       pre_save_cmds = {
@@ -53,17 +53,12 @@ return {
           end
         end,
       },
-    }
+    })
     local keymap = vim.keymap
     -- restore last workspace session for current directory
     keymap.set('n', '<leader>wr', require('auto-session.session-lens').search_session, { desc = 'Workspace restore session' })
 
     -- save workspace session for current working directory
     keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Workspace save session' })
-
-    -- keymap.set('n', '<leader>sW', require('auto-session.session-lens').search_session, {
-    --   desc = 'Search [W]orkspace session',
-    --   noremap = true,
-    -- })
-  end, -- Close any Neogit/Diffview windows
+  end,
 }

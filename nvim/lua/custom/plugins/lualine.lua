@@ -3,8 +3,8 @@ return {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
 
   config = function()
-    local custom_tokyonight = require 'lualine.themes.tokyonight'
-    local lazy_status = require 'lazy.status' -- to configure lazy pending updates count
+    local custom_tokyonight = require('lualine.themes.tokyonight')
+    local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
     -- Use bg_dark for the b section background
     custom_tokyonight.normal.b.bg = '#1f2335'
@@ -36,14 +36,12 @@ return {
     local function lsp_status_all()
       local haveServers = false
       local names = {}
-      for _, server in pairs(vim.lsp.get_clients { bufnr = 0 }) do
+      for _, server in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
         -- msg = ' '
         haveServers = true
         table.insert(names, server.name)
       end
-      if not haveServers then
-        return ''
-      end
+      if not haveServers then return '' end
       return ' ' .. table.concat(names, ',')
     end
 
@@ -63,6 +61,7 @@ return {
         theme = custom_tokyonight,
         component_separators = '',
         disabled_filetypes = { 'alpha', 'neo-tree' },
+        section_separators = { left = '', right = '' },
         -- globalstatus = true,
       },
       sections = {

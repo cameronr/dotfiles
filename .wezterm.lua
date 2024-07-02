@@ -14,8 +14,8 @@ config = {
 	color_scheme = "tokyonight_night",
 
 	window_decorations = "RESIZE",
-	window_background_opacity = 0.98,
-	macos_window_background_blur = 8,
+	-- window_background_opacity = 1,
+	-- macos_window_background_blur = 8,
 
 	-- use_fancy_tab_bar = false,
 	tab_max_width = 50,
