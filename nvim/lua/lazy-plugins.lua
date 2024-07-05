@@ -97,6 +97,10 @@ require('lazy').setup({
     notify = false,
     frequency = 3600,
   },
+  dev = {
+    path = '~/Dev/neovim-dev/',
+    fallback = false,
+  },
 })
 
 -- vim: ts=2 sts=2 sw=2 et
