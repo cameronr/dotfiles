@@ -215,6 +215,10 @@ return {
                 -- Get the language server to recognize the `vim` global
                 globals = {
                   'vim',
+                  'it',
+                  'describe',
+                  'before_each',
+                  'after_each',
                 },
               },
             },
