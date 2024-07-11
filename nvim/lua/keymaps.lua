@@ -41,6 +41,7 @@ vim.keymap.set('n', '<leader>w<Bslash>', '<C-w>v', { desc = 'Window split vertic
 vim.keymap.set('n', '<leader>wh', '<C-w>s', { desc = 'Window split horizontally' })
 vim.keymap.set('n', '<leader>w-', '<C-w>s', { desc = 'Window split horizontally' })
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal size' })
+vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>q', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
@@ -125,6 +126,9 @@ vim.keymap.set('n', '<leader>bq', '<cmd>:bdelete<CR>', { desc = 'Close buffer' }
 -- Shortcute for surrounding a word (inner) with a '
 vim.keymap.set('n', 'Sq', "Saiw'", { desc = "Wrap word with '", remap = true })
 vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
+
+-- Swap to alternate buffer, less work that ctrl-6
+vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Swap to alt buffer' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end)
