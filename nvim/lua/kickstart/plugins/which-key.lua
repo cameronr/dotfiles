@@ -18,26 +18,34 @@ return {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
+      local wk = require('which-key')
+      wk.setup({
 
-      -- Document existing key chains
-      require('which-key').register {
-        ['<leader>b'] = { name = 'Buffer', _ = 'which_key_ignore' },
-        ['<leader>c'] = { name = 'Code', _ = 'which_key_ignore' },
+        icons = {
+          rules = false,
+        },
+      })
 
-        -- NOTE: g is currently unused, could use it for git maybe?
-        ['<leader>h'] = { name = 'Git Hunk', _ = 'which_key_ignore' },
-        -- ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        -- ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = 'Search', _ = 'which_key_ignore' },
-        ['<leader>t'] = { name = 'Tab / Tools', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = 'Window / Workspace', _ = 'which_key_ignore' },
-        ['<leader>x'] = { name = 'Trouble', _ = 'which_key_ignore' },
-      }
-      -- visual mode
-      require('which-key').register({
-        ['<leader>h'] = { 'Git Hunk' },
-      }, { mode = 'v' })
+      wk.add({
+        { '<leader>b', group = 'Buffer' },
+        { '<leader>b_', hidden = true },
+        { '<leader>c', group = 'Code' },
+        { '<leader>c_', hidden = true },
+        { '<leader>h', group = 'Git Hunk' },
+        { '<leader>h_', hidden = true },
+        { '<leader>s', group = 'Search' },
+        { '<leader>s_', hidden = true },
+        { '<leader>t', group = 'Tab / Tools' },
+        { '<leader>t_', hidden = true },
+        { '<leader>w', group = 'Window / Workspace' },
+        { '<leader>w_', hidden = true },
+        { '<leader>x', group = 'Trouble' },
+        { '<leader>x_', hidden = true },
+        {
+          mode = 'v',
+          { '<leader>h', desc = 'Git Hunk', mode = 'v' },
+        },
+      })
     end,
   },
 }
