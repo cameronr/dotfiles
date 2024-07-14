@@ -27,7 +27,6 @@ return {
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-      { 'debugloop/telescope-undo.nvim' },
       { 'aaronhallaert/advanced-git-search.nvim', cmd = { 'AdvancedGitSearch' } },
       { 'AckslD/nvim-neoclip.lua' },
     },
@@ -104,7 +103,6 @@ return {
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
-      pcall(require('telescope').load_extension, 'undo')
       pcall(require('telescope').load_extension, 'advanced_git_search')
       pcall(require('telescope').load_extension, 'neoclip')
 
@@ -133,9 +131,9 @@ return {
 
       -- My Additions
       vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = 'Search commands' })
-      vim.keymap.set('n', '<leader>su', '<cmd>Telescope undo<CR>', { desc = 'Search undo' })
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = 'Search popup notifications' })
       vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<CR>', { desc = 'Search todos' })
+      vim.keymap.set('n', '<leader>so', '<cmd>TodoTelescope<CR>', { desc = 'Search todos' })
 
       -- Git options
       vim.keymap.set('n', '<leader>shc', '<cmd>Telescope git_commits<CR>', { desc = 'Search git commits' })
