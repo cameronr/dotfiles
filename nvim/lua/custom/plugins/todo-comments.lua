@@ -3,7 +3,7 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = { 'nvim-lua/plenary.nvim' },
   config = function()
-    local todo_comments = require 'todo-comments'
+    local todo_comments = require('todo-comments')
 
     -- FIX = {
     --   icon = " ", -- icon used for the sign, and in search results
@@ -21,15 +21,11 @@ return {
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
 
-    keymap.set('n', ']o', function()
-      todo_comments.jump_next()
-    end, { desc = 'Next tod[O]' })
+    keymap.set('n', ']o', function() todo_comments.jump_next() end, { desc = 'Next todo' })
 
-    keymap.set('n', '[o', function()
-      todo_comments.jump_prev()
-    end, { desc = 'Previous tod[O]' })
+    keymap.set('n', '[o', function() todo_comments.jump_prev() end, { desc = 'Previous todo' })
 
-    todo_comments.setup {
+    todo_comments.setup({
       keywords = {
         TODO = { icon = '󰄱' },
         HACK = { icon = '󰣈' },
@@ -38,6 +34,6 @@ return {
         NOTE = { icon = '󰙏' },
         TEST = { icon = '󰙨' },
       },
-    }
+    })
   end,
 }
