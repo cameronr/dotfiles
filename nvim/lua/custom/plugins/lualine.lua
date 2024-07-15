@@ -1,8 +1,24 @@
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = {
+    'nvim-tree/nvim-web-devicons',
 
-  config = function()
+    -- {
+    --   'SmiteshP/nvim-navic',
+    --   lazy = true,
+    --   opts = {
+    --     lsp = {
+    --       auto_attach = true,
+    --     },
+    --     -- separator = ' ',
+    --     highlight = true,
+    --     depth_limit = 5,
+    --     lazy_update_context = true,
+    --   },
+    -- },
+  },
+
+  config = function(_, opts)
     local custom_tokyonight = require('lualine.themes.tokyonight')
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
@@ -56,10 +72,10 @@ return {
       return ret
     end
 
-    local opts = {
+    opts = {
       options = {
         theme = custom_tokyonight,
-        component_separators = '',
+        component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree' },
         section_separators = { left = '', right = '' },
         -- globalstatus = true,
@@ -75,10 +91,16 @@ return {
           {
             'branch',
             fmt = trunc(70, 15, 65, true),
+            separator = '',
           },
 
           {
             'diff',
+            symbols = {
+              added = ' ',
+              modified = ' ',
+              removed = ' ',
+            },
             fmt = trunc(0, 0, 60, true),
           },
           {
@@ -88,7 +110,23 @@ return {
           },
         },
         lualine_c = {
-          { 'filename', path = 1, new_file_status = true, shorting_target = 16 },
+          {
+            'filename',
+            path = 1,
+            new_file_status = true,
+            shorting_target = 16,
+            symbols = {
+              modified = '+', -- Text to show when the file is modified.
+              readonly = '', -- Text to show when the file is non-modifiable or readonly.
+              -- unnamed = '[No Name]', -- Text to show for unnamed buffers.
+              -- newfile = '[New]', -- Text to show for newly created file before first write
+            },
+          },
+          -- {
+          --   function() return require('nvim-navic').get_location() end,
+          --   cond = function() return package.loaded['nvim-navic'] and require('nvim-navic').is_available() end,
+          --   fmt = trunc(0, 0, 60, true),
+          -- },
         },
         lualine_x = {
           {
@@ -121,6 +159,17 @@ return {
           { 'location', fmt = trunc(0, 0, 80, true) },
         },
       },
+      inactive_sections = {
+        lualine_c = {
+          {
+            'filename',
+            symbols = {
+              modified = '+', -- Text to show when the file is modified.
+              readonly = '', -- Text to show when the file is non-modifiable or readonly.
+            },
+          },
+        },
+      },
       extensions = {
         'fzf',
         'lazy',
@@ -129,6 +178,7 @@ return {
         'neo-tree',
         'nvim-dap-ui',
         'trouble',
+        'oil',
       },
     }
 
