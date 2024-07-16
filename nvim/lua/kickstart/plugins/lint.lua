@@ -4,7 +4,7 @@ return {
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      local lint = require 'lint'
+      local lint = require('lint')
       lint.linters_by_ft = {
         -- markdown = { 'markdownlint' },
         javascript = { 'eslint_d' },
@@ -58,7 +58,7 @@ return {
         callback = function() require('lint').try_lint() end,
       })
 
-      vim.keymap.set('n', '<leader>l', function() lint.try_lint() end, { desc = 'Lint current file' })
+      vim.keymap.set('n', '<leader>cl', function() lint.try_lint() end, { desc = 'Lint current file' })
     end,
   },
 }

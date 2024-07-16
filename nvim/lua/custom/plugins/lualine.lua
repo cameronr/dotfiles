@@ -102,6 +102,7 @@ return {
               removed = ' ',
             },
             fmt = trunc(0, 0, 60, true),
+            separator = '',
           },
           {
             'diagnostics',

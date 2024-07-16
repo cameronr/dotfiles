@@ -38,19 +38,12 @@ return {
 
       wk.add({
         { '<leader>b', group = 'Buffer' },
-        { '<leader>b_', hidden = true },
         { '<leader>c', group = 'Code' },
-        { '<leader>c_', hidden = true },
         { '<leader>h', group = 'Git Hunk' },
-        { '<leader>h_', hidden = true },
         { '<leader>s', group = 'Search' },
-        { '<leader>s_', hidden = true },
-        { '<leader>t', group = 'Tab / Tools' },
-        { '<leader>t_', hidden = true },
         { '<leader>w', group = 'Window / Workspace' },
-        { '<leader>w_', hidden = true },
         { '<leader>x', group = 'Trouble' },
-        { '<leader>x_', hidden = true },
+        { '<leader><tab>', group = 'Tabs' },
         {
           mode = 'v',
           { '<leader>h', desc = 'Git Hunk', mode = 'v' },
