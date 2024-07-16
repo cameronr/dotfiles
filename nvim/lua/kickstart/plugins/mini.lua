@@ -1,6 +1,14 @@
 return {
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
+
+    -- Mock web-dev-icons with mini-icons
+    init = function()
+      package.preload['nvim-web-devicons'] = function()
+        require('mini.icons').mock_nvim_web_devicons()
+        return package.loaded['nvim-web-devicons']
+      end
+    end,
     config = function()
       -- Better Around/Inside textobjects
       --

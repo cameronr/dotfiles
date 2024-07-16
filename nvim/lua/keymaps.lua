@@ -11,6 +11,10 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnos
 vim.keymap.set('n', '<leader>m', vim.diagnostic.open_float, { desc = 'Show diagnostic error messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic quickfix list' })
 
+-- Quickfix
+vim.keymap.set('n', '[q', '<cmd>cprev<cr>', { desc = 'Previous quickfix' })
+vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next quickfix' })
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -128,7 +132,7 @@ vim.keymap.set('n', 'Sq', "Saiw'", { desc = "Wrap word with '", remap = true })
 vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
 
 -- Swap to alternate buffer, less work that ctrl-6
-vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Swap to alt buffer' })
+vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end)

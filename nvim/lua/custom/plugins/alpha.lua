@@ -2,8 +2,8 @@ return {
   'goolord/alpha-nvim',
   event = 'VimEnter',
   config = function()
-    local alpha = require 'alpha'
-    local dashboard = require 'alpha.themes.dashboard'
+    local alpha = require('alpha')
+    local dashboard = require('alpha.themes.dashboard')
 
     -- Set header
     dashboard.section.header.val = {
@@ -26,8 +26,8 @@ return {
       dashboard.button('SPC n', '󰊢  Neogit'),
       dashboard.button('r', '󰁯  Restore a Session', "<cmd>lua require('auto-session.session-lens').search_session()<CR>"),
       -- dashboard.button('c', '󰁯  Restore Session For Current Directory', '<cmd>SessionRestore<CR>'),
-      dashboard.button('u', '  Update plugins', '<cmd>Lazy sync<CR>'),
-      dashboard.button('m', '  Install language tools', '<cmd>Mason<CR>'),
+      dashboard.button('l', '󰒲  Lazy', '<cmd>Lazy<CR>'),
+      dashboard.button('m', '  Mason', '<cmd>Mason<CR>'),
       dashboard.button('c', '  Neovim configuration', '<cmd>cd ~/.config/nvim<CR> | <cmd>SessionRestore <CR>'),
       dashboard.button('q', '󰩈  Quit NVIM', '<cmd>qa<CR>'),
     }
@@ -36,6 +36,6 @@ return {
     alpha.setup(dashboard.opts)
 
     -- Disable folding on alpha buffer
-    vim.cmd [[autocmd FileType alpha setlocal nofoldenable]]
+    vim.cmd([[autocmd FileType alpha setlocal nofoldenable]])
   end,
 }

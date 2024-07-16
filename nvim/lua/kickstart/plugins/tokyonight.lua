@@ -14,9 +14,7 @@ return {
       floats = { 'transparent' },
     },
     lualine_bold = true,
-    on_colors = function(c)
-      c.border_highlight = c.blue
-    end,
+    on_colors = function(c) c.border_highlight = c.blue end,
     on_highlights = function(hl, c)
       -- This is bg_dark from the default tokyonight theme (not tokyonight night)
       local lighterBg = '#1f2335'
@@ -24,7 +22,9 @@ return {
       hl.CursorLine = { bg = lighterBg }
 
       -- Make IndentBlankLines indent markers much fainter (bg_dark in tokyonight)
-      hl.IblIndent = { fg = lighterBg }
+      -- hl.IblIndent = { fg = lighterBg }
+
+      -- hl.IblScope = { fg = '#43709B' }
 
       -- Make folds less prominent (especially important for DiffView)
       hl.Folded = { fg = 'none' }
@@ -32,7 +32,7 @@ return {
       -- Brighter git colors in LuaLine
       hl.LuaLineDiffAdd = { fg = '#2e9e98' }
       hl.LuaLineDiffChange = { fg = c.blue }
-      hl.LuaLineDiffDelete = { fg = c.red1 }
+      -- hl.LuaLineDiffDelete = { fg = c.dark5 }
 
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
@@ -54,7 +54,7 @@ return {
 
   init = function()
     -- Activate the colorscheme here. Tokyonight will pick the right style as set above
-    vim.cmd.colorscheme 'tokyonight'
+    vim.cmd.colorscheme('tokyonight')
 
     -- You can configure highlights by doing something like:
     -- Setting italic to false in styles.comments above accomplishes the same thing

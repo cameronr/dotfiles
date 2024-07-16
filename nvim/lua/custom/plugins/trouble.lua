@@ -20,17 +20,17 @@ return {
       desc = 'Symbols (Trouble)',
     },
     {
-      '<leader>xl',
+      '<leader>xL',
       '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
       desc = 'LSP Definitions / references / ... (Trouble)',
     },
     {
-      '<leader>xL',
+      '<leader>xl',
       '<cmd>Trouble loclist toggle<cr>',
       desc = 'Location List (Trouble)',
     },
     {
-      '<leader>xQ',
+      '<leader>xq',
       '<cmd>Trouble qflist toggle<cr>',
       desc = 'Quickfix List (Trouble)',
     },
@@ -38,6 +38,36 @@ return {
       '<leader>xt',
       '<cmd>Trouble todo toggle<cr>',
       desc = 'Todos (Trouble)',
+    },
+    -- Borrowed from LazyVim
+    {
+      '[q',
+      function()
+        if require('trouble').is_open() then
+          require('trouble').prev({ skip_groups = true, jump = true })
+        else
+          local ok, err = pcall(vim.cmd.cprev)
+          if not ok then vim.notify(err, vim.log.levels.ERROR) end
+        end
+      end,
+      desc = 'Previous Trouble/Quickfix Item',
+    },
+    {
+      ']q',
+      function()
+        if require('trouble').is_open() then
+          require('trouble').next({ skip_groups = true, jump = true })
+        else
+          local ok, err = pcall(vim.cmd.cnext)
+          if not ok then vim.notify(err, vim.log.levels.ERROR) end
+        end
+      end,
+      desc = 'Next Trouble/Quickfix Item',
+    },
+    {
+      '<leader>xQ',
+      '<cmd>Trouble close<cr>',
+      desc = 'Close Trouble',
     },
   },
 }

@@ -31,7 +31,7 @@ return {
         HACK = { icon = '󰣈' },
         WARN = { icon = '󰉀' },
         PERF = { icon = '󱙷' },
-        NOTE = { icon = '󰙏' },
+        NOTE = { icon = '' },
         TEST = { icon = '󰙨' },
       },
     })
