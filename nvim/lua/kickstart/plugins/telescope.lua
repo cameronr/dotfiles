@@ -71,12 +71,10 @@ return {
           path_display = { truncate = 1 },
           mappings = {
             i = {
-              ['<C-ENTER>'] = 'to_fuzzy_refine',
               ['<ESC>'] = actions.close, -- close on first esc
-              -- ['<c-q>'] = actions.smart_send_to_qflist + my_actions.open_trouble,
               ['<C-Q>'] = actions.smart_send_to_qflist + my_actions.open_trouble_qflist,
               ['<C-L>'] = actions.smart_send_to_loclist + my_actions.open_trouble_loclist,
-              ['<C-SPACE>'] = actions.complete_tag,
+              ['<M-Space>'] = actions.complete_tag,
               ['<C-Down>'] = actions.cycle_history_next,
               ['<C-Up>'] = actions.cycle_history_prev,
               ['<C-T>'] = require('trouble.sources.telescope').open,
@@ -153,6 +151,7 @@ return {
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = 'Popup notifications' })
       vim.keymap.set('n', '<leader>sn', '<cmd>Telescope notify<CR>', { desc = 'Notifications' })
       vim.keymap.set('n', '<leader>sj', '<cmd>Telescope jumplist<cr>', { desc = 'Jumplist' })
+      vim.keymap.set('n', '<leader>sH', '<cmd>Telescope highlights<cr>', { desc = 'Highlights' })
       vim.keymap.set('n', '<leader>sl', '<cmd>Telescope loclist<cr>', { desc = 'Location List' })
       vim.keymap.set('n', '<leader>sm', '<cmd>Telescope marks<cr>', { desc = 'Marks' })
       vim.keymap.set('n', '<leader>so', '<cmd>Telescope vim_options<cr>', { desc = 'Options' })

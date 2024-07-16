@@ -10,7 +10,14 @@ return {
         char = '│',
       },
       scope = {
-        -- show_start = false,
+        show_start = false,
+      },
+    },
+    keys = {
+      {
+        '<leader>vi',
+        '<cmd>IBLToggleScope<cr>',
+        desc = 'Toggle scope',
       },
     },
   },
