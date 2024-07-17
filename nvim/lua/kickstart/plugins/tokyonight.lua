@@ -24,7 +24,7 @@ return {
       -- Make IndentBlankLines indent markers much fainter (bg_dark in tokyonight)
       -- hl.IblIndent = { fg = lighterBg }
 
-      -- hl.IblScope = { fg = '#43709B' }
+      hl.IblScope = { fg = '#43709B' }
 
       -- Make folds less prominent (especially important for DiffView)
       hl.Folded = { fg = 'none' }
