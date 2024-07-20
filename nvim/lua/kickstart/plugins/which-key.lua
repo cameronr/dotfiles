@@ -20,19 +20,10 @@ return {
     config = function() -- This is the function that runs, AFTER loading
       local wk = require('which-key')
       wk.setup({
-
         preset = 'modern',
         delay = function(ctx) return ctx.plugin and 0 or 300 end,
         icons = {
           rules = false,
-        },
-        disable = {
-          -- disable <C-R> showing registers in c mode
-          ---@type fun(ctx: { keys: string, mode: string, plugin?: string }):boolean?
-          trigger = function(ctx)
-            -- vim.notify('keys: ' .. vim.inspect(ctx.keys) .. ' mode: ' .. ctx.mode .. ' plugin: ' .. ctx.plugin)
-            if ctx.mode == 'c' and ctx.keys == '<C-R>' then return true end
-          end,
         },
       })
 
