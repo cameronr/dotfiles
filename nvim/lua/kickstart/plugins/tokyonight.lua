@@ -18,8 +18,9 @@ return {
     on_highlights = function(hl, c)
       -- This is bg_dark from the default tokyonight theme (not tokyonight night)
       local lighterBg = '#1f2335'
+
       -- Use bg.dark for the cursor line background to make it more subtle
-      hl.CursorLine = { bg = lighterBg }
+      if vim.o.background ~= 'light' then hl.CursorLine = { bg = lighterBg } end
 
       -- Make IndentBlankLines indent markers much fainter (bg_dark in tokyonight)
       -- hl.IblIndent = { fg = lighterBg }

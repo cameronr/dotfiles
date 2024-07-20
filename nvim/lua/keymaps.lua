@@ -181,12 +181,22 @@ vim.keymap.set('n', '<leader>bd', '<cmd>:bd<CR>', { desc = 'Close buffer' })
 
 -- Shortcute for surrounding a word (inner) with a '
 vim.keymap.set('n', 'Sq', "Saiw'", { desc = "Wrap word with '", remap = true })
+vim.keymap.set('n', 'Sp', 'SaiW(', { desc = "Wrap word with '", remap = true })
 vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
 
 -- Swap to alternate buffer, less work that ctrl-6
 vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 
+vim.keymap.set('n', '<leader>vl', function()
+  ---@diagnostic disable-next-line: undefined-field
+  if vim.opt.background:get() == 'dark' then
+    vim.opt.background = 'light'
+  else
+    vim.opt.background = 'dark'
+  end
+end, { desc = 'Toggle light/dark' })
+
 -- Debugging key
-vim.keymap.set('n', '<Bslash>d', function() end)
+vim.keymap.set('n', '<Bslash>d', function() end, { desc = 'debugging function' })
 
 -- vim: ts=2 sts=2 sw=2 et

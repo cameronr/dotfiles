@@ -121,7 +121,7 @@ return {
 
       -- See `:help telescope.builtin`
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>sl', builtin.help_tags, { desc = 'Help' })
+      vim.keymap.set('n', '<leader>sH', builtin.help_tags, { desc = 'Help' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = 'Keymaps' })
       -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       -- vim.keymap.set('n', '<leader>sa', function()
@@ -137,7 +137,7 @@ return {
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Current word' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = 'Grep' })
       vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Grep' })
-      vim.keymap.set('n', '<leader>sd', '<cmd>Telescope diagnostics bufnr=0<cr>', { desc = 'Diagnostics' })
+      vim.keymap.set('n', '<leader>sd', '<cmd>Telescope diagnostics bufnr=0<cr>', { desc = 'Buffer Diagnostics' })
       vim.keymap.set('n', '<leader>sD', builtin.diagnostics, { desc = 'Diagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = 'Resume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = 'Recent Files' })
@@ -147,11 +147,12 @@ return {
       vim.keymap.set('n', '<leader>sa', '<cmd>Telescope autocommands<cr>', { desc = 'Auto Commands' })
       vim.keymap.set('n', '<leader>:', '<cmd>Telescope command_history<cr>', { desc = 'Command History' })
       vim.keymap.set('n', '<leader>sc', builtin.command_history, { desc = 'Commands' })
-      vim.keymap.set('n', '<leader>sC', '<cmd>Telescope commands<cr>', { desc = 'Commands' })
+      vim.keymap.set('n', '<leader>sC', '<cmd>Telescope colorscheme<cr>', { desc = 'Colorschemes' })
+      vim.keymap.set('n', '<leader>sv', '<cmd>Telescope commands<cr>', { desc = 'Vim Commands' })
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = 'Popup notifications' })
       vim.keymap.set('n', '<leader>sn', '<cmd>Telescope notify<CR>', { desc = 'Notifications' })
       vim.keymap.set('n', '<leader>sj', '<cmd>Telescope jumplist<cr>', { desc = 'Jumplist' })
-      vim.keymap.set('n', '<leader>sH', '<cmd>Telescope highlights<cr>', { desc = 'Highlights' })
+      vim.keymap.set('n', '<leader>sl', '<cmd>Telescope highlights<cr>', { desc = 'Highlights' })
       vim.keymap.set('n', '<leader>sl', '<cmd>Telescope loclist<cr>', { desc = 'Location List' })
       vim.keymap.set('n', '<leader>sm', '<cmd>Telescope marks<cr>', { desc = 'Marks' })
       vim.keymap.set('n', '<leader>so', '<cmd>Telescope vim_options<cr>', { desc = 'Options' })
@@ -160,20 +161,20 @@ return {
       vim.keymap.set('n', '<leader>shc', '<cmd>Telescope git_commits<CR>', { desc = 'git commits' })
       vim.keymap.set('n', '<leader>shb', '<cmd>Telescope git_branches<CR>', { desc = 'git branches' })
       vim.keymap.set('n', '<leader>shs', '<cmd>Telescope git_status<CR>', { desc = 'git status' })
-      vim.keymap.set('n', '<leader>shh', '<cmd>Telescope git_stash<CR>', { desc = 'git stash' })
+      vim.keymap.set('n', '<leader>shz', '<cmd>Telescope git_stash<CR>', { desc = 'git stash' })
       vim.keymap.set('n', '<leader>shf', '<cmd>Telescope git_bcommits<CR>', { desc = 'git buffer commits' })
 
       -- Ctrl-r for command history in command mode (like with zsh+fzf)
       vim.keymap.set('n', '<leader>s"', '<cmd>Telescope neoclip<CR>', { desc = 'Yanks' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      -- vim.keymap.set('n', '<leader>/', function()
-      --   -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-      --   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
-      --     winblend = 10,
-      --     previewer = false,
-      --   }))
-      -- end, { desc = 'Fuzzily search in current buffer' })
+      vim.keymap.set('n', '<leader>sF', function()
+        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
+          winblend = 10,
+          previewer = false,
+        }))
+      end, { desc = 'Fuzzily search in current buffer' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys

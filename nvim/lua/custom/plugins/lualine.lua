@@ -19,15 +19,7 @@ return {
   },
 
   config = function(_, opts)
-    local custom_tokyonight = require('lualine.themes.tokyonight')
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
-
-    -- Use bg_dark for the b section background
-    custom_tokyonight.normal.b.bg = '#1f2335'
-    custom_tokyonight.insert.b.bg = '#1f2335'
-    custom_tokyonight.command.b.bg = '#1f2335'
-    custom_tokyonight.visual.b.bg = '#1f2335'
-    custom_tokyonight.replace.b.bg = '#1f2335'
 
     --- From: https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
     --- @param trunc_width number trunctates component when screen width is less then trunc_width
@@ -74,11 +66,9 @@ return {
 
     opts = {
       options = {
-        theme = custom_tokyonight,
         component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree' },
         section_separators = { left = '', right = '' },
-        -- globalstatus = true,
       },
       sections = {
         lualine_a = {
@@ -102,7 +92,6 @@ return {
               removed = ' ',
             },
             fmt = trunc(0, 0, 60, true),
-            -- separator = '',
           },
           {
             'diagnostics',
@@ -175,11 +164,11 @@ return {
         'fzf',
         'lazy',
         'mason',
-        'quickfix',
         'neo-tree',
         'nvim-dap-ui',
-        'trouble',
         'oil',
+        'quickfix',
+        'trouble',
       },
     }
 
