@@ -1,27 +1,85 @@
 return {
   'rmagatti/auto-session',
+  -- dev = true,
+  lazy = false,
+  keys = {
+
+    { '<leader>wr', '<cmd>SessionSearch<CR>', desc = 'Session picker' },
+    { '<leader>ws', '<cmd>SessionSave<CR>', desc = 'Save session' },
+    { '<leader>wa', '<cmd>SessionToggleAutoSave<CR>', desc = 'Toggle autosave session' },
+  },
+
+  -- 'cameronr/auto-session',
+  -- branch = 'args-testing',
   config = function()
     require('auto-session').setup({
       -- don't save when it's just the dashboard, or a nvim-notify buffer
       bypass_session_save_file_types = { 'alpha', 'notify' },
-      auto_restore_enabled = true,
-      auto_save_enabled = true,
+      -- auto_restore_enabled = true,
+      -- auto_save_enabled = true,
+      -- auto_save_enabled = function(launched_with_args)
+      --   vim.notify('auto_save_enabled callback: ' .. vim.inspect(launched_with_args))
+      --   return true
+      -- end,
+
+      -- auto_session_use_git_branch = true,
 
       -- log_level = 'debug',
 
-      auto_session_suppress_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop' },
-      -- auto_session_root_dir = '/tmp/sessions/',
+      auto_session_suppress_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
+      -- auto_session_root_dir = '/tmp/sessions',
+      -- auto_session_enable_last_session = true,
 
       session_lens = {
         previewer = true,
+        -- session_control = {
+        --   control_dir = '/tmp/as-control-dir/',
+        -- },
       },
-      -- cwd_change_handling = {
-      --   restore_upcoming_session = false,
-      -- },
+      cwd_change_handling = {
+        restore_upcoming_session = true,
+      },
       --
       -- save_extra_cmds = {
       --   function() return [[echo "hello world"]] end,
       -- },
+
+      -- args_allow_single_directory = true,
+      -- args_allow_files = true,
+      -- args_allow_files_auto_save = function()
+      --   local supported_buffers = 0
+      --
+      --   local buffers = vim.api.nvim_list_bufs()
+      --   for _, buf in ipairs(buffers) do
+      --     -- Check if the buffer is valid and loaded
+      --     if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) then
+      --       local path = vim.api.nvim_buf_get_name(buf)
+      --       if vim.fn.filereadable(path) ~= 0 then supported_buffers = supported_buffers + 1 end
+      --     end
+      --   end
+      --
+      --   -- If we have more 2 or more supported buffers, save the session
+      --   vim.notify('supported: ' .. supported_buffers)
+      --   return supported_buffers >= 2
+      -- end,
+
+      -- args_allow_files_auto_save = function()
+      --   local supported = 0
+      --
+      --   local tabpages = vim.api.nvim_list_tabpages()
+      --   for _, tabpage in ipairs(tabpages) do
+      --     local windows = vim.api.nvim_tabpage_list_wins(tabpage)
+      --     for _, window in ipairs(windows) do
+      --       local buffer = vim.api.nvim_win_get_buf(window)
+      --       local file_name = vim.api.nvim_buf_get_name(buffer)
+      --       if vim.fn.filereadable(file_name) ~= 0 then supported = supported + 1 end
+      --     end
+      --   end
+      --
+      --   -- If we have 2 or more windows with supported buffers, save the session
+      --   vim.notify('supported: ' .. supported)
+      --   return supported >= 2
+      -- end,
 
       pre_save_cmds = {
         function()
@@ -53,12 +111,10 @@ return {
           end
         end,
       },
-    })
-    local keymap = vim.keymap
-    -- restore last workspace session for current directory
-    keymap.set('n', '<leader>wr', require('auto-session.session-lens').search_session, { desc = 'Workspace restore session' })
 
-    -- save workspace session for current working directory
-    keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Workspace save session' })
+      -- no_restore_cmds = {
+      --   function() vim.notify('no restore alive: ' .. debug.traceback()) end,
+      -- },
+    })
   end,
 }
