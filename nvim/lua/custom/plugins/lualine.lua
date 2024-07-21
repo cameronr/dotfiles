@@ -69,6 +69,7 @@ return {
         component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree' },
         section_separators = { left = '', right = '' },
+        ignore_focus = { 'trouble' },
       },
       sections = {
         lualine_a = {
