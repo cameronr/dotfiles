@@ -75,6 +75,10 @@ vim.api.nvim_create_user_command('X', 'x', {})
 -- Remap q: to :q
 vim.keymap.set('n', 'q:', ':q')
 
+vim.keymap.set('n', 'q', '<nop>', { noremap = true })
+vim.keymap.set('n', 'Q', 'q', { noremap = true })
+vim.keymap.set('n', '<M-q>', 'Q', { noremap = true })
+
 -- And now kill it with fire (unless brought up by ctrl-f). Credit to:
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
 local function escape(keys) return vim.api.nvim_replace_termcodes(keys, true, false, true) end

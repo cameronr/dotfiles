@@ -143,8 +143,7 @@ vim.o.shiftround = true
 vim.o.smartindent = true
 
 -- Recommended session options from auto-sessions
--- vim.o.sessionoptions = 'buffers,folds,help,tabpages,winsize,winpos,terminal,localoptions'
-vim.o.sessionoptions = 'buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
 -- Add
 vim.diagnostic.config({
