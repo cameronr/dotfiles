@@ -22,7 +22,7 @@ return {
     dashboard.section.buttons.val = {
       dashboard.button('e', '  New File', '<cmd>ene<CR>'),
       dashboard.button('f', '󰱼  Open Files', '<cmd>Telescope find_files<CR>'),
-      dashboard.button('g', '  Greg in Files', '<cmd>Telescope live_grep<CR>'),
+      dashboard.button('g', '  Grep in Files', '<cmd>Telescope live_grep<CR>'),
       dashboard.button('.', '󱑎  Recent Files', '<cmd>Telescope oldfiles <CR>'),
       dashboard.button('SPC n', '󰊢  Neogit'),
       dashboard.button('r', '󰁯  Restore a Session', "<cmd>lua require('auto-session.session-lens').search_session()<CR>"),
