@@ -191,7 +191,7 @@ vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
 -- Swap to alternate buffer, less work that ctrl-6
 vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 
-vim.keymap.set('n', '<leader>vl', function()
+vim.keymap.set('n', '<leader>vd', function()
   ---@diagnostic disable-next-line: undefined-field
   if vim.opt.background:get() == 'dark' then
     vim.opt.background = 'light'
