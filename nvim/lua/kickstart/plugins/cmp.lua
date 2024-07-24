@@ -141,7 +141,7 @@ return {
       cmp.setup.cmdline('/', {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-          { name = 'buffer' },
+          { name = 'buffer', max_item_count = 20 },
         },
       })
 
@@ -197,7 +197,7 @@ return {
           -- end, { 'c' }),
         }),
         sources = {
-          { name = 'cmdline' },
+          { name = 'cmdline', max_item_count = 20 },
         },
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
