@@ -174,7 +174,7 @@ return {
           winblend = 10,
           previewer = false,
         }))
-      end, { desc = 'Fuzzily search in current buffer' })
+      end, { desc = 'Fuzzy search' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
