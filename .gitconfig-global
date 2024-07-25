@@ -22,6 +22,7 @@
     minus-non-emph-style          = syntax "#37222c"
     minus-emph-style              = syntax "#713137"
     minus-empty-line-marker-style = syntax "#37222c"
+    line-numbers = true
     line-numbers-minus-style      = "#b2555b"
     plus-style                    = syntax "#20303b"
     plus-non-emph-style           = syntax "#20303b"
