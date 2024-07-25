@@ -64,8 +64,16 @@ title () {
     local ICON=$(get_icon_for_command "$1")
     local CMD_WITH_ICON="${ICON}$CMD"
 
-    # Not actually using $LINE currently
-    omz_title $CMD_WITH_ICON
+    # Zsh doesn't set tab/window with a tmux terminal, so we do it oursevles
+    if [[ "$TERM" == "tmux-256color" ]]; then
+        # Don't set the title if inside emacs, unless using vterm
+        [[ -n "${INSIDE_EMACS:-}" && "$INSIDE_EMACS" != vterm ]] && return
+
+        print -Pn "\e]2;${CMD_WITH_ICON:q}\a" # set window name
+        print -Pn "\e]1;${CMD_WITH_ICON:q}\a" # set tab name
+    else
+        omz_title $CMD_WITH_ICON
+    fi
 }
 
 
