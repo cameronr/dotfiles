@@ -145,9 +145,9 @@ vim.o.smartindent = true
 -- Recommended session options from auto-sessions
 vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
--- Add
+-- Hide diagnostic virtual text and add border to floating window
 vim.diagnostic.config({
-  -- virtual_text = false,
+  virtual_text = false,
   float = {
     -- header = false,
     border = 'rounded',
