@@ -184,6 +184,7 @@ vim.keymap.set('n', '<leader>bq', '<cmd>:bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>:bd<CR>', { desc = 'Close buffer' })
 
 -- Shortcute for surrounding a word (inner) with a '
+vim.keymap.set('n', 'S', '<nop>') -- Don't keep S mapping
 vim.keymap.set('n', 'Sq', "Saiw'", { desc = "Wrap word with '", remap = true })
 vim.keymap.set('n', 'Sp', 'SaiW(', { desc = "Wrap word with '", remap = true })
 vim.keymap.set('n', 'Sb', 'Saaw}', { desc = 'Wrap word with {}', remap = true })
