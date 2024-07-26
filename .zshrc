@@ -113,6 +113,7 @@ alias vi='vim'
 if [[ (( $commands[nvim] )) ]]; then
     export EDITOR=nvim
     alias vim='nvim'
+    alias v='nvim'
 
     NVIM_HOME="${XDG_DATA_HOME:-${HOME}/.config/nvim}"
     if [[ ! -d "$NVIM_HOME" ]]; then

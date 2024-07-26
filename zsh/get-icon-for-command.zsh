@@ -5,7 +5,7 @@
 get_icon_for_command() {
     # echo "icon for $1"
     case "$1" in
-        nvim)
+        nvim|v)
             echo ' '
             ;;
         vim|vi|lvim)
