@@ -97,7 +97,7 @@ return {
           {
             'diagnostics',
             -- symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
-            symbols = { error = ' ', warn = ' ', info = ' ', hint = '󱐋' },
+            symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
           },
         },
         lualine_c = {
