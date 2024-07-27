@@ -241,6 +241,10 @@ return {
 
         -- Python
         pyright = {},
+        ruff = {},
+
+        -- TOML
+        taplo = {},
 
         -- Shopify
         -- theme_check = {
