@@ -64,6 +64,7 @@ config = {
 			},
 		},
 	},
+	bypass_mouse_reporting_modifiers = "SHIFT",
 }
 -- and finally, return the configuration to wezterm
 return config
