@@ -290,6 +290,9 @@ return {
 
       -- Install Conform formatters
       if not vim.g.no_mason_autoinstall then require('mason-conform').setup({}) end
+
+      -- Border for LSPInfo
+      require('lspconfig.ui.windows').default_options.border = 'single'
     end,
   },
 }
