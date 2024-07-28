@@ -79,6 +79,7 @@ return {
               ['<C-Up>'] = actions.cycle_history_prev,
               ['<C-T>'] = require('trouble.sources.telescope').open,
               ['<M-T>'] = require('trouble.sources.telescope').add,
+              -- ['<C-h>'] = 'which_key',
             },
           },
         },
@@ -88,7 +89,7 @@ return {
             -- ignore_current_buffer = true,
             mappings = {
               i = {
-                ['<c-d>'] = actions.delete_buffer + actions.move_to_top, -- delete buffer
+                ['<c-d>'] = actions.delete_buffer + actions.move_to_bottom, -- delete buffer
               },
             },
           },
