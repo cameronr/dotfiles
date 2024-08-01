@@ -10,13 +10,13 @@ return {
   },
   keys = {
     {
-      '<leader>cF',
+      '<leader>vF',
       function() require('conform').format({ async = true, lsp_fallback = true }) end,
       mode = '',
       desc = 'Format buffer',
     },
     {
-      '<leader>cf',
+      '<leader>vf',
       function()
         if vim.b.disable_autoformat then
           vim.cmd('FormatEnable!')
