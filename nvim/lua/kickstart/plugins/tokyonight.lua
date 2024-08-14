@@ -24,11 +24,11 @@ return {
         hl.CursorLine = { bg = lighterBg }
 
         -- Make the search / completion highlights stand out more
-        hl.Special = { bg = '#185c81' }
+        hl.TelescopeMatching = { bg = '#185c81' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#185c81' }
         hl.CmpItemAbbrMatch = { bg = '#185c81' }
       else
-        hl.Special = { bg = '#93cceb' }
+        hl.TelescopeMatching = { bg = '#93cceb' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
         hl.CmpItemAbbrMatch = { bg = '#93cceb' }
       end
