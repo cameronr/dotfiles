@@ -19,11 +19,19 @@ return {
       -- This is bg_dark from the default tokyonight theme (not tokyonight night)
       local lighterBg = '#1f2335'
 
-      -- Use bg.dark for the cursor line background to make it more subtle
-      if vim.o.background ~= 'light' then hl.CursorLine = { bg = lighterBg } end
+      if vim.o.background ~= 'light' then
+        -- Use bg.dark for the cursor line background to make it more subtle
+        hl.CursorLine = { bg = lighterBg }
 
-      -- Make IndentBlankLines indent markers much fainter (bg_dark in tokyonight)
-      -- hl.IblIndent = { fg = lighterBg }
+        -- Make the search / completion highlights stand out more
+        hl.Special = { bg = '#185c81' }
+        hl.CmpItemAbbrMatchFuzzy = { bg = '#185c81' }
+        hl.CmpItemAbbrMatch = { bg = '#185c81' }
+      else
+        hl.Special = { bg = '#93cceb' }
+        hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
+        hl.CmpItemAbbrMatch = { bg = '#93cceb' }
+      end
 
       hl.IblScope = { fg = '#43709B' }
 
