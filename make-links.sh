@@ -22,15 +22,15 @@ DOTFILES=(.zshrc .p10k.zsh)
 
 # (.) at end tells zsh to only return files
 for file in $DOTFILES; do
-    ln -s $DOTFILES_DIR/$file $file
+    ln -snf $DOTFILES_DIR/$file $file
 done
 
 # Tmux special case
-ln -s $DOTFILES_DIR/tmux/tmux.conf .tmux.conf
+ln -snf $DOTFILES_DIR/tmux/tmux.conf .tmux.conf
 
-DOTFILE_DIRS=(nvim)
+DOTFILE_DIRS=(nvim stylua)
 
 # (.) at end tells zsh to only return directories
 for dir in $DOTFILE_DIRS; do
-    ln -s $DOTFILES_DIR/$dir $CONFIG_DIR/nvim
+    ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
 done
