@@ -39,6 +39,11 @@ return {
       '<cmd>Trouble todo toggle<cr>',
       desc = 'Todos (Trouble)',
     },
+    {
+      '<leader>xT',
+      '<cmd>Trouble telescope toggle<cr>',
+      desc = 'Telescope (Trouble)',
+    },
     -- Borrowed from LazyVim
     {
       '[q',
