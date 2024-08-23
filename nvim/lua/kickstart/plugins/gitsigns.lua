@@ -25,7 +25,7 @@ return {
           else
             gitsigns.nav_hunk 'next'
           end
-        end, { desc = 'Jump to next git [h]unk' })
+        end, { desc = 'Jump to next git hunk' })
 
         map('n', '[h', function()
           if vim.wo.diff then
@@ -33,7 +33,7 @@ return {
           else
             gitsigns.nav_hunk 'prev'
           end
-        end, { desc = 'Jump to previous git [h]unk' })
+        end, { desc = 'Jump to previous git hunk' })
 
         -- Actions
         -- visual mode
@@ -46,11 +46,11 @@ return {
         map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-        map('n', '<leader>hb', function() gitsigns.blame_line { full = false } end, { desc = 'git [b]lame line' })
-        map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
+        map('n', '<leader>hb', function() gitsigns.blame_line { full = false } end, { desc = 'git blame line' })
+        map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git diff against last commit' })
         -- Toggles
-        map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git [T]oggle show blame line' })
-        map('n', '<leader>he', gitsigns.toggle_deleted, { desc = 'git show d[E]leted' })
+        map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git toggle show blame line' })
+        map('n', '<leader>he', gitsigns.toggle_deleted, { desc = 'git show deleted' })
       end,
     },
   },
