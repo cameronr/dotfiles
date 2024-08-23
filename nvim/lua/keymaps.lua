@@ -47,6 +47,10 @@ vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal s
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
 -- vim.keymap.set('n', '<leader>q', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
+vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
+vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
+vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
+vim.keymap.set('n', '<leader>wK', '<C-w>K', { desc = 'Move window up' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
