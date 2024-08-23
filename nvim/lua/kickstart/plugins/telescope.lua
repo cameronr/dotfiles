@@ -8,8 +8,9 @@
 return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
+    event = 'VeryLazy',
     branch = '0.1.x',
+    -- dev = true,
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -79,7 +80,7 @@ return {
               ['<C-Up>'] = actions.cycle_history_prev,
               ['<C-T>'] = require('trouble.sources.telescope').open,
               ['<M-T>'] = require('trouble.sources.telescope').add,
-              -- ['<C-h>'] = 'which_key',
+              ['<C-h>'] = 'which_key',
             },
           },
         },
@@ -166,13 +167,7 @@ return {
       vim.keymap.set('n', '<leader>s"', '<cmd>Telescope neoclip<CR>', { desc = 'Yanks' })
 
       -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>sz', function()
-        -- You can pass additional configuration to Telescope to change the theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
-          winblend = 10,
-          previewer = false,
-        }))
-      end, { desc = 'Fuzzy search' })
+      vim.keymap.set('n', '<leader>sz', function() builtin.current_buffer_fuzzy_find({ previewer = false }) end, { desc = 'Fuzzy search' })
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
