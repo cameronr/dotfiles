@@ -4,10 +4,13 @@
 return {
   'windwp/nvim-autopairs',
   event = 'InsertEnter',
+  enabled = false,
   -- Optional dependency
   dependencies = { 'hrsh7th/nvim-cmp' },
   config = function()
-    require('nvim-autopairs').setup({
+    npairs = require('nvim-autopairs')
+
+    npairs.setup({
       -- The string you provided appears to be a pattern or sequence of characters enclosed within [=[[ and ]]=].
       -- This syntax is used in Lua to create long string literals that can span multiple lines.
       -- Here's what the pattern [=[[%w%%%'%[%"%.%%$]]=]` represents:
@@ -40,5 +43,13 @@ return {
     local cmp_autopairs = require('nvim-autopairs.completion.cmp')
     local cmp = require('cmp')
     cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
+
+    local Rule = require('nvim-autopairs.rule')
+    local cond = require('nvim-autopairs.conds')
+
+    vim.notify(vim.inspect(npairs.get_rules('"')))
+
+    npairs.remove_rule('`')
+    npairs.add_rule(Rule('`', '`'):with_pair(cond.not_before_regex('[%w%p]')))
   end,
 }
