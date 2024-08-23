@@ -16,7 +16,13 @@ return {
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [']quote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup({ n_lines = 500 })
+      local gen_ai_spec = require('mini.extra').gen_ai_spec
+      require('mini.ai').setup({
+        n_lines = 500,
+        custom_textobjects = {
+          g = gen_ai_spec.buffer(),
+        },
+      })
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
