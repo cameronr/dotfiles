@@ -234,7 +234,7 @@ return {
         -- HTML / CSS
         html = {},
         cssls = {},
-        tailwindcss = {},
+        -- tailwindcss = {},
 
         -- Javascript/Typescript
         tsserver = {},
