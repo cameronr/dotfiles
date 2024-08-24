@@ -5,26 +5,21 @@ return {
   keys = {
     {
       '<leader>wd',
-      function()
-        require('notify').dismiss { silent = true, pending = true }
-      end,
+      function() require('notify').dismiss({ silent = true, pending = true }) end,
+      desc = 'Dismiss All Notifications',
+    },
+    {
+      '<leader>wp',
+      function() require('notify').dismiss({ silent = true, pending = true }) end,
       desc = 'Dismiss All Notifications',
     },
   },
   opts = {
     stages = 'static',
-    timeout = 3000,
-    max_height = function()
-      return math.floor(vim.o.lines * 0.75)
-    end,
-    max_width = function()
-      return math.floor(vim.o.columns * 0.75)
-    end,
-    on_open = function(win)
-      vim.api.nvim_win_set_config(win, { zindex = 100 })
-    end,
+    timeout = 4000,
+    max_height = function() return math.floor(vim.o.lines * 0.75) end,
+    max_width = function() return math.floor(vim.o.columns * 0.75) end,
+    on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
   },
-  init = function()
-    vim.notify = require 'notify'
-  end,
+  init = function() vim.notify = require('notify') end,
 }
