@@ -113,6 +113,9 @@ return {
           fields = { 'abbr', 'kind', 'menu' },
           format = lspkind.cmp_format({
             mode = 'symbol',
+            symbol_map = {
+              Supermaven = '󰰣',
+            },
           }),
         },
 
@@ -127,6 +130,7 @@ return {
           { name = 'luasnip' },
           { name = 'buffer' },
           { name = 'path' },
+          { name = 'supermaven' },
         },
         -- experimental = {
         --   ghost_text = true,
