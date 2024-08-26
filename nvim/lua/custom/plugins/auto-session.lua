@@ -1,6 +1,6 @@
 return {
   'rmagatti/auto-session',
-  -- dev = true,
+  dev = true,
   lazy = false,
   keys = {
 
@@ -12,9 +12,9 @@ return {
   ---@module "auto-session"
   ---@type AutoSession.Config
   opts = {
-    bypass_session_save_file_types = { 'alpha' },
+    bypass_save_filetypes = { 'alpha' },
+    cwd_change_handling = true,
     log_level = 'debug',
-    auto_session_suppress_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
     session_lens = {
       load_on_setup = false,
       previewer = true,
@@ -24,8 +24,6 @@ return {
         },
       },
     },
-    cwd_change_handling = {
-      restore_upcoming_session = true,
-    },
+    suppressed_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
   },
 }
