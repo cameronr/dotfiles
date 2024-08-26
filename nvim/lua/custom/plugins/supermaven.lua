@@ -1,7 +1,7 @@
 return {
   {
     'supermaven-inc/supermaven-nvim',
-    event = 'BufEnter',
+    cmd = 'SupermavenStart',
     opts = {
       disable_inline_completion = true,
     },
