@@ -8,6 +8,9 @@ return {
     { '<leader>ws', '<cmd>SessionSave<CR>', desc = 'Save session' },
     { '<leader>wa', '<cmd>SessionToggleAutoSave<CR>', desc = 'Toggle autosave session' },
   },
+
+  ---@module "auto-session"
+  ---@type AutoSession.Config
   opts = {
     bypass_session_save_file_types = { 'alpha' },
     log_level = 'debug',
