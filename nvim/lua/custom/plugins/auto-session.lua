@@ -1,6 +1,6 @@
 return {
   'rmagatti/auto-session',
-  dev = true,
+  -- dev = true,
   lazy = false,
   keys = {
 
