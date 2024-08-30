@@ -110,6 +110,9 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 export EDITOR=vim
 alias vi='vim'
 
+# map alt-x to kill line (because tmux uses c-k)
+bindkey '^x' kill-line
+
 if [[ (( $commands[nvim] )) ]]; then
     export EDITOR=nvim
     alias vim='nvim'
