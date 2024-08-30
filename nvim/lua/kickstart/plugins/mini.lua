@@ -47,9 +47,9 @@ return {
       require('mini.pairs').setup({
 
         mappings = {
-          ['`'] = { neigh_pattern = '[^%a\\][^%a\\]' },
-          ['"'] = { neigh_pattern = '[^%a\\][^%a\\]' },
-          ["'"] = { neigh_pattern = '[^%a\\][^%a\\]' },
+          ['`'] = { neigh_pattern = '[^%a%d\\-][%s]' },
+          ['"'] = { neigh_pattern = '[^%a%d\\-][%s]' },
+          ["'"] = { neigh_pattern = '[^%a%d\\-][%s]' },
         },
       })
 
