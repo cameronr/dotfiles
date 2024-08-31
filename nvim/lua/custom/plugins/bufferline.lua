@@ -1,7 +1,8 @@
 return {
   'akinsho/bufferline.nvim',
   version = '*',
-  dependencies = 'nvim-tree/nvim-web-devicons',
+  event = { 'BufNew' },
+  dependencies = 'echasnovski/mini.nvim',
   opts = {
     options = {
       mode = 'tabs',

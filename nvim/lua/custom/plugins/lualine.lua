@@ -1,21 +1,7 @@
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
-    'nvim-tree/nvim-web-devicons',
-
-    -- {
-    --   'SmiteshP/nvim-navic',
-    --   lazy = true,
-    --   opts = {
-    --     lsp = {
-    --       auto_attach = true,
-    --     },
-    --     -- separator = ' ',
-    --     highlight = true,
-    --     depth_limit = 5,
-    --     lazy_update_context = true,
-    --   },
-    -- },
+    'echasnovski/mini.nvim',
   },
 
   config = function(_, opts)

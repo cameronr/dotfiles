@@ -27,8 +27,7 @@ return {
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
-      { 'aaronhallaert/advanced-git-search.nvim', cmd = { 'AdvancedGitSearch' } },
+      'echasnovski/mini.nvim',
       { 'AckslD/nvim-neoclip.lua' },
     },
     config = function()
@@ -105,20 +104,12 @@ return {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
-          advanced_git_search = {
-            browse_command = 'GBrowse {commit_hash}',
-            diff_plugin = 'diffview',
-            entry_default_author_or_date = 'author',
-
-            -- See Config
-          },
         },
       })
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
-      pcall(require('telescope').load_extension, 'advanced_git_search')
       pcall(require('telescope').load_extension, 'neoclip')
 
       -- See `:help telescope.builtin`
