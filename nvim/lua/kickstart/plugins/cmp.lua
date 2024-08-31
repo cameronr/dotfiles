@@ -29,7 +29,6 @@ return {
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
-      'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path', -- suggestions from path
       'hrsh7th/cmp-buffer', -- suggestions from current buffer
       'hrsh7th/cmp-cmdline', -- suggestions from commands
@@ -126,6 +125,11 @@ return {
         --   },
         -- },
         sources = {
+          {
+            name = 'lazydev',
+            -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+            group_index = 0,
+          },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'buffer' },

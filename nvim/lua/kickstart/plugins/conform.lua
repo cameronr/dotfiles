@@ -3,6 +3,7 @@ return {
     -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
+    cmd = { 'ConformInfo' },
     dependencies = {
       {
         'zapling/mason-conform.nvim',
@@ -81,9 +82,15 @@ return {
             cpp = true,
             liquid = true,
           }
+          local lsp_format_opt
+          if disable_filetypes[vim.bo[bufnr].filetype] then
+            lsp_format_opt = 'never'
+          else
+            lsp_format_opt = 'fallback'
+          end
           return {
             timeout_ms = 500,
-            lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+            lsp_format = lsp_format_opt,
           }
         end,
       })
