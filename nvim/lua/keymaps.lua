@@ -209,8 +209,44 @@ end, { desc = 'Toggle light/dark' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
+  -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
+  -- local current_win = vim.api.nvim_get_current_win()
   --
-  require('auto-session').Lib.close_unsupported_windows()
+  -- local start_time = vim.uv.hrtime()
+  --
+  -- for i = 1, 100000 do
+  --   require('statuscol').StatusCol({ win = current_win })
+  -- end
+  -- -- code to be profiled
+  --
+  -- local end_time = vim.uv.hrtime()
+  -- vim.notify('Require time: ' .. end_time - start_time)
+  --
+  -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
+  --
+  -- start_time = vim.uv.hrtime()
+  --
+  -- for i = 1, 100000 do
+  --   StatusCol({ win = current_win })
+  -- end
+  -- -- code to be profiled
+  --
+  -- end_time = vim.uv.hrtime()
+  --
+  -- vim.notify('Function time: ' .. end_time - start_time)
+
+  -- local start = vim.loop.hrtime()
+  -- your_function()
+  -- local end = vim.loop.hrtime()
+  -- print(string.format("Elapsed time: %.6f", (end - start) / 1e6))  -- Convert nanoseconds to milliseconds
+  --
+  local bufs = vim.api.nvim_list_bufs()
+  for _, buf in ipairs(bufs) do
+    local filename = vim.api.nvim_buf_get_name(buf)
+    local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
+    local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
+    vim.notify(buf .. ': file_name: ' .. filename .. ' buftype: ' .. buftype .. ' filetype: ' .. filetype)
+  end
 end, { desc = 'debugging function' })
 
 -- vim: ts=2 sts=2 sw=2 et
