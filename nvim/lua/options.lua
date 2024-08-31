@@ -85,7 +85,7 @@ vim.opt.inccommand = 'nosplit'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 4
+vim.opt.scrolloff = 8
 
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
 vim.opt.formatoptions:remove({ 'o' })
@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.opt.whichwrap:append('<,>,[,]')
 
 -- Add characters to set used to identify words
-vim.opt.iskeyword:append({ '-', '/', ':' })
+vim.opt.iskeyword:append({ '-' })
 
 -- Don't show ~ at end of buffer
 vim.opt.fillchars = { eob = ' ' }
@@ -153,5 +153,7 @@ vim.diagnostic.config({
     border = 'rounded',
   },
 })
+
+vim.opt.wrap = true
 
 -- vim: ts=2 sts=2 sw=2 et
