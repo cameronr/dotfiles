@@ -14,7 +14,7 @@ return {
       --
       -- Examples:
       --  - va)  - [V]isually select [A]round [)]paren
-      --  - yinq - [Y]ank [I]nside [N]ext [']quote
+      --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
       local gen_ai_spec = require('mini.extra').gen_ai_spec
       require('mini.ai').setup({

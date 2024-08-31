@@ -17,17 +17,13 @@ return {
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      local wk = require('which-key')
-      wk.setup({
-        preset = 'modern',
-        delay = function(ctx) return ctx.plugin and 0 or 300 end,
-        icons = {
-          rules = false,
-        },
-      })
-
-      wk.add({
+    opts = {
+      preset = 'modern',
+      delay = function(ctx) return ctx.plugin and 0 or 300 end,
+      icons = {
+        rules = false,
+      },
+      spec = {
         { '<leader>b', group = 'Buffer' },
         { '<leader>c', group = 'Code' },
         { '<leader>h', group = 'Git Hunk' },
@@ -36,12 +32,9 @@ return {
         { '<leader>w', group = 'Window / Workspace' },
         { '<leader>x', group = 'Trouble' },
         { '<leader><tab>', group = 'Tabs' },
-        {
-          mode = 'v',
-          { '<leader>h', desc = 'Git Hunk', mode = 'v' },
-        },
-      })
-    end,
+        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+      },
+    },
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
