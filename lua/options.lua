@@ -7,7 +7,7 @@
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -18,7 +18,35 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard:append('unnamedplus')
+
+-- Fix "waiting for osc52 response from terminal" message
+-- https://github.com/neovim/neovim/issues/28611
+
+if vim.env.SSH_TTY ~= nil then
+  -- Set up clipboard for ssh
+
+  local function my_paste(_)
+    return function(_)
+      local content = vim.fn.getreg('"')
+      return vim.split(content, '\n')
+    end
+  end
+
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      -- No OSC52 paste action since wezterm doesn't support it
+      -- Should still paste from nvim
+      ['+'] = my_paste('+'),
+      ['*'] = my_paste('*'),
+    },
+  }
+end
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -51,12 +79,81 @@ vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = 'nosplit'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 8
+
+-- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
+vim.opt.formatoptions:remove({ 'o' })
+
+-- Really, really disable comment autoinsertion on o/O
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function() vim.opt.formatoptions:remove({ 'o' }) end,
+  desc = 'Disable New Line Comment',
+})
+
+-- Wrap arrow keys
+vim.opt.whichwrap:append('<,>,[,]')
+
+-- Add characters to set used to identify words
+vim.opt.iskeyword:append({ '-' })
+
+-- Don't show ~ at end of buffer
+vim.opt.fillchars = { eob = ' ' }
+
+-- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
+-- Jump to last position when reopening a file
+-- vim.api.nvim_create_autocmd('BufReadPost', {
+--   desc = 'Open file at the last position it was edited earlier',
+--   group = misc_augroup,
+--   pattern = '*',
+--   command = 'silent! normal! g`"zv',
+-- })
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+  desc = 'Open file at the last position it was edited earlier',
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then vim.api.nvim_win_set_cursor(0, mark) end
+  end,
+})
+
+-- Always open help on the right
+-- Open help window in a vertical split to the right.
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  group = vim.api.nvim_create_augroup('help_window_right', {}),
+  pattern = { '*.txt' },
+  callback = function()
+    if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
+  end,
+})
+
+-- Set nice diff fill chars
+vim.opt.fillchars:append('diff:╱')
+
+-- Set default tab options (but they should be overridden by sleuth)
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.shiftround = true
+vim.o.smartindent = true
+
+-- Recommended session options from auto-sessions
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+
+-- Hide diagnostic virtual text and add border to floating window
+vim.diagnostic.config({
+  virtual_text = false,
+  float = {
+    -- header = false,
+    border = 'rounded',
+  },
+})
+
+vim.opt.wrap = true
 
 -- vim: ts=2 sts=2 sw=2 et

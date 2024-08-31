@@ -4,10 +4,24 @@ return {
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      local lint = require 'lint'
+      local lint = require('lint')
       lint.linters_by_ft = {
-        markdown = { 'markdownlint' },
+        -- markdown = { 'markdownlint' },
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
+        python = { 'pylint' },
+
+        -- Currently broken on intel Macs
+        -- https://github.com/Kampfkarren/selene/issues/600
+        -- lua = { 'selene' },
       }
+
+      -- Run pylint in the venv
+      -- https://gist.github.com/Norbiox/652befc91ca0f90014aec34eccee27b2
+      lint.linters.pylint.cmd = 'python'
+      lint.linters.pylint.args = { '-m', 'pylint', '-f', 'json' }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
@@ -46,10 +60,10 @@ return {
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
-        callback = function()
-          require('lint').try_lint()
-        end,
+        callback = function() require('lint').try_lint() end,
       })
+
+      vim.keymap.set('n', '<leader>cl', function() lint.try_lint() end, { desc = 'Lint current file' })
     end,
   },
 }

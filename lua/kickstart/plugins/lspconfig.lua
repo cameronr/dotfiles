@@ -3,7 +3,13 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
+      {
+        'williamboman/mason.nvim',
+        config = true,
+        dependencies = {
+          'ptevearc/conform.nvim',
+        },
+      }, -- NOTE: Must be loaded before dependants
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -13,7 +19,22 @@ return {
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
+      {
+        'folke/lazydev.nvim',
+        opts = {
+          ft = 'lua', -- only load on lua files
+        },
+      },
+      { -- optional completion source for require statements and module annotations
+        'hrsh7th/nvim-cmp',
+        opts = function(_, opts)
+          opts.sources = opts.sources or {}
+          table.insert(opts.sources, {
+            name = 'lazydev',
+            group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+          })
+        end,
+      },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -53,42 +74,41 @@ return {
           --
           -- In this case, we create a function that lets us more easily define mappings specific
           -- for LSP related items. It sets the mode, buffer and description for us each time.
-          local map = function(keys, func, desc)
-            vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
+          local map = function(keys, func, desc) vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc }) end
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, 'Goto definition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+          map('gr', require('telescope.builtin').lsp_references, 'Goto references')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gI', require('telescope.builtin').lsp_implementations, 'Goto implementation')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
+          map('<leader>cD', require('telescope.builtin').lsp_type_definitions, 'Code Type definition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>ss', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>sS', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace symbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>cr', vim.lsp.buf.rename, 'Code: rename')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
-          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          -- map('<leader>ca', vim.lsp.buf.code_action, 'Code action')
+          map('<leader>ca', function() require('tiny-code-action').code_action() end, 'Code action')
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
@@ -96,7 +116,7 @@ return {
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('gD', vim.lsp.buf.declaration, 'Goto declaration')
 
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
@@ -122,7 +142,7 @@ return {
               group = vim.api.nvim_create_augroup('kickstart-lsp-detach', { clear = true }),
               callback = function(event2)
                 vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'kickstart-lsp-highlight', buffer = event2.buf }
+                vim.api.nvim_clear_autocmds({ group = 'kickstart-lsp-highlight', buffer = event2.buf })
               end,
             })
           end
@@ -132,9 +152,7 @@ return {
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-            end, '[T]oggle Inlay [H]ints')
+            map('<leader>vh', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, 'Code toggle inlay hints')
           end
         end,
       })
@@ -146,6 +164,19 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      -- Change the Diagnostic symbols in the sign column (gutter)
+      -- local signs = { Error = '󰅚 ', Warn = '󰀪 ', Info = ' ', Hint = '󰌶 ' }
+      local signs = { Error = ' ', Warn = ' ', Info = ' ', Hint = '' }
+      for type, icon in pairs(signs) do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+      end
+
+      -- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
+      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = 'rounded',
+      })
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -155,6 +186,7 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
       local servers = {
         -- clangd = {},
         -- gopls = {},
@@ -180,9 +212,50 @@ return {
               },
               -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
               -- diagnostics = { disable = { 'missing-fields' } },
+              diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = {
+                  'vim',
+                  'it',
+                  'describe',
+                  'before_each',
+                  'after_each',
+                },
+              },
             },
           },
         },
+
+        -- Bash/Zsh
+        bashls = {
+          filetypes = { 'sh', 'zsh', 'bash' },
+        },
+
+        -- HTML / CSS
+        html = {},
+        cssls = {},
+        -- tailwindcss = {},
+
+        -- Javascript/Typescript
+        tsserver = {},
+
+        -- Python
+        pyright = {},
+        ruff = {},
+
+        -- TOML
+        taplo = {},
+
+        -- Shopify
+        -- theme_check = {
+        --   cmd = { 'theme-check-liquid-server' },
+        -- },
+
+        -- Typo is too noisy for me without a simple way to override
+        -- typos_lsp = {},
+
+        -- YAML
+        yamlls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -199,9 +272,10 @@ return {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
+      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
+
+      require('mason-lspconfig').setup({
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -212,7 +286,13 @@ return {
             require('lspconfig')[server_name].setup(server)
           end,
         },
-      }
+      })
+
+      -- Install Conform formatters
+      if not vim.g.no_mason_autoinstall then require('mason-conform').setup({}) end
+
+      -- Border for LSPInfo
+      require('lspconfig.ui.windows').default_options.border = 'single'
     end,
   },
 }
