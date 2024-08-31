@@ -8,7 +8,7 @@ return {
   -- Optional dependency
   dependencies = { 'hrsh7th/nvim-cmp' },
   config = function()
-    npairs = require('nvim-autopairs')
+    local npairs = require('nvim-autopairs')
 
     npairs.setup({
       -- The string you provided appears to be a pattern or sequence of characters enclosed within [=[[ and ]]=].
