@@ -53,6 +53,8 @@ return {
         },
       })
 
+      require('mini.icons').setup()
+
       -- require('mini.tabline').setup()
 
       -- -- Simple and easy statusline.
