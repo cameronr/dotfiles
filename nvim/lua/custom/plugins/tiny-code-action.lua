@@ -1,5 +1,6 @@
 return {
   'rachartier/tiny-code-action.nvim',
+  enabled = false,
   -- dev = true,
   dependencies = {
     { 'nvim-lua/plenary.nvim' },
