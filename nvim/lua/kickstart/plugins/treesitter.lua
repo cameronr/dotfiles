@@ -6,6 +6,7 @@ return {
         'windwp/nvim-ts-autotag',
         opts = { filetypes = { 'html', 'xml', 'tsx' } },
       },
+      { 'nvim-treesitter/nvim-treesitter-textobjects' },
     },
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
@@ -45,6 +46,21 @@ return {
           node_incremental = '<C-space>',
           scope_incremental = false,
           node_decremental = '<bs>',
+        },
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          -- don't include classes to not conflict with conflicts in a diff
+          -- (LazyVim has some clever code but i don't think we need it right now)
+          -- goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
+          -- goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
+          -- goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
+          -- goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
+          goto_next_start = { [']f'] = '@function.outer', [']a'] = '@parameter.inner' },
+          goto_next_end = { [']F'] = '@function.outer', [']A'] = '@parameter.inner' },
+          goto_previous_start = { ['[f'] = '@function.outer', ['[a'] = '@parameter.inner' },
+          goto_previous_end = { ['[F'] = '@function.outer', ['[A'] = '@parameter.inner' },
         },
       },
     },
