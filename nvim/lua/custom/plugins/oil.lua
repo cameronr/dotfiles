@@ -5,7 +5,7 @@ return {
     {
       '<Bslash><Bslash>',
       function() require('oil').toggle_float() end,
-      desc = 'Oil popup',
+      desc = 'Oil',
     },
   },
   opts = {
