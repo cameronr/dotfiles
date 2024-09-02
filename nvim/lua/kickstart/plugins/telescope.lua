@@ -121,7 +121,7 @@ return {
       --   builtin.find_files { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } }
       -- end, { desc = '[S]earch [Al] Files (no git)' })
       local find_file_opts = {}
-      if vim.fn.executable('rg') == 1 then find_file_opts = { find_command = { 'rg', '--files', '--hidden', '-g', '!.git' } } end
+      if vim.fn.executable('rg') == 1 then find_file_opts = { find_command = { 'rg', '--files', '-L', '--hidden', '-g', '!.git' } } end
       vim.keymap.set('n', '<leader>sf', function() builtin.find_files(find_file_opts) end, { desc = 'Files' })
       vim.keymap.set('n', '<leader>sb', builtin.builtin, { desc = 'Telescope builtins' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = 'Current word' })
