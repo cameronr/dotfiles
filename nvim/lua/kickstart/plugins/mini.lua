@@ -57,9 +57,9 @@ return {
           ['('] = { action = 'open', pair = '()', neigh_pattern = '[^\\][%s)}%]]' },
           ['['] = { action = 'open', pair = '[]', neigh_pattern = '[^\\][%s)}%]]' },
           ['{'] = { action = 'open', pair = '{}', neigh_pattern = '[^\\][%s)}%]]' },
-          ['`'] = { neigh_pattern = '[^%a%d\\-][%s]' },
-          ['"'] = { neigh_pattern = '[^%a%d\\-][%s]' },
-          ["'"] = { neigh_pattern = '[^%a%d\\-][%s]' },
+          ['`'] = { neigh_pattern = '[^%a%d\\-][%s)}%]]' },
+          ['"'] = { neigh_pattern = '[^%a%d\\-][%s)}%]]' },
+          ["'"] = { neigh_pattern = '[^%a%d\\-][%s)}%]]' },
         },
       })
 
