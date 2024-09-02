@@ -50,6 +50,16 @@ return {
       return ret
     end
 
+    local trouble = require('trouble')
+    local trouble_symbols = trouble.statusline({
+      mode = 'symbols',
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = '{kind_icon}{symbol.name:Normal}',
+      hl_group = 'lualine_c_normal',
+    })
+
     opts = {
       options = {
         component_separators = { left = '╲', right = '╱' },
@@ -87,23 +97,26 @@ return {
           },
         },
         lualine_c = {
-          {
-            'filename',
-            path = 1,
-            new_file_status = true,
-            shorting_target = 16,
-            symbols = {
-              modified = '+', -- Text to show when the file is modified.
-              readonly = '', -- Text to show when the file is non-modifiable or readonly.
-              -- unnamed = '[No Name]', -- Text to show for unnamed buffers.
-              -- newfile = '[New]', -- Text to show for newly created file before first write
-            },
-          },
           -- {
-          --   function() return require('nvim-navic').get_location() end,
-          --   cond = function() return package.loaded['nvim-navic'] and require('nvim-navic').is_available() end,
-          --   fmt = trunc(0, 0, 60, true),
+          --   'filename',
+          --   path = 1,
+          --   new_file_status = true,
+          --   shorting_target = 16,
+          --   symbols = {
+          --     modified = '+', -- Text to show when the file is modified.
+          --     readonly = '', -- Text to show when the file is non-modifiable or readonly.
+          --     -- unnamed = '[No Name]', -- Text to show for unnamed buffers.
+          --     -- newfile = '[New]', -- Text to show for newly created file before first write
+          --   },
           -- },
+          {
+            require('custom.util.lualine').pretty_path(),
+            separator = '',
+          },
+          {
+            trouble_symbols and trouble_symbols.get,
+            cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 100 and trouble_symbols.has() end,
+          },
         },
         lualine_x = {
           {
@@ -112,6 +125,9 @@ return {
             color = { fg = '#ff9e64' },
             fmt = trunc(0, 0, 100, true), -- hide when window is < 100 columns
           },
+
+          require('custom.util.lualine').cmp_source('supermaven', '󰰣'),
+
           {
             lsp_status_all,
             fmt = trunc(0, 0, 90, true),
