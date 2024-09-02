@@ -32,7 +32,7 @@ return {
         { '<leader>w', group = 'Window / Workspace' },
         { '<leader>x', group = 'Trouble' },
         { '<leader><tab>', group = 'Tabs' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
       },
     },
   },
