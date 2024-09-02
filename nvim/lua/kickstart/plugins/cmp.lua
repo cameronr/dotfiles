@@ -1,6 +1,7 @@
 return {
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
+    -- enabled = false,
     event = { 'InsertEnter', 'CmdlineEnter' },
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -40,6 +41,18 @@ return {
       local lspkind = require('lspkind')
       luasnip.config.setup({})
 
+      -- cmp.mapping.confirm introduces a delay since it doesn't check
+      -- if cmp is visible first. this is particularly annoying with <CR>
+      -- as a confirm key
+      local faster_confirm = function(opts)
+        return function(fallback)
+          if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
+            if cmp.confirm(opts) then return end
+          end
+          fallback()
+        end
+      end
+
       cmp.setup({
         snippet = {
           expand = function(args) luasnip.lsp_expand(args.body) end,
@@ -63,11 +76,12 @@ return {
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+          ['<C-y>'] = faster_confirm({ select = true }),
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
-          ['<CR>'] = cmp.mapping.confirm({ select = false }),
+          ['<CR>'] = faster_confirm({ select = false }),
+          --cmp.mapping.confirm({ select = false }),
           ['<Tab>'] = cmp.mapping.select_next_item(),
           ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
