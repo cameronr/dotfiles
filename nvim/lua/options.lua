@@ -105,8 +105,27 @@ vim.opt.whichwrap:append('<,>,[,]')
 -- Add characters to set used to identify words
 vim.opt.iskeyword:append({ '-' })
 
--- Don't show ~ at end of buffer
-vim.opt.fillchars = { eob = ' ' }
+vim.opt.fillchars = {
+  foldopen = '',
+  foldclose = '',
+  fold = ' ',
+  foldsep = ' ',
+  eob = ' ', -- Don't show ~ at end of buffer
+  diff = '╱', -- Nicer background in DiffView
+}
+
+if vim.fn.has('nvim-0.10') == 1 then
+  -- scroll virtual lines when wrapping is on rather than jumping a big
+  -- block
+  vim.opt.smoothscroll = true
+
+  -- Enable tree-sitter folding
+  vim.opt.foldmethod = 'expr'
+  vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+  vim.opt.foldlevel = 99
+  vim.opt.foldlevelstart = 99
+  vim.opt.foldcolumn = '0' -- hide column by default
+end
 
 -- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
 -- Jump to last position when reopening a file
@@ -134,9 +153,6 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
     if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
   end,
 })
-
--- Set nice diff fill chars
-vim.opt.fillchars:append('diff:╱')
 
 -- Set default tab options (but they should be overridden by sleuth)
 vim.o.expandtab = true

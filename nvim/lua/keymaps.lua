@@ -207,6 +207,15 @@ vim.keymap.set('n', '<leader>vd', function()
   end
 end, { desc = 'Toggle light/dark' })
 
+vim.keymap.set('n', '<leader>vo', function()
+  ---@diagnostic disable-next-line: undefined-field
+  if vim.opt.foldcolumn:get() == '0' then
+    vim.opt.foldcolumn = '1'
+  else
+    vim.opt.foldcolumn = '0'
+  end
+end, { desc = 'Toggle foldcolumn' })
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
   -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
