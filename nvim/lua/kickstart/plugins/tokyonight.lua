@@ -10,7 +10,6 @@ return {
   opts = {
     style = 'night',
     styles = {
-      comments = { italic = false },
       floats = { 'transparent' },
     },
     lualine_bold = true,
