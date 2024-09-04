@@ -8,6 +8,10 @@ return {
     -- { '<C-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
   },
   opts = {
+    copy_sync = {
+      enable = false,
+      -- sync_registers_keymap_reg = false,
+    },
     navigation = {
       cycle_navigation = false,
     },
