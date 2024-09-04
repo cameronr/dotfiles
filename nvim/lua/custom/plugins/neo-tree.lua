@@ -28,6 +28,7 @@ return {
       follow_current_file = {
         enabled = true, -- follow the active file in the tree
       },
+      use_libuv_file_watcher = true,
     },
   },
 }
