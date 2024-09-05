@@ -160,7 +160,7 @@ return {
       })
 
       -- / completion from buffer
-      cmp.setup.cmdline('/', {
+      cmp.setup.cmdline({ '/', '?' }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
           { name = 'buffer', max_item_count = 20 },
