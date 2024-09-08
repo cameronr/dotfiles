@@ -140,7 +140,7 @@ if vim.fn.has('nvim-0.10') == 1 then
 
   -- For 0.10, we need to check and see that vim.wo.number or vim.wo.relativenumber are true first
   -- otherwise we'll get numbers on buffers that shouldn't have them (e.g. help, alpha)
-  vim.opt.statuscolumn = "%C%s%=%{%(&number || &relativenumber) ? '%{v:relnum?v:relnum:v:lnum}' : ''%} "
+  -- vim.opt.statuscolumn = "%C%s%=%{%(&number || &relativenumber) ? '%{v:relnum?v:relnum:v:lnum}' : ''%} "
 end
 
 -- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
