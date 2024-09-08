@@ -5,10 +5,9 @@ local M = {}
 function M.cmp_source(name, icon)
   local started = false
   local function status()
-    -- if not package.loaded['cmp'] then return end
-
-    local success, cmp = pcall(require, 'cmp')
-    if not success or not cmp then return nil end
+    -- only run this if cmp has been loaded
+    local nvim_cmp_config = require('lazy.core.config').plugins['nvim-cmp']
+    if not nvim_cmp_config or not nvim_cmp_config._.loaded then return nil end
 
     for _, s in ipairs(require('cmp').core.sources) do
       if s.name == name then
