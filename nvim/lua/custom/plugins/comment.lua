@@ -1,11 +1,9 @@
 return {
   'numToStr/Comment.nvim',
-  -- event = { 'BufReadPre', 'BufNewFile' },
+  enabled = vim.fn.has('nvim-0.10') ~= 1,
+  event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring',
-  },
-  keys = {
-    { '<Bslash>x', mode = { 'n', 'v', 'x' }, desc = 'Toggle comment' },
   },
   config = function()
     -- import comment plugin safely
@@ -14,10 +12,6 @@ return {
 
     ---@diagnostic disable-next-line: missing-fields
     comment.setup({
-      ---@diagnostic disable-next-line: missing-fields
-      toggler = { line = '<Bslash>x' },
-      ---@diagnostic disable-next-line: missing-fields
-      opleader = { line = '<Bslash>x' },
 
       -- for commenting tsx, jsx, svelte, html files
       pre_hook = ts_context_commentstring.create_pre_hook(),

@@ -216,6 +216,10 @@ vim.keymap.set('n', '<leader>vo', function()
   end
 end, { desc = 'Toggle foldcolumn' })
 
+-- Old comment keymap
+vim.keymap.set('n', '<bslash>x', 'gcc', { desc = 'Comment toggle', remap = true })
+vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap = true })
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
   -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
