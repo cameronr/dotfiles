@@ -246,13 +246,19 @@ return {
         pyright = {},
         ruff = {},
 
+        -- Ruby for Shopify
+        -- ruby_lsp = {
+        --   init_options = {
+        --     formatter = 'standard',
+        --     linters = { 'standard' },
+        --   },
+        -- },
+
         -- TOML
         taplo = {},
 
         -- Shopify
-        -- theme_check = {
-        --   cmd = { 'theme-check-liquid-server' },
-        -- },
+        -- theme_check = {},
 
         -- Typo is too noisy for me without a simple way to override
         -- typos_lsp = {},
@@ -281,6 +287,9 @@ return {
       require('mason-lspconfig').setup({
         handlers = {
           function(server_name)
+            -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
+            if server_name == 'tsserver' then server_name = 'ts_ls' end
+
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
