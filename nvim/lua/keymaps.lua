@@ -216,6 +216,8 @@ vim.keymap.set('n', '<leader>vo', function()
   end
 end, { desc = 'Toggle foldcolumn' })
 
+vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
+
 -- Old comment keymap
 vim.keymap.set('n', '<bslash>x', 'gcc', { desc = 'Comment toggle', remap = true })
 vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap = true })
