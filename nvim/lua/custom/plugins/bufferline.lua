@@ -1,7 +1,7 @@
 return {
   'akinsho/bufferline.nvim',
   version = '*',
-  event = { 'BufNew' },
+  event = { 'BufNewFile', 'BufReadPre' },
   dependencies = 'echasnovski/mini.nvim',
   opts = {
     options = {
