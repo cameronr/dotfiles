@@ -71,7 +71,7 @@ return {
         lualine_a = {
           {
             'mode',
-            fmt = trunc(90, 4, 0, true),
+            fmt = trunc(90, 3, 0, true),
           },
         },
         lualine_b = {
