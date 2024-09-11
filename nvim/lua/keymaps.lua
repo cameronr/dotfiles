@@ -45,7 +45,6 @@ vim.keymap.set('n', '<leader>w-', '<C-w>s', { desc = 'Window split horizontally'
 vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
--- vim.keymap.set('n', '<leader>q', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
 vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
 vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
@@ -165,6 +164,10 @@ vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning
 
 -- End LazyVim
 
+-- Old comment keymap
+vim.keymap.set('n', '<bslash>x', 'gcc', { desc = 'Comment toggle', remap = true })
+vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap = true })
+
 -- Put change into the blackhole register
 vim.keymap.set('n', 'c', '"_c')
 
@@ -216,11 +219,13 @@ vim.keymap.set('n', '<leader>vo', function()
   end
 end, { desc = 'Toggle foldcolumn' })
 
+vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
+
+vim.keymap.set('n', '<leader>vl', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
+
 vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
 
--- Old comment keymap
-vim.keymap.set('n', '<bslash>x', 'gcc', { desc = 'Comment toggle', remap = true })
-vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap = true })
+vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
