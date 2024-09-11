@@ -42,6 +42,13 @@ return {
       hl.LuaLineDiffChange = { fg = c.blue }
       -- hl.LuaLineDiffDelete = { fg = c.dark5 }
 
+      -- hl.DiffText = { bg = '#20303b' }
+
+      -- Brighten changes within a line
+      hl.DiffText = { bg = '#184a2c' }
+      -- Make changed lines more green instead of blue
+      hl.DiffAdd = { bg = '#192922' }
+
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
 
