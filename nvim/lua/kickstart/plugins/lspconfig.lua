@@ -241,7 +241,7 @@ return {
         -- tailwindcss = {},
 
         -- Javascript/Typescript
-        tsserver = {},
+        ts_ls = {},
 
         -- Python
         pyright = {},
@@ -289,7 +289,7 @@ return {
         handlers = {
           function(server_name)
             -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
-            if server_name == 'tsserver' then server_name = 'ts_ls' end
+            -- if server_name == 'tsserver' then server_name = 'ts_ls' end
 
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
