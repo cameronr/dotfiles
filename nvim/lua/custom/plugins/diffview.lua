@@ -13,6 +13,15 @@ return {
         -- setting gross underline:
         -- https://github.com/neovim/neovim/issues/9800
         vim.wo[winid].culopt = 'number'
+
+        -- clear the lsp autocmd that highlights the word under the cursor
+        vim.api.nvim_clear_autocmds({
+          group = 'kickstart-lsp-highlight',
+          buffer = bufnr,
+        })
+
+        -- clear highlights
+        vim.cmd('nohl')
       end,
     },
   },
