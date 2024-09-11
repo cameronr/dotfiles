@@ -142,7 +142,6 @@ return {
       vim.keymap.set('n', '<leader>sp', '<cmd>Telescope notify<CR>', { desc = 'Popup notifications' })
       vim.keymap.set('n', '<leader>sn', '<cmd>Telescope notify<CR>', { desc = 'Notifications' })
       vim.keymap.set('n', '<leader>sj', '<cmd>Telescope jumplist<cr>', { desc = 'Jumplist' })
-      vim.keymap.set('n', '<leader>sL', '<cmd>Telescope highlights<cr>', { desc = 'Highlights' })
       vim.keymap.set('n', '<leader>sH', '<cmd>Telescope highlights<cr>', { desc = 'Highlights' })
       vim.keymap.set('n', '<leader>sl', '<cmd>Telescope loclist<cr>', { desc = 'Location List' })
       vim.keymap.set('n', '<leader>sm', '<cmd>Telescope marks<cr>', { desc = 'Marks' })
