@@ -79,6 +79,8 @@ return {
               ['<C-Up>'] = actions.cycle_history_prev,
               ['<C-T>'] = require('trouble.sources.telescope').open,
               ['<M-T>'] = require('trouble.sources.telescope').add,
+              ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
+              ['<C-W>'] = require('telescope.actions.layout').cycle_layout_prev,
               ['<C-h>'] = 'which_key',
             },
           },
