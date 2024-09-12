@@ -45,9 +45,9 @@ return {
       -- hl.DiffText = { bg = '#20303b' }
 
       -- Brighten changes within a line
-      hl.DiffText = { bg = '#184a2c' }
+      hl.DiffText = { bg = '#18493d' }
       -- Make changed lines more green instead of blue
-      hl.DiffAdd = { bg = '#192922' }
+      hl.DiffAdd = { bg = '#192929' }
 
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
