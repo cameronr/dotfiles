@@ -1,5 +1,6 @@
 My dotfiles
-![Screenshot 2024-09-02 at 13 21 40](https://github.com/user-attachments/assets/df460dcc-147f-490b-a71d-8ec1e22bbcb9)
+![Screenshot 2024-09-14 at 20 21 16](https://github.com/user-attachments/assets/ad19ee93-5af5-446e-a10e-1520b246fd78)
+
 
 Main features:
 
