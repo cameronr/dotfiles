@@ -17,7 +17,6 @@ return {
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      local extra = require('mini.extra')
       local ai = require('mini.ai')
       ai.setup({
         n_lines = 500,
@@ -29,7 +28,7 @@ return {
           }),
           f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- function
 
-          g = extra.gen_ai_spec.buffer(),
+          g = require('mini.extra').gen_ai_spec.buffer(),
         },
       })
 
