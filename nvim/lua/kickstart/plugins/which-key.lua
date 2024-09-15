@@ -16,7 +16,7 @@
 return {
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+    event = 'VeryLazy',
     opts = {
       preset = 'modern',
       delay = function(ctx) return ctx.plugin and 0 or 300 end,
