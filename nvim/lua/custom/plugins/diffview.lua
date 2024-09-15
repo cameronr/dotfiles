@@ -22,6 +22,9 @@ return {
 
         -- clear highlights
         vim.cmd('nohl')
+
+        -- set wrap
+        vim.wo[winid].wrap = true
       end,
     },
   },
