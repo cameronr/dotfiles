@@ -88,7 +88,7 @@ vim.opt.inccommand = 'nosplit'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 8
+vim.opt.scrolloff = 4
 
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
 vim.opt.formatoptions:remove({ 'o' })
