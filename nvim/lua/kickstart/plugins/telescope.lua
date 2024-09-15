@@ -12,7 +12,6 @@ return {
     branch = '0.1.x',
     -- dev = true,
     dependencies = {
-      'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
         'nvim-telescope/telescope-fzf-native.nvim',
 
