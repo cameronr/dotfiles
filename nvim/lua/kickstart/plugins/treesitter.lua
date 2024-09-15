@@ -2,10 +2,6 @@ return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
-      {
-        'windwp/nvim-ts-autotag',
-        opts = { filetypes = { 'html', 'xml', 'tsx' } },
-      },
       { 'nvim-treesitter/nvim-treesitter-textobjects' },
     },
     build = ':TSUpdate',
