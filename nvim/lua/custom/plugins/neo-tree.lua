@@ -25,4 +25,9 @@ return {
       use_libuv_file_watcher = true,
     },
   },
+
+  config = function(_, opts)
+    require('neo-tree').setup(opts)
+    require('lsp-file-operations')
+  end,
 }
