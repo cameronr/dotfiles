@@ -25,7 +25,7 @@ return {
       { 'nvim-telescope/telescope-ui-select.nvim' },
     },
 
-    cmds = 'Telescope',
+    cmd = 'Telescope',
 
     keys = {
       { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = 'Help' },
