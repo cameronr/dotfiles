@@ -28,11 +28,10 @@ return {
         hl.CmpItemAbbrMatch = { bg = '#185c81' }
 
         -- Diff colors
-        -- hl.DiffText = { bg = '#20303b' }
         -- Brighten changes within a line
-        hl.DiffText = { bg = '#18493d' }
+        hl.DiffText = { bg = '#224e38' }
         -- Make changed lines more green instead of blue
-        hl.DiffAdd = { bg = '#192929' }
+        hl.DiffAdd = { bg = '#193426' }
       else
         hl.TelescopeMatching = { bg = '#93cceb' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
