@@ -26,10 +26,23 @@ return {
         hl.TelescopeMatching = { bg = '#185c81' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#185c81' }
         hl.CmpItemAbbrMatch = { bg = '#185c81' }
+
+        -- Diff colors
+        -- hl.DiffText = { bg = '#20303b' }
+        -- Brighten changes within a line
+        hl.DiffText = { bg = '#18493d' }
+        -- Make changed lines more green instead of blue
+        hl.DiffAdd = { bg = '#192929' }
       else
         hl.TelescopeMatching = { bg = '#93cceb' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
         hl.CmpItemAbbrMatch = { bg = '#93cceb' }
+
+        -- Diff colors
+        -- Brighten changes within a line
+        hl.DiffText = { bg = '#a3dca9' }
+        -- Make changed lines more green instead of blue
+        hl.DiffAdd = { bg = '#cce5cf' }
       end
 
       hl.IblScope = { fg = '#43709B' }
@@ -41,13 +54,6 @@ return {
       hl.LuaLineDiffAdd = { fg = '#2e9e98' }
       hl.LuaLineDiffChange = { fg = c.blue }
       -- hl.LuaLineDiffDelete = { fg = c.dark5 }
-
-      -- hl.DiffText = { bg = '#20303b' }
-
-      -- Brighten changes within a line
-      hl.DiffText = { bg = '#18493d' }
-      -- Make changed lines more green instead of blue
-      hl.DiffAdd = { bg = '#192929' }
 
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
