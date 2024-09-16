@@ -130,6 +130,27 @@ return {
       }
       my_actions = transform_mod(my_actions)
 
+      local multiopen = function(prompt_bufnr)
+        local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+        local multi = picker:get_multi_selection()
+
+        if vim.tbl_isempty(multi) then
+          require('telescope.actions').select_default(prompt_bufnr)
+          return
+        end
+
+        require('telescope.actions').close(prompt_bufnr)
+        for _, entry in pairs(multi) do
+          local filename = entry.filename or entry.value
+          local lnum = entry.lnum or 1
+          local lcol = entry.col or 1
+          if filename then
+            vim.cmd(string.format('edit +%d %s', lnum, filename))
+            vim.cmd(string.format('normal! %dG%d|', lnum, lcol))
+          end
+        end
+      end
+
       require('telescope').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -150,6 +171,7 @@ return {
               ['<C-P>'] = require('telescope.actions.layout').toggle_preview,
               ['<C-W>'] = require('telescope.actions.layout').cycle_layout_prev,
               ['<C-h>'] = 'which_key',
+              ['<cr>'] = multiopen,
             },
           },
         },
@@ -159,7 +181,7 @@ return {
             -- ignore_current_buffer = true,
             mappings = {
               i = {
-                ['<c-d>'] = actions.delete_buffer + actions.move_to_bottom, -- delete buffer
+                ['<M-d>'] = actions.delete_buffer + actions.move_to_bottom, -- delete buffer
               },
             },
           },
