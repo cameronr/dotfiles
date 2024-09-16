@@ -202,7 +202,7 @@ vim.keymap.set('n', 'Sb', 'Saw}', { desc = 'Wrap word with {}', remap = true })
 vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
-vim.keymap.set('n', '<leader>vd', function()
+vim.keymap.set('n', '<leader>vl', function()
   ---@diagnostic disable-next-line: undefined-field
   if vim.opt.background:get() == 'dark' then
     vim.opt.background = 'light'
@@ -222,7 +222,7 @@ end, { desc = 'Toggle foldcolumn' })
 
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
 
-vim.keymap.set('n', '<leader>vl', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
+vim.keymap.set('n', '<leader>vL', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
 
 vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
 
