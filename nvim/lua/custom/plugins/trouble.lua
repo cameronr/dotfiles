@@ -1,7 +1,8 @@
 return {
   'folke/trouble.nvim',
-  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  event = { 'BufNewFile', 'BufReadPost' },
   cmd = 'Trouble',
+  opts = {}, -- for default options, refer to the configuration section for custom setup.
   keys = {
     {
       '<leader>xx',
@@ -74,4 +75,31 @@ return {
       desc = 'Close Trouble',
     },
   },
+
+  config = function(_, opts)
+    local trouble = require('trouble')
+    trouble.setup(opts)
+
+    --if lualine is not loaded, bail out
+    local lualine_lazy_config = require('lazy.core.config').plugins['lualine.nvim']
+    if not lualine_lazy_config or not lualine_lazy_config._.loaded then return nil end
+
+    local trouble_symbols = trouble.statusline({
+      mode = 'symbols',
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = '{kind_icon}{symbol.name:Normal}',
+      hl_group = 'lualine_c_normal',
+    })
+
+    local config = require('lualine.config').get_config()
+
+    table.insert(config.sections.lualine_c, {
+      trouble_symbols and trouble_symbols.get,
+      cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 100 and trouble_symbols.has() end,
+    })
+
+    require('lualine').setup(config)
+  end,
 }

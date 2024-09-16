@@ -1,8 +1,5 @@
 return {
   'nvim-lualine/lualine.nvim',
-  dependencies = {
-    'echasnovski/mini.nvim',
-  },
 
   config = function(_, opts)
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
@@ -49,16 +46,6 @@ return {
       local ret, _ = vim.bo.fileformat:gsub('^unix$', '')
       return ret
     end
-
-    local trouble = require('trouble')
-    local trouble_symbols = trouble.statusline({
-      mode = 'symbols',
-      groups = {},
-      title = false,
-      filter = { range = true },
-      format = '{kind_icon}{symbol.name:Normal}',
-      hl_group = 'lualine_c_normal',
-    })
 
     opts = {
       options = {
@@ -112,10 +99,6 @@ return {
           {
             require('custom.util.lualine').pretty_path(),
             separator = '',
-          },
-          {
-            trouble_symbols and trouble_symbols.get,
-            cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 100 and trouble_symbols.has() end,
           },
         },
         lualine_x = {
