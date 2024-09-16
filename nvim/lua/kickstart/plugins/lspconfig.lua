@@ -76,27 +76,27 @@ return {
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, 'Goto definition')
+          map('gd', function() require('telescope.builtin').lsp_definitions() end, 'Goto definition')
 
           -- Find references for the word under your cursor.
-          map('gr', require('telescope.builtin').lsp_references, 'Goto references')
+          map('gr', function() require('telescope.builtin').lsp_references() end, 'Goto references')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', require('telescope.builtin').lsp_implementations, 'Goto implementation')
+          map('gI', function() require('telescope.builtin').lsp_implementations() end, 'Goto implementation')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          map('<leader>cD', require('telescope.builtin').lsp_type_definitions, 'Code Type definition')
+          map('<leader>cD', function() require('telescope.builtin').lsp_type_definitions() end, 'Code Type definition')
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ss', require('telescope.builtin').lsp_document_symbols, 'Document symbols')
+          map('<leader>ss', function() require('telescope.builtin').lsp_document_symbols() end, 'Document symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          map('<leader>sS', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace symbols')
+          map('<leader>sS', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, 'Workspace symbols')
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
