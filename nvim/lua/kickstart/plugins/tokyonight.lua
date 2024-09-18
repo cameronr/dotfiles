@@ -31,7 +31,7 @@ return {
         -- Brighten changes within a line
         hl.DiffText = { bg = '#224e38' }
         -- Make changed lines more green instead of blue
-        hl.DiffAdd = { bg = '#193426' }
+        hl.DiffAdd = { bg = '#182f23' }
       else
         hl.TelescopeMatching = { bg = '#93cceb' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
