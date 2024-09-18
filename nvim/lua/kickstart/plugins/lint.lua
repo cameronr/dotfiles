@@ -60,10 +60,15 @@ return {
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
-        callback = function() lint.try_lint() end,
+        callback = function()
+          if not vim.g.disable_linting then
+            if not vim.b.disable_linting then lint.try_lint() end
+          end
+        end,
       })
 
-      vim.keymap.set('n', '<leader>cl', function() lint.try_lint() end, { desc = 'Lint current file' })
+      vim.keymap.set('n', '<leader>cl', function() vim.b.disable_linting = not (vim.b.disable_linting == true) end, { desc = 'Toggle linting for file' })
+      vim.keymap.set('n', '<leader>cL', function() vim.g.disable_linting = not (vim.g.disable_linting == true) end, { desc = 'Toggle linting for all files' })
     end,
   },
 }
