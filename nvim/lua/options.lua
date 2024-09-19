@@ -123,7 +123,11 @@ if vim.fn.has('nvim-0.10') == 1 then
   vim.opt.foldmethod = 'expr'
   vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
   vim.opt.foldlevel = 99
-  vim.opt.foldlevelstart = 99
+
+  -- Was getting some nofold errors on session restore even when I didn't create any
+  -- so comment this out for now
+  -- vim.opt.foldlevelstart = 99
+
   vim.opt.foldcolumn = '0' -- hide column by default
 end
 
