@@ -211,7 +211,7 @@ vim.keymap.set('n', '<leader>vl', function()
   end
 end, { desc = 'Toggle light/dark' })
 
-vim.keymap.set('n', '<leader>vo', function()
+vim.keymap.set('n', '<leader>vz', function()
   ---@diagnostic disable-next-line: undefined-field
   if vim.opt.foldcolumn:get() == '0' then
     vim.opt.foldcolumn = '1'
