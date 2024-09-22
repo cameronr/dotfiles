@@ -175,14 +175,14 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 })
 
 -- Set default tab options (but they should be overridden by sleuth)
-vim.o.expandtab = true
-vim.o.shiftwidth = 2
-vim.o.softtabstop = 2
-vim.o.shiftround = true
-vim.o.smartindent = true
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftround = true
+vim.opt.smartindent = true
 
 -- Recommended session options from auto-sessions
-vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
 -- Hide diagnostic virtual text and add border to floating window
 vim.diagnostic.config({
@@ -194,5 +194,7 @@ vim.diagnostic.config({
 })
 
 vim.opt.wrap = true
+
+vim.opt.virtualedit = 'block'
 
 -- vim: ts=2 sts=2 sw=2 et
