@@ -1,10 +1,16 @@
 DOTFILES="${XDG_DATA_HOME:-${HOME}/dotfiles}"
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ $(( ${+commands[starship]} )) ]]; then
+    USE_STARSHIP=true
+fi
+
+if ! [[ -n $USE_STARSHIP ]]; then
+    # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+    # Initialization code that may require console input (password prompts, [y/n]
+    # confirmations, etc.) must go above this block; everything else may go below.
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
 fi
 
 # Zinit initialization
@@ -13,8 +19,10 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 [ ! -d $ZINIT_HOME/.git ] && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 source "${ZINIT_HOME}/zinit.zsh"
 
-# Load Powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+if ! [[ -n $USE_STARSHIP ]]; then
+    # Load Powerlevel10k
+    zinit ice depth=1; zinit light romkatv/powerlevel10k
+fi
 
 # Load zsh plugins
 zinit light zsh-users/zsh-syntax-highlighting
@@ -202,5 +210,13 @@ fi
 
 zinit cdreplay -q
 
-# To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
-[[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
+if [[ -n $USE_STARSHIP ]]; then
+    # eval "$(oh-my-posh init zsh --config $DOTFILES/oh-my-posh/config.toml)"
+    # eval "$(oh-my-posh init zsh --config /usr/local/opt/oh-my-posh/themes/amro.omp.json)"
+    eval "$(starship init zsh)"
+else
+    # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
+    [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
+
+    typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=magenta
+fi
