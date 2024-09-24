@@ -230,6 +230,8 @@ vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' }
 
 vim.keymap.set('n', '<leader>vw', function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end, { desc = 'Toggle line wrap' })
 
+vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file changes' })
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
   -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
