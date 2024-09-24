@@ -1,8 +1,8 @@
 DOTFILES="${XDG_DATA_HOME:-${HOME}/dotfiles}"
 
-if [[ $(( ${+commands[starship]} )) ]]; then
-    USE_STARSHIP=true
-fi
+# if [[ $(( ${+commands[starship]} )) ]]; then
+#     USE_STARSHIP=true
+# fi
 
 if ! [[ -n $USE_STARSHIP ]]; then
     # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
