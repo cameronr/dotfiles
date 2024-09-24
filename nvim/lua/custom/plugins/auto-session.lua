@@ -19,8 +19,12 @@ return {
       load_on_setup = false,
       previewer = true,
       theme_conf = {
+        layout_strategy = 'horizontal',
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        sorting_strategy = 'descending',
         layout_config = {
-          height = 0.4,
+          width = 0.7,
+          height = 0.7,
         },
       },
     },
