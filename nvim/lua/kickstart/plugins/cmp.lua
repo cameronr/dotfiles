@@ -113,13 +113,21 @@ return {
             fallback()
           end, { 'i' }),
 
-          -- Backslash to close the popup
-          ['<Bslash>'] = cmp.mapping.close(),
+          ['<C-e>'] = cmp.mapping.close(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
-          ['<C-Space>'] = cmp.mapping.complete({}),
+          -- ['<C-Space>'] = cmp.mapping.complete({}),
+
+          -- cmp toggle
+          ['<C-Space>'] = cmp.mapping(function(_)
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
+              cmp.close()
+            else
+              cmp.complete()
+            end
+          end),
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
           --  So if you have a snippet that's like:
