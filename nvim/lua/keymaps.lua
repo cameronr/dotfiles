@@ -197,6 +197,7 @@ vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
 -- <leader>b
 vim.keymap.set('n', '<leader>bq', '<cmd>:bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>:bd<CR>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>bn', '<cmd>enew<CR>', { desc = 'New buffer' })
 
 -- Shortcut for surrounding a word (inner) with a '
 vim.keymap.set('n', 'S', '<nop>') -- Don't keep S mapping
