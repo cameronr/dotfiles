@@ -54,6 +54,10 @@ return {
       hl.LuaLineDiffChange = { fg = c.blue }
       -- hl.LuaLineDiffDelete = { fg = c.dark5 }
 
+      -- Make the colors in the Lualine x section dimmer
+      local lualine = require('lualine.themes.tokyonight-night')
+      lualine.normal.x = { fg = hl.Comment.fg, bg = lualine.normal.c.bg }
+
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
 

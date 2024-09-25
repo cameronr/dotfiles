@@ -1,6 +1,5 @@
 return {
   'nvim-lualine/lualine.nvim',
-
   config = function(_, opts)
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
@@ -49,6 +48,11 @@ return {
 
     opts = {
       options = {
+        -- When theme is set to auto, Lualine uses dofile instead of require
+        -- to load the theme. We need the theme to be loaded via require since
+        -- we modify the cached singleton in tokyonight's config function to
+        -- add different colors for the x section
+        theme = function() return require('lualine.themes.' .. vim.g.colors_name) end,
         component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree' },
         section_separators = { left = '', right = '' },
