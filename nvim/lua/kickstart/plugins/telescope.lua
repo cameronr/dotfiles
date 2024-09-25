@@ -30,23 +30,9 @@ return {
     keys = {
       { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = 'Help' },
       { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = 'Keymaps' },
-      { '<leader>sF', '<cmd>Telescope find_files<cr>', desc = '[S]earch [F]iles' },
-      {
-        '<leader>sf',
-        function()
-          local find_file_opts = {}
-          if vim.fn.executable('rg') == 1 then
-            find_file_opts = {
-              find_command = { 'rg', '--files', '-L', '--hidden', '-g', '!.git' },
-            }
-          end
-          require('telescope.builtin').find_files(find_file_opts)
-        end,
-        desc = 'Files',
-      },
+      { '<leader>sf', '<cmd>Telescope find_files<cr>', desc = 'Search Files' },
       { '<leader>sb', '<cmd>Telescope builtin<cr>', desc = 'Telescope builtins' },
       { '<leader>sw', '<cmd>Telescope grep_string<cr>', desc = 'Current word' },
-      -- {'<leader>sg', '<cmd>Telescope live_grep<cr>', desc = 'Grep' },
       { '<leader>/', '<cmd>Telescope live_grep<cr>', desc = 'Grep' },
       { '<leader>sd', '<cmd>Telescope diagnostics bufnr=0<cr>', desc = 'Buffer Diagnostics' },
       { '<leader>sD', '<cmd>Telescope diagnostics<cr>', desc = 'Diagnostics' },
@@ -184,6 +170,19 @@ return {
                 ['<M-d>'] = actions.delete_buffer,
               },
             },
+          },
+          find_files = {
+            find_command = function()
+              if vim.fn.executable('rg') == 1 then
+                --
+                return { 'rg', '--files', '-L', '--hidden', '-g', '!.git', '-g', '!node_modules/', '-g', '!venv' }
+              end
+              return {}
+            end,
+          },
+          live_grep = {
+            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
+            additional_args = function(_) return { '--hidden' } end,
           },
           builtin = {
             include_extensions = false,
