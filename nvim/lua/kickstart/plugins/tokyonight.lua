@@ -32,6 +32,9 @@ return {
         hl.DiffText = { bg = '#224e38' }
         -- Make changed lines more green instead of blue
         hl.DiffAdd = { bg = '#182f23' }
+
+        -- clean up Neogit diff colors (when committing)
+        hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
       else
         hl.TelescopeMatching = { bg = '#93cceb' }
         hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
@@ -42,7 +45,14 @@ return {
         hl.DiffText = { bg = '#a3dca9' }
         -- Make changed lines more green instead of blue
         hl.DiffAdd = { bg = '#cce5cf' }
+
+        -- clean up Neogit diff colors (when committing)
+        hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
       end
+
+      -- clean up Neogit diff colors (when committing)
+      hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
+      hl.NeogitDiffContext = { bg = hl.Normal.bg }
 
       -- Darken cmp menu (src for the completion)
       hl.CmpItemMenu = hl.CmpGhostText
