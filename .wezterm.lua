@@ -1,6 +1,22 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
+-- From:
+-- https://wezfurlong.org/wezterm/config/lua/window-events/user-var-changed.html
+wezterm.on("user-var-changed", function(window, pane, name, value)
+  wezterm.log_info("var", name, value)
+
+  if name == "FORCE_DAY_MODE" then
+    local overrides = window:get_config_overrides() or {}
+    if value == "tokyonight_day" and not overrides.color_scheme then
+      overrides.color_scheme = "tokyonight_day"
+    else
+      overrides.color_scheme = nil
+    end
+    window:set_config_overrides(overrides)
+  end
+end)
+
 -- This will hold the configuration.
 local config = wezterm.config_builder()
 

@@ -87,6 +87,20 @@ return {
     -- Could use the below to make both Lualine and Gitsigns brighter
     -- vim.cmd.hi 'GitSignsChange guifg=#7aa2f7'
     -- vim.cmd.hi 'GitSignsDelete guifg=#f25a64'
+
+    -- Sync nvim theme to wezterm, mostly to fix cursor color in day mode.
+    -- See:
+    -- https://github.com/folke/tokyonight.nvim/issues/26
+    -- https://github.com/folke/zen-mode.nvim/pull/61
+    vim.api.nvim_create_autocmd('ColorScheme', {
+      pattern = '*',
+      callback = function()
+        local color_scheme = vim.g.colors_name:gsub('-', '_')
+        local stdout = vim.loop.new_tty(1, false)
+        stdout:write(('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format('FORCE_DAY_MODE', vim.fn.system({ 'base64' }, color_scheme)))
+        vim.cmd.redraw()
+      end,
+    })
   end,
 }
 -- vim: ts=2 sts=2 sw=2 et
