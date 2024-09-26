@@ -23,9 +23,17 @@ return {
         hl.CursorLine = { bg = lighterBg }
 
         -- Make the search / completion highlights stand out more
-        hl.TelescopeMatching = { bg = '#185c81' }
-        hl.CmpItemAbbrMatchFuzzy = { bg = '#185c81' }
-        hl.CmpItemAbbrMatch = { bg = '#185c81' }
+        -- hl.TelescopeMatching = { bg = '#4F2D76' }
+        -- hl.CmpItemAbbrMatchFuzzy = { bg = '#4F2D76' }
+        -- hl.CmpItemAbbrMatch = { bg = '#4F2D76' }
+
+        -- hl.TelescopeMatching = { bg = '#004966' }
+        -- hl.CmpItemAbbrMatchFuzzy = { bg = '#004966' }
+        -- hl.CmpItemAbbrMatch = { bg = '#004966' }
+
+        -- hl.TelescopeMatching = { fg = hl.Search.bg }
+        -- hl.CmpItemAbbrMatchFuzzy = { fg = hl.Search.bg }
+        -- hl.CmpItemAbbrMatch = { fg = hl.Search.bg }
 
         -- Diff colors
         -- Brighten changes within a line
@@ -49,6 +57,10 @@ return {
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
       end
+
+      hl.TelescopeMatching = { fg = hl.IncSearch.bg }
+      hl.CmpItemAbbrMatchFuzzy = { fg = hl.IncSearch.bg }
+      hl.CmpItemAbbrMatch = { fg = hl.IncSearch.bg }
 
       -- clean up Neogit diff colors (when committing)
       hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
