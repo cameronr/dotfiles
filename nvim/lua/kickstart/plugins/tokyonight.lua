@@ -18,7 +18,7 @@ return {
       -- This is bg_dark from the default tokyonight theme (not tokyonight night)
       local lighterBg = '#1f2335'
 
-      if vim.o.background ~= 'light' then
+      if vim.o.background == 'dark' then
         -- Use bg.dark for the cursor line background to make it more subtle
         hl.CursorLine = { bg = lighterBg }
 
@@ -43,6 +43,9 @@ return {
         -- Make changed lines more green instead of blue
         hl.DiffAdd = { bg = '#cce5cf' }
       end
+
+      -- Darken cmp menu (src for the completion)
+      hl.CmpItemMenu = hl.CmpGhostText
 
       hl.IblScope = { fg = '#43709B' }
 

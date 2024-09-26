@@ -149,11 +149,16 @@ return {
         }),
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
-          fields = { 'abbr', 'kind', 'menu' },
           format = lspkind.cmp_format({
             mode = 'symbol',
             symbol_map = {
               Supermaven = '󰰣',
+            },
+            menu = {
+              nvim_lsp = '[LSP]',
+              luasnip = '[Snip]',
+              buffer = '[Buf]',
+              path = '[Path]',
             },
           }),
         },
