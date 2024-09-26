@@ -154,7 +154,7 @@ return {
             vim_item.kind = lspkind.symbolic(vim_item.kind, {
               mode = 'symbol',
               symbol_map = { Supermaven = '󰰣' },
-            })
+            }) .. ' '
             local maxwidth = 30
             local ellipsis_char = '…'
             if vim.fn.strchars(vim_item.abbr) > maxwidth then vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, maxwidth) .. ellipsis_char end
