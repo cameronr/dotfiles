@@ -212,6 +212,10 @@ vim.keymap.set('n', 'Sb', 'Saw}', { desc = 'Wrap word with {}', remap = true })
 vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
+-- quick replace of current word
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], { desc = 'Replace current word' })
+
+-- view options
 vim.keymap.set('n', '<leader>vl', function()
   ---@diagnostic disable-next-line: undefined-field
   if vim.opt.background:get() == 'dark' then
@@ -231,15 +235,10 @@ vim.keymap.set('n', '<leader>vz', function()
 end, { desc = 'Toggle foldcolumn' })
 
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
-
 vim.keymap.set('n', '<leader>vL', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
-
 vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
-
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
-
 vim.keymap.set('n', '<leader>vw', function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end, { desc = 'Toggle line wrap' })
-
 vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file changes' })
 
 -- Debugging key
