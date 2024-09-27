@@ -154,6 +154,9 @@ vim.keymap.set('i', ';', ';<c-g>u')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
+-- save file
+vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+
 -- diagnostic
 local diagnostic_goto = function(next, severity)
   local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
