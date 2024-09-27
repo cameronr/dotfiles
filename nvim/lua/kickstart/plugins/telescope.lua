@@ -198,6 +198,12 @@ return {
           colorscheme = {
             enable_preview = true,
           },
+          current_buffer_fuzzy_find = {
+            -- no preview
+            layout_config = {
+              horizontal = { preview_width = 0 },
+            },
+          },
         },
         extensions = {
           ['ui-select'] = {
