@@ -8,7 +8,7 @@
 return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    branch = '0.1.x',
+    -- branch = '0.1.x',
     -- dev = true,
     dependencies = {
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -143,7 +143,14 @@ return {
         --
 
         defaults = {
-          path_display = { truncate = 1 },
+          path_display = {
+            filename_first = {
+              reverse_directories = false,
+            },
+          },
+          layout_config = {
+            horizontal = { preview_width = 0.45 },
+          },
           mappings = {
             i = {
               ['<ESC>'] = actions.close, -- close on first esc
