@@ -2,6 +2,25 @@
 ---@class custom.util.lualine
 local M = {}
 
+function M.harpoon_status()
+  -- only run this if harpoon has been loaded
+  local nvim_harpoon_config = require('lazy.core.config').plugins['harpoon']
+  if not nvim_harpoon_config or not nvim_harpoon_config._.loaded then return '' end
+
+  local filename = vim.fn.bufname('%')
+  local harpoonItem, harpoonIndex = require('harpoon'):list():get_by_value(filename)
+  if harpoonItem then return harpoonIndex .. '↾' end
+  -- ↼ (LEFTWARDS HARPOON WITH BARB UPWARDS)
+  -- ↽ (LEFTWARDS HARPOON WITH BARB DOWNWARDS)
+  -- ↾ (UPWARDS HARPOON WITH BARB RIGHTWARDS)
+  -- ↿ (UPWARDS HARPOON WITH BARB LEFTWARDS)
+  -- ⇀ (RIGHTWARDS HARPOON WITH BARB UPWARDS)
+  -- ⇁ (RIGHTWARDS HARPOON WITH BARB DOWNWARDS)
+  -- ⇂ (DOWNWARDS HARPOON WITH BARB RIGHTWARDS)
+  -- ⇃ (DOWNWARDS HARPOON WITH BARB LEFTWARDS)
+  return ''
+end
+
 function M.cmp_source(name, icon)
   local started = false
   local function status()
@@ -134,7 +153,17 @@ function M.pretty_path(opts)
     local readonly = ''
     if vim.bo.readonly then readonly = M.format(self, opts.readonly_icon, opts.modified_hl) end
     -- if debug then nvim.notify(dir) end
-    return dir .. parts[#parts] .. readonly
+
+    local return_path = dir .. parts[#parts] .. readonly
+
+    local harpoonItem, harpoonIndex = require('harpoon'):list():get_by_value(vim.fn.bufname('%'))
+    if harpoonItem then
+      local harpoonIndexChar = ({ '¹', '²', '³', '⁴', '⁵' })[harpoonIndex]
+      -- local harpoonIndexChar = ' '..({ '1', '2', '3', '4', '5' })[harpoonIndex]..'↾'
+      return return_path .. harpoonIndexChar
+    end
+
+    return return_path
   end
 end
 

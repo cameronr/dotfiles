@@ -92,18 +92,6 @@ return {
           },
         },
         lualine_c = {
-          -- {
-          --   'filename',
-          --   path = 1,
-          --   new_file_status = true,
-          --   shorting_target = 16,
-          --   symbols = {
-          --     modified = '+', -- Text to show when the file is modified.
-          --     readonly = '', -- Text to show when the file is non-modifiable or readonly.
-          --     -- unnamed = '[No Name]', -- Text to show for unnamed buffers.
-          --     -- newfile = '[New]', -- Text to show for newly created file before first write
-          --   },
-          -- },
           {
             require('custom.util.lualine').pretty_path(),
             separator = '',
@@ -119,6 +107,10 @@ return {
 
           require('custom.util.lualine').cmp_source('supermaven', '󰰣'),
 
+          -- {
+          --   require('custom.util.lualine').harpoon_status,
+          --   fmt = trunc(0, 0, 90, true),
+          -- },
           {
             lsp_status_all,
             fmt = trunc(0, 0, 90, true),
