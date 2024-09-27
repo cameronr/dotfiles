@@ -63,6 +63,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.highlight.on_yank() end,
 })
 
+-- blackhole single x
+vim.keymap.set('n', 'x', '"_x')
+
 -- Able to use semicolon in normal mode
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 
