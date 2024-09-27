@@ -38,6 +38,7 @@ return {
       { '<leader>sD', '<cmd>Telescope diagnostics<cr>', desc = 'Diagnostics' },
       { '<leader>sr', '<cmd>Telescope resume<cr>', desc = 'Resume' },
       { '<leader>s.', '<cmd>Telescope oldfiles<cr>', desc = 'Recent Files' },
+      { '<leader>so', '<cmd>Telescope oldfiles<cr>', desc = 'Recent Files' },
       { '<leader><leader>', '<cmd>Telescope buffers<cr>', desc = 'Buffers' },
 
       -- My Additions
