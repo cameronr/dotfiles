@@ -52,7 +52,11 @@ return {
         -- to load the theme. We need the theme to be loaded via require since
         -- we modify the cached singleton in tokyonight's config function to
         -- add different colors for the x section
-        theme = function() return require('lualine.themes.' .. vim.g.colors_name) end,
+        theme = function()
+          if vim.g.colors_name:match('^tokyonight') then return require('lualine.themes.' .. vim.g.colors_name) end
+          -- fall through case just needed for telescope theme browser
+          return require('lualine.utils.loader').load_theme('auto')
+        end,
         component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree' },
         section_separators = { left = '', right = '' },
