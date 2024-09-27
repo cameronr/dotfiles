@@ -18,18 +18,29 @@
 
 [delta]
     navigate = true    # use n and N to move between diff sections
+    line-numbers = true
+
+    line-numbers-zero-style       = "#3b4261"
+
     minus-style                   = syntax "#37222c"
     minus-non-emph-style          = syntax "#37222c"
     minus-emph-style              = syntax "#713137"
     minus-empty-line-marker-style = syntax "#37222c"
-    line-numbers = true
     line-numbers-minus-style      = "#b2555b"
+
     plus-style                    = syntax "#182f23"
     plus-non-emph-style           = syntax "#182f23"
     plus-emph-style               = syntax "#224e38"
     plus-empty-line-marker-style  = syntax "#182f23"
     line-numbers-plus-style       = "#3e8e66"
-    line-numbers-zero-style       = "#3b4261"
+
+    #colorblind friendly
+    ; minus-style                   = syntax "#78721c"
+    ; minus-non-emph-style          = syntax "#78721c"
+    ; minus-emph-style              = syntax "#78721c"
+    ; minus-empty-line-marker-style = syntax "#78721c"
+    ; line-numbers-minus-style      = "#78721c"
+
 
     # delta detects terminal colors automatically; set one of these to disable auto-detection
     # dark = true
