@@ -22,10 +22,10 @@
 
     line-numbers-zero-style       = "#3b4261"
 
-    minus-style                   = syntax "#37222c"
-    minus-non-emph-style          = syntax "#37222c"
+    minus-style                   = syntax "#4d1919"
+    minus-non-emph-style          = syntax "#4d1919"
     minus-emph-style              = syntax "#713137"
-    minus-empty-line-marker-style = syntax "#37222c"
+    minus-empty-line-marker-style = syntax "#4d1919"
     line-numbers-minus-style      = "#b2555b"
 
     plus-style                    = syntax "#182f23"
@@ -35,11 +35,11 @@
     line-numbers-plus-style       = "#3e8e66"
 
     #colorblind friendly
-    ; minus-style                   = syntax "#78721c"
-    ; minus-non-emph-style          = syntax "#78721c"
-    ; minus-emph-style              = syntax "#78721c"
-    ; minus-empty-line-marker-style = syntax "#78721c"
-    ; line-numbers-minus-style      = "#78721c"
+    ; minus-style                   = syntax "#808000"
+    ; minus-non-emph-style          = syntax "#808000"
+    ; minus-emph-style              = syntax "#bab02c"
+    ; minus-empty-line-marker-style = syntax "#808000"
+    ; line-numbers-minus-style      = "#bab02c"
 
 
     # delta detects terminal colors automatically; set one of these to disable auto-detection
