@@ -13,7 +13,14 @@ return {
       floats = { 'transparent' },
     },
     lualine_bold = true,
-    on_colors = function(c) c.border_highlight = c.blue end,
+    on_colors = function(c)
+      c.border_highlight = c.blue
+
+      -- brighten up the git colors, used for gitsigns (column and lualine)
+      c.git.add = c.teal
+      c.git.change = c.blue
+      c.git.delete = c.red1
+    end,
     on_highlights = function(hl, c)
       -- This is bg_dark from the default tokyonight theme (not tokyonight night)
       local lighterBg = '#1f2335'
@@ -22,24 +29,14 @@ return {
         -- Use bg.dark for the cursor line background to make it more subtle
         hl.CursorLine = { bg = lighterBg }
 
-        -- Make the search / completion highlights stand out more
-        -- hl.TelescopeMatching = { bg = '#4F2D76' }
-        -- hl.CmpItemAbbrMatchFuzzy = { bg = '#4F2D76' }
-        -- hl.CmpItemAbbrMatch = { bg = '#4F2D76' }
-
-        -- hl.TelescopeMatching = { bg = '#004966' }
-        -- hl.CmpItemAbbrMatchFuzzy = { bg = '#004966' }
-        -- hl.CmpItemAbbrMatch = { bg = '#004966' }
-
-        -- hl.TelescopeMatching = { fg = hl.Search.bg }
-        -- hl.CmpItemAbbrMatchFuzzy = { fg = hl.Search.bg }
-        -- hl.CmpItemAbbrMatch = { fg = hl.Search.bg }
-
         -- Diff colors
         -- Brighten changes within a line
         hl.DiffText = { bg = '#224e38' }
         -- Make changed lines more green instead of blue
         hl.DiffAdd = { bg = '#182f23' }
+
+        -- More saturated DiffDelete
+        hl.DiffDelete = { bg = '#4d1919' }
 
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
@@ -75,8 +72,11 @@ return {
       hl.Folded = { fg = 'none' }
 
       -- Brighter git colors in LuaLine
-      hl.LuaLineDiffAdd = { fg = '#2e9e98' }
-      hl.LuaLineDiffChange = { fg = c.blue }
+      -- hl.LuaLineDiffAdd = { fg = c.teal }
+      -- hl.LuaLineDiffChange = { fg = c.blue }
+      -- hl.LuaLineDiffDelete = { fg = c.red1 }
+      -- hl.LuaLineDiffAdd = { fg = '#2e9e98' }
+      -- hl.LuaLineDiffChange = { fg = c.blue }
       -- hl.LuaLineDiffDelete = { fg = c.dark5 }
 
       -- Make the colors in the Lualine x section dimmer
@@ -104,10 +104,6 @@ return {
   init = function()
     -- Activate the colorscheme here. Tokyonight will pick the right style as set above
     vim.cmd.colorscheme('tokyonight')
-
-    -- You can configure highlights by doing something like:
-    -- Setting italic to false in styles.comments above accomplishes the same thing
-    -- vim.cmd.hi 'Comment gui=none'
 
     -- Could use the below to make both Lualine and Gitsigns brighter
     -- vim.cmd.hi 'GitSignsChange guifg=#7aa2f7'
