@@ -30,8 +30,7 @@ return {
       ['<C-c>'] = false,
       ['q'] = 'actions.close',
       ['<Esc>'] = 'actions.close',
+      ['\\'] = 'actions.parent',
     },
   },
-  -- Optional dependencies
-  dependencies = { 'echasnovski/mini.nvim' },
 }
