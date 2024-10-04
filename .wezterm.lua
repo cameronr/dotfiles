@@ -3,7 +3,7 @@ local wezterm = require("wezterm")
 
 -- From:
 -- https://wezfurlong.org/wezterm/config/lua/window-events/user-var-changed.html
-wezterm.on("user-var-changed", function(window, pane, name, value)
+wezterm.on("user-var-changed", function(window, _, name, value)
   wezterm.log_info("var", name, value)
 
   if name == "FORCE_DAY_MODE" then
