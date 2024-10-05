@@ -28,7 +28,7 @@ done
 # Tmux special case
 ln -snf $DOTFILES_DIR/tmux/tmux.conf .tmux.conf
 
-DOTFILE_DIRS=(nvim stylua)
+DOTFILE_DIRS=(nvim stylua eza)
 
 # (.) at end tells zsh to only return directories
 for dir in $DOTFILE_DIRS; do
