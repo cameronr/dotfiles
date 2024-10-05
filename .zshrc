@@ -148,6 +148,9 @@ if [[ (( $commands[eza] )) ]]; then
     # Unset LS_COLORS to use the eza theme
     unset LS_COLORS
 
+    # with --color-scale=age, dates can look a little too dim (default is 40)
+    export EZA_MIN_LUMINANCE=60
+
 else
     alias ls='ls -F --color=always'
     zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
