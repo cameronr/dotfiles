@@ -111,7 +111,6 @@ setopt    hist_find_no_dups    # Don't write duplicate entries in the history fi
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 
 # set vim as editor
@@ -139,12 +138,19 @@ fi
 
 # set up eza, if installed
 if [[ (( $commands[eza] )) ]]; then
-    alias ls='eza -F --color=always --icons=always --no-quotes'
-    FZF_DIR_PREVIEW='eza -F --color=always --icons=always --no-quotes --tree {} | head -500'
-    # Only needed on mac where Eza's default config is in Application Support
+    LS_CMD='eza -F --color=always --icons=always --no-quotes --color-scale=age'
+    alias ls=$LS_CMD
+    FZF_DIR_PREVIEW="$LS_CMD -1 {} | head -500"
+
+    # Needed on mac where Eza's default config is in Application Support
     export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza"
+
+    # Unset LS_COLORS to use the eza theme
+    unset LS_COLORS
+
 else
     alias ls='ls -F --color=always'
+    zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 fi
 
 # set up bat, if installed
@@ -204,8 +210,10 @@ if [[ (( $commands[fzf] )) ]]; then
     # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
     zstyle ':completion:*' menu no
     # preview directory's content with eza when completing cd
-    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color=always $realpath'
-    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+
+    # zstyle needs an unexpanded $realpath in place of {}
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview ${FZF_DIR_PREVIEW//\{\}/\$realpath}
+    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview ${FZF_DIR_PREVIEW//\{\}/\$realpath}
 fi
 
 zinit cdreplay -q
