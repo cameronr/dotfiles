@@ -1,4 +1,4 @@
-DOTFILES="${XDG_DATA_HOME:-${HOME}/dotfiles}"
+DOTFILES="${HOME}/dotfiles"
 
 # if [[ $(( ${+commands[starship]} )) ]]; then
 #     USE_STARSHIP=true
@@ -126,7 +126,7 @@ if [[ (( $commands[nvim] )) ]]; then
     alias vim='nvim'
     alias v='nvim'
 
-    NVIM_HOME="${XDG_DATA_HOME:-${HOME}/.config/nvim}"
+    NVIM_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
     if [[ ! -d "$NVIM_HOME" ]]; then
         ln -sn $DOTFILES/nvim "$NVIM_HOME"
     fi
@@ -141,6 +141,8 @@ fi
 if [[ (( $commands[eza] )) ]]; then
     alias ls='eza -F --color=always --icons=always --no-quotes'
     FZF_DIR_PREVIEW='eza -F --color=always --icons=always --no-quotes --tree {} | head -500'
+    # Only needed on mac where Eza's default config is in Application Support
+    export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza"
 else
     alias ls='ls -F --color=always'
 fi
@@ -199,8 +201,6 @@ if [[ (( $commands[fzf] )) ]]; then
     # zstyle ':completion:*:descriptions' format '[%d]'
     # zstyle ':fzf-tab:*' switch-group '<' '>'
 
-    # set list-colors to enable filename colorizing
-    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
     # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
     zstyle ':completion:*' menu no
     # preview directory's content with eza when completing cd
