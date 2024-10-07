@@ -27,6 +27,8 @@ return {
       winblend = 0,
     },
     keymaps = {
+      ['<C-v>'] = { 'actions.select', opts = { vertical = true }, desc = 'Open the entry in a vertical split' },
+      ['<C-s>'] = { function() vim.cmd.write() end, desc = 'Write changes' },
       ['<C-c>'] = false,
       ['q'] = 'actions.close',
       ['<Esc>'] = 'actions.close',
