@@ -15,7 +15,7 @@ return {
         vim.wo[winid].culopt = 'number'
 
         -- clear the lsp autocmd that highlights the word under the cursor
-        vim.api.nvim_clear_autocmds({
+        pcall(vim.api.nvim_clear_autocmds, {
           group = 'kickstart-lsp-highlight',
           buffer = bufnr,
         })
