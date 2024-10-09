@@ -105,9 +105,10 @@ return {
     -- Activate the colorscheme here. Tokyonight will pick the right style as set above
     vim.cmd.colorscheme('tokyonight')
 
-    -- Could use the below to make both Lualine and Gitsigns brighter
-    -- vim.cmd.hi 'GitSignsChange guifg=#7aa2f7'
-    -- vim.cmd.hi 'GitSignsDelete guifg=#f25a64'
+    -- restore light/dark background
+    local colorscheme_file = vim.fn.stdpath('data') .. '/last-colorscheme'
+    local success, colorscheme = pcall(vim.fn.readfile, colorscheme_file)
+    if success and vim.tbl_contains(colorscheme, 'tokyonight-day') then vim.o.background = 'light' end
 
     -- Sync nvim theme to wezterm, mostly to fix cursor color in day mode.
     -- See:
@@ -116,6 +117,8 @@ return {
     vim.api.nvim_create_autocmd('ColorScheme', {
       pattern = '*',
       callback = function()
+        vim.fn.writefile({ vim.g.colors_name }, colorscheme_file)
+
         local color_scheme = vim.g.colors_name:gsub('-', '_')
         local stdout = vim.loop.new_tty(1, false)
         if stdout then
