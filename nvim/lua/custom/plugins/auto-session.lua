@@ -6,6 +6,7 @@ return {
 
     { '<leader>wr', '<cmd>SessionSearch<CR>', desc = 'Session picker' },
     { '<leader>ws', '<cmd>SessionSave<CR>', desc = 'Save session' },
+    { '<leader>wD', '<cmd>SessionDelete<CR>', desc = 'Delete session' },
     { '<leader>wa', '<cmd>SessionToggleAutoSave<CR>', desc = 'Toggle autosave session' },
   },
 
