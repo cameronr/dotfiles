@@ -111,6 +111,9 @@ return {
           --   require('custom.util.lualine').harpoon_status,
           --   fmt = trunc(0, 0, 90, true),
           -- },
+          -- {
+          --   require('auto-session.lib').current_session_name,
+          -- },
           {
             lsp_status_all,
             fmt = trunc(0, 0, 90, true),
