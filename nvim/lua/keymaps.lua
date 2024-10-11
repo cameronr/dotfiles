@@ -237,12 +237,19 @@ vim.keymap.set('n', '<leader>vz', function()
   end
 end, { desc = 'Toggle foldcolumn' })
 
+vim.keymap.set('n', '<leader>vc', function()
+  ---@diagnostic disable-next-line: undefined-field
+  vim.opt.cursorline = not vim.opt.cursorline:get()
+end, { desc = 'Toggle cursorline' })
+
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
 vim.keymap.set('n', '<leader>vL', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
 vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
 vim.keymap.set('n', '<leader>vw', function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end, { desc = 'Toggle line wrap' })
 vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file changes' })
+
+vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
