@@ -216,7 +216,7 @@ vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
 -- quick replace of current word
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>//gI<Left><Left><Left>]], { desc = 'Replace current word' })
+vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Replace current word' })
 
 -- view options
 vim.keymap.set('n', '<leader>vl', function()
