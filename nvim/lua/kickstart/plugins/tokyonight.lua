@@ -69,7 +69,7 @@ return {
       hl.IblScope = { fg = '#43709B' }
 
       -- Make folds less prominent (especially important for DiffView)
-      hl.Folded = { fg = 'none' }
+      hl.Folded = { fg = '#3d59a1' }
 
       -- Brighter git colors in LuaLine
       -- hl.LuaLineDiffAdd = { fg = c.teal }
