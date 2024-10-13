@@ -15,7 +15,7 @@ return {
         if hide_width and win_width < hide_width then
           return ''
         elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
-          return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+          return str:sub(1, trunc_len) .. (no_ellipsis and '' or '…')
         end
         return str
       end
@@ -66,7 +66,7 @@ return {
         lualine_a = {
           {
             'mode',
-            fmt = trunc(90, 3, 0, true),
+            fmt = trunc(130, 3, 0, true),
           },
         },
         lualine_b = {
@@ -102,7 +102,7 @@ return {
             lazy_status.updates,
             cond = lazy_status.has_updates,
             color = { fg = '#ff9e64' },
-            fmt = trunc(0, 0, 100, true), -- hide when window is < 100 columns
+            fmt = trunc(0, 0, 160, true), -- hide when window is < 100 columns
           },
 
           require('custom.util.lualine').cmp_source('supermaven', '󰰣'),
@@ -116,19 +116,19 @@ return {
           -- },
           {
             lsp_status_all,
-            fmt = trunc(0, 0, 90, true),
+            fmt = trunc(0, 8, 140, false),
           },
           {
             encoding_only_if_not_utf8,
-            fmt = trunc(0, 0, 80, true), -- hide when window is < 80 columns
+            fmt = trunc(0, 0, 140, true), -- hide when window is < 80 columns
           },
           {
             fileformat_only_if_not_unix,
-            fmt = trunc(0, 0, 80, true), -- hide when window is < 80 columns
+            fmt = trunc(0, 0, 140, true), -- hide when window is < 80 columns
           },
           {
             'filetype',
-            fmt = trunc(0, 0, 100, true), -- hide when window is < 100 columns
+            fmt = trunc(0, 0, 140, true), -- hide when window is < 100 columns
           },
         },
         lualine_y = {
