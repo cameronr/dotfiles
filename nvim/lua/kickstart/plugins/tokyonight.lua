@@ -22,12 +22,9 @@ return {
       c.git.delete = c.red1
     end,
     on_highlights = function(hl, c)
-      -- This is bg_dark from the default tokyonight theme (not tokyonight night)
-      local lighterBg = '#1f2335'
-
       if vim.o.background == 'dark' then
-        -- Use bg.dark for the cursor line background to make it more subtle
-        hl.CursorLine = { bg = lighterBg }
+        -- Use bg.dark from storm (not night) for the cursor line background to make it more subtle
+        hl.CursorLine = { bg = '#1f2335' }
 
         -- Diff colors
         -- Brighten changes within a line
@@ -41,10 +38,6 @@ return {
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
       else
-        hl.TelescopeMatching = { bg = '#93cceb' }
-        hl.CmpItemAbbrMatchFuzzy = { bg = '#93cceb' }
-        hl.CmpItemAbbrMatch = { bg = '#93cceb' }
-
         -- Diff colors
         -- Brighten changes within a line
         hl.DiffText = { bg = '#a3dca9' }
@@ -66,18 +59,11 @@ return {
       -- Darken cmp menu (src for the completion)
       hl.CmpItemMenu = hl.CmpGhostText
 
+      -- More subtle
       hl.IblScope = { fg = '#43709B' }
 
       -- Make folds less prominent (especially important for DiffView)
-      hl.Folded = { fg = '#3d59a1' }
-
-      -- Brighter git colors in LuaLine
-      -- hl.LuaLineDiffAdd = { fg = c.teal }
-      -- hl.LuaLineDiffChange = { fg = c.blue }
-      -- hl.LuaLineDiffDelete = { fg = c.red1 }
-      -- hl.LuaLineDiffAdd = { fg = '#2e9e98' }
-      -- hl.LuaLineDiffChange = { fg = c.blue }
-      -- hl.LuaLineDiffDelete = { fg = c.dark5 }
+      hl.Folded = { fg = c.blue0 }
 
       -- Make the colors in the Lualine x section dimmer
       local lualine = require('lualine.themes.tokyonight-night')
