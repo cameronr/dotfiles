@@ -237,6 +237,8 @@ vim.keymap.set('n', '<leader>vz', function()
   end
 end, { desc = 'Toggle foldcolumn' })
 
+vim.keymap.set('n', '<leader>vP', function() vim.g.minipairs_disable = not vim.g.minipairs_disable and true or false end, { desc = 'Toggle mini.pairs' })
+
 vim.keymap.set('n', '<leader>vc', function()
   ---@diagnostic disable-next-line: undefined-field
   vim.opt.cursorline = not vim.opt.cursorline:get()
