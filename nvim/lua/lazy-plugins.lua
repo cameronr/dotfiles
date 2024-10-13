@@ -95,7 +95,7 @@ require('lazy').setup({
     rtp = {
       ---@type string[] list any plugins you want to disable here
       disabled_plugins = {
-        'matchparen',
+        -- 'matchparen',
         -- "netrwPlugin",
       },
     },
