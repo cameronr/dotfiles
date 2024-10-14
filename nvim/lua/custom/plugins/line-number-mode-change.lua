@@ -3,8 +3,7 @@ return {
   -- event = 'VeryLazy',
   -- dev = true,
   opts = function()
-    local palette = require('tokyonight.colors.' .. vim.g.colors_name:gsub('tokyonight%-', ''))
-
+    local palette = require('tokyonight.colors').setup()
     if palette == nil then return nil end
 
     local opts = {
