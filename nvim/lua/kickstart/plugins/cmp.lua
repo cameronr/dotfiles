@@ -1,7 +1,9 @@
 return {
   { -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    -- enabled = false,
+    -- 'hrsh7th/nvim-cmp',
+    'iguanacucumber/magazine.nvim',
+    name = 'nvim-cmp',
+
     event = { 'InsertEnter', 'CmdlineEnter' },
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
