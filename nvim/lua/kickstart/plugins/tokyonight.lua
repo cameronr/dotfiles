@@ -37,6 +37,10 @@ return {
 
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
+
+        -- Visual should match visual mode
+        hl.TelescopeSelection = hl.Visual
+        hl.Visual = { bg = '#3f3256' }
       else
         -- Diff colors
         -- Brighten changes within a line
@@ -46,6 +50,10 @@ return {
 
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
+
+        -- Visual should match visual mode
+        hl.TelescopeSelection = hl.Visual
+        hl.Visual = { bg = '#b69de2' }
       end
 
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
