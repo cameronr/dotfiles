@@ -1,18 +1,20 @@
 return {
   'sethen/line-number-change-mode.nvim',
+  event = 'ModeChanged',
+  -- enabled = false,
   opts = function()
     local palette = require('tokyonight.colors').setup()
     if palette == nil then return nil end
 
     local opts = {
       mode = {
-        i = {
-          fg = palette.green,
-          bold = true,
-        },
         n = {
           fg = palette.orange,
           -- fg = palette.blue,
+          bold = true,
+        },
+        i = {
+          fg = palette.green,
           bold = true,
         },
         R = {
@@ -29,6 +31,10 @@ return {
         },
         c = {
           fg = palette.yellow,
+          bold = true,
+        },
+        s = {
+          fg = palette.blue2,
           bold = true,
         },
       },
