@@ -80,9 +80,10 @@ return {
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
 
-      hl.LspReferenceWrite = { underline = true }
-      hl.LspReferenceText = { underline = true }
-      hl.LspReferenceRead = { underline = true }
+      -- Make lsp cursor word highlights dimmer
+      hl.LspReferenceWrite = { bg = c.bg_highlight }
+      hl.LspReferenceText = { bg = c.bg_highlight }
+      hl.LspReferenceRead = { bg = c.bg_highlight }
 
       hl.TelescopePromptTitle = {
         fg = c.fg,
