@@ -93,7 +93,7 @@ return {
         },
         lualine_c = {
           {
-            require('custom.util.lualine').pretty_path(),
+            require('util.lualine').pretty_path(),
             separator = '',
           },
         },
@@ -105,10 +105,10 @@ return {
             fmt = trunc(0, 0, 160, true), -- hide when window is < 100 columns
           },
 
-          require('custom.util.lualine').cmp_source('supermaven', '󰰣'),
+          require('util.lualine').cmp_source('supermaven', '󰰣'),
 
           -- {
-          --   require('custom.util.lualine').harpoon_status,
+          --   require('util.lualine').harpoon_status,
           --   fmt = trunc(0, 0, 90, true),
           -- },
           -- {
