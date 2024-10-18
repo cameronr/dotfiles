@@ -80,6 +80,10 @@ return {
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
 
+      hl.LspReferenceWrite = { underline = true }
+      hl.LspReferenceText = { underline = true }
+      hl.LspReferenceRead = { underline = true }
+
       hl.TelescopePromptTitle = {
         fg = c.fg,
       }
