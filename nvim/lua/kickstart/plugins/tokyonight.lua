@@ -41,6 +41,10 @@ return {
         -- Visual should match visual mode
         hl.TelescopeSelection = hl.Visual
         hl.Visual = { bg = '#3f3256' }
+
+        -- Make TS context dimmer and color line numbers
+        hl.TreesitterContext = { bg = '#272d45' }
+        hl.TreesitterContextLineNumber = { fg = c.fg_gutter, bg = '#272d45' }
       else
         -- Diff colors
         -- Brighten changes within a line
@@ -54,6 +58,9 @@ return {
         -- Visual should match visual mode
         hl.TelescopeSelection = hl.Visual
         hl.Visual = { bg = '#b69de2' }
+
+        -- Make TS context color line numbers
+        hl.TreesitterContextLineNumber = { fg = '#939aba', bg = '#b3b8d1' }
       end
 
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
