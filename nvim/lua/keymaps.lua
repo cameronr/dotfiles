@@ -73,6 +73,7 @@ vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
 -- Sloppy aliases for accidental capital commands
+-- in 0.10, could use vim.keymap.set("ca", ...)
 vim.api.nvim_create_user_command('Qa', 'qa', {})
 vim.api.nvim_create_user_command('Q', 'q', {})
 vim.api.nvim_create_user_command('W', 'w', {})
@@ -201,8 +202,8 @@ vim.keymap.set('n', '[b', '<cmd>:bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
 
 -- <leader>b
-vim.keymap.set('n', '<leader>bq', '<cmd>:bd<CR>', { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader>bd', '<cmd>:bd<CR>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>bq', '<cmd>bd<CR>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>bn', '<cmd>enew<CR>', { desc = 'New buffer' })
 
 -- Shortcut for surrounding a word (inner) with a '
