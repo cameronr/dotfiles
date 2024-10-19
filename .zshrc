@@ -227,7 +227,7 @@ if [[ -n $USE_STARSHIP ]]; then
     eval "$(starship init zsh)"
 else
     # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
-    [[ ! -f ~/dotfiles/.p10k.zsh ]] || source ~/dotfiles/.p10k.zsh
+    [[ ! -f $DOTFILES/.p10k.zsh ]] || source $DOTFILES/.p10k.zsh
 
     typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=magenta
 fi
