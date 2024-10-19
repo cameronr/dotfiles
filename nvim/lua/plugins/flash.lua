@@ -1,6 +1,6 @@
 return {
   'folke/flash.nvim',
-  event = 'VeryLazy',
+  event = { 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
   ---@type Flash.Config
   opts = {
     modes = {
