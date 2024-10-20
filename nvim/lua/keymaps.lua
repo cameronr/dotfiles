@@ -66,6 +66,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- blackhole single x
 vim.keymap.set('n', 'x', '"_x')
 
+-- Put change into the blackhole register
+vim.keymap.set('n', 'c', '"_c')
+
 -- Able to use semicolon in normal mode
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 
@@ -181,9 +184,6 @@ vim.keymap.set('n', '[w', diagnostic_goto(false, 'WARN'), { desc = 'Prev Warning
 vim.keymap.set('n', '<bslash>x', 'gcc', { desc = 'Comment toggle', remap = true })
 vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap = true })
 
--- Put change into the blackhole register
-vim.keymap.set('n', 'c', '"_c')
-
 -- map page up/down to ctrl-u/d
 vim.keymap.set({ 'n', 'v', 'x' }, '<pageup>', '<c-u>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
@@ -220,6 +220,9 @@ vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
 -- quick replace of current word
 vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Replace current word' })
+
+-- select last pasted lines
+vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
 
 -- view options
 vim.keymap.set('n', '<leader>vl', function()
@@ -258,6 +261,10 @@ vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tr
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
+  -- local harpoon = require('harpoon')
+  --
+  -- vim.notify(vim.inspect(harpoon:list().items))
+
   -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
   -- local current_win = vim.api.nvim_get_current_win()
   --
@@ -289,13 +296,39 @@ vim.keymap.set('n', '<Bslash>d', function()
   -- local end = vim.loop.hrtime()
   -- print(string.format("Elapsed time: %.6f", (end - start) / 1e6))  -- Convert nanoseconds to milliseconds
   --
-  local bufs = vim.api.nvim_list_bufs()
-  for _, buf in ipairs(bufs) do
-    local filename = vim.api.nvim_buf_get_name(buf)
-    local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
-    local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
-    vim.notify(buf .. ': file_name: ' .. filename .. ' buftype: ' .. buftype .. ' filetype: ' .. filetype)
-  end
+  -- local bufs = vim.api.nvim_list_bufs()
+  -- for _, buf in ipairs(bufs) do
+  --   local filename = vim.api.nvim_buf_get_name(buf)
+  --   local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
+  --   local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
+  --   vim.notify(buf .. ': file_name: ' .. filename .. ' buftype: ' .. buftype .. ' filetype: ' .. filetype)
+  -- end
+
+  -- local filename = vim.fn.fnamemodify(vim.uv.fs_realpath(vim.api.nvim_buf_get_name(0)), ':~:.')
+  -- local Path = require('plenary.path')
+  --
+  -- local blah = Path:new(filename)
+  -- vim.notify(blah:shorten(3, { -1, -2 }))
+
+  -- -- Get the current buffer number
+  -- local bufnr = vim.api.nvim_get_current_buf()
+  --
+  -- -- Get the cursor position
+  -- local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  -- row = row - 1 -- API uses 0-based row numbers
+  --
+  -- -- Get the syntax ID at the cursor position
+  -- local syntax_id = vim.fn.synID(row + 1, col + 1, 1)
+  --
+  -- -- Get the name of the syntax group
+  -- local syntax_name = vim.fn.synIDattr(syntax_id, 'name')
+  --
+  -- -- Get the linked highlight group
+  -- local linked_hl_group = vim.fn.synIDattr(vim.fn.synIDtrans(syntax_id), 'name')
+  --
+  -- -- Print the results
+  -- vim.notify('Syntax group: ' .. syntax_name)
+  -- vim.notify('Linked highlight group: ' .. linked_hl_group)
 end, { desc = 'debugging function' })
 
 -- vim: ts=2 sts=2 sw=2 et
