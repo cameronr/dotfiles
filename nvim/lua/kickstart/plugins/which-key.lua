@@ -27,6 +27,7 @@ return {
         { '<leader>b', group = 'Buffer' },
         { '<leader>c', group = 'Code' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
+        { '<leader>o', group = 'Harpoon' },
         { '<leader>s', group = 'Search' },
         { '<leader>v', group = 'View / UI' },
         { '<leader>w', group = 'Window / Workspace' },
