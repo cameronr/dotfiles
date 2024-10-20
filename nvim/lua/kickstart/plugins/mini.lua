@@ -39,7 +39,7 @@ return {
       require('mini.surround').setup({
         mappings = {
           add = 'S', -- Add surrounding in Normal and Visual modes
-          delete = '<M-s>', -- Delete surrounding
+          delete = 'ds', -- Delete surrounding
           -- find = 'Sf', -- Find surrounding (to the right)
           -- find_left = 'SF', -- Find surrounding (to the left)
           -- highlight = 'Sh', -- Highlight surrounding
