@@ -244,9 +244,9 @@ return {
           },
         },
 
-        -- Bash/Zsh
+        -- Bash
         bashls = {
-          filetypes = { 'sh', 'zsh', 'bash' },
+          filetypes = { 'sh', 'bash' },
         },
 
         -- HTML / CSS

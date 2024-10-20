@@ -12,6 +12,7 @@ return {
         javascriptreact = { 'eslint_d' },
         typescriptreact = { 'eslint_d' },
         python = { 'pylint' },
+        bash = { 'shellcheck' },
 
         -- Currently broken on intel Macs
         -- https://github.com/Kampfkarren/selene/issues/600
