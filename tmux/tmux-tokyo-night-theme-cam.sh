@@ -42,6 +42,8 @@ declare -A PALLETE=(
 )
 
 function generate_inactive_window_string() {
+    inactive_window_icon=$(get_tmux_option "@theme_plugin_inactive_window_icon" " ")
+    zoomed_window_icon=$(get_tmux_option "@theme_plugin_zoomed_window_icon" " ")
     transparent=$(get_tmux_option "@theme_transparent_status_bar" "false")
     left_separator=$(get_tmux_option "@theme_left_separator" "")
 
@@ -56,11 +58,14 @@ function generate_inactive_window_string() {
         local separator_end="#[bg=${PALLETE[bg_highlight]},fg=${PALLETE['dark3']}]${left_separator:?}#[none]"
     fi
 
-    # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag, , }#W ${separator_end}"
-    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #T ${separator_end}"
+    # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$inactive_window_icon}#W ${separator_end}"
+    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #{?window_zoomed_flag,$zoomed_window_icon,}#T ${separator_end}"
 }
 
 function generate_active_window_string() {
+    active_window_icon=$(get_tmux_option "@theme_plugin_active_window_icon" " ")
+    zoomed_window_icon=$(get_tmux_option "@theme_plugin_zoomed_window_icon" " ")
+    pane_synchronized_icon=$(get_tmux_option "@theme_plugin_pane_synchronized_icon" "✵")
     left_separator=$(get_tmux_option "@theme_left_separator" "")
     transparent=$(get_tmux_option "@theme_transparent_status_bar" "false")
 
@@ -75,8 +80,8 @@ function generate_active_window_string() {
         separator_end="#[bg=${PALLETE[bg_highlight]},fg=${PALLETE['purple']}]${left_separator:?}#[none]"
     fi
 
-    # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag, , }#W ${separator_end}#[none]"
-    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #T ${separator_end}#[none]"
+    # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$active_window_icon}#W #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
+    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #{?window_zoomed_flag,$zoomed_window_icon,}#T #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
 }
 
 
