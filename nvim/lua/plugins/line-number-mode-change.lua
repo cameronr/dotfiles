@@ -1,12 +1,16 @@
 return {
-  'sethen/line-number-change-mode.nvim',
-  event = 'ModeChanged',
+  'cameronr/line-number-change-mode.nvim',
+  -- dev = true,
+  event = { 'ModeChanged', 'WinEnter', 'WinLeave' },
   -- enabled = false,
   opts = function()
     local palette = require('tokyonight.colors').setup()
     if palette == nil then return nil end
 
     local opts = {
+      -- debug = true,
+      hide_inactive_cursorline = true,
+
       mode = {
         n = {
           fg = palette.orange,
