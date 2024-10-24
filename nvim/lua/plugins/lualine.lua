@@ -1,5 +1,11 @@
 return {
   'nvim-lualine/lualine.nvim',
+  dependencies = {
+    {
+      'cameronr/lualine-pretty-path',
+      -- dev = true,
+    },
+  },
   config = function(_, opts)
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
@@ -93,7 +99,14 @@ return {
         },
         lualine_c = {
           {
-            require('util.lualine').pretty_path(),
+            'pretty_path',
+            providers = {
+              default = require('util/pretty_path_harpoon'),
+            },
+            icon_show = false,
+            directories = {
+              max_depth = 4,
+            },
             separator = '',
           },
         },
@@ -141,11 +154,12 @@ return {
       inactive_sections = {
         lualine_c = {
           {
-            'filename',
-            symbols = {
-              modified = '+', -- Text to show when the file is modified.
-              readonly = '', -- Text to show when the file is non-modifiable or readonly.
-            },
+            'pretty_path',
+            -- 'filename',
+            -- symbols = {
+            --   modified = '+', -- Text to show when the file is modified.
+            --   readonly = '', -- Text to show when the file is non-modifiable or readonly.
+            -- },
           },
         },
       },
