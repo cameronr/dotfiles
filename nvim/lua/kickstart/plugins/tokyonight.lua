@@ -13,6 +13,7 @@ return {
       floats = { 'transparent' },
     },
     lualine_bold = true,
+
     on_colors = function(c)
       c.border_highlight = c.blue
 
@@ -21,6 +22,7 @@ return {
       c.git.change = c.blue
       c.git.delete = c.red1
     end,
+
     on_highlights = function(hl, c)
       if vim.o.background == 'dark' then
         -- Use bg.dark from storm (not night) for the cursor line background to make it more subtle
@@ -61,6 +63,12 @@ return {
 
         -- Make TS context color line numbers
         hl.TreesitterContextLineNumber = { fg = '#939aba', bg = '#b3b8d1' }
+
+        -- Make yaml properties and strings more distinct
+        hl['@property.yaml'] = { fg = '#006a83' }
+
+        -- Make flash label legible in light mode
+        hl.FlashLabel.fg = c.bg
       end
 
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
