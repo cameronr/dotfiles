@@ -1,6 +1,7 @@
 return {
   'stevearc/oil.nvim',
 
+  cmd = 'Oil',
   keys = {
     {
       '<Bslash><Bslash>',
@@ -30,6 +31,11 @@ return {
       ['<C-v>'] = { 'actions.select', opts = { vertical = true }, desc = 'Open the entry in a vertical split' },
       ['<C-s>'] = { function() vim.cmd.write() end, desc = 'Write changes' },
       ['<C-c>'] = false,
+
+      -- don't interfere with window switching keys
+      ['<C-h>'] = false,
+      ['<C-l>'] = false,
+
       ['q'] = 'actions.close',
       ['<Esc>'] = 'actions.close',
       ['\\'] = 'actions.parent',
