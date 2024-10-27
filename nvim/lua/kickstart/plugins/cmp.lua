@@ -215,7 +215,7 @@ return {
 
       cmp.setup.cmdline(':', {
         mapping = cmp.mapping.preset.cmdline({
-          ['<Bslash>'] = cmp.mapping(function(fallback)
+          ['<C-Space>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.abort()
             else
