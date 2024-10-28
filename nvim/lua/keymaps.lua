@@ -162,7 +162,10 @@ vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
 
 -- save file
-vim.keymap.set({ 'i', 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr><esc>', { desc = 'Save File' })
+vim.keymap.set({ 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save File' })
+
+-- save file with undo point in insert mode
+vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr>', { desc = 'Save File' })
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
