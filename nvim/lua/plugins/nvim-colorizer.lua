@@ -15,6 +15,7 @@ return {
       '!notify',
       '!TelescopeResults',
       '!TelescopePrompt',
+      '!lazy',
     },
   },
 }
