@@ -22,7 +22,7 @@ return {
       -- Run pylint in the venv
       -- https://gist.github.com/Norbiox/652befc91ca0f90014aec34eccee27b2
       lint.linters.pylint.cmd = 'python'
-      lint.linters.pylint.args = { '-m', 'pylint', '-f', 'json' }
+      lint.linters.pylint.args = { '-m', 'pylint', '-f', 'json', '--from-stdin', function() return vim.api.nvim_buf_get_name(0) end }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
