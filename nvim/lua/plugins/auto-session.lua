@@ -28,6 +28,9 @@ return {
           height = 0.7,
         },
       },
+      mappings = {
+        delete_session = { 'i', '<M-d>' },
+      },
     },
     suppressed_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
   },
