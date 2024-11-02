@@ -110,6 +110,9 @@ vim.api.nvim_create_autocmd('CmdWinEnter', {
   end,
 })
 
+-- Unamp g? (don't need rot-13)
+vim.keymap.set({ 'n', 'x' }, 'g?', '<nop>', { noremap = true })
+
 -- Borrowed from LazyVim
 
 -- better up/down
@@ -165,7 +168,7 @@ vim.keymap.set('v', '>', '>gv')
 vim.keymap.set({ 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save File' })
 
 -- save file with undo point in insert mode
-vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr>', { desc = 'Save File' })
+vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr><esc>', { desc = 'Save File' })
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
@@ -257,6 +260,8 @@ vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggl
 vim.keymap.set('n', '<leader>vL', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
 vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
+
+---@diagnostic disable-next-line: undefined-field
 vim.keymap.set('n', '<leader>vw', function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end, { desc = 'Toggle line wrap' })
 vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file changes' })
 
