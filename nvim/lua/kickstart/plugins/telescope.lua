@@ -138,6 +138,13 @@ return {
         end
       end
 
+      -- If we have ripgrep, add some flags
+      local find_files_command
+      if vim.fn.executable('rg') == 1 then
+        --
+        find_files_command = { 'rg', '--files', '-L', '--hidden', '-g', '!.git', '-g', '!node_modules/', '-g', '!venv' }
+      end
+
       require('telescope').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -180,13 +187,7 @@ return {
             },
           },
           find_files = {
-            find_command = function()
-              if vim.fn.executable('rg') == 1 then
-                --
-                return { 'rg', '--files', '-L', '--hidden', '-g', '!.git', '-g', '!node_modules/', '-g', '!venv' }
-              end
-              return {}
-            end,
+            find_command = find_files_command,
           },
           live_grep = {
             file_ignore_patterns = { 'node_modules', '.git', '.venv' },
