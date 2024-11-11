@@ -161,10 +161,10 @@ return {
             local ellipsis_char = '…'
             if vim.fn.strchars(vim_item.abbr) > maxwidth then vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, maxwidth) .. ellipsis_char end
             vim_item.menu = ({
-              nvim_lsp = '[LSP]',
-              luasnip = '[Snip]',
-              buffer = '[Buf]',
-              path = '[Path]',
+              nvim_lsp = 'LSP',
+              luasnip = 'Snip',
+              buffer = 'Buf',
+              path = 'Path',
             })[entry.source.name]
             return vim_item
           end,
@@ -182,9 +182,9 @@ return {
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
             group_index = 0,
           },
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp', max_item_count = 20 },
           { name = 'luasnip' },
-          { name = 'buffer' },
+          { name = 'buffer', max_item_count = 20 },
           { name = 'path' },
           { name = 'supermaven' },
         },
