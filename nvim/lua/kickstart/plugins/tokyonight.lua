@@ -112,6 +112,9 @@ return {
       hl.TelescopePreviewTitle = {
         fg = c.orange,
       }
+
+      hl.HighlightUndo = hl.CurSearch
+      hl.HighlightRedo = hl.CurSearch
     end,
   },
 
