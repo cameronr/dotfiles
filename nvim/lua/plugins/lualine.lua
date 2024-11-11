@@ -107,6 +107,9 @@ return {
             directories = {
               max_depth = 4,
             },
+            highlights = {
+              newfile = 'LazyProgressDone',
+            },
             separator = '',
           },
         },
