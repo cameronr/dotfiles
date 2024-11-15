@@ -166,11 +166,41 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Change the Diagnostic symbols in the sign column (gutter)
-      -- local signs = { Error = '󰅚 ', Warn = '󰀪 ', Info = ' ', Hint = '󰌶 ' }
-      local signs = { Error = ' ', Warn = ' ', Info = ' ', Hint = '' }
-      for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+
+      vim.diagnostic.config({
+        virtual_text = false,
+        float = {
+          -- header = false,
+          border = 'rounded',
+        },
+      })
+
+      if vim.fn.has('nvim-0.10') == 1 then
+        -- user newer mechanism if possible, fixes signs in neotree
+        vim.diagnostic.config({
+          signs = {
+            text = {
+              [vim.diagnostic.severity.ERROR] = ' ',
+              [vim.diagnostic.severity.WARN] = ' ',
+              [vim.diagnostic.severity.INFO] = ' ',
+              [vim.diagnostic.severity.HINT] = '',
+            },
+            linehl = {
+              [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+              [vim.diagnostic.severity.WARN] = 'DiagnosticSignWarn',
+              [vim.diagnostic.severity.INFO] = 'DiagnosticSignInfo',
+              [vim.diagnostic.severity.HINT] = 'DiagnosticSignHint',
+            },
+          },
+        })
+      else
+        -- local signs = { Error = '󰅚 ', Warn = '󰀪 ', Info = ' ', Hint = '󰌶 ' }
+        local signs = { Error = ' ', Warn = ' ', Info = ' ', Hint = '' }
+
+        for type, icon in pairs(signs) do
+          local hl = 'DiagnosticSign' .. type
+          vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = '' })
+        end
       end
 
       -- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.

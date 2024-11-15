@@ -182,14 +182,10 @@ vim.opt.smartindent = true
 -- Recommended session options from auto-sessions
 vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
+-- signcolumn on right exploration. ultimately, i like the numbers closers than the signs
+-- vim.opt.statuscolumn = "%=%{v:virtnum < 1 ? (v:relnum ? v:relnum : v:lnum < 10 ? v:lnum . '' : v:lnum) : ''} %s"
+
 -- Hide diagnostic virtual text and add border to floating window
-vim.diagnostic.config({
-  virtual_text = false,
-  float = {
-    -- header = false,
-    border = 'rounded',
-  },
-})
 
 vim.opt.wrap = true
 
