@@ -2,7 +2,7 @@ return {
   'sindrets/diffview.nvim',
   -- lazy = true,
   keys = {
-    { '<leader>hd', '<cmd>DiffviewOpen<CR>', desc = 'git diff against index' },
+    { '<leader>hd', '<cmd>DiffviewOpen -uno<CR>', desc = 'git diff against index' },
   },
   cmd = 'DiffviewOpen',
   opts = {
