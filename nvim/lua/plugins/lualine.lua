@@ -38,7 +38,8 @@ return {
         table.insert(names, server.name)
       end
       if not haveServers then return '' end
-      return ' ' .. table.concat(names, ',')
+      -- return ' ' .. table.concat(names, ',')
+      return ' '
     end
 
     -- Override 'encoding': Don't display if encoding is UTF-8.
@@ -103,7 +104,6 @@ return {
             providers = {
               default = require('util/pretty_path_harpoon'),
             },
-            icon_show = false,
             directories = {
               max_depth = 4,
             },
@@ -119,32 +119,25 @@ return {
             cond = lazy_status.has_updates,
             color = { fg = '#ff9e64' },
             fmt = trunc(0, 0, 160, true), -- hide when window is < 100 columns
+            separator = '',
           },
 
           require('util.lualine').cmp_source('supermaven', '󰰣'),
 
-          -- {
-          --   require('util.lualine').harpoon_status,
-          --   fmt = trunc(0, 0, 90, true),
-          -- },
-          -- {
-          --   require('auto-session.lib').current_session_name,
-          -- },
           {
             lsp_status_all,
             fmt = trunc(0, 8, 140, false),
+            separator = '',
           },
           {
             encoding_only_if_not_utf8,
             fmt = trunc(0, 0, 140, true), -- hide when window is < 80 columns
+            separator = '',
           },
           {
             fileformat_only_if_not_unix,
             fmt = trunc(0, 0, 140, true), -- hide when window is < 80 columns
-          },
-          {
-            'filetype',
-            fmt = trunc(0, 0, 140, true), -- hide when window is < 100 columns
+            separator = '',
           },
         },
         lualine_y = {

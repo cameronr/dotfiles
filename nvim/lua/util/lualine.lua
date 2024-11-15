@@ -63,6 +63,7 @@ function M.cmp_source(name, icon)
 
     cond = function() return status() ~= nil end,
     color = function() return { fg = colors[status()] } or { fg = colors.ok } end,
+    separator = '',
   }
 end
 

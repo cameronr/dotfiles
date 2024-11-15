@@ -97,7 +97,7 @@ return {
 
     table.insert(config.sections.lualine_c, {
       trouble_symbols and trouble_symbols.get,
-      cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 100 and trouble_symbols.has() end,
+      cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 120 and trouble_symbols.has() end,
     })
 
     require('lualine').setup(config)
