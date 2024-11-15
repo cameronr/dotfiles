@@ -105,8 +105,8 @@ return {
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           -- map('<leader>ca', vim.lsp.buf.code_action, 'Code action')
-          map('<leader>ca', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
-          -- map('<leader>ca', function() require('tiny-code-action').code_action() end, 'Code action', { 'n', 'x' })
+          map('<leader>cA', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
+          map('<leader>ca', function() require('tiny-code-action').code_action() end, 'Code action', { 'n', 'x' })
 
           map('<leader>vR', '<cmd>LspRestart<CR>', 'Restart LSP')
 
