@@ -1,5 +1,6 @@
 return {
   'cameronr/line-number-change-mode.nvim',
+  branch = 'cursorline',
   -- dev = true,
   event = { 'ModeChanged', 'WinEnter', 'WinLeave' },
   -- enabled = false,
