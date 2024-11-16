@@ -1,9 +1,9 @@
 return {
   'NeogitOrg/neogit',
   keys = {
-    { '<leader>n', ':Neogit<CR>', desc = 'NeoGit' },
+    { '<leader>n', ':Neogit<CR>', desc = 'Neogit' },
   },
-  cmd = 'NeoGit',
+  cmd = 'Neogit',
   opts = {
     graph_style = 'unicode',
     commit_editor = {
