@@ -267,30 +267,62 @@ vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file ch
 
 vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
+vim.keymap.set('n', '<leader>cI', function()
+  local function display_lsp_info(client, _)
+    if not client then return end
+    -- Create a temporary buffer to show the configuration
+    local buf = vim.api.nvim_create_buf(false, true)
+    local win = vim.api.nvim_open_win(buf, true, {
+      relative = 'editor',
+      width = math.floor(vim.o.columns * 0.75),
+      height = math.floor(vim.o.lines * 0.90),
+      col = math.floor(vim.o.columns * 0.125),
+      row = math.floor(vim.o.lines * 0.05),
+      style = 'minimal',
+      border = 'rounded',
+      title = ' ' .. (client.name:gsub('^%l', string.upper)) .. ': LSP Configuration ',
+      title_pos = 'center',
+    })
+
+    local lines = {}
+    table.insert(lines, 'Client: ' .. client.name)
+    table.insert(lines, 'ID: ' .. client.id)
+    table.insert(lines, '')
+    table.insert(lines, 'Configuration:')
+
+    local config_lines = vim.split(vim.inspect(client.config), '\n')
+    vim.list_extend(lines, config_lines)
+
+    -- Set the lines in the buffer
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+    -- Set buffer options
+    vim.bo[buf].modifiable = false
+    vim.bo[buf].filetype = 'lua'
+    vim.bo[buf].bh = 'delete'
+    vim.diagnostic.enable(false, { bufnr = buf })
+
+    vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { noremap = true, silent = true })
+  end
+
+  local clients = vim.lsp.get_clients()
+
+  if #clients == 1 then
+    display_lsp_info(clients[1])
+  else
+    vim.ui.select(clients, {
+      prompt = 'Pick language server: ',
+      format_item = function(item) return item.name end,
+    }, display_lsp_info)
+  end
+end, { desc = 'Inspect LSP' })
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
   -- local harpoon = require('harpoon')
   --
   -- vim.notify(vim.inspect(harpoon:list().items))
 
-  -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
-  -- local current_win = vim.api.nvim_get_current_win()
-  --
-  -- local start_time = vim.uv.hrtime()
-  --
-  -- for i = 1, 100000 do
-  --   require('statuscol').StatusCol({ win = current_win })
-  -- end
-  -- -- code to be profiled
-  --
-  -- local end_time = vim.uv.hrtime()
-  -- vim.notify('Require time: ' .. end_time - start_time)
-  --
-  -- vim.g.statusline_winid = vim.api.nvim_get_current_win()
-  --
-  -- start_time = vim.uv.hrtime()
-  --
-  -- for i = 1, 100000 do
   --   StatusCol({ win = current_win })
   -- end
   -- -- code to be profiled
