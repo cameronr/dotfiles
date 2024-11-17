@@ -182,7 +182,7 @@ return {
             -- ignore_current_buffer = true,
             mappings = {
               i = {
-                ['<M-d>'] = actions.delete_buffer,
+                -- ['<M-d>'] = actions.delete_buffer,
               },
             },
           },
