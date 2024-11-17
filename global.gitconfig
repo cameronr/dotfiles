@@ -1,11 +1,11 @@
 [init]
-	defaultBranch = main
+    defaultBranch = main
 
 [pull]
-	ff = only
+    ff = only
 
 [push]
-	default = simple
+    default = simple
 
 [merge]
     conflictstyle = diff3
@@ -14,7 +14,7 @@
     colorMoved = default
 
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 
 [delta]
     navigate = true    # use n and N to move between diff sections
@@ -46,3 +46,4 @@
     # dark = true
     # light = true
 
+# vim: ft=gitconfig ts=4 sts=4 sw=4 et
