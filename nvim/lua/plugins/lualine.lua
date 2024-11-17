@@ -117,7 +117,7 @@ return {
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,
-            color = { fg = '#ff9e64' },
+            -- color = { fg = '#3d59a1' },
             fmt = trunc(0, 0, 160, true), -- hide when window is < 100 columns
             separator = '',
           },
