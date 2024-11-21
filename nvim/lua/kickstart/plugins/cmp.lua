@@ -35,6 +35,7 @@ return {
       'hrsh7th/cmp-path', -- suggestions from path
       'hrsh7th/cmp-buffer', -- suggestions from current buffer
       'hrsh7th/cmp-cmdline', -- suggestions from commands
+      { 'petertriho/cmp-git', opts = {} }, -- suggestions for git
     },
     config = function()
       -- See `:help cmp`
@@ -157,7 +158,7 @@ return {
               mode = 'symbol',
               symbol_map = { Supermaven = '󰰣' },
             }) .. ' '
-            local maxwidth = 30
+            local maxwidth = 50
             local ellipsis_char = '…'
             if vim.fn.strchars(vim_item.abbr) > maxwidth then vim_item.abbr = vim.fn.strcharpart(vim_item.abbr, 0, maxwidth) .. ellipsis_char end
             vim_item.menu = ({
@@ -187,6 +188,7 @@ return {
           { name = 'buffer', max_item_count = 20 },
           { name = 'path' },
           { name = 'supermaven' },
+          { name = 'git' },
         },
         -- experimental = {
         --   ghost_text = true,
