@@ -190,8 +190,17 @@ return {
             find_command = find_files_command,
           },
           live_grep = {
-            file_ignore_patterns = { 'node_modules', '.git', '.venv' },
-            additional_args = function(_) return { '--hidden' } end,
+            additional_args = function()
+              return {
+                '--hidden',
+                '--glob',
+                '!**/.git/*',
+                '--glob',
+                '!**/node[-_]modules/*',
+                '--glob',
+                '!**/.venv/*',
+              }
+            end,
           },
           builtin = {
             include_extensions = false,
