@@ -27,19 +27,6 @@ return {
       auto_install = true,
       highlight = {
         enable = true,
-        disable = function(_, buf)
-          local line_count = vim.api.nvim_buf_line_count(buf)
-          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-
-          -- vim.notify('stats: ' .. vim.inspect(stats))
-
-          -- if file is at least 10k and the average bytes per line is > 250, then disable treesitter
-          if ok and stats and (stats.size > (10 * 1024)) and (stats.size / line_count) > 250 then
-            vim.notify('Disabling treesitter, bytes: ' .. stats.size .. ', lines: ' .. line_count .. ', bytes / lines: ' .. math.floor(stats.size / line_count))
-            return true
-          end
-          return false
-        end,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
