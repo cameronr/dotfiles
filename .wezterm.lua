@@ -78,6 +78,8 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 config = {
 
+  max_fps = 120,
+
   font = wezterm.font("MesloLGS Nerd Font"),
   font_size = 19,
 
