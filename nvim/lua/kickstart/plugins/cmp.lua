@@ -36,6 +36,7 @@ return {
       'hrsh7th/cmp-buffer', -- suggestions from current buffer
       'hrsh7th/cmp-cmdline', -- suggestions from commands
       { 'petertriho/cmp-git', opts = {} }, -- suggestions for git
+      -- 'dmitmel/cmp-cmdline-history', -- suggestions from command history
     },
     config = function()
       -- See `:help cmp`
@@ -204,6 +205,7 @@ return {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
           { name = 'buffer', max_item_count = 20 },
+          -- { name = 'cmdline_history' },
         },
       })
 
@@ -260,6 +262,7 @@ return {
         }),
         sources = {
           { name = 'cmdline', max_item_count = 20 },
+          -- { name = 'cmdline_history', max_item_count = 5 },
         },
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
