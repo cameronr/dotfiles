@@ -173,6 +173,7 @@ return {
               ['<C-W>'] = require('telescope.actions.layout').cycle_layout_prev,
               ['<C-h>'] = 'which_key',
               ['<cr>'] = multiopen,
+              ['<C-Space>'] = actions.to_fuzzy_refine,
             },
           },
         },

@@ -124,13 +124,13 @@ return {
           --  completions whenever it has completion options available.
           -- ['<C-Space>'] = cmp.mapping.complete({}),
 
-          -- cmp toggle
-          ['<C-Space>'] = cmp.mapping(function(_)
+          -- Close popup with ctrl-space. Don't toggle because it breaks telescope refine
+          ['<C-Space>'] = cmp.mapping(function(fallback)
             if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
               cmp.close()
-            else
-              cmp.complete()
+              return
             end
+            fallback()
           end),
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
