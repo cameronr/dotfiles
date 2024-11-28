@@ -95,7 +95,7 @@ vim.opt.formatoptions:remove({ 'o' })
 
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
-  callback = function() vim.opt.formatoptions:remove({ 'o' }) end,
+  callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end,
   desc = 'Disable New Line Comment',
 })
 
