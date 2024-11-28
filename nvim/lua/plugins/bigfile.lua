@@ -19,6 +19,8 @@ return {
         local output = vim.fn.system(cmd)
         local line_count = tonumber(output:match('^%s*(%d+)'))
 
+        if not line_count or line_count == 0 then return false end
+
         if (stats.size > (10 * 1024)) and (stats.size / line_count) > 250 then
           vim.notify('Long lines detected, bytes: ' .. stats.size .. ', lines: ' .. line_count .. ', bytes / lines: ' .. math.floor(stats.size / line_count))
           vim.b[bufnr].trouble_lualine = false
