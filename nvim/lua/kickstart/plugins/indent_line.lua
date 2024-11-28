@@ -6,21 +6,22 @@ return {
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help ibl`
     main = 'ibl',
-    opts = {
-      indent = {
-        char = '│',
-        tab_char = '│',
-      },
-      scope = {
-        show_start = false,
-      },
-    },
-    keys = {
-      {
-        '<leader>vi',
-        '<cmd>IBLToggleScope<cr>',
-        desc = 'Toggle scope',
-      },
-    },
+    opts = function()
+      Snacks.toggle({
+        name = 'indention guides',
+        get = function() return require('ibl.config').get_config(0).enabled end,
+        set = function(state) require('ibl').setup_buffer(0, { enabled = state }) end,
+      }):map('<leader>vi')
+
+      return {
+        indent = {
+          char = '│',
+          tab_char = '│',
+        },
+        scope = {
+          show_start = false,
+        },
+      }
+    end,
   },
 }

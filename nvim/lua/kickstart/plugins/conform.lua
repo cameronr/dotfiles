@@ -11,22 +11,20 @@ return {
         mode = '',
         desc = 'Format buffer',
       },
-      {
-        '<leader>vf',
-        function()
-          if vim.b.disable_autoformat then
-            vim.cmd('FormatEnable!')
-            vim.notify('Formatting enabled')
-          else
-            vim.cmd('FormatDisable!')
-            vim.notify('Formatting disabled')
-          end
-        end,
-        mode = '',
-        desc = 'Toggle Format on save',
-      },
     },
     config = function()
+      Snacks.toggle({
+        name = 'auto format buf',
+        get = function() return not vim.b.disable_autoformat ~= false end,
+        set = function(state)
+          if state then
+            vim.cmd('FormatEnable!')
+          else
+            vim.cmd('FormatDisable!')
+          end
+        end,
+      }):map('<leader>vf')
+
       require('conform').setup({
         notify_on_error = true,
         -- log_level = vim.log.levels.INFO,

@@ -230,40 +230,9 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g
 -- select last pasted lines
 vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
 
--- view options
-vim.keymap.set('n', '<leader>vl', function()
-  ---@diagnostic disable-next-line: undefined-field
-  if vim.opt.background:get() == 'dark' then
-    vim.opt.background = 'light'
-  else
-    vim.opt.background = 'dark'
-  end
-end, { desc = 'Toggle light/dark' })
-
-vim.keymap.set('n', '<leader>vz', function()
-  ---@diagnostic disable-next-line: undefined-field
-  if vim.opt.foldcolumn:get() == '0' then
-    vim.opt.foldcolumn = '1'
-  else
-    vim.opt.foldcolumn = '0'
-  end
-end, { desc = 'Toggle foldcolumn' })
-
-vim.keymap.set('n', '<leader>vP', function() vim.g.minipairs_disable = not vim.g.minipairs_disable and true or false end, { desc = 'Toggle mini.pairs' })
-
-vim.keymap.set('n', '<leader>vc', function()
-  ---@diagnostic disable-next-line: undefined-field
-  vim.opt.cursorline = not vim.opt.cursorline:get()
-end, { desc = 'Toggle cursorline' })
-
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
-vim.keymap.set('n', '<leader>vL', function() vim.b.trouble_lualine = not (vim.b.trouble_lualine ~= false) end, { desc = 'Toggle Trouble Lualine' })
-vim.keymap.set('n', '<leader>vd', function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, { desc = 'Toggle diagnosics' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
-
----@diagnostic disable-next-line: undefined-field
-vim.keymap.set('n', '<leader>vw', function() vim.opt_local.wrap = not vim.opt_local.wrap:get() end, { desc = 'Toggle line wrap' })
-vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Check for file changes' })
+vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
 vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 

@@ -38,7 +38,7 @@ return {
         table.insert(names, server.name)
       end
       if not haveServers then return '' end
-      -- return ' ' .. table.concat(names, ',')
+      if vim.g.custom_lualine_show_lsp_names then return ' ' .. table.concat(names, ',') end
       return ' '
     end
 
@@ -52,6 +52,18 @@ return {
       local ret, _ = vim.bo.fileformat:gsub('^unix$', '')
       return ret
     end
+
+    Snacks.toggle({
+      name = 'lualine symbols',
+      get = function() return vim.b.trouble_lualine ~= false end,
+      set = function(state) vim.b.trouble_lualine = state end,
+    }):map('<leader>vl')
+
+    Snacks.toggle({
+      name = 'lualine lsp names',
+      get = function() return vim.g.custom_lualine_show_lsp_names end,
+      set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
+    }):map('<leader>vL')
 
     opts = {
       options = {
