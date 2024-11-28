@@ -79,6 +79,10 @@ return {
   config = function(_, opts)
     local trouble = require('trouble')
     trouble.setup(opts)
+    local trouble_config = require('trouble.config')
+
+    -- Add object to list of acceptable objects
+    table.insert(trouble_config.get('').modes.symbols.filter.any.kind, 'Object')
 
     --if lualine is not loaded, bail out
     local lualine_lazy_config = require('lazy.core.config').plugins['lualine.nvim']
@@ -86,6 +90,7 @@ return {
 
     local trouble_symbols = trouble.statusline({
       mode = 'symbols',
+      -- mode = 'lsp_document_symbols',
       groups = {},
       title = false,
       filter = { range = true },
