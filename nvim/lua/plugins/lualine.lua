@@ -77,7 +77,7 @@ return {
           return require('lualine.utils.loader').load_theme('auto')
         end,
         component_separators = { left = '╲', right = '╱' },
-        disabled_filetypes = { 'alpha', 'neo-tree' },
+        disabled_filetypes = { 'alpha', 'neo-tree', 'snacks_dashboard' },
         section_separators = { left = '', right = '' },
         ignore_focus = { 'trouble' },
       },
@@ -172,13 +172,13 @@ return {
         },
       },
       extensions = {
-        'fzf',
         'lazy',
         'mason',
         'neo-tree',
         'nvim-dap-ui',
         'oil',
         'quickfix',
+        'toggleterm',
         'trouble',
       },
     }
