@@ -258,6 +258,7 @@ return {
                 -- Get the language server to recognize the `vim` global
                 globals = {
                   'vim',
+                  'Snacks',
                   'it',
                   'describe',
                   'before_each',
