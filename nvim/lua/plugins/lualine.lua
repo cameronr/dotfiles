@@ -6,7 +6,8 @@ return {
       -- dev = true,
     },
   },
-  config = function(_, opts)
+  -- config = function(_, opts)
+  opts = function()
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
     --- From: https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
@@ -65,7 +66,7 @@ return {
       set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
     }):map('<leader>vL')
 
-    opts = {
+    return {
       options = {
         -- When theme is set to auto, Lualine uses dofile instead of require
         -- to load the theme. We need the theme to be loaded via require since
@@ -182,7 +183,5 @@ return {
         'trouble',
       },
     }
-
-    require('lualine').setup(opts)
   end,
 }
