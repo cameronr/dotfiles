@@ -1,8 +1,10 @@
 return {
   'Wansmer/treesj',
   keys = {
-    { 'gS', '<cmd>TSJSplit<cr>', desc = 'TS Split' },
-    { 'gJ', '<cmd>TSJJoin<cr>', desc = 'TS Join' },
+    { 'gS', '<cmd>TSJToggle<cr>', desc = 'Split/Join' },
+    -- { 'gJ', '<cmd>TSJToggle<cr>', desc = 'TS Join' },
   },
-  opts = {},
+  opts = {
+    -- max_join_length = 2000,
+  },
 }
