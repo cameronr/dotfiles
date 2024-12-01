@@ -5,6 +5,8 @@ return {
   keys = {
     { '[l', function() require('snacks').words.jump(-1, true) end, desc = 'Next LSP highlight' },
     { ']l', function() require('snacks').words.jump(1, true) end, desc = 'Next LSP highlight' },
+    { '<leader>cP', function() require('snacks').scratch.select() end, desc = 'Select scratch pad' },
+    { '<leader>cp', function() require('snacks').scratch() end, desc = 'Scratch pad' },
   },
   opts = {
     debug = { enabled = true },
