@@ -128,6 +128,12 @@ return {
         },
         lualine_x = {
           {
+            function() return 'recording @' .. vim.fn.reg_recording() end,
+            cond = function() return vim.fn.reg_recording() ~= '' end,
+            color = { fg = '#ff007c' },
+            separator = '',
+          },
+          {
             lazy_status.updates,
             cond = lazy_status.has_updates,
             -- color = { fg = '#3d59a1' },
