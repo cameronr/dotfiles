@@ -81,6 +81,7 @@ return {
         disabled_filetypes = { 'alpha', 'neo-tree', 'snacks_dashboard' },
         section_separators = { left = '', right = '' },
         ignore_focus = { 'trouble' },
+        globalstatus = true,
       },
       sections = {
         lualine_a = {
