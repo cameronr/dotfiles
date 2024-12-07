@@ -47,7 +47,6 @@ return {
       { '<leader>sc', '<cmd>Telescope command_history<cr>', desc = 'Commands' },
       { '<leader>sC', '<cmd>Telescope colorscheme<cr>', desc = 'Colorschemes' },
       { '<leader>sv', '<cmd>Telescope commands<cr>', desc = 'Vim Commands' },
-      { '<leader>sp', '<cmd>Telescope notify<cr>', desc = 'Popup notifications' },
       { '<leader>sn', '<cmd>Telescope notify<cr>', desc = 'Notifications' },
       { '<leader>sj', '<cmd>Telescope jumplist<cr>', desc = 'Jumplist' },
       { '<leader>sH', '<cmd>Telescope highlights<cr>', desc = 'Highlights' },

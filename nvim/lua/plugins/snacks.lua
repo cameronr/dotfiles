@@ -4,15 +4,27 @@ return {
     priority = 1000,
     lazy = false,
     keys = {
-      { '[l', function() require('snacks').words.jump(-1, true) end, desc = 'Next LSP highlight' },
-      { ']l', function() require('snacks').words.jump(1, true) end, desc = 'Next LSP highlight' },
-      { '<leader>cc', function() require('snacks').scratch() end, desc = 'Scratch pad' },
-      { '<leader>cC', function() require('snacks').scratch.select() end, desc = 'Select scratch pad' },
+      { '[l', function() Snacks.words.jump(-1, true) end, desc = 'Next LSP highlight' },
+      { ']l', function() Snacks.words.jump(1, true) end, desc = 'Next LSP highlight' },
+      { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
+      { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
+      { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Search popups' },
+      { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
     },
     opts = {
       debug = { enabled = true },
       quickfile = { enabled = true },
       words = { enabled = true },
+      notifier = {
+        enabled = true,
+        style = 'fancy',
+        level = vim.log.levels.INFO,
+      },
+      styles = {
+        ['notification.history'] = {
+          keys = { ['<esc>'] = 'close' },
+        },
+      },
       dashboard = {
         enabled = true,
         preset = {
