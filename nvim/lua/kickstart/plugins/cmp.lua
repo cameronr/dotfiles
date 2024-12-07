@@ -32,9 +32,17 @@ return {
       -- Adds other completion capabilities.
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
-      'hrsh7th/cmp-path', -- suggestions from path
-      'hrsh7th/cmp-buffer', -- suggestions from current buffer
-      'hrsh7th/cmp-cmdline', -- suggestions from commands
+      -- 'hrsh7th/cmp-path', -- suggestions from path
+      -- 'hrsh7th/cmp-buffer', -- suggestions from current buffer
+      -- 'hrsh7th/cmp-cmdline', -- suggestions from commands
+
+      { 'iguanacucumber/mag-nvim-lsp', name = 'cmp-nvim-lsp', opts = {} },
+      { 'iguanacucumber/mag-nvim-lua', name = 'cmp-nvim-lua' },
+      { 'iguanacucumber/mag-buffer', name = 'cmp-buffer' },
+      { 'iguanacucumber/mag-cmdline', name = 'cmp-cmdline' },
+
+      'https://codeberg.org/FelipeLema/cmp-async-path', -- not by me, but better than cmp-path
+
       { 'petertriho/cmp-git', opts = {} }, -- suggestions for git
       -- 'dmitmel/cmp-cmdline-history', -- suggestions from command history
     },
@@ -167,6 +175,7 @@ return {
               luasnip = 'Snip',
               buffer = 'Buf',
               path = 'Path',
+              async_path = 'Path',
             })[entry.source.name]
             return vim_item
           end,
@@ -187,7 +196,7 @@ return {
           { name = 'nvim_lsp', max_item_count = 20 },
           { name = 'luasnip' },
           { name = 'buffer', max_item_count = 20 },
-          { name = 'path' },
+          { name = 'async_path' },
           { name = 'supermaven' },
           { name = 'git' },
         },
