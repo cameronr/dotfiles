@@ -286,6 +286,9 @@ vim.keymap.set('n', '<leader>cI', function()
   end
 end, { desc = 'Inspect LSP' })
 
+-- Duplicate and comment out
+vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
   -- local harpoon = require('harpoon')
