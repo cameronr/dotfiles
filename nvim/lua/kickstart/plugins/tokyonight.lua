@@ -86,6 +86,8 @@ return {
       hl.IblScope = hl.LineNr
       -- hl.IblScope = { fg = '#283861' }
       hl.IblIndent = { fg = '#1f202e' }
+      hl.SnacksIndent = { fg = '#1f202e' }
+      hl.SnacksIndentScope = hl.LineNr
 
       -- Make folds less prominent (especially important for DiffView)
       hl.Folded = { fg = c.blue0 }

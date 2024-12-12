@@ -13,18 +13,21 @@ return {
     },
     opts = {
       debug = { enabled = true },
-      quickfile = { enabled = true },
-      words = { enabled = true },
+      indent = {
+        enabled = true,
+        scope = {
+          animate = { enabled = false },
+        },
+      },
+      input = { enabled = true },
       notifier = {
         enabled = true,
         style = 'fancy',
         level = vim.log.levels.INFO,
       },
-      styles = {
-        ['notification.history'] = {
-          keys = { ['<esc>'] = 'close' },
-        },
-      },
+      quickfile = { enabled = true },
+      scroll = { enabled = true },
+      words = { enabled = true },
       dashboard = {
         enabled = true,
         preset = {
@@ -47,6 +50,11 @@ return {
             { icon = ' ', key = 'm', desc = 'Mason', action = ':Mason' },
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
           },
+        },
+      },
+      styles = {
+        ['notification.history'] = {
+          keys = { ['<esc>'] = 'close' },
         },
       },
     },
