@@ -26,7 +26,6 @@ return {
         level = vim.log.levels.INFO,
       },
       quickfile = { enabled = true },
-      scroll = { enabled = true },
       words = { enabled = true },
       dashboard = {
         enabled = true,
