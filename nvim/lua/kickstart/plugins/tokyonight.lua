@@ -72,15 +72,22 @@ return {
       end
 
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
+
+      -- cmp
       hl.CmpItemAbbrMatchFuzzy = { fg = hl.IncSearch.bg }
       hl.CmpItemAbbrMatch = { fg = hl.IncSearch.bg }
+      -- Darken cmp menu (src for the completion)
+      hl.CmpItemMenu = hl.CmpGhostText
+
+      -- Blink
+      hl.Pmenu.bg = c.bg
+      hl.BlinkCmpLabelMatch = { fg = hl.IncSearch.bg }
+      hl.BlinkCmpMenuBorder = hl.FloatBorder
+      hl.BlinkCmpSource = { fg = c.terminal_black }
 
       -- clean up Neogit diff colors (when committing)
       hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
       hl.NeogitDiffContext = { bg = hl.Normal.bg }
-
-      -- Darken cmp menu (src for the completion)
-      hl.CmpItemMenu = hl.CmpGhostText
 
       -- More subtle
       hl.IblScope = hl.LineNr

@@ -2,6 +2,8 @@ return {
   { -- Autocompletion
     -- 'hrsh7th/nvim-cmp',
     'iguanacucumber/magazine.nvim',
+    enabled = not vim.g.use_blink,
+
     name = 'nvim-cmp',
 
     event = { 'InsertEnter', 'CmdlineEnter' },
