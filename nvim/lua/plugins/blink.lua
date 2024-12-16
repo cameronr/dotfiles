@@ -80,15 +80,19 @@ return {
       menu = {
         border = 'rounded',
         max_height = 20,
-        min_width = 20,
+
+        -- Min width not supported with right alignment
+        -- https://github.com/Saghen/blink.cmp/issues/424
+        -- min_width = 30,
         draw = {
 
           columns = {
             { 'kind_icon' },
-            { 'label', 'label_description', gap = 1 },
-            { 'source_name' },
+            { 'label', 'label_description', 'source_name', gap = 1 },
           },
           components = {
+            label = { width = { fill = false } }, -- default is true
+            label_description = { width = { fill = true } },
             source_name = {
               text = function(ctx) return ctx.source_name:sub(1, 4) end,
             },
