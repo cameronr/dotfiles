@@ -15,9 +15,7 @@ return {
       debug = { enabled = true },
       indent = {
         enabled = true,
-        scope = {
-          animate = { enabled = false },
-        },
+        animate = { enabled = false },
       },
       input = { enabled = true },
       notifier = {
