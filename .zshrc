@@ -176,6 +176,11 @@ if [[ (( $commands[bat] )) ]]; then
     eval $(thefuck --alias fk)
 fi
 
+# set up rg, if installed
+if [[ (( $commands[rg] )) ]]; then
+    export RIPGREP_CONFIG_PATH=~/.ripgreprc
+fi
+
 # set up fzf if installed
 if [[ (( $commands[fzf] )) ]]; then
 
