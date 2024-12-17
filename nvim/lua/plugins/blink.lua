@@ -113,6 +113,10 @@ return {
           border = 'rounded',
         },
       },
+
+      ghost_text = {
+        enabled = true,
+      },
     },
 
     -- experimental signature help support
