@@ -141,7 +141,11 @@ return {
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      if not vim.g.cmp_engine == 'cmp' then capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()) end
+      if vim.g.cmp_engine == 'cmp' then
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+      else
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities(capabilities))
+      end
 
       -- Change the Diagnostic symbols in the sign column (gutter)
 
