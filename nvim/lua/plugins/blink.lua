@@ -12,9 +12,9 @@ return {
   },
 
   -- use a release tag to download pre-built binaries
-  version = 'v0.*',
+  -- version = 'v0.*',
   -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-  -- build = 'cargo build --release',
+  build = 'cargo build --release',
   -- If you use nix, you can build from source using latest nightly rust with:
   -- build = 'nix run .#build-plugin',
 
@@ -109,13 +109,14 @@ return {
     -- elsewhere in your config, without redefining it, via `opts_extend`
     sources = {
       -- add lazydev to your completion providers
-      completion = {
-        enabled_providers = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-      },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
       providers = {
         -- dont show LuaLS require statements when lazydev has items
-        lsp = { fallback_for = { 'lazydev' } },
-        lazydev = { name = 'LazyDev', module = 'lazydev.integrations.blink' },
+        lazydev = {
+          name = 'LazyDev',
+          module = 'lazydev.integrations.blink',
+          fallbacks = { 'lsp' },
+        },
       },
     },
 
@@ -137,10 +138,21 @@ return {
             { 'label', 'label_description', 'source_name', gap = 1 },
           },
           components = {
+            kind_icon = {
+              text = function(ctx)
+                if ctx.source_id == 'cmdline' then return end
+                return ctx.kind_icon .. ctx.icon_gap
+              end,
+            },
             label = { width = { fill = false } }, -- default is true
-            label_description = { width = { fill = true } },
+            label_description = {
+              width = { fill = true },
+            },
             source_name = {
-              text = function(ctx) return ctx.source_name:sub(1, 4) end,
+              text = function(ctx)
+                if ctx.source_id == 'cmdline' then return end
+                return ctx.source_name:sub(1, 4)
+              end,
             },
           },
           -- for highlighting in completion menu
