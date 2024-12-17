@@ -73,30 +73,37 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('gd', function() require('telescope.builtin').lsp_definitions() end, 'Goto definition')
+          if not vim.g.use_fzf then
+            -- Jump to the definition of the word under your cursor.
+            --  This is where a variable was first declared, or where a function is defined, etc.
+            --  To jump back, press <C-t>.
+            map('gd', function() require('telescope.builtin').lsp_definitions() end, 'Goto definition')
 
-          -- Find references for the word under your cursor.
-          map('gr', function() require('telescope.builtin').lsp_references() end, 'Goto references')
+            -- Find references for the word under your cursor.
+            map('gr', function() require('telescope.builtin').lsp_references() end, 'Goto references')
 
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gI', function() require('telescope.builtin').lsp_implementations() end, 'Goto implementation')
+            -- Jump to the implementation of the word under your cursor.
+            --  Useful when your language has ways of declaring types without an actual implementation.
+            map('gI', function() require('telescope.builtin').lsp_implementations() end, 'Goto implementation')
 
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map('<leader>cD', function() require('telescope.builtin').lsp_type_definitions() end, 'Code Type definition')
+            -- Jump to the type of the word under your cursor.
+            --  Useful when you're not sure what type a variable is and you want to see
+            --  the definition of its *type*, not where it was *defined*.
+            map('<leader>cD', function() require('telescope.builtin').lsp_type_definitions() end, 'Code Type definition')
 
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ss', function() require('telescope.builtin').lsp_document_symbols() end, 'Document symbols')
+            -- Fuzzy find all the symbols in your current document.
+            --  Symbols are things like variables, functions, types, etc.
+            map('<leader>ss', function() require('telescope.builtin').lsp_document_symbols() end, 'Document symbols')
 
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map('<leader>sS', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, 'Workspace symbols')
+            -- Fuzzy find all the symbols in your current workspace.
+            --  Similar to document symbols, except searches over your entire project.
+            map('<leader>sS', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, 'Workspace symbols')
+          else
+            map('gd', '<cmd>FzfLua lsp_definitions     jump_to_single_result=true ignore_current_line=true<cr>', 'Goto definition')
+            map('gr', '<cmd>FzfLua lsp_references      jump_to_single_result=true ignore_current_line=true<cr>', 'References')
+            map('gI', '<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>', 'Goto implementation')
+            map('gy', '<cmd>FzfLua lsp_typedefs        jump_to_single_result=true ignore_current_line=true<cr>', 'Goto type definition')
+          end
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
@@ -105,8 +112,8 @@ return {
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
           -- map('<leader>ca', vim.lsp.buf.code_action, 'Code action')
-          map('<leader>cA', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
-          map('<leader>ca', function() require('tiny-code-action').code_action() end, 'Code action', { 'n', 'x' })
+          map('<leader>ca', vim.lsp.buf.code_action, 'Code action', { 'n', 'x' })
+          -- map('<leader>ca', function() require('tiny-code-action').code_action() end, 'Code action', { 'n', 'x' })
 
           map('<leader>vR', '<cmd>LspRestart<CR>', 'Restart LSP')
 

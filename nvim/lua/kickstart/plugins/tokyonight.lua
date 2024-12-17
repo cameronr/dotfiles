@@ -85,6 +85,14 @@ return {
       hl.BlinkCmpMenuBorder = hl.FloatBorder
       hl.BlinkCmpSource = { fg = c.terminal_black }
 
+      -- FzfLua
+      -- TODO: should be overriding things for in the shell
+      -- TODO: highlights in live_grep different
+      hl.FzfLuaDirPart = hl.NonText
+      hl.FzfLuaPathLineNr = { fg = c.fg_dark }
+      hl.FzfLuaFzfCursorLine = hl.NonText
+      hl.FzfLuaFzfMatch = { fg = hl.IncSearch.bg }
+
       -- clean up Neogit diff colors (when committing)
       hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
       hl.NeogitDiffContext = { bg = hl.Normal.bg }

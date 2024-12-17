@@ -15,6 +15,16 @@ return {
   keys = {
     { ']t', function() require('todo-comments').jump_next() end, desc = 'Next todo' },
     { '[t', function() require('todo-comments').jump_prev() end, desc = 'Previous todo' },
-    { '<leader>st', '<cmd>TodoTelescope<CR>', desc = 'Search todos' },
+    {
+      '<leader>st',
+      function()
+        if vim.g.use_fzf == true then
+          require('todo-comments.fzf').todo()
+        else
+          vim.cmd('TodoTelescope')
+        end
+      end,
+      desc = 'Todo',
+    },
   },
 }

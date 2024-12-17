@@ -1,6 +1,6 @@
 return {
   'rachartier/tiny-code-action.nvim',
-  -- enabled = false,
+  enabled = false,
   -- dev = true,
   event = 'LspAttach',
   opts = {
