@@ -192,7 +192,7 @@ vim.opt.wrap = true
 -- Don't think I need since I can use $ / A when editing end of line in V-Block mode (x)
 -- vim.opt.virtualedit = 'block'
 
-vim.g.use_blink = true
+vim.g.use_blink = true and (vim.fn.has('nvim-0.10') == 1)
 
 vim.g.use_fzf = true
 
