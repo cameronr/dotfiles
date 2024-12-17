@@ -9,7 +9,6 @@ return {
   -- optional: provides snippets for the snippet source
   dependencies = {
     'rafamadriz/friendly-snippets',
-    'onsails/lspkind.nvim',
   },
 
   -- use a release tag to download pre-built binaries
@@ -62,6 +61,48 @@ return {
       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
       nerd_font_variant = 'normal',
+      kind_icons = {
+        Array = ' ',
+        Boolean = '󰨙 ',
+        Class = ' ',
+        Codeium = '󰘦 ',
+        Color = ' ',
+        Control = ' ',
+        Collapsed = ' ',
+        Constant = '󰏿 ',
+        Constructor = ' ',
+        Copilot = ' ',
+        Enum = ' ',
+        EnumMember = ' ',
+        Event = ' ',
+        Field = ' ',
+        File = ' ',
+        Folder = ' ',
+        Function = '󰊕 ',
+        Interface = ' ',
+        Key = ' ',
+        Keyword = ' ',
+        Method = '󰊕 ',
+        Module = ' ',
+        Namespace = '󰦮 ',
+        Null = ' ',
+        Number = '󰎠 ',
+        Object = ' ',
+        Operator = ' ',
+        Package = ' ',
+        Property = ' ',
+        Reference = ' ',
+        Snippet = '󱄽 ',
+        String = ' ',
+        Struct = '󰆼 ',
+        Supermaven = ' ',
+        TabNine = '󰏚 ',
+        Text = ' ',
+        TypeParameter = ' ',
+        Unit = ' ',
+        Value = ' ',
+        Variable = '󰀫 ',
+      },
     },
 
     -- default list of enabled providers defined so that you can extend it
@@ -100,15 +141,6 @@ return {
             label_description = { width = { fill = true } },
             source_name = {
               text = function(ctx) return ctx.source_name:sub(1, 4) end,
-            },
-            kind_icon = {
-              ellipsis = false,
-              text = function(ctx)
-                return require('lspkind').symbolic(ctx.kind, {
-                  mode = 'symbol',
-                  symbol_map = { Supermaven = '󰰣' },
-                })
-              end,
             },
           },
           -- for highlighting in completion menu
