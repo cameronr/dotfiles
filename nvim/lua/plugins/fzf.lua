@@ -17,7 +17,7 @@ return {
     { '<leader>/', '<cmd>FzfLua live_grep<cr>', desc = 'Grep' },
     { '<leader>:', '<cmd>FzfLua command_history<cr>', desc = 'Command history' },
     { '<leader>sf', '<cmd>FzfLua files<cr>', desc = 'Search Files' },
-    { '<leader>sB', '<cmd>FzfLua builtins<cr>', desc = 'FzfLua builtins' },
+    { '<leader>sb', '<cmd>FzfLua builtin<cr>', desc = 'FzfLua builtins' },
     { '<leader>s.', '<cmd>FzfLua oldfiles<cr>', desc = 'Recent' },
     -- git
     { '<leader>sgc', '<cmd>FzfLua git_commits<CR>', desc = 'Commits' },
@@ -42,6 +42,7 @@ return {
     { '<leader>sw', '<cmd>FzfLua grep_cword<cr>', desc = 'Currnt word' },
     { '<leader>sw', '<cmd>FzfLua grep_visual<cr>', mode = 'v', desc = 'Selection' },
     { '<leader>sC', '<cmd>FzfLua colorschemes<cr>', desc = 'Colorschemes' },
+    { '<leader>sz', '<cmd>FzfLua grep_curbuf<cr>', desc = 'Fuzzy find in buffer' },
     {
       '<leader>ss',
       function()
