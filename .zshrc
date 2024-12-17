@@ -201,6 +201,9 @@ if [[ (( $commands[fzf] )) ]]; then
     # Tokyonight-night fzf theme
     zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
 
+    # I like orange as the highlight color
+    export FZF_DEFAULT_OPTS=$(echo "$FZF_DEFAULT_OPTS" | sed 's/--color=hl+:#2ac3de/--color=hl+:#ff9e64/g; s/--color=hl:#2ac3de/--color=hl:#ff9e64/g')
+
     # disable sort when completing `git checkout`
     zstyle ':completion:*:git-checkout:*' sort false
 
