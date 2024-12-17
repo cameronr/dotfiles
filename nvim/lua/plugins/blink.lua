@@ -7,7 +7,10 @@ return {
   event = { 'InsertEnter', 'CmdlineEnter' },
 
   -- optional: provides snippets for the snippet source
-  dependencies = 'rafamadriz/friendly-snippets',
+  dependencies = {
+    'rafamadriz/friendly-snippets',
+    'onsails/lspkind.nvim',
+  },
 
   -- use a release tag to download pre-built binaries
   version = 'v0.*',
@@ -88,7 +91,6 @@ return {
         -- https://github.com/Saghen/blink.cmp/issues/424
         -- min_width = 30,
         draw = {
-
           columns = {
             { 'kind_icon' },
             { 'label', 'label_description', 'source_name', gap = 1 },
@@ -98,6 +100,15 @@ return {
             label_description = { width = { fill = true } },
             source_name = {
               text = function(ctx) return ctx.source_name:sub(1, 4) end,
+            },
+            kind_icon = {
+              ellipsis = false,
+              text = function(ctx)
+                return require('lspkind').symbolic(ctx.kind, {
+                  mode = 'symbol',
+                  symbol_map = { Supermaven = '󰰣' },
+                })
+              end,
             },
           },
           -- for highlighting in completion menu
