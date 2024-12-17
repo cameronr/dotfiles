@@ -73,7 +73,7 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          if not vim.g.use_fzf then
+          if not vim.g.finder_engine == 'telescope' then
             -- Jump to the definition of the word under your cursor.
             --  This is where a variable was first declared, or where a function is defined, etc.
             --  To jump back, press <C-t>.
@@ -141,7 +141,7 @@ return {
       --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      if not vim.g.use_blink then capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()) end
+      if not vim.g.cmp_engine == 'cmp' then capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities()) end
 
       -- Change the Diagnostic symbols in the sign column (gutter)
 

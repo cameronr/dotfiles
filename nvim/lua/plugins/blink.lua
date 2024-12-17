@@ -1,7 +1,7 @@
 ---@diagnostic disable: missing-fields
 return {
   'saghen/blink.cmp',
-  enabled = vim.g.use_blink == true,
+  enabled = vim.g.cmp_engine ~= 'cmp',
 
   -- lazy = false, -- lazy loading handled internally
   event = { 'InsertEnter', 'CmdlineEnter' },

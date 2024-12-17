@@ -8,7 +8,7 @@
 return {
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
-    enabled = not vim.g.use_fzf,
+    enabled = vim.g.finder_engine == 'telescope',
     -- branch = '0.1.x',
     -- dev = true,
     dependencies = {

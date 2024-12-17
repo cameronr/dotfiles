@@ -2,7 +2,7 @@ return {
   { -- Autocompletion
     -- 'hrsh7th/nvim-cmp',
     'iguanacucumber/magazine.nvim',
-    enabled = not vim.g.use_blink,
+    enabled = vim.g.cmp_engine == 'cmp',
 
     name = 'nvim-cmp',
 

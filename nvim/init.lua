@@ -96,6 +96,12 @@ vim.g.have_nerd_font = true
 -- If NVIM_NO_MASON_AUTOINSTALL is set, don't autoinstall any Mason modules
 vim.g.no_mason_autoinstall = vim.env.NVIM_NO_MASON_AUTOINSTALL
 
+-- Which finder engine to use
+vim.g.finder_engine = vim.env.NVIM_FINDER_ENGINE or 'fzf'
+
+-- Which completion engine to use
+vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or ((vim.fn.has('nvim-0.10') == 1) and 'blink' or 'cmp')
+
 -- [[ Setting options ]]
 require 'options'
 
