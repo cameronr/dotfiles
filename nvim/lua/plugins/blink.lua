@@ -31,6 +31,8 @@ return {
       ['<CR>'] = { 'select_and_accept', 'fallback' },
       ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
       ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+      ['<Up>'] = {},
+      ['<Down>'] = {},
     },
 
     --     keymap = {
@@ -76,6 +78,7 @@ return {
     completion = {
       list = {
         max_items = 20,
+        selection = 'manual',
       },
       menu = {
         border = 'rounded',
