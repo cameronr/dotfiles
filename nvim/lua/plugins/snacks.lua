@@ -71,6 +71,7 @@ return {
           Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>vw')
           Snacks.toggle.inlay_hints():map('<leader>vH')
           Snacks.toggle.diagnostics():map('<leader>vd')
+          Snacks.toggle.indent():map('<leader>vi')
 
           -- Toggle the profiler
           Snacks.toggle.profiler():map('<leader>cp')
