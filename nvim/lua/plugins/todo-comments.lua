@@ -18,7 +18,7 @@ return {
     {
       '<leader>st',
       function()
-        if vim.g.use_fzf == true then
+        if vim.g.finder_engine == 'fzf' then
           require('todo-comments.fzf').todo()
         else
           vim.cmd('TodoTelescope')
