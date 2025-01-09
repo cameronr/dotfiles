@@ -1,4 +1,3 @@
----@diagnostic disable: missing-fields
 return {
   'saghen/blink.cmp',
   enabled = vim.g.cmp_engine ~= 'cmp',
@@ -123,7 +122,8 @@ return {
     completion = {
       list = {
         max_items = 20,
-        selection = 'manual',
+        -- selection = { preselect = false, auto_insert = true },
+        selection = { preselect = false, auto_insert = false },
       },
       menu = {
         border = 'rounded',
@@ -156,9 +156,9 @@ return {
             },
           },
           -- for highlighting in completion menu
-          -- treesitter = {
-          --   'lsp',
-          -- },
+          treesitter = {
+            'lsp',
+          },
         },
       },
 
