@@ -18,8 +18,10 @@ return {
     {
       '<leader>st',
       function()
-        if vim.g.finder_engine == 'fzf' then
+        if vim.g.picker_engine == 'fzf' then
           require('todo-comments.fzf').todo()
+        elseif vim.g.picker_engine == 'snack' then
+          Snacks.picker.todo_comments()
         else
           vim.cmd('TodoTelescope')
         end

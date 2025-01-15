@@ -73,7 +73,7 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          if not vim.g.finder_engine == 'telescope' then
+          if not vim.g.picker_engine == 'telescope' then
             -- Jump to the definition of the word under your cursor.
             --  This is where a variable was first declared, or where a function is defined, etc.
             --  To jump back, press <C-t>.

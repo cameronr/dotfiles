@@ -97,22 +97,22 @@ vim.g.have_nerd_font = true
 vim.g.no_mason_autoinstall = vim.env.NVIM_NO_MASON_AUTOINSTALL
 
 -- Which finder engine to use
-vim.g.finder_engine = vim.env.NVIM_FINDER_ENGINE or 'fzf'
+vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'fzf'
 
 -- Which completion engine to use
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or ((vim.fn.has('nvim-0.10') == 1) and 'blink' or 'cmp')
 
 -- [[ Setting options ]]
-require 'options'
+require('options')
 
 -- [[ Basic Keymaps ]]
-require 'keymaps'
+require('keymaps')
 
 -- [[ Install `lazy.nvim` plugin manager ]]
-require 'lazy-bootstrap'
+require('lazy-bootstrap')
 
 -- [[ Configure and install plugins ]]
-require 'lazy-plugins'
+require('lazy-plugins')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

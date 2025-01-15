@@ -42,7 +42,15 @@ return {
       },
       {
         '<leader>xT',
-        '<cmd>Trouble telescope toggle<cr>',
+        function()
+          if vim.g.picker_engine == 'fzf' then
+            vim.cmd('Trouble fzf toggle')
+          elseif vim.g.picker_engine == 'snacks' then
+            vim.cmd('Trouble snacks toggle')
+          else
+            vim.cmd('Trouble telescope toggle')
+          end
+        end,
         desc = 'Telescope (Trouble)',
       },
       -- Borrowed from LazyVim

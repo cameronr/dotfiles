@@ -1,6 +1,6 @@
 return {
   'ibhagwan/fzf-lua',
-  enabled = vim.g.finder_engine ~= 'telescope',
+  enabled = vim.g.picker_engine == 'fzf',
 
   -- Borrowed from LazyVim
 
