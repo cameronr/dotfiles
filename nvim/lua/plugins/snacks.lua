@@ -72,6 +72,11 @@ return {
       },
       picker = {
         enabled = vim.g.picker_engine == 'snacks',
+        formatters = {
+          file = {
+            filename_first = true, -- display filename before the file path
+          },
+        },
         layout = {
           cycle = true,
           --- Use the default layout or vertical if the window is too narrow
@@ -84,6 +89,8 @@ return {
               ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
               ['<C-_>'] = { 'toggle_help', mode = { 'n', 'i' } },
               ['<c-p>'] = { 'toggle_preview', mode = { 'i', 'n' } },
+              ['<pagedown>'] = { 'list_scroll_down', mode = { 'i', 'n' } },
+              ['<pageup>'] = { 'list_scroll_up', mode = { 'i', 'n' } },
             },
           },
         },
