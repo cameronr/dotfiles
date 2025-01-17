@@ -46,6 +46,7 @@ vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal s
 vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
+vim.keymap.set('n', '<leader>wm', '<C-w>o', { desc = 'Maximize' })
 vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
 vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
 vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
