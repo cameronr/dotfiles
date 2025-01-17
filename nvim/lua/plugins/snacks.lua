@@ -55,7 +55,10 @@ return {
         { '<leader>ss', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
       }
 
-      keys = vim.tbl_deep_extend('force', keys, picker_keys)
+      for _, entry in ipairs(picker_keys) do
+        table.insert(keys, entry)
+      end
+
       return keys
     end,
     opts = {
