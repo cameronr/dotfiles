@@ -122,8 +122,7 @@ return {
     completion = {
       list = {
         max_items = 20,
-        -- selection = { preselect = false, auto_insert = true },
-        selection = { preselect = false, auto_insert = false },
+        selection = { preselect = false, auto_insert = true },
       },
       menu = {
         border = 'rounded',
@@ -167,10 +166,6 @@ return {
         window = {
           border = 'rounded',
         },
-      },
-
-      ghost_text = {
-        enabled = true,
       },
     },
 
