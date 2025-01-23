@@ -98,7 +98,7 @@ return {
             -- Fuzzy find all the symbols in your current workspace.
             --  Similar to document symbols, except searches over your entire project.
             map('<leader>sS', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, 'Workspace symbols')
-          else
+          elseif vim.g.picker_engine == 'fzf' then
             map('gd', '<cmd>FzfLua lsp_definitions     jump_to_single_result=true ignore_current_line=true<cr>', 'Goto definition')
             map('gr', '<cmd>FzfLua lsp_references      jump_to_single_result=true ignore_current_line=true<cr>', 'References')
             map('gI', '<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>', 'Goto implementation')
@@ -326,6 +326,7 @@ return {
 
       if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
 
+      ---@diagnostic disable-next-line: missing-fields
       require('mason-lspconfig').setup({
         handlers = {
           function(server_name)
