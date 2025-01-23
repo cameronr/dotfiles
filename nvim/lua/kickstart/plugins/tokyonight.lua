@@ -92,6 +92,10 @@ return {
       hl.FzfLuaFzfMatch = { fg = hl.IncSearch.bg }
       hl.FzfLuaBufNr = { fg = c.fg }
 
+      -- Snacks
+      hl.SnacksPickerBufNr = hl.NonText
+      hl.SnacksPickerMatch = { fg = hl.IncSearch.bg }
+
       -- clean up Neogit diff colors (when committing)
       hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
       hl.NeogitDiffContext = { bg = hl.Normal.bg }
