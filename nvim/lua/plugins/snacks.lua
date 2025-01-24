@@ -43,7 +43,8 @@ return {
         { '<leader>sl', function() Snacks.picker.loclist() end, desc = 'Location List' },
         { '<leader>sM', function() Snacks.picker.man() end, desc = 'Man Pages' },
         { '<leader>sm', function() Snacks.picker.marks() end, desc = 'Marks' },
-        { '<leader>sR', function() Snacks.picker.resume() end, desc = 'Resume' },
+        { '<leader>sr', function() Snacks.picker.resume() end, desc = 'Resume' },
+        { '<leader>.', function() Snacks.picker.resume() end, desc = 'Resume' },
         { '<leader>sq', function() Snacks.picker.qflist() end, desc = 'Quickfix List' },
         { '<leader>sC', function() Snacks.picker.colorschemes() end, desc = 'Colorschemes' },
         { '<leader>qp', function() Snacks.picker.projects() end, desc = 'Projects' },
@@ -94,6 +95,7 @@ return {
               ['<c-p>'] = { 'toggle_preview', mode = { 'i', 'n' } },
               ['<pagedown>'] = { 'list_scroll_down', mode = { 'i', 'n' } },
               ['<pageup>'] = { 'list_scroll_up', mode = { 'i', 'n' } },
+              ['<a-d>'] = { 'bufdelete', mode = { 'i', 'n' } },
             },
           },
         },
@@ -125,7 +127,7 @@ return {
         },
       },
       styles = {
-        ['notification.history'] = {
+        notification_history = {
           keys = { ['<esc>'] = 'close' },
         },
       },
