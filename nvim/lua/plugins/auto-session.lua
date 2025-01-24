@@ -37,7 +37,7 @@ return {
           },
         },
         mappings = {
-          delete_session = { 'i', '<M-d>' },
+          delete_session = { 'i', '<a-d>' },
         },
       },
       suppressed_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
