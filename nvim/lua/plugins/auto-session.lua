@@ -9,8 +9,6 @@ return {
     { '<leader>wD', '<cmd>SessionDelete<CR>', desc = 'Delete session' },
   },
 
-  ---@module "auto-session"
-  ---@type AutoSession.Config
   ---@diagnostic disable-next-line: assign-type-mismatch
   opts = function()
     Snacks.toggle({
@@ -19,6 +17,8 @@ return {
       set = function() vim.cmd('SessionToggleAutoSave') end,
     }):map('<leader>wa')
 
+    ---@module "auto-session"
+    ---@type AutoSession.Config
     return {
       bypass_save_filetypes = { 'alpha' },
       cwd_change_handling = true,
