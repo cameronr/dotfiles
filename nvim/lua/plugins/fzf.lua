@@ -1,3 +1,43 @@
+---@param buf? number
+---@return string[]?
+local function get_kind_filter(buf)
+  local kind_filter = {
+    default = { 'Class', 'Constructor', 'Enum', 'Field', 'Function', 'Interface', 'Method', 'Module', 'Namespace', 'Package', 'Property', 'Struct', 'Trait' },
+    markdown = false,
+    help = false,
+    -- you can specify a different filter for each filetype
+    lua = {
+      'Class',
+      'Constructor',
+      'Enum',
+      'Field',
+      'Function',
+      'Interface',
+      'Method',
+      'Module',
+      'Namespace',
+      -- "Package", -- remove package since luals uses it for control flow structures
+      'Property',
+      'Struct',
+      'Trait',
+    },
+  }
+
+  buf = (buf == nil or buf == 0) and vim.api.nvim_get_current_buf() or buf
+  local ft = vim.bo[buf].filetype
+  if kind_filter == false then return end
+  if kind_filter[ft] == false then return end
+  if type(kind_filter[ft]) == 'table' then return kind_filter[ft] end
+  ---@diagnostic disable-next-line: return-type-mismatch
+  return type(kind_filter) == 'table' and type(kind_filter.default) == 'table' and kind_filter.default or nil
+end
+
+local function symbols_filter(entry, ctx)
+  if ctx.symbols_filter == nil then ctx.symbols_filter = get_kind_filter(ctx.bufnr) or false end
+  if ctx.symbols_filter == false then return true end
+  return vim.tbl_contains(ctx.symbols_filter, entry.kind)
+end
+
 return {
   'ibhagwan/fzf-lua',
   enabled = vim.g.picker_engine == 'fzf',
@@ -47,7 +87,7 @@ return {
       '<leader>ss',
       function()
         require('fzf-lua').lsp_document_symbols({
-          -- regex_filter = symbols_filter,
+          regex_filter = symbols_filter,
         })
       end,
       desc = 'Goto Symbol',
@@ -56,7 +96,7 @@ return {
       '<leader>sS',
       function()
         require('fzf-lua').lsp_live_workspace_symbols({
-          -- regex_filter = symbols_filter,
+          regex_filter = symbols_filter,
         })
       end,
       desc = 'Goto Symbol (Workspace)',
