@@ -26,6 +26,8 @@ return {
         -- git
         { '<leader>sgc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
         { '<leader>sgs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
+        { '<leader>sgb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
+        { '<leader>sgz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
         -- Grep
         { '<leader>sz', function() Snacks.picker.lines() end, desc = 'Fuzzy find in buffer' },
         { '<leader>sB', function() Snacks.picker.grep_buffers() end, desc = 'Grep Open Buffers' },
