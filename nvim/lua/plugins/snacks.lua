@@ -57,6 +57,9 @@ return {
         { 'gI', function() Snacks.picker.lsp_implementations() end, desc = 'Goto Implementation' },
         { 'gy', function() Snacks.picker.lsp_type_definitions() end, desc = 'Goto T[y]pe Definition' },
         { '<leader>ss', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
+
+        -- Notifications
+        { '<leader>sp', function() Snacks.picker.notifications() end, desc = 'Search popups' },
       }
 
       for _, entry in ipairs(picker_keys) do
