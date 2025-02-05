@@ -121,7 +121,6 @@ return {
 
     completion = {
       list = {
-        max_items = 20,
         selection = { preselect = false, auto_insert = true },
       },
       menu = {
