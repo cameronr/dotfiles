@@ -8,6 +8,7 @@ return {
   -- optional: provides snippets for the snippet source
   dependencies = {
     'rafamadriz/friendly-snippets',
+    'Kaiser-Yang/blink-cmp-git',
   },
 
   -- use a release tag to download pre-built binaries
