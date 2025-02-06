@@ -114,7 +114,9 @@ return {
           git = {
             module = 'blink-cmp-git',
             name = 'Git',
+            should_show_items = function() return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown' end,
             opts = {
+              use_items_pre_cache = false,
               -- options for the blink-cmp-git
             },
           },
