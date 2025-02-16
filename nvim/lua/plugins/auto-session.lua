@@ -20,7 +20,7 @@ return {
     ---@module "auto-session"
     ---@type AutoSession.Config
     return {
-      bypass_save_filetypes = { 'alpha' },
+      bypass_save_filetypes = { 'alpha', 'snacks_dashboard' },
       cwd_change_handling = true,
       -- log_level = 'debug',
       lsp_stop_on_restore = true,
