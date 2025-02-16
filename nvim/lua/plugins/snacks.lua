@@ -79,7 +79,6 @@ return {
       notifier = {
         enabled = true,
         style = 'fancy',
-        level = vim.log.levels.INFO,
       },
       picker = {
         enabled = vim.g.picker_engine == 'snacks',
