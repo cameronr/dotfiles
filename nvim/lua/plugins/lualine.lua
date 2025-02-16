@@ -2,7 +2,7 @@ return {
   'nvim-lualine/lualine.nvim',
   dependencies = {
     {
-      'bwpge/lualine-pretty-path',
+      'cameronr/lualine-pretty-path',
       -- dev = true,
     },
   },
