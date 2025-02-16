@@ -96,21 +96,6 @@ return {
             fmt = trunc(70, 15, 65, true),
             separator = '',
           },
-
-          {
-            'diff',
-            symbols = {
-              added = ' ',
-              modified = ' ',
-              removed = ' ',
-            },
-            fmt = trunc(0, 0, 60, true),
-          },
-          {
-            'diagnostics',
-            -- symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
-            symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-          },
         },
         lualine_c = {
           {
@@ -128,6 +113,23 @@ return {
           },
         },
         lualine_x = {
+          -- { function() return require('auto-session.lib').current_session_name(true) end },
+          {
+            'diagnostics',
+            -- symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
+            symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+            separator = '',
+          },
+          {
+            'diff',
+            symbols = {
+              added = ' ',
+              modified = ' ',
+              removed = ' ',
+            },
+            fmt = trunc(0, 0, 60, true),
+            separator = '',
+          },
           {
             function() return 'recording @' .. vim.fn.reg_recording() end,
             cond = function() return vim.fn.reg_recording() ~= '' end,
