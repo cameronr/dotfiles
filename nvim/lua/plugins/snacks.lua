@@ -45,6 +45,7 @@ return {
         { '<leader>sl', function() Snacks.picker.loclist() end, desc = 'Location List' },
         { '<leader>sM', function() Snacks.picker.man() end, desc = 'Man Pages' },
         { '<leader>sm', function() Snacks.picker.marks() end, desc = 'Marks' },
+        { "<leader>s'", function() Snacks.picker.marks() end, desc = 'Marks' },
         { '<leader>sr', function() Snacks.picker.resume() end, desc = 'Resume' },
         { '<leader>.', function() Snacks.picker.resume() end, desc = 'Resume' },
         { '<leader>sq', function() Snacks.picker.qflist() end, desc = 'Quickfix List' },
