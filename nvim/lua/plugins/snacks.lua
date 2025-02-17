@@ -9,7 +9,7 @@ return {
         { ']l', function() Snacks.words.jump(1, true) end, desc = 'Next LSP highlight' },
         { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
         { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
-        { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Search popups' },
+        { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
         { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
       }
       if vim.g.picker_engine ~= 'snacks' then return keys end
@@ -58,9 +58,10 @@ return {
         { 'gI', function() Snacks.picker.lsp_implementations() end, desc = 'Goto Implementation' },
         { 'gy', function() Snacks.picker.lsp_type_definitions() end, desc = 'Goto T[y]pe Definition' },
         { '<leader>ss', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
+        { '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
 
         -- Notifications
-        { '<leader>sp', function() Snacks.picker.notifications() end, desc = 'Search popups' },
+        { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
       }
 
       for _, entry in ipairs(picker_keys) do
