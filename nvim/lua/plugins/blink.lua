@@ -135,7 +135,7 @@ return {
         },
         menu = {
           border = 'rounded',
-          max_height = 20,
+          max_height = 12,
 
           -- Min width not supported with right alignment
           -- https://github.com/Saghen/blink.cmp/issues/424
