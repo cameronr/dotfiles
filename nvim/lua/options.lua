@@ -185,11 +185,7 @@ vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpo
 -- signcolumn on right exploration. ultimately, i like the numbers closers than the signs
 -- vim.opt.statuscolumn = "%=%{v:virtnum < 1 ? (v:relnum ? v:relnum : v:lnum < 10 ? v:lnum . '' : v:lnum) : ''} %s"
 
--- Hide diagnostic virtual text and add border to floating window
-
+-- Enable wrapping of long lines
 vim.opt.wrap = true
-
--- Don't think I need since I can use $ / A when editing end of line in V-Block mode (x)
--- vim.opt.virtualedit = 'block'
 
 -- vim: ts=2 sts=2 sw=2 et
