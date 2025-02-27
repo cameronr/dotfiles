@@ -9,12 +9,13 @@ return {
     -- optional: provides snippets for the snippet source
     dependencies = {
       'rafamadriz/friendly-snippets',
+      'Kaiser-Yang/blink-cmp-avante',
     },
 
     -- use a release tag to download pre-built binaries
-    version = 'v0.*',
+    -- version = 'v0.*',
     -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-    -- build = 'cargo build --release',
+    build = 'cargo build --release',
     -- If you use nix, you can build from source using latest nightly rust with:
     -- build = 'nix run .#build-plugin',
 
@@ -105,29 +106,9 @@ return {
         },
       },
 
-      -- default list of enabled providers defined so that you can extend it
-      -- elsewhere in your config, without redefining it, via `opts_extend`
+      -- Default sources here to be extended with plugins later in the conf
       sources = {
-        -- add lazydev to your completion providers
-        default = { 'git', 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
-        providers = {
-          git = {
-            module = 'blink-cmp-git',
-            name = 'Git',
-            should_show_items = function() return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown' end,
-            opts = {
-              use_items_pre_cache = false,
-              -- options for the blink-cmp-git
-            },
-          },
-          -- dont show LuaLS require statements when lazydev has items
-          lazydev = {
-            name = 'LazyDev',
-            module = 'lazydev.integrations.blink',
-            fallbacks = { 'lsp' },
-            score_offset = 100, -- show at a higher priority than lsp
-          },
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer' },
       },
 
       cmdline = {
@@ -196,13 +177,52 @@ return {
     },
     -- allows extending the providers array elsewhere in your config
     -- without having to redefine it
-    opts_extend = { 'sources.default' },
+    opts_extend = {
+      'sources.default',
+    },
+  },
+
+  -- lazydev
+  {
+    'saghen/blink.cmp',
+    opts = {
+      sources = {
+        -- add lazydev to your completion providers
+        default = { 'lazydev' },
+        providers = {
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100, -- show at a higher priority than lsp
+          },
+        },
+      },
+    },
   },
 
   {
     'Kaiser-Yang/blink-cmp-git',
     lazy = true,
     enabled = vim.g.cmp_engine ~= 'cmp',
-    dependencies = { 'nvim-lua/plenary.nvim' },
+  },
+  {
+    'saghen/blink.cmp',
+    opts = {
+      sources = {
+        -- add lazydev to your completion providers
+        default = { 'git' },
+        providers = {
+          git = {
+            module = 'blink-cmp-git',
+            name = 'Git',
+            should_show_items = function() return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown' end,
+            opts = {
+              use_items_pre_cache = false,
+              -- options for the blink-cmp-git
+            },
+          },
+        },
+      },
+    },
   },
 }
