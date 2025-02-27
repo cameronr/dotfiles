@@ -1,6 +1,7 @@
 return {
   'nvim-neo-tree/neo-tree.nvim',
   -- event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+  enabled = false,
   branch = 'v3.x',
   keys = {
     { '<leader>e', '<cmd>Neotree toggle reveal<CR>', desc = 'NeoTree' },
