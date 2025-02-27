@@ -125,7 +125,20 @@ return {
             name = 'LazyDev',
             module = 'lazydev.integrations.blink',
             fallbacks = { 'lsp' },
+            score_offset = 100, -- show at a higher priority than lsp
           },
+        },
+      },
+
+      cmdline = {
+        keymap = {
+          ['<CR>'] = { 'accept', 'fallback' },
+        },
+        completion = {
+          list = {
+            selection = { preselect = false, auto_insert = true },
+          },
+          menu = { auto_show = true },
         },
       },
 
