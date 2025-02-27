@@ -1,7 +1,7 @@
 return {
   {
     'yetone/avante.nvim',
-    enabled = vim.fn.has('nvim-0.10.1') == 1,
+    cond = function() return vim.fn.executable('make') == 1 and vim.fn.has('nvim-0.10.1') == 1 end,
     event = { 'BufReadPre', 'BufNewFile' },
     cmd = 'AvanteToggle',
     keys = {
