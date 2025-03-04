@@ -26,6 +26,7 @@ return {
         { '<leader>s.', function() Snacks.picker.recent() end, desc = 'Recent' },
         -- git
         { '<leader>sgc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
+        { '<leader>sgl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
         { '<leader>sgs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
         { '<leader>sgb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
         { '<leader>sgz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
