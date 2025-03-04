@@ -62,7 +62,7 @@ return {
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
         callback = function()
-          if not vim.g.disable_linting then
+          if vim.opt_local.modifiable:get() and not vim.g.disable_linting then
             if not vim.b.disable_linting then lint.try_lint() end
           end
         end,

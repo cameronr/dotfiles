@@ -140,7 +140,9 @@ return {
     end,
   },
 
-  init = function()
+  config = function(_, opts)
+    require('tokyonight').setup(opts)
+
     -- Activate the colorscheme here. Tokyonight will pick the right style as set above
     vim.cmd.colorscheme('tokyonight')
 

@@ -8,7 +8,7 @@ return {
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   },
@@ -19,7 +19,7 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      'williamboman/mason.nvim',
+      { 'williamboman/mason.nvim', opts = {} },
       'williamboman/mason-lspconfig.nvim',
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
@@ -125,10 +125,23 @@ return {
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, 'Goto declaration')
 
+          -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
+          ---@param client vim.lsp.Client
+          ---@param method vim.lsp.protocol.Method
+          ---@param bufnr? integer some lsp support methods only in specific files
+          ---@return boolean
+          local function client_supports_method(client, method, bufnr)
+            if vim.fn.has('nvim-0.11') == 1 then
+              return client:supports_method(method, bufnr)
+            else
+              return client.supports_method(method, { bufnr = bufnr })
+            end
+          end
+
           local client = vim.lsp.get_client_by_id(event.data.client_id)
 
           -- Enable inlay hints by default
-          if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
             --
             vim.lsp.inlay_hint.enable()
           end
@@ -147,14 +160,13 @@ return {
         capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities(capabilities))
       end
 
-      -- Change the Diagnostic symbols in the sign column (gutter)
+      -- Diagnostic Config
+      -- See :help vim.diagnostic.Opts
 
       vim.diagnostic.config({
+        severity_sort = true,
         virtual_text = false,
-        float = {
-          -- header = false,
-          border = 'rounded',
-        },
+        float = { border = 'rounded', source = 'if_many' },
       })
 
       if vim.fn.has('nvim-0.10') == 1 then
@@ -315,8 +327,13 @@ return {
       --    :Mason
       --
       --  You can press `g?` for help in this menu.
-      require('mason').setup()
 
+      -- You can press `g?` for help in this menu.
+      --
+      -- `mason` had to be setup earlier: to configure its options see the
+      -- `dependencies` table for `nvim-lspconfig` above.
+      --
+      --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -328,6 +345,8 @@ return {
 
       ---@diagnostic disable-next-line: missing-fields
       require('mason-lspconfig').setup({
+        ensure_installed = {},
+        automatic_installation = false,
         handlers = {
           function(server_name)
             -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
@@ -336,7 +355,7 @@ return {
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,

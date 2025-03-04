@@ -50,7 +50,7 @@ return {
         map('n', '<leader>hD', function() gitsigns.diffthis '@' end, { desc = 'git diff against last commit' })
         -- Toggles
         map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git toggle show blame line' })
-        map('n', '<leader>he', gitsigns.toggle_deleted, { desc = 'git show deleted' })
+        map('n', '<leader>he', gitsigns.preview_hunk_inline, { desc = 'git show deleted' })
       end,
     },
   },

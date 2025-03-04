@@ -4,7 +4,7 @@ return {
   enabled = false,
   branch = 'v3.x',
   keys = {
-    { '<leader>e', '<cmd>Neotree toggle reveal<CR>', desc = 'NeoTree' },
+    { '<leader>e', '<cmd>Neotree toggle reveal<CR>', desc = 'NeoTree', silent = true },
   },
   cmd = 'Neotree',
   opts = {
