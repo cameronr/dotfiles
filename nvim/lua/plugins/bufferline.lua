@@ -1,8 +1,7 @@
 return {
   'akinsho/bufferline.nvim',
   version = '*',
-  event = { 'BufNewFile', 'BufReadPre' },
-  dependencies = 'echasnovski/mini.nvim',
+  event = { 'TabNew' },
   opts = {
     options = {
       mode = 'tabs',
