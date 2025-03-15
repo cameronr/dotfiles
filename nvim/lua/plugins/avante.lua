@@ -39,6 +39,7 @@ return {
   {
     'Kaiser-Yang/blink-cmp-avante',
     enabled = vim.g.cmp_engine == 'blink' and vim.fn.has('nvim-0.10.1') == 1,
+    lazy = true,
   },
   {
     'saghen/blink.cmp',
