@@ -209,6 +209,9 @@ if [[ (( $commands[fzf] )) ]]; then
     # I like orange as the highlight color
     export FZF_DEFAULT_OPTS=$(echo "$FZF_DEFAULT_OPTS" | sed 's/--color=hl+:#2ac3de/--color=hl+:#ff9e64/g; s/--color=hl:#2ac3de/--color=hl:#ff9e64/g')
 
+    # Turn on wrap around
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --cycle"
+
     # disable sort when completing `git checkout`
     zstyle ':completion:*:git-checkout:*' sort false
 
