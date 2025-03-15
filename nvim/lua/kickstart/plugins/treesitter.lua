@@ -78,6 +78,19 @@ return {
             ['[S'] = '@block.outer',
           },
         },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['gan'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['gap'] = '@parameter.inner',
+          },
+        },
+      },
+
+      matchup = {
+        -- enable = true, -- mandatory, false will disable the whole extension
       },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
