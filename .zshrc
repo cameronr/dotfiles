@@ -203,6 +203,9 @@ if [[ (( $commands[fzf] )) ]]; then
     show_file_or_dir_preview="if [ -d {} ]; then $FZF_DIR_PREVIEW; else $FZF_FILE_PREVIEW; fi"
     export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
 
+    # clear FZF_DEFAULT_OPTS so we don't get duplicates when running under tmux
+    unset FZF_DEFAULT_OPTS
+
     # Tokyonight-night fzf theme
     zinit snippet https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fzf/tokyonight_night.sh
 
@@ -211,6 +214,13 @@ if [[ (( $commands[fzf] )) ]]; then
 
     # Turn on wrap around
     export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --cycle"
+
+    # set completion opts to same colors
+    export FZF_COMPLETION_OPTS="$FZF_DEFAULT_OPTS"
+
+    # set theme colors in fzf-tab as it doesn't pick up FZF_DEFAULT_OPTS automatically
+    zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS | tr ' ' '\n')
+
 
     # disable sort when completing `git checkout`
     zstyle ':completion:*:git-checkout:*' sort false
