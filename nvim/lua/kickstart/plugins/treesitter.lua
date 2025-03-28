@@ -13,9 +13,11 @@ return {
       ensure_installed = {
         'bash',
         'c',
+        'css',
         'diff',
         'gitcommit',
         'html',
+        'javascript',
         'lua',
         'luadoc',
         'markdown',
