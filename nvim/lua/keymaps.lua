@@ -222,7 +222,6 @@ vim.keymap.set('n', 'Sp', 'SiW(', { desc = 'Wrap word with ()', remap = true })
 vim.keymap.set('n', 'Sb', 'Saw}', { desc = 'Wrap word with {}', remap = true })
 
 -- Swap to alternate buffer, less work that ctrl-6
-vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
 -- quick replace of current word

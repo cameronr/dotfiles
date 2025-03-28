@@ -24,6 +24,7 @@ return {
         rules = false,
       },
       spec = {
+        { '<leader>a', group = 'Avante' },
         { '<leader>b', group = 'Buffer' },
         { '<leader>c', group = 'Code' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },

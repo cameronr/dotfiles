@@ -4,7 +4,8 @@ return {
     cond = function() return vim.fn.executable('make') == 1 and vim.fn.has('nvim-0.10.1') == 1 end,
     cmd = 'AvanteToggle',
     keys = {
-      { '<leader>cv', '<cmd>AvanteToggle<CR>', desc = 'Avante toggle' },
+      { '<leader>aa', '<cmd>AvanteAsk<CR>', desc = 'avante: ask' },
+      { '<leader>at', '<cmd>AvanteToggle<CR>', desc = 'avante: toggle' },
     },
 
     version = '*',
