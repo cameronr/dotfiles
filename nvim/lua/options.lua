@@ -131,16 +131,17 @@ if vim.fn.has('nvim-0.10') == 1 then
   -- vim.opt.foldcolumn = '0' -- hide column by default
 end
 
-if vim.fn.has('nvim-0.10') == 1 then
+if vim.fn.has('nvim-0.11') == 1 then
   -- Right aligns numbers with relative line nums when < 100 lines
   -- I played with putting the sign column on the right side but the sign column
-  -- is too columns wide and the characters for todos/diagnostics don't leave enough
+  -- is two columns wide and the characters for todos/diagnostics don't leave enough
   -- space on the left. If the sign column could be a single column wide, I'd be ok
   -- with what LazyVim does and have a sign colum on the right for just gitsigns and another
   -- on the left for diagnostics but giving up 4 columns is too much.
 
-  -- In theory, this should work in 0.11
-  -- vim.opt.statuscolumn = '%C%s%=%l '
+  -- Disabled for 0.10 because we get line numbers on buffers that shouldn't have them (e.g. help)
+
+  vim.o.statuscolumn = '%C%s%=%{v:relnum?v:relnum:v:lnum} '
 
   -- For 0.10, we need to check and see that vim.wo.number or vim.wo.relativenumber are true first
   -- otherwise we'll get numbers on buffers that shouldn't have them (e.g. help, alpha)
