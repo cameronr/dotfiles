@@ -191,10 +191,13 @@ return {
         end
       end
 
-      -- Change border of documentation hover window, See https://github.com/neovim/neovim/pull/13998.
-      vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = 'rounded',
-      })
+      -- Add border to LSP window. 0.11 >= uses vim.o.winborder
+      if vim.fn.has('nvim-0.11') == 0 then
+        ---@diagnostic disable-next-line: deprecated
+        vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+          border = 'rounded',
+        })
+      end
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.

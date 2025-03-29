@@ -188,4 +188,9 @@ vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpo
 -- Enable wrapping of long lines
 vim.opt.wrap = true
 
+if vim.fn.has('nvim-0.11') == 1 then
+  -- Rounded borders by default on >= 0.11
+  vim.o.winborder = 'rounded'
+end
+
 -- vim: ts=2 sts=2 sw=2 et
