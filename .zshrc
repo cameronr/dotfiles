@@ -172,7 +172,7 @@ if [[ (( $commands[fd] )) ]]; then
 fi
 
 # set up thefuck, if installed
-if [[ (( $commands[bat] )) ]]; then
+if [[ (( $commands[thefuck] )) ]]; then
     eval $(thefuck --alias fk)
 fi
 
