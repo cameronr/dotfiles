@@ -173,9 +173,15 @@ vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr><esc>', { desc = 'Save File' })
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function() go({ severity = severity }) end
+  if vim.fn.has('nvim-0.11') == 1 then
+    local count = next and 1 or -1
+    severity = severity and vim.diagnostic.severity[severity] or nil
+    return function() vim.diagnostic.jump({ severity = severity, count = count }) end
+  else
+    local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+    severity = severity and vim.diagnostic.severity[severity] or nil
+    return function() go({ severity = severity }) end
+  end
 end
 vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
 vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
@@ -241,7 +247,7 @@ vim.keymap.set('n', '<leader>cI', function()
     if not client then return end
     -- Create a temporary buffer to show the configuration
     local buf = vim.api.nvim_create_buf(false, true)
-    local win = vim.api.nvim_open_win(buf, true, {
+    vim.api.nvim_open_win(buf, true, {
       relative = 'editor',
       width = math.floor(vim.o.columns * 0.75),
       height = math.floor(vim.o.lines * 0.90),
