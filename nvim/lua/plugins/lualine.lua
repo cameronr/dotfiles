@@ -66,6 +66,12 @@ return {
       set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
     }):map('<leader>vL')
 
+    Snacks.toggle({
+      name = 'lualine session name',
+      get = function() return vim.g.custom_lualine_show_session_name end,
+      set = function(state) vim.g.custom_lualine_show_session_name = state end,
+    }):map('<leader>vs')
+
     return {
       options = {
         -- When theme is set to auto, Lualine uses dofile instead of require
@@ -113,7 +119,10 @@ return {
           },
         },
         lualine_x = {
-          -- { function() return require('auto-session.lib').current_session_name(true) end },
+          {
+            function() return require('auto-session.lib').current_session_name(true) end,
+            cond = function() return vim.g.custom_lualine_show_session_name end,
+          },
           {
             'diagnostics',
             -- symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
