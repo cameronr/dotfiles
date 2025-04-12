@@ -51,6 +51,7 @@ return {
       textobjects = {
         move = {
           enable = true,
+          set_jumps = true,
           -- don't include classes to not conflict with conflicts in a diff
           -- (LazyVim has some clever code but i don't think we need it right now)
           -- goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
