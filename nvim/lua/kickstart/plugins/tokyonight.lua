@@ -137,6 +137,8 @@ return {
 
       hl.HighlightUndo = hl.CurSearch
       hl.HighlightRedo = hl.CurSearch
+
+      hl.Marks = hl.DiagnosticHint
     end,
   },
 
