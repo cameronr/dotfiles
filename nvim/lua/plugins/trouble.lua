@@ -43,7 +43,7 @@ return {
         desc = 'Todos (Trouble)',
       },
       {
-        '<leader>xT',
+        '<leader>xs',
         function()
           if vim.g.picker_engine == 'fzf' then
             vim.cmd('Trouble fzf toggle')
@@ -53,7 +53,7 @@ return {
             vim.cmd('Trouble telescope toggle')
           end
         end,
-        desc = 'Telescope (Trouble)',
+        desc = 'Snacks (Trouble)',
       },
       -- Borrowed from LazyVim
       {
