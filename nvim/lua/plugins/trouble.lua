@@ -3,7 +3,9 @@ return {
     'folke/trouble.nvim',
     event = { 'BufNewFile', 'BufReadPost' },
     cmd = 'Trouble',
-    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    opts = {
+      auto_preview = false,
+    }, -- for default options, refer to the configuration section for custom setup.
     keys = {
       {
         '<leader>xx',
@@ -58,6 +60,7 @@ return {
         '[q',
         function()
           if require('trouble').is_open() then
+            ---@diagnostic disable-next-line: missing-parameter, missing-fields
             require('trouble').prev({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cprev)
@@ -70,6 +73,7 @@ return {
         ']q',
         function()
           if require('trouble').is_open() then
+            ---@diagnostic disable-next-line: missing-parameter, missing-fields
             require('trouble').next({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cnext)
