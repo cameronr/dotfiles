@@ -11,11 +11,13 @@ return {
 
   ---@diagnostic disable-next-line: assign-type-mismatch
   opts = function()
-    Snacks.toggle({
-      name = 'session autosave',
-      get = function() return require('auto-session.config').auto_save end,
-      set = function() vim.cmd('SessionToggleAutoSave') end,
-    }):map('<leader>wa')
+    if Snacks then
+      Snacks.toggle({
+        name = 'session autosave',
+        get = function() return require('auto-session.config').auto_save end,
+        set = function() vim.cmd('SessionToggleAutoSave') end,
+      }):map('<leader>wa')
+    end
 
     ---@module "auto-session"
     ---@type AutoSession.Config

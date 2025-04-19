@@ -2,7 +2,8 @@ return {
   {
     'rachartier/tiny-inline-diagnostic.nvim',
     enabled = vim.fn.has('nvim-0.10') == 1,
-    event = 'VeryLazy',
+    event = { 'BufNewFile', 'BufReadPre' },
+    -- event = 'VeryLazy',
     priority = 1000,
     opts = function()
       vim.diagnostic.config({ virtual_text = false, float = false })
