@@ -1,5 +1,6 @@
 return {
   'nvim-lualine/lualine.nvim',
+  enabled = vim.o.laststatus ~= 0,
   dependencies = {
     {
       'cameronr/lualine-pretty-path',
