@@ -31,9 +31,10 @@ return {
       keymap = {
         preset = 'default',
 
+        ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
         ['<CR>'] = { 'accept', 'fallback' },
-        ['<Tab>'] = { 'snippet_forward', 'select_next', 'fallback' },
-        ['<S-Tab>'] = { 'snippet_backward', 'select_prev', 'fallback' },
+        ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
+        ['<S-Tab>'] = { 'select_prev', 'snippet_backward', 'fallback' },
         ['<Up>'] = {},
         ['<Down>'] = {},
       },
@@ -112,9 +113,9 @@ return {
       },
 
       cmdline = {
-        keymap = {
-          ['<CR>'] = { 'accept', 'fallback' },
-        },
+        -- keymap = {
+        -- ['<CR>'] = { 'accept', 'fallback' },
+        -- },
         completion = {
           list = {
             selection = { preselect = false, auto_insert = true },
