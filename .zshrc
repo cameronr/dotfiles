@@ -122,7 +122,7 @@ bindkey '^[x' kill-line
 
 if [[ (( $commands[nvim] )) ]]; then
     export EDITOR=nvim
-    export MANPAGER="nvim --cmd 'set laststatus=0 ' +'set statuscolumn= nowrap laststatus=0' +Man\!"
+    export MANPAGER="nvim --cmd 'set laststatus=0 | let g:man_pager=1' +'set statuscolumn= nowrap laststatus=0' +Man\!"
     alias vim='nvim'
     alias v='nvim'
 
