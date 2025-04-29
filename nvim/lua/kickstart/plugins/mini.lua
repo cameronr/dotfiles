@@ -63,11 +63,13 @@ return {
         },
       })
 
-      Snacks.toggle({
-        name = 'mini.pairs',
-        get = function() return not vim.g.minipairs_disable end,
-        set = function(state) vim.g.minipairs_disable = not state end,
-      }):map('<leader>vp')
+      if Snacks then
+        Snacks.toggle({
+          name = 'mini.pairs',
+          get = function() return not vim.g.minipairs_disable end,
+          set = function(state) vim.g.minipairs_disable = not state end,
+        }):map('<leader>vp')
+      end
 
       require('mini.icons').setup()
 
