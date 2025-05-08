@@ -37,7 +37,7 @@ declare -A PALLETE=(
     [teal]="#1abc9c"
     [red]="#f7768e"
     [red1]="#db4b4b"
-    [white]="#cccccc"
+    [white]="#c0caf5"
     [white2]="#ffffff"
 )
 
