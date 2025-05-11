@@ -125,6 +125,7 @@ if [[ (( $commands[nvim] )) ]]; then
     export MANPAGER="nvim --cmd 'set laststatus=0 | let g:man_pager=1' +'set statuscolumn= nowrap laststatus=0' +Man\!"
     alias vim='nvim'
     alias v='nvim'
+    alias n='nvim'
 
     NVIM_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}/nvim"
     if [[ ! -d "$NVIM_HOME" ]]; then
