@@ -6,9 +6,10 @@ return {
     'luukvbaal/statuscol.nvim',
     event = { 'BufNewFile', 'BufReadPost' },
 
-    dependencies = {
-      { 'yaocccc/vim-showmarks' },
-    },
+    -- trying out markit instead for mark toggling
+    -- dependencies = {
+    --   { 'yaocccc/vim-showmarks' },
+    -- },
 
     opts = function()
       local builtin = require('statuscol.builtin')
