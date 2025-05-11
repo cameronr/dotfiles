@@ -10,7 +10,7 @@ return {
 
     local opts = {
       -- debug = true,
-      hide_inactive_cursorline = true,
+      -- hide_inactive_cursorline = true,
 
       mode = {
         n = {
