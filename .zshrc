@@ -180,7 +180,7 @@ fi
 
 # set up rg, if installed
 if [[ (( $commands[rg] )) ]]; then
-    export RIPGREP_CONFIG_PATH=~/.ripgreprc
+    export RIPGREP_CONFIG_PATH=$DOTFILES/.ripgreprc
 fi
 
 # set up fzf if installed
