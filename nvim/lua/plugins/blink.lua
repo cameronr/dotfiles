@@ -31,6 +31,7 @@ return {
       keymap = {
         preset = 'default',
 
+        ['<M-space>'] = { 'show_signature', 'hide_signature' },
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
         ['<CR>'] = { 'accept', 'fallback' },
         ['<Tab>'] = { 'select_next', 'snippet_forward', 'fallback' },
@@ -62,7 +63,7 @@ return {
         -- use_nvim_cmp_as_default = true,
         -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
-        nerd_font_variant = 'normal',
+        nerd_font_variant = 'mono',
         kind_icons = {
           Array = ' ',
           Boolean = '󰨙 ',
@@ -130,7 +131,7 @@ return {
         },
         menu = {
           border = 'rounded',
-          max_height = 12,
+          max_height = 15,
 
           -- Min width not supported with right alignment
           -- https://github.com/Saghen/blink.cmp/issues/424
@@ -147,10 +148,6 @@ return {
                   return ctx.kind_icon .. ctx.icon_gap
                 end,
               },
-              label = { width = { fill = false } }, -- default is true
-              label_description = {
-                width = { fill = true },
-              },
               source_name = {
                 text = function(ctx)
                   if ctx.source_id == 'cmdline' then return end
@@ -158,6 +155,7 @@ return {
                 end,
               },
             },
+
             -- for highlighting in completion menu
             treesitter = {
               'lsp',
@@ -174,8 +172,14 @@ return {
       },
 
       -- experimental signature help support
+      -- only trigger manually
       signature = {
         enabled = true,
+        trigger = {
+          enabled = true,
+          show_on_trigger_character = false,
+          show_on_insert_on_trigger_character = false,
+        },
         window = {
           show_documentation = true,
           border = 'rounded',
