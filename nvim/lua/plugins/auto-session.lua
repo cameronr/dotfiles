@@ -32,7 +32,7 @@ return {
       post_restore_cmds = {
         function()
           local harpoon = require('harpoon')
-          harpoon.data = require('harpoon.Data').Data:new(harpoon.config)
+          harpoon.data = require('harpoon.data').Data:new(harpoon.config)
         end,
       },
       session_lens = {
