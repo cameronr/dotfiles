@@ -24,6 +24,13 @@ return {
     end,
 
     on_highlights = function(hl, c)
+      -- Keep visual for popup/picker highlights
+      hl.PmenuSel = { bg = hl.Visual.bg }
+      hl.TelescopeSelection = { bg = hl.Visual.bg }
+      hl.SnacksPickerCursorLine = { bg = hl.Visual.bg }
+      hl.SnacksPickerListCursorLine = hl.SnacksPickerCursorLine
+      hl.SnacksPickerPreviewCursorLine = hl.SnacksPickerCursorLine
+
       if vim.o.background == 'dark' then
         -- Use bg.dark from storm (not night) for the cursor line background to make it more subtle
         hl.CursorLine = { bg = '#1f2335' }
@@ -40,8 +47,7 @@ return {
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
 
-        -- Visual should match visual mode
-        hl.TelescopeSelection = hl.Visual
+        -- Visual selection should match visual mode
         hl.Visual = { bg = '#3f3256' }
 
         -- Make TS context dimmer and color line numbers
@@ -57,8 +63,7 @@ return {
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
 
-        -- Visual should match visual mode
-        hl.TelescopeSelection = hl.Visual
+        -- Visual selection should match visual mode
         hl.Visual = { bg = '#b69de2' }
 
         -- Make TS context color line numbers
@@ -81,8 +86,8 @@ return {
 
       -- Blink
       hl.Pmenu.bg = c.bg
+      hl.PmenuMatch.bg = c.bg
       hl.BlinkCmpLabelMatch = { fg = hl.IncSearch.bg }
-      hl.BlinkCmpMenuBorder = hl.FloatBorder
       hl.BlinkCmpSource = { fg = c.terminal_black }
 
       -- FzfLua
