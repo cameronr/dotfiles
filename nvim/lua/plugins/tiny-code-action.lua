@@ -11,7 +11,7 @@ return {
         layout = {
           preview = true,
           layout = {
-            backdrop = false,
+            backdrop = true,
             width = 0.7,
             min_width = 80,
             height = 0.7,
@@ -20,9 +20,18 @@ return {
             border = 'rounded',
             title = '{title}',
             title_pos = 'center',
-            { win = 'preview', title = '{preview}', height = 0.6, border = 'bottom' },
+            { win = 'input', height = 1, border = 'bottom' },
             { win = 'list', border = 'none' },
-            { win = 'input', height = 1, border = 'top' },
+            { win = 'preview', title = '{preview}', height = 0.7, border = 'top' },
+          },
+        },
+        win = {
+          input = {
+            keys = {
+              -- disable multiselect
+              ['<Tab>'] = { 'list_down', mode = { 'i', 'n' } },
+              ['<S-Tab>'] = { 'list_up', mode = { 'i', 'n' } },
+            },
           },
         },
       },
