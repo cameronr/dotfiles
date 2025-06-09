@@ -90,14 +90,25 @@ return {
             filename_first = true, -- display filename before the file path
           },
         },
-        layout = {
-          cycle = true,
-          --- Use the default layout or vertical if the window is too narrow
-          preset = function() return vim.o.columns >= 120 and 'telescope' or 'vertical' end,
-          layout = {
-            backdrop = true,
-          },
-        },
+        layout = function()
+          --- Use the vertical layout if screen is small
+          if vim.o.columns < 120 then return { cycle = true, preset = 'vertical' } end
+
+          -- NOTE: I went back and forth on this. I could just duplicate the text of the
+          -- telescope preset here but then I wouldn't get any updates if it changed.
+          -- Instead, we make a copy of the preset and tweak a few values. I'm not sure
+          -- if that's better but here it is
+          local telescope = vim.deepcopy(require('snacks.picker.config.layouts').telescope)
+
+          -- enable backdrop
+          telescope.layout['backdrop'] = nil
+
+          -- find the preview box element and make it slightly larger
+          for _, elem in ipairs(telescope.layout) do
+            if type(elem) == 'table' and elem['win'] == 'preview' then elem['width'] = 0.52 end
+          end
+          return telescope
+        end,
         win = {
           -- input window
           input = {
