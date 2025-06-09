@@ -3,10 +3,11 @@ return {
   branch = 'cursorline',
   -- dev = true,
   event = { 'ModeChanged', 'WinEnter', 'WinLeave' },
-  -- enabled = false,
   opts = function()
+    if not vim.g.colors_name or not vim.g.colors_name:match('^tokyonight') then return { mode = {} } end
+
     local palette = require('tokyonight.colors').setup()
-    if palette == nil then return nil end
+    if palette == nil then return { mode = {} } end
 
     local opts = {
       -- debug = true,

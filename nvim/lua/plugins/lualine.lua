@@ -9,6 +9,8 @@ return {
   },
   -- config = function(_, opts)
   opts = function()
+    -- local lualine_require = require('lualine_require')
+    -- lualine_require.require = require
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
 
     --- From: https://github.com/nvim-lualine/lualine.nvim/wiki/Component-snippets
@@ -80,9 +82,8 @@ return {
         -- we modify the cached singleton in tokyonight's config function to
         -- add different colors for the x section
         theme = function()
-          if vim.g.colors_name:match('^tokyonight') then return require('lualine.themes.' .. vim.g.colors_name) end
-          -- fall through case just needed for telescope theme browser
-          return require('lualine.utils.loader').load_theme('auto')
+          if vim.g.colors_name and vim.g.colors_name:match('^tokyonight') then return require('lualine.themes.' .. vim.g.colors_name) end
+          return 'auto'
         end,
         component_separators = { left = '╲', right = '╱' },
         disabled_filetypes = { 'alpha', 'neo-tree', 'snacks_dashboard' },
