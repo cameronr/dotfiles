@@ -82,7 +82,16 @@ config = {
 
   max_fps = 120,
 
-  font = wezterm.font("MesloLGS Nerd Font"),
+  font = wezterm.font({ family = "FiraCode Nerd Font", weight = "Regular" }),
+  harfbuzz_features = {
+    "cv02", -- g
+    -- "cv29", -- {}
+    "ss03", -- &
+    "ss02", -- <= >= !
+    "ss05", -- @
+  },
+  -- font = wezterm.font("MesloLGS Nerd Font"),
+
   font_size = 19,
 
   -- For example, changing the color scheme:
@@ -97,8 +106,8 @@ config = {
   hide_tab_bar_if_only_one_tab = true,
 
   window_frame = {
-    font = wezterm.font({ family = "MesloLGS Nerd Font", weight = "Bold" }),
-    font_size = 14.0,
+    font = wezterm.font({ family = "FiraCode Nerd Font", weight = "Bold" }),
+    font_size = 20.0,
     -- active_titlebar_bg = "#1a1b26",
     -- inactive_titlebar_bg = "#1a1b26",
   },
