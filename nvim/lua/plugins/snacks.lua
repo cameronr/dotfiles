@@ -98,6 +98,9 @@ return {
           -- telescope preset here but then I wouldn't get any updates if it changed.
           -- Instead, we make a copy of the preset and tweak a few values. I'm not sure
           -- if that's better but here it is
+          -- One side benefit of using a function instead of an actual table is that
+          -- Snacks won't merge this layout with a custom set picker layout like it
+          -- would if it were just a table
           local telescope = vim.deepcopy(require('snacks.picker.config.layouts').telescope)
 
           -- enable backdrop
