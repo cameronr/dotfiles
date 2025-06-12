@@ -14,6 +14,11 @@ return {
         augend.date.alias['%Y/%m/%d'],
         augend.constant.alias.bool, -- boolean value (true <-> false)
         augend.hexcolor.new({ case = 'prefer_lower' }),
+        augend.constant.new({ -- useful for yaml
+          elements = { 'True', 'False' },
+          word = true, -- ensures only whole words are matched
+          cyclic = true,
+        }),
       },
     })
   end,
