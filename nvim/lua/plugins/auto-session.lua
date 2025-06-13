@@ -37,16 +37,6 @@ return {
       },
       session_lens = {
         load_on_setup = false,
-        previewer = true,
-        theme_conf = {
-          layout_strategy = 'horizontal',
-          borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-          sorting_strategy = 'descending',
-          layout_config = {
-            width = 0.7,
-            height = 0.7,
-          },
-        },
         mappings = {
           delete_session = { 'i', '<a-d>' },
         },
