@@ -321,7 +321,7 @@ return {
         -- theme_check = {},
 
         -- Typo is too noisy for me without a simple way to override
-        -- typos_lsp = {},
+        typos_lsp = {},
 
         -- YAML
         yamlls = {},
