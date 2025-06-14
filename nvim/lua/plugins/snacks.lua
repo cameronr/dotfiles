@@ -80,6 +80,7 @@ return {
         animate = { enabled = false },
       },
       input = { enabled = true },
+      bigfile = { enabled = true },
       notifier = {
         enabled = true,
         style = 'fancy',
