@@ -20,8 +20,8 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'mason-org/mason.nvim', opts = {} },
-      'mason-org/mason-lspconfig.nvim',
+      { 'mason-org/mason.nvim', version = 'v1.*', opts = {} },
+      { 'mason-org/mason-lspconfig.nvim', version = 'v1.*' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -324,7 +324,19 @@ return {
         typos_lsp = {},
 
         -- YAML
-        yamlls = {},
+        yamlls = {
+          settings = {
+            yaml = {
+              customTags = {
+                '!secret scalar',
+                '!include scalar',
+                '!include_dir_merge_named scalar',
+                '!include_dir_merge_list scalar',
+                '!input scalar',
+              },
+            },
+          },
+        },
       }
 
       -- Ensure the servers and tools above are installed
@@ -355,9 +367,6 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
-            -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
-            -- if server_name == 'tsserver' then server_name = 'ts_ls' end
-
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
