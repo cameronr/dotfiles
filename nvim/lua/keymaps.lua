@@ -204,6 +204,10 @@ vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap
 vim.keymap.set({ 'n', 'v', 'x' }, '<pageup>', '<c-u>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 
+-- map shift up/down to just up/down so it doesn't scroll jarringly
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>', { noremap = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>', { noremap = true })
+
 -- Undo all changes since last save
 vim.keymap.set('n', '<S-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
 vim.keymap.set('n', '<M-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
@@ -222,7 +226,7 @@ vim.keymap.set('n', '<leader>bq', '<cmd>bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>bQ', '<cmd>bd!<CR>', { desc = 'Force close buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close buffer' })
 vim.keymap.set('n', '<leader>bD', '<cmd>bd!<CR>', { desc = 'Force close buffer' })
-vim.keymap.set('n', '<leader>bn', '<cmd>enew<CR>', { desc = 'New buffer' })
+vim.keymap.set('n', '<leader>bn', '<cmd>ene<CR>', { desc = 'New buffer' })
 
 -- Shortcut for surrounding a word (inner) with a '
 vim.keymap.set('n', 'S', '<nop>') -- Don't keep S mapping
@@ -238,6 +242,7 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g
 
 -- select last pasted lines
 vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
+vim.keymap.set('n', 'vp', "'[V']", { desc = 'Select pasted lines' })
 
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
