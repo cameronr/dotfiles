@@ -24,6 +24,8 @@ return {
     end,
 
     on_highlights = function(hl, c)
+      -- slightly brighter visual selection
+      hl.Visual.bg = '#2d3f6f'
       -- Keep visual for popup/picker highlights
       hl.PmenuSel = { bg = hl.Visual.bg }
       hl.TelescopeSelection = { bg = hl.Visual.bg }
