@@ -8,6 +8,8 @@ return {
     },
   },
   -- config = function(_, opts)
+  --- NOTE: should prolly be merging the tops here, e.g.
+  --- opts = function(_, opts)
   opts = function()
     -- local lualine_require = require('lualine_require')
     -- lualine_require.require = require
@@ -154,9 +156,6 @@ return {
             fmt = trunc(0, 0, 160, true), -- hide when window is < 100 columns
             separator = '',
           },
-
-          require('util.lualine').cmp_source('supermaven', '󰰣'),
-
           {
             lsp_status_all,
             fmt = trunc(0, 8, 140, false),
