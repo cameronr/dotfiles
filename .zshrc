@@ -101,13 +101,13 @@ HISTFILE=~/.zsh_history
 SAVEHIST=100000
 HISTSIZE=100000
 HISTDUP=erase
-setopt    appendhistory        # Append history to the history file (no overwriting)
-setopt    sharehistory         # Share history across terminals
-setopt    hist_ignore_space    # don't log history with a leading space
-setopt    hist_ignore_all_dups # Delete old recorded entry if new entry is a duplicate.
-setopt    hist_save_no_dups    # Don't write duplicate entries in the history file.
-setopt    hist_ignore_dups     # Don't record an entry that was just recorded again.
-setopt    hist_find_no_dups    # Don't write duplicate entries in the history file.
+setopt    SHARE_HISTORY        # Share history across terminals
+setopt    INC_APPEND_HISTORY   # Append history to the history file (no overwriting) when command starts
+setopt    HIST_IGNORE_SPACE    # don't log history with a leading space
+setopt    HIST_IGNORE_ALL_DUPS # Delete old recorded entry if new entry is a duplicate.
+setopt    HIST_SAVE_NO_DUPS    # Don't write duplicate entries in the history file.
+setopt    HIST_IGNORE_DUPS     # Don't record an entry that was just recorded again.
+setopt    HIST_FIND_NO_DUPS    # Don't surface duplicate entries in the history file.
 
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
