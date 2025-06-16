@@ -11,9 +11,9 @@ return {
     --   { 'yaocccc/vim-showmarks' },
     -- },
 
-    opts = function()
+    opts = function(_, opts)
       local builtin = require('statuscol.builtin')
-      return {
+      return vim.tbl_deep_extend('force', opts or {}, {
         relculright = true,
         segments = {
           {
@@ -31,7 +31,7 @@ return {
             -- click = 'v:lua.ScLa', -- NOTE: uncomment for DAP breakpoint toggling
           },
         },
-      }
+      })
     end,
   },
 }

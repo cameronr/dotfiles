@@ -6,7 +6,7 @@ return {
       { '<leader>co', '<cmd>OverseerRun<CR>', desc = 'Overseer run' },
       { '<leader>cO', '<cmd>OverseerToggle<CR>', desc = 'Overseer toggle' },
     },
-    opts = function(_, _)
+    opts = function(_, opts)
       -- Retrieve the current lualine configuration
       local config = require('lualine').get_config()
 
@@ -18,7 +18,7 @@ return {
       -- Reapply the updated configuration
       require('lualine').setup(config)
 
-      return {
+      return vim.tbl_deep_extend('force', opts or {}, {
         task_list = {
           direction = 'right',
           width = 80,
@@ -47,7 +47,7 @@ return {
             ['q'] = 'Close',
           },
         },
-      }
+      })
     end,
   },
 }

@@ -3,13 +3,13 @@ return {
   branch = 'cursorline',
   -- dev = true,
   event = { 'ModeChanged', 'WinEnter', 'WinLeave' },
-  opts = function()
+  opts = function(_, opts)
     if not vim.g.colors_name or not vim.g.colors_name:match('^tokyonight') then return { mode = {} } end
 
     local palette = require('tokyonight.colors').setup()
     if palette == nil then return { mode = {} } end
 
-    local opts = {
+    return vim.tbl_deep_extend('force', opts or {}, {
       -- debug = true,
       -- hide_inactive_cursorline = true,
 
@@ -44,7 +44,6 @@ return {
           bold = true,
         },
       },
-    }
-    return opts
+    })
   end,
 }

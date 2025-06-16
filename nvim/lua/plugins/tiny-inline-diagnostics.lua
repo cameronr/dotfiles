@@ -5,9 +5,9 @@ return {
     event = { 'BufNewFile', 'BufReadPre' },
     -- event = 'VeryLazy',
     priority = 1000,
-    opts = function()
+    opts = function(_, opts)
       vim.diagnostic.config({ virtual_text = false, float = false })
-      return {
+      return vim.tbl_deep_extend('force', opts or {}, {
         signs = {
           diag = '●',
           vertical = ' │',
@@ -18,7 +18,7 @@ return {
         blend = {
           factor = 0.1,
         },
-      }
+      })
     end,
   },
 }

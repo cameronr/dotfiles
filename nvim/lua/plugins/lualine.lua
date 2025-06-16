@@ -7,10 +7,7 @@ return {
       -- dev = true,
     },
   },
-  -- config = function(_, opts)
-  --- NOTE: should prolly be merging the tops here, e.g.
-  --- opts = function(_, opts)
-  opts = function()
+  opts = function(_, opts)
     -- local lualine_require = require('lualine_require')
     -- lualine_require.require = require
     local lazy_status = require('lazy.status') -- to configure lazy pending updates count
@@ -77,7 +74,7 @@ return {
       set = function(state) vim.g.custom_lualine_show_session_name = state end,
     }):map('<leader>vs')
 
-    return {
+    return vim.tbl_deep_extend('force', opts or {}, {
       options = {
         -- When theme is set to auto, Lualine uses dofile instead of require
         -- to load the theme. We need the theme to be loaded via require since
@@ -201,6 +198,6 @@ return {
         'toggleterm',
         'trouble',
       },
-    }
+    })
   end,
 }

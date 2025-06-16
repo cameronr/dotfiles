@@ -9,8 +9,7 @@ return {
     { '<leader>wD', '<cmd>SessionDelete<CR>', desc = 'Delete session' },
   },
 
-  ---@diagnostic disable-next-line: assign-type-mismatch
-  opts = function()
+  opts = function(_, opts)
     if Snacks then
       Snacks.toggle({
         name = 'session autosave',
@@ -21,7 +20,7 @@ return {
 
     ---@module "auto-session"
     ---@type AutoSession.Config
-    return {
+    return vim.tbl_deep_extend('force', opts or {}, {
       bypass_save_filetypes = { 'alpha', 'snacks_dashboard' },
       cwd_change_handling = true,
       -- log_level = 'debug',
@@ -42,6 +41,6 @@ return {
         },
       },
       suppressed_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
-    }
+    })
   end,
 }
