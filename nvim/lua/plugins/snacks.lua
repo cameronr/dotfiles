@@ -9,6 +9,7 @@ return {
         { ']l', function() Snacks.words.jump(1, true) end, desc = 'Next LSP highlight' },
         { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
         { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
+        { '<leader>cP', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
         { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
         { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
         { '<leader>e', function() Snacks.picker.explorer() end, desc = 'Explorer' },
@@ -54,7 +55,7 @@ return {
         { '<leader>sC', function() Snacks.picker.colorschemes() end, desc = 'Colorschemes' },
         { '<leader>su', function() Snacks.picker.undo() end, desc = 'Undotree' },
         { '<leader>u', function() Snacks.picker.undo() end, desc = 'Undotree' },
-        { '<leader>qp', function() Snacks.picker.projects() end, desc = 'Projects' },
+        -- { '<leader>qp', function() Snacks.picker.projects() end, desc = 'Projects' },
         -- LSP
         { 'gd', function() Snacks.picker.lsp_definitions() end, desc = 'Goto Definition' },
         { 'gr', function() Snacks.picker.lsp_references() end, nowait = true, desc = 'References' },
