@@ -172,6 +172,7 @@ return {
         vim.fn.writefile({ vim.g.colors_name }, colorscheme_file)
 
         local color_scheme = vim.g.colors_name:gsub('-', '_')
+        ---@diagnostic disable-next-line: undefined-field
         local stdout = vim.loop.new_tty(1, false)
         if stdout then
           stdout:write(('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format('FORCE_DAY_MODE', vim.fn.system({ 'base64' }, color_scheme)))
