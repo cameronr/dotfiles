@@ -141,7 +141,7 @@ if vim.fn.has('nvim-0.11') == 1 then
   -- I played with putting the sign column on the right side but the sign column
   -- is two columns wide and the characters for todos/diagnostics don't leave enough
   -- space on the left. If the sign column could be a single column wide, I'd be ok
-  -- with what LazyVim does and have a sign colum on the right for just gitsigns and another
+  -- with what LazyVim does and have a sign column on the right for just gitsigns and another
   -- on the left for diagnostics but giving up 4 columns is too much.
 
   -- Disabled for 0.10 because we get line numbers on buffers that shouldn't have them (e.g. help)
@@ -193,6 +193,9 @@ vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 
 -- Enable wrapping of long lines
 vim.o.wrap = true
+
+-- Preserve view when using jumplist and remove unloaded buffers (experimental)
+vim.o.jumpoptions = 'view,clean'
 
 if vim.fn.has('nvim-0.11') == 1 then
   -- Rounded borders by default on >= 0.11
