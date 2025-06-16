@@ -5,7 +5,7 @@ return {
     lazy = false,
     keys = function()
       local keys = {
-        { '[l', function() Snacks.words.jump(-1, true) end, desc = 'Next LSP highlight' },
+        { '[l', function() Snacks.words.jump(-1, true) end, desc = 'Prev LSP highlight' },
         { ']l', function() Snacks.words.jump(1, true) end, desc = 'Next LSP highlight' },
         { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
         { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
