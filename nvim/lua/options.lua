@@ -98,9 +98,12 @@ vim.o.scrolloff = 4
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
 vim.opt.formatoptions:remove({ 'o' })
 
+local options_user_augroup = vim.api.nvim_create_augroup('options_user_augroup', {})
+
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
   callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end,
+  group = options_user_augroup,
   desc = 'Disable New Line Comment',
 })
 
@@ -157,6 +160,7 @@ end
 -- Jump to last position when reopening a file
 vim.api.nvim_create_autocmd('BufReadPost', {
   desc = 'Open file at the last position it was edited earlier',
+  group = options_user_augroup,
   command = 'silent! normal! g`"zv',
 })
 
@@ -171,7 +175,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 -- Always open help on the right
 -- Open help window in a vertical split to the right.
 vim.api.nvim_create_autocmd('BufWinEnter', {
-  group = vim.api.nvim_create_augroup('help_window_right', {}),
+  group = options_user_augroup,
   pattern = { '*.txt' },
   callback = function()
     if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
