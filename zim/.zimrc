@@ -1,0 +1,48 @@
+# Modules
+
+# Sets sane Zsh built-in environment options.
+zmodule environment
+# Applies correct bindkeys for input events.
+zmodule input
+
+# Prompt
+zmodule romkatv/powerlevel10k
+
+# OMZ modules
+zmodule ohmyzsh/ohmyzsh --root plugins/command-not-found
+zmodule ohmyzsh/ohmyzsh --root plugins/magic-enter
+zmodule ohmyzsh/ohmyzsh --root plugins/docker-compose
+zmodule ohmyzsh/ohmyzsh --source lib/grep.zsh           # better grep highlighting
+zmodule ohmyzsh/ohmyzsh --source lib/functions.zsh      # for omz_urlencode, used by termsupport.zsh
+zmodule ohmyzsh/ohmyzsh --source lib/termsupport.zsh    # set titlebar
+
+# Better ssh completion
+# if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
+zmodule sunlei/zsh-ssh
+
+# fzf support
+zmodule Aloxaf/fzf-tab
+zmodule folke/tokyonight.nvim --source extras/fzf/tokyonight_night.sh
+
+# Completion
+
+# Additional completion definitions for Zsh.
+zmodule zsh-users/zsh-completions --fpath src
+
+# Docker completion
+zmodule docker/cli --name docker --use mkdir --on-pull 'curl -fsSL -o _docker https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker' --fpath .
+
+
+# Enables and configures smart and extensive tab completion.
+# completion must be sourced after all modules that add completion definitions.
+zmodule zimfw/completion
+
+# Modules that must be initialized last
+
+# Fish-like syntax highlighting for Zsh.
+# zsh-users/zsh-syntax-highlighting must be sourced after completion
+zmodule zsh-users/zsh-syntax-highlighting
+# Fish-like autosuggestions for Zsh.
+zmodule zsh-users/zsh-autosuggestions
+# Additional highlighting
+zmodule zdharma-continuum/fast-syntax-highlighting

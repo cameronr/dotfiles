@@ -1,0 +1,40 @@
+#compdef zimfw
+
+# List of zimfw actions and their descriptions
+local -a actions
+actions=(
+    'build:Build init.zsh and login_init.zsh (also does compile; -v for output)'
+    'clean:Clean all (both clean-compiled and clean-dumpfile)'
+    'clean-compiled:Clean Zsh compiled files'
+    'clean-dumpfile:Clean completion dumpfile'
+    'compile:Compile Zsh files'
+    'info:Print zimfw and system info'
+    'list:List all modules defined in .zimrc (-v for details)'
+    'init:Same as install, but with output tailored for terminal startup'
+    'install:Install new modules (also does build, compile; -v for output)'
+    'reinstall:Reinstall modules that failed check (prompts unless -q; also does build, compile; -v for output)'
+    'uninstall:Delete unused modules (prompts unless -q)'
+    'check:Check if updates for current modules are available (-v for more info)'
+    'update:Update current modules (also does build, compile; -v for output)'
+    'check-version:Check if a new version of zimfw is available'
+    'upgrade:Upgrade zimfw (also does compile; -v for output)'
+    'help:Print this help'
+    '--help:Print this help'
+    'version:Print zimfw version'
+    '--version:Print zimfw version'
+)
+
+local -a options
+options=(
+    '-q:Quiet (yes to prompts and only outputs errors)'
+    '-v:Verbose (outputs more details)'
+)
+
+# If completing the first argument, show actions
+if (( CURRENT == 2 )); then
+    _describe -t actions 'zimfw action' actions
+    return
+fi
+
+# Otherwise, complete options
+_describe -t options 'option' options
