@@ -18,7 +18,7 @@ CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.config}"
 
 cd ~
 
-DOTFILES=(.zshrc .wezterm.lua .ripgreprc)
+DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc)
 
 # (.) at end tells zsh to only return files
 for file in $DOTFILES; do
