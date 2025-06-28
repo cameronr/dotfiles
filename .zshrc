@@ -28,10 +28,9 @@ fi
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 # Add in snippets
-zinit snippet OMZP::git
-# zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 zinit snippet OMZP::magic-enter
 zinit snippet OMZL::key-bindings.zsh        # smart up/down history search
@@ -47,6 +46,15 @@ zinit snippet OMZP::docker-compose          # docker completions
 zinit ice as"completion"
 zinit snippet https://github.com/docker/cli/blob/master/contrib/completion/zsh/_docker
 
+# key-bindings.zsh sets emacs mode, set back to vi mode
+bindkey -v
+
+# keep some emacs-ness
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^D' delete-char
+# map alt-x to kill line (because tmux uses c-k)
+bindkey '^[x' kill-line
 
 # Override OMZ's title function for two reasons:
 # 1. If we're in an ssh session, add the machine name
@@ -133,7 +141,7 @@ if [[ (( $commands[nvim] )) ]]; then
     fi
 fi
 
-# set up zoxide and use it as cd (if installed
+# set up zoxide and use it as cd (if installed)
 if [[ (( $commands[zoxide] )) ]]; then
     eval "$(zoxide init --cmd cd zsh)"
 fi
