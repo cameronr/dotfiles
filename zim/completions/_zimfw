@@ -1,6 +1,5 @@
 #compdef zimfw
 
-# List of zimfw actions and their descriptions
 local -a actions
 actions=(
     'build:Build init.zsh and login_init.zsh (also does compile; -v for output)'
@@ -26,15 +25,20 @@ actions=(
 
 local -a options
 options=(
-    '-q:Quiet (yes to prompts and only outputs errors)'
-    '-v:Verbose (outputs more details)'
+    '-q[Quiet (yes to prompts and only outputs errors)]'
+    '-v[Verbose (outputs more details)]'
 )
 
-# If completing the first argument, show actions
-if (( CURRENT == 2 )); then
-    _describe -t actions 'zimfw action' actions
-    return
-fi
+_arguments -s -S \
+    $options \
+    '1:action:->actions' \
+    '*:: :->args'
 
-# Otherwise, complete options
-_describe -t options 'option' options
+case $state in
+    actions)
+        _describe -t actions 'zimfw action' actions
+        ;;
+    args)
+        _describe -t options 'option' options
+        ;;
+esac

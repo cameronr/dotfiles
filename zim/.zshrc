@@ -114,8 +114,6 @@ zstyle -d ':completion:*:warnings' format
 zle_highlight+=(paste:none)
 
 
-# autoload -Uz compinit && compinit
-
 # set vim as editor
 export EDITOR=vim
 alias vi='vim'
