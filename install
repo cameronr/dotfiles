@@ -10,7 +10,6 @@ CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.config}"
 #     echo ln -s $file `basename $file`
 # done
 #
-# # (.) at end tells zsh to only return directories
 # for dir in $DOTFILES_DIR/*(/); do
 #     echo $dir
 # done
@@ -20,9 +19,9 @@ cd ~
 
 DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc)
 
-# (.) at end tells zsh to only return files
 for file in $DOTFILES; do
-    ln -snf $DOTFILES_DIR/$file $file
+    link_name=$(basename "$file")
+    ln -snf $DOTFILES_DIR/$file $link_name
 done
 
 # Tmux special case
@@ -30,7 +29,6 @@ ln -snf $DOTFILES_DIR/tmux/tmux.conf .tmux.conf
 
 DOTFILE_DIRS=(nvim stylua eza)
 
-# (.) at end tells zsh to only return directories
 for dir in $DOTFILE_DIRS; do
     ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
 done
