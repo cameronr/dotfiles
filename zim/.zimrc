@@ -6,15 +6,15 @@ zmodule environment
 zmodule input
 
 # Prompt
-zmodule romkatv/powerlevel10k
+zmodule romkatv/powerlevel10k --use degit
 
 # OMZ modules
-zmodule ohmyzsh/ohmyzsh --root plugins/command-not-found
-zmodule ohmyzsh/ohmyzsh --root plugins/magic-enter
-zmodule ohmyzsh/ohmyzsh --root plugins/docker-compose
-zmodule ohmyzsh/ohmyzsh --source lib/grep.zsh           # better grep highlighting
-zmodule ohmyzsh/ohmyzsh --source lib/functions.zsh      # for omz_urlencode, used by termsupport.zsh
-zmodule ohmyzsh/ohmyzsh --source lib/termsupport.zsh    # set titlebar
+zmodule ohmyzsh/ohmyzsh --root plugins/command-not-found --use degit 
+zmodule ohmyzsh/ohmyzsh --root plugins/magic-enter --use degit
+zmodule ohmyzsh/ohmyzsh --root plugins/docker-compose --use degit
+zmodule ohmyzsh/ohmyzsh --source lib/grep.zsh --use degit           # better grep highlighting
+zmodule ohmyzsh/ohmyzsh --source lib/functions.zsh --use degit      # for omz_urlencode, used by termsupport.zsh
+zmodule ohmyzsh/ohmyzsh --source lib/termsupport.zsh --use degit    # set titlebar
 
 # Better ssh completion
 # if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
