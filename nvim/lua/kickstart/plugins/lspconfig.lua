@@ -321,7 +321,12 @@ return {
         -- theme_check = {},
 
         -- Typo is too noisy for me without a simple way to override
-        typos_lsp = {},
+        typos_lsp = {
+          on_attach = function(client, bufnr)
+            -- detach from non-modifiable buffers
+            if not vim.bo[bufnr].modifiable then vim.lsp.buf_detach_client(bufnr, client.id) end
+          end,
+        },
 
         -- YAML
         yamlls = {
