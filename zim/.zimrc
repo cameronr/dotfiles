@@ -1,9 +1,11 @@
 # Modules
 
 # Sets sane Zsh built-in environment options.
-zmodule environment
+zmodule zimfw/environment
 # Applies correct bindkeys for input events.
-zmodule input
+zmodule zimfw/input
+# Utility aliases and functions. Adds colour to ls, grep and less.
+zmodule zimfw/utility
 
 # Prompt
 zmodule romkatv/powerlevel10k --use degit

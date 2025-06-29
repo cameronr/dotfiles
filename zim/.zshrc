@@ -38,6 +38,9 @@ fpath=($DOTFILES/zim/completions $fpath)
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
+# I like the default grep highlights vs what zimfw/utility sets
+unset GREP_COLOR GREP_COLORS
+
 # key-bindings.zsh sets emacs mode, set back to vi mode
 bindkey -v
 
