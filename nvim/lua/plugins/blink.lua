@@ -236,4 +236,77 @@ return {
       },
     },
   },
+  {
+    'saghen/blink.cmp',
+    dependencies = {
+      'mgalliou/blink-cmp-tmux',
+    },
+    opts = function(_, opts)
+      if Snacks then
+        ---@diagnostic disable-next-line: undefined-field
+        Snacks.toggle({
+          name = 'Blink tmux source',
+          get = function() return vim.g.custom_blink_cmp_tmux_enabled end,
+          ---@diagnostic disable-next-line: inject-field
+          set = function(state) vim.g.custom_blink_cmp_tmux_enabled = state end,
+        }):map('<leader>vT')
+      end
+
+      -- Don't want to replace sources but add to it
+      table.insert(opts.sources.default, 'tmux')
+
+      return vim.tbl_deep_extend('force', opts or {}, {
+        sources = {
+          providers = {
+            tmux = {
+              enabled = function() return vim.g.custom_blink_cmp_tmux_enabled end,
+              module = 'blink-cmp-tmux',
+              name = 'tmux',
+              -- default options
+              opts = {
+                all_panes = true,
+                capture_history = false,
+                -- only suggest completions from `tmux` if the `trigger_chars` are
+                -- used
+                -- triggered_only = false,
+                -- trigger_chars = { '.' },
+              },
+            },
+          },
+        },
+      })
+    end,
+  },
+
+  ---@module "lazy"
+  ---@type LazySpec
+  {
+    'saghen/blink.cmp',
+    dependencies = {
+      'mikavilpas/blink-ripgrep.nvim',
+    },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      sources = {
+        default = {
+          'ripgrep',
+        },
+        providers = {
+          ripgrep = {
+            module = 'blink-ripgrep',
+            name = 'Ripgrep',
+            ---@module "blink-ripgrep"
+            ---@type blink-ripgrep.Options
+            opts = {
+              mode = 'off', -- default to off
+              toggles = {
+                on_off = '<leader>vG',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 }
