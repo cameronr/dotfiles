@@ -300,6 +300,7 @@ return {
             ---@type blink-ripgrep.Options
             opts = {
               mode = 'off', -- default to off
+              prefix_min_len = 5,
               toggles = {
                 on_off = '<leader>vG',
               },
