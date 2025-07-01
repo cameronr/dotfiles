@@ -13,6 +13,7 @@ return {
         { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
         { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
         { '<leader>e', function() Snacks.picker.explorer() end, desc = 'Explorer' },
+        { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Close buffer' },
       }
       if vim.g.picker_engine ~= 'snacks' then return keys end
 
