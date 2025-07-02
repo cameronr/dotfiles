@@ -116,7 +116,7 @@ return {
       hl.SnacksIndentScope = hl.LineNr
 
       -- Make folds less prominent (especially important for DiffView)
-      hl.Folded = { fg = c.blue0 }
+      hl.Folded = { fg = c.blue0, italic = true }
 
       -- Make diff* transparent for DiffView file panel
       hl.diffAdded = { fg = c.git.add }
