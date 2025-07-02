@@ -78,6 +78,7 @@ return {
         hl.FlashLabel.fg = c.bg
       end
 
+      -- telescope
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
 
       -- cmp
@@ -116,6 +117,11 @@ return {
 
       -- Make folds less prominent (especially important for DiffView)
       hl.Folded = { fg = c.blue0 }
+
+      -- Make diff* transparent for DiffView file panel
+      hl.diffAdded = { fg = c.git.add }
+      hl.diffRemoved = { fg = c.git.delete }
+      hl.diffChanged = { fg = c.git.change }
 
       -- Make the colors in the Lualine x section dimmer
       local lualine = require('lualine.themes.tokyonight-night')
