@@ -101,6 +101,7 @@ return {
 
   {
     'nvim-lualine/lualine.nvim',
+    optional = true,
     opts = function(_, opts)
       local trouble_symbols = require('trouble').statusline({
         mode = 'symbols',
