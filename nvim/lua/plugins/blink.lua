@@ -113,9 +113,13 @@ return {
       },
 
       cmdline = {
-        -- keymap = {
-        -- ['<CR>'] = { 'accept', 'fallback' },
-        -- },
+        keymap = {
+          -- ['<CR>'] = { 'accept', 'fallback' },
+          ['<Up>'] = {},
+          ['<Down>'] = {},
+          ['<Right>'] = {},
+          ['<Left>'] = {},
+        },
         completion = {
           list = {
             selection = { preselect = false, auto_insert = true },
