@@ -30,14 +30,14 @@ return {
         -- log_level = vim.log.levels.INFO,
         -- Conform for formatters
         formatters = {
+          eslint_d = {
+            require_cwd = true,
+          },
           yamlfix = {
             env = {
               YAMLFIX_SEQUENCE_STYLE = 'block_style',
               YAMLFIX_preserve_quotes = 'true',
             },
-          },
-          eslint_d = {
-            require_cwd = true,
           },
         },
         --
@@ -71,23 +71,23 @@ return {
         format_on_save = function(bufnr)
           -- Disable with a global or buffer-local variable
           if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then return end
+
+          -- Language specific configuration of lsp fallback
+          --
           -- Disable "format_on_save lsp_fallback" for languages that don't
           -- have a well standardized coding style. You can add additional
           -- languages here or re-enable it for the disabled ones.
-          local disable_filetypes = {
-            c = true,
-            cpp = true,
-            liquid = true,
+          --
+          -- For python, we want to fallback to the rust lsp formatter (not stop at isort)
+          local language_lsp_format_opts = {
+            c = 'never',
+            cpp = 'never',
+            liquid = 'never',
+            python = 'last',
           }
-          local lsp_format_opt
-          if disable_filetypes[vim.bo[bufnr].filetype] then
-            lsp_format_opt = 'never'
-          else
-            lsp_format_opt = 'fallback'
-          end
           return {
             timeout_ms = 2000,
-            lsp_format = lsp_format_opt,
+            lsp_format = language_lsp_format_opts[vim.bo[bufnr].filetype] or 'fallback',
           }
         end,
       })
