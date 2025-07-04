@@ -43,8 +43,7 @@ return {
         --
         formatters_by_ft = {
           lua = { 'stylua' },
-          -- Conform can also run multiple formatters sequentially
-          python = { 'isort', 'black' },
+          python = { 'isort' },
           --
           -- You can use a sub-list to tell conform to run *until* a formatter
           -- is found.
