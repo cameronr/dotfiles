@@ -20,7 +20,7 @@ return {
       function()
         if vim.g.picker_engine == 'fzf' then
           require('todo-comments.fzf').todo()
-        elseif vim.g.picker_engine == 'snack' then
+        elseif vim.g.picker_engine == 'snacks' then
           Snacks.picker.todo_comments()
         else
           vim.cmd('TodoTelescope')
