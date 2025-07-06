@@ -209,7 +209,6 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>', { noremap = true })
 vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>', { noremap = true })
 
 -- Undo all changes since last save
-vim.keymap.set('n', '<S-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
 vim.keymap.set('n', '<M-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
 vim.keymap.set('n', '<M-r>', '<cmd>later 1f<CR>', { desc = 'Redo to last saved' })
 
