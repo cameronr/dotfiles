@@ -164,6 +164,10 @@ vim.keymap.set('i', ',', ',<c-g>u')
 vim.keymap.set('i', '.', '.<c-g>u')
 vim.keymap.set('i', ';', ';<c-g>u')
 
+-- Quickly go to the start/end of the line while in insert mode.
+vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
+vim.keymap.set('i', '<C-e>', '<C-o>A', { desc = 'Go to the end of the line' })
+
 -- better indenting
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
