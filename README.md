@@ -1,19 +1,21 @@
 My dotfiles
-![Screenshot 2024-12-07 at 14 51 16](https://github.com/user-attachments/assets/a80f6646-1a47-4053-ad4c-c12b30807b2e)
-![Screenshot 2024-12-07 at 14 39 34](https://github.com/user-attachments/assets/59f1ac62-35c0-464f-b9e8-a194398c8b89)
-![Screenshot 2024-12-07 at 14 39 12](https://github.com/user-attachments/assets/74b0499f-7ad3-463a-8cb2-a563dd743ae3)
-![Screenshot 2024-12-07 at 14 53 37](https://github.com/user-attachments/assets/d4a4d47d-88b8-4cd4-9e5e-e1042327371d)
+
+<img width="1822" alt="Screenshot 2025-07-06 at 21 16 09" src="https://github.com/user-attachments/assets/30bb94a0-ca6a-49d6-88f8-77874f3345bb" />
+<img width="1822" alt="Screenshot 2025-07-06 at 21 17 03" src="https://github.com/user-attachments/assets/6743fda5-6d38-4ccc-b242-dab7563a1f41" />
+<img width="1822" alt="Screenshot 2025-07-06 at 21 17 45" src="https://github.com/user-attachments/assets/051ed04e-bb13-42c2-b660-556e6a19d8eb" />
+<img width="2102" alt="Screenshot 2025-07-06 at 21 20 01" src="https://github.com/user-attachments/assets/feabbca0-b387-484a-adaa-1eafb84cd642" />
+<img width="1584" alt="Screenshot 2025-07-06 at 21 26 56" src="https://github.com/user-attachments/assets/1e01e458-3a46-4176-864c-5b40a5e84faf" />
 
 
 Main features:
 
 - [WezTerm](https://wezfurlong.org/wezterm/index.html)
-  - [Nerd Font Meslo LGS](https://www.nerdfonts.com/)
+  - [FiraCode with ligatures](https://www.nerdfonts.com/font-downloads), [style options](https://github.com/tonsky/FiraCode/wiki/How-to-enable-stylistic-sets)
 - tmux
   - [Tmux Tokyo Night](https://github.com/fabioluciano/tmux-tokyo-night)
   - [tmux.nvim](https://github.com/aserowy/tmux.nvim)
 - zsh
-  - [zinit](https://github.com/zdharma-continuum/zinit)
+  - [zimfw](https://github.com/zimfw/zimfw)
   - [powerlevel10k](https://github.com/romkatv/powerlevel10k)
   - [fzf](https://github.com/junegunn/fzf)
 - [NeoVim](https://neovim.io/)
