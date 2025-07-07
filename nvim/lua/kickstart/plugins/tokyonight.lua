@@ -75,7 +75,7 @@ return {
         hl['@property.yaml'] = { fg = '#006a83' }
 
         -- Make flash label legible in light mode
-        hl.FlashLabel.fg = c.bg
+        if hl.FlashLabel then hl.FlashLabel.fg = c.bg end
       end
 
       -- telescope
