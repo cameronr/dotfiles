@@ -1,12 +1,25 @@
--- stripped down, single file conifg with no plugin manager
+if not vim.g.man_pager then
+  vim.g.mapleader = ' '
+  vim.g.maplocalleader = ' '
+end
 
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
+-- [[ Setting options ]]
+-- See `:help vim.o`
+-- NOTE: You can change these options as you wish!
+--  For more options, you can see `:help option-list`
 
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.mouse = 'a'
+-- Make line numbers default
+vim.o.number = true
+-- You can also add relative line numbers, to help with jumping.
+--  Experiment for yourself to see if you like it!
+vim.o.relativenumber = true
+
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.o.mouse = 'a'
+
+-- Don't show the mode, since it's already in the status line
+vim.o.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
@@ -45,50 +58,58 @@ vim.schedule(function()
 end)
 
 -- Enable break indent
-vim.opt.breakindent = true
+vim.o.breakindent = true
 
 -- Save undo history
-vim.opt.undofile = true
+vim.o.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+vim.o.signcolumn = 'yes'
 
 -- Decrease update time
-vim.opt.updatetime = 250
+vim.o.updatetime = 250
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+vim.o.timeoutlen = 300
 
 -- Configure how new splits should be opened
-vim.opt.splitright = true
-vim.opt.splitbelow = true
+vim.o.splitright = true
+vim.o.splitbelow = true
 
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
+--
+--  Notice listchars is set using `vim.opt` instead of `vim.o`.
+--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
+--   See `:help lua-options`
+--   and `:help lua-options-guide`
+vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'nosplit'
+vim.o.inccommand = 'nosplit'
 
 -- Show which line your cursor is on
-vim.opt.cursorline = true
+vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 4
+vim.o.scrolloff = 4
 
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
 vim.opt.formatoptions:remove({ 'o' })
 
+local options_user_augroup = vim.api.nvim_create_augroup('options_user_augroup', {})
+
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
   callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end,
+  group = options_user_augroup,
   desc = 'Disable New Line Comment',
 })
 
@@ -110,43 +131,94 @@ vim.opt.fillchars = {
 if vim.fn.has('nvim-0.10') == 1 then
   -- scroll virtual lines when wrapping is on rather than jumping a big
   -- block
-  vim.opt.smoothscroll = true
+  vim.o.smoothscroll = true
+
+  -- Enable tree-sitter folding
+  -- vim.o.foldmethod = 'expr'
+  -- vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+  -- vim.o.foldlevel = 99
+
+  -- Was getting some nofold errors on session restore even when I didn't create any
+  -- so comment this out for now
+  -- vim.o.foldlevelstart = 99
+
+  -- vim.o.foldcolumn = '0' -- hide column by default
+end
+
+if vim.fn.has('nvim-0.11') == 1 then
+  -- Right aligns numbers with relative line nums when < 100 lines
+  -- I played with putting the sign column on the right side but the sign column
+  -- is two columns wide and the characters for todos/diagnostics don't leave enough
+  -- space on the left. If the sign column could be a single column wide, I'd be ok
+  -- with what LazyVim does and have a sign column on the right for just gitsigns and another
+  -- on the left for diagnostics but giving up 4 columns is too much.
+
+  -- Disabled for 0.10 because we get line numbers on buffers that shouldn't have them (e.g. help)
+
+  vim.o.statuscolumn = '%C%s%=%{v:relnum?v:relnum:v:lnum} '
+
+  -- For 0.10, we need to check and see that vim.wo.number or vim.wo.relativenumber are true first
+  -- otherwise we'll get numbers on buffers that shouldn't have them (e.g. help, alpha)
+  -- vim.o.statuscolumn = "%C%s%=%{%(&number || &relativenumber) ? '%{v:relnum?v:relnum:v:lnum}' : ''%} "
 end
 
 -- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
 -- Jump to last position when reopening a file
 vim.api.nvim_create_autocmd('BufReadPost', {
   desc = 'Open file at the last position it was edited earlier',
+  group = options_user_augroup,
   command = 'silent! normal! g`"zv',
 })
+
+-- vim.api.nvim_create_autocmd('BufReadPost', {
+--   desc = 'Open file at the last position it was edited earlier',
+--   callback = function()
+--     local mark = vim.api.nvim_buf_get_mark(0, '"')
+--     if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then vim.api.nvim_win_set_cursor(0, mark) end
+--   end,
+-- })
 
 -- Always open help on the right
 -- Open help window in a vertical split to the right.
 vim.api.nvim_create_autocmd('BufWinEnter', {
-  group = vim.api.nvim_create_augroup('help_window_right', {}),
+  group = options_user_augroup,
   pattern = { '*.txt' },
   callback = function()
     if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
   end,
 })
 
--- Set default tab options (but they should be overridden by sleuth)
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 2
-vim.opt.softtabstop = 2
-vim.opt.shiftround = true
-vim.opt.smartindent = true
+-- Set default tab options (but they should be overridden by guess-indent)
+vim.o.expandtab = true
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.shiftround = true
+vim.o.smartindent = true
 
 -- Recommended session options from auto-sessions
-vim.opt.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
--- Hide diagnostic virtual text and add border to floating window
-vim.opt.wrap = true
+-- signcolumn on right exploration. ultimately, i like the numbers closers than the signs
+-- vim.o.statuscolumn = "%=%{v:virtnum < 1 ? (v:relnum ? v:relnum : v:lnum < 10 ? v:lnum . '' : v:lnum) : ''} %s"
 
--- options end
+-- Enable wrapping of long lines
+vim.o.wrap = true
 
--- keymaps start
+-- Preserve view when using jumplist and remove unloaded buffers (experimental)
+vim.o.jumpoptions = 'view,clean'
 
+if vim.fn.has('nvim-0.11') == 1 then
+  -- Rounded borders by default on >= 0.11
+  vim.o.winborder = 'rounded'
+end
+
+-- vim: ts=2 sts=2 sw=2 et
+
+-- [[ Basic Keymaps ]]
+--  See `:help vim.keymap.set()`
+
+-- Clear highlights on search when pressing <Esc> in normal mode
+--  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR><esc>')
 
 -- Diagnostic keymaps
@@ -190,6 +262,7 @@ vim.keymap.set('n', '<leader>we', '<C-w>=', { desc = 'Make Window splits equal s
 vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Make Window splits equal size' })
 vim.keymap.set('n', '<leader>wq', '<cmd>close<CR>', { desc = 'Quit window' })
 vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows' })
+vim.keymap.set('n', '<leader>wm', '<C-w>o', { desc = 'Maximize' })
 vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
 vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
 vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
@@ -213,11 +286,14 @@ vim.keymap.set('n', 'x', '"_x')
 -- Put change into the blackhole register
 vim.keymap.set('n', 'c', '"_c')
 
+-- <leader>d blackhole delete
+vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
+
 -- Able to use semicolon in normal mode
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 
 -- Map jk as alternate escape sequence
-vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
+-- vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
 -- Sloppy aliases for accidental capital commands
 -- in 0.10, could use vim.keymap.set("ca", ...)
@@ -265,19 +341,21 @@ vim.keymap.set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", { desc = 'Do
 vim.keymap.set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
 vim.keymap.set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", { desc = 'Up', expr = true, silent = true })
 
--- Resize window using <ctrl> arrow keys
-vim.keymap.set('n', '<M-Up>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
-vim.keymap.set('n', '<M-Down>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
-vim.keymap.set('n', '<M-Left>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
-vim.keymap.set('n', '<M-Right>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
+-- Change windows (most likely overridden by tmux plugin)
+vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Go to Left Window', remap = true })
+vim.keymap.set('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window', remap = true })
+vim.keymap.set('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window', remap = true })
+vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Go to Right Window', remap = true })
 
--- Move Lines
-vim.keymap.set('n', '<A-j>', '<cmd>m .+1<cr>==', { desc = 'Move Down' })
-vim.keymap.set('n', '<A-k>', '<cmd>m .-2<cr>==', { desc = 'Move Up' })
-vim.keymap.set('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', { desc = 'Move Down' })
-vim.keymap.set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move Up' })
-vim.keymap.set('v', '<A-j>', ":m '>+1<cr>gv=gv", { desc = 'Move Down' })
-vim.keymap.set('v', '<A-k>', ":m '<-2<cr>gv=gv", { desc = 'Move Up' })
+-- Resize window using <ctrl> arrow keys (mostly likely overridden by tmux plugin)
+vim.keymap.set('n', '<M-k>', '<cmd>resize +2<cr>', { desc = 'Increase Window Height' })
+vim.keymap.set('n', '<M-j>', '<cmd>resize -2<cr>', { desc = 'Decrease Window Height' })
+vim.keymap.set('n', '<M-h>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease Window Width' })
+vim.keymap.set('n', '<M-l>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
+
+-- Moving lines
+vim.keymap.set('v', '<A-Down>', ":m '>+1<cr>gv=gv", { desc = 'Move Down' })
+vim.keymap.set('v', '<A-Up>', ":m '<-2<cr>gv=gv", { desc = 'Move Up' })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 vim.keymap.set('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true, desc = 'Next Search Result' })
@@ -304,6 +382,10 @@ vim.keymap.set('i', ',', ',<c-g>u')
 vim.keymap.set('i', '.', '.<c-g>u')
 vim.keymap.set('i', ';', ';<c-g>u')
 
+-- Quickly go to the start/end of the line while in insert mode.
+vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
+vim.keymap.set('i', '<C-e>', '<C-o>A', { desc = 'Go to the end of the line' })
+
 -- better indenting
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
@@ -316,9 +398,15 @@ vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr><esc>', { desc = 'Save File' })
 
 -- diagnostic
 local diagnostic_goto = function(next, severity)
-  local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
-  severity = severity and vim.diagnostic.severity[severity] or nil
-  return function() go({ severity = severity }) end
+  if vim.fn.has('nvim-0.11') == 1 then
+    local count = next and 1 or -1
+    severity = severity and vim.diagnostic.severity[severity] or nil
+    return function() vim.diagnostic.jump({ severity = severity, count = count }) end
+  else
+    local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+    severity = severity and vim.diagnostic.severity[severity] or nil
+    return function() go({ severity = severity }) end
+  end
 end
 vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
 vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
@@ -338,21 +426,27 @@ vim.keymap.set({ 'v', 'x' }, '<bslash>x', 'gc', { desc = 'Comment toggle', remap
 vim.keymap.set({ 'n', 'v', 'x' }, '<pageup>', '<c-u>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 
+-- map shift up/down to just up/down so it doesn't scroll jarringly
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>', { noremap = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>', { noremap = true })
+
 -- Undo all changes since last save
-vim.keymap.set('n', '<S-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
+vim.keymap.set('n', '<S-u>', '<cmd>undo<CR>', { desc = 'Undo' })
 vim.keymap.set('n', '<M-u>', '<cmd>earlier 1f<CR>', { desc = 'Undo to last saved' })
 vim.keymap.set('n', '<M-r>', '<cmd>later 1f<CR>', { desc = 'Redo to last saved' })
+
+-- Tools
+vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Lazy' })
+vim.keymap.set('n', '<leader>cm', '<cmd>Mason<CR>', { desc = 'Mason' })
 
 -- Next/prev buffer
 vim.keymap.set('n', '[b', '<cmd>:bprevious<CR>', { desc = 'Previous buffer' })
 vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
 
 -- <leader>b
-vim.keymap.set('n', '<leader>bq', '<cmd>bd<CR>', { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader>bQ', '<cmd>bd!<CR>', { desc = 'Force close buffer' })
-vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close buffer' })
-vim.keymap.set('n', '<leader>bD', '<cmd>bd!<CR>', { desc = 'Force close buffer' })
-vim.keymap.set('n', '<leader>bn', '<cmd>enew<CR>', { desc = 'New buffer' })
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close buffer and window' })
+vim.keymap.set('n', '<leader>bD', '<cmd>bd!<CR>', { desc = 'Force close buffer and window' })
+vim.keymap.set('n', '<leader>bn', '<cmd>ene<CR>', { desc = 'New buffer and window' })
 
 -- Shortcut for surrounding a word (inner) with a '
 vim.keymap.set('n', 'S', '<nop>') -- Don't keep S mapping
@@ -361,7 +455,6 @@ vim.keymap.set('n', 'Sp', 'SiW(', { desc = 'Wrap word with ()', remap = true })
 vim.keymap.set('n', 'Sb', 'Saw}', { desc = 'Wrap word with {}', remap = true })
 
 -- Swap to alternate buffer, less work that ctrl-6
-vim.keymap.set('n', '<leader>a', '<C-6>', { desc = 'Alt buffer' })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
 -- quick replace of current word
@@ -369,6 +462,7 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g
 
 -- select last pasted lines
 vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
+vim.keymap.set('n', 'vp', "'[V']", { desc = 'Select pasted lines' })
 
 vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
@@ -376,6 +470,143 @@ vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
 vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
--- keymaps end
+vim.keymap.set('n', '<leader>cI', function()
+  local function display_lsp_info(client, _)
+    if not client then return end
+    -- Create a temporary buffer to show the configuration
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_open_win(buf, true, {
+      relative = 'editor',
+      width = math.floor(vim.o.columns * 0.75),
+      height = math.floor(vim.o.lines * 0.90),
+      col = math.floor(vim.o.columns * 0.125),
+      row = math.floor(vim.o.lines * 0.05),
+      style = 'minimal',
+      border = 'rounded',
+      title = ' ' .. (client.name:gsub('^%l', string.upper)) .. ': LSP Configuration ',
+      title_pos = 'center',
+    })
+
+    local lines = {}
+    table.insert(lines, 'Client: ' .. client.name)
+    table.insert(lines, 'ID: ' .. client.id)
+    table.insert(lines, '')
+    table.insert(lines, 'Configuration:')
+
+    local config_lines = vim.split(vim.inspect(client.config), '\n')
+    vim.list_extend(lines, config_lines)
+
+    -- Set the lines in the buffer
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+    -- Set buffer options
+    vim.bo[buf].modifiable = false
+    vim.bo[buf].filetype = 'lua'
+    vim.bo[buf].bh = 'delete'
+    vim.diagnostic.enable(false, { bufnr = buf })
+
+    vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { noremap = true, silent = true })
+  end
+
+  local clients = vim.lsp.get_clients()
+
+  if #clients == 1 then
+    display_lsp_info(clients[1])
+  else
+    vim.ui.select(clients, {
+      prompt = 'Pick language server: ',
+      format_item = function(item) return item.name end,
+    }, display_lsp_info)
+  end
+end, { desc = 'Inspect LSP' })
+
+-- Duplicate and comment out
+vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
+
+-- Command for diffing buffer vs disk
+vim.api.nvim_create_user_command('DiffOrig', 'vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis', { desc = 'Diff vs disk' })
+
+-- Delete from cursor to end of comment block
+vim.keymap.set('n', 'dc', function()
+  -- Get the commentstring and extract the prefix (before %s)
+  local cs = vim.bo.commentstring or ''
+  local prefix = cs:match('^(.-)%%s')
+  if not prefix or prefix == '' then
+    vim.notify('No commentstring found for this filetype', vim.log.levels.WARN)
+    return
+  end
+  prefix = vim.pesc(prefix) -- Escape for Lua patterns
+
+  local start = vim.fn.line('.')
+  local last = vim.fn.line('$')
+  local end_ = start
+
+  -- Scan downward for consecutive comment lines
+  for lnum = start, last do
+    local line = vim.fn.getline(lnum)
+    if line:match('^%s*' .. prefix) then
+      end_ = lnum
+    else
+      break
+    end
+  end
+
+  -- Delete the range if it's more than zero lines
+  if end_ >= start then vim.cmd(string.format('%d,%dd', start, end_)) end
+end, { desc = 'Delete inside comment block' })
+
+-- Debugging key
+vim.keymap.set('n', '<Bslash>d', function()
+  -- local harpoon = require('harpoon')
+  --
+  -- vim.notify(vim.inspect(harpoon:list().items))
+
+  --   StatusCol({ win = current_win })
+  -- end
+  -- -- code to be profiled
+  --
+  -- end_time = vim.uv.hrtime()
+  --
+  -- vim.notify('Function time: ' .. end_time - start_time)
+
+  -- local start = vim.loop.hrtime()
+  -- your_function()
+  -- local end = vim.loop.hrtime()
+  -- print(string.format("Elapsed time: %.6f", (end - start) / 1e6))  -- Convert nanoseconds to milliseconds
+  --
+  -- local bufs = vim.api.nvim_list_bufs()
+  -- for _, buf in ipairs(bufs) do
+  --   local filename = vim.api.nvim_buf_get_name(buf)
+  --   local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
+  --   local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
+  --   vim.notify(buf .. ': file_name: ' .. filename .. ' buftype: ' .. buftype .. ' filetype: ' .. filetype)
+  -- end
+
+  -- local filename = vim.fn.fnamemodify(vim.uv.fs_realpath(vim.api.nvim_buf_get_name(0)), ':~:.')
+  -- local Path = require('plenary.path')
+  --
+  -- local blah = Path:new(filename)
+  -- vim.notify(blah:shorten(3, { -1, -2 }))
+
+  -- -- Get the current buffer number
+  -- local bufnr = vim.api.nvim_get_current_buf()
+  --
+  -- -- Get the cursor position
+  -- local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  -- row = row - 1 -- API uses 0-based row numbers
+  --
+  -- -- Get the syntax ID at the cursor position
+  -- local syntax_id = vim.fn.synID(row + 1, col + 1, 1)
+  --
+  -- -- Get the name of the syntax group
+  -- local syntax_name = vim.fn.synIDattr(syntax_id, 'name')
+  --
+  -- -- Get the linked highlight group
+  -- local linked_hl_group = vim.fn.synIDattr(vim.fn.synIDtrans(syntax_id), 'name')
+  --
+  -- -- Print the results
+  -- vim.notify('Syntax group: ' .. syntax_name)
+  -- vim.notify('Linked highlight group: ' .. linked_hl_group)
+end, { desc = 'debugging function' })
 
 -- vim: ts=2 sts=2 sw=2 et
