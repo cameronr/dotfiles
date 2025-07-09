@@ -32,6 +32,7 @@ return {
         { '<leader>sgs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
         { '<leader>sgb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
         { '<leader>sgz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
+        { 'gX', function() Snacks.gitbrowse() end, desc = 'Git browse', mode = { 'n', 'x' } },
         -- Grep
         { '<leader>sz', function() Snacks.picker.lines() end, desc = 'Fuzzy find in buffer' },
         { '<leader>sb', function() Snacks.picker.grep_buffers() end, desc = 'Grep Open Buffers' },
@@ -50,8 +51,8 @@ return {
         { '<leader>sM', function() Snacks.picker.man() end, desc = 'Man Pages' },
         { '<leader>sm', function() Snacks.picker.marks() end, desc = 'Marks' },
         { "<leader>s'", function() Snacks.picker.marks() end, desc = 'Marks' },
-        { '<leader>sr', function() Snacks.picker.resume() end, desc = 'Resume' },
-        { '<leader>.', function() Snacks.picker.resume() end, desc = 'Resume' },
+        { '<leader>sr', function() Snacks.picker.resume() end, desc = 'Resume search' },
+        { '<leader>.', function() Snacks.picker.resume() end, desc = 'Resume search' },
         { '<leader>sq', function() Snacks.picker.qflist() end, desc = 'Quickfix List' },
         { '<leader>sC', function() Snacks.picker.colorschemes() end, desc = 'Colorschemes' },
         { '<leader>su', function() Snacks.picker.undo() end, desc = 'Undotree' },
@@ -80,6 +81,15 @@ return {
       indent = {
         enabled = true,
         animate = { enabled = false },
+        filter = function(buf)
+          local no_indent_fts = {
+            'gitcommit',
+          }
+          return vim.g.snacks_indent ~= false
+            and vim.b[buf].snacks_indent ~= false
+            and vim.bo[buf].buftype == ''
+            and not vim.tbl_contains(no_indent_fts, vim.bo[buf].filetype)
+        end,
       },
       input = { enabled = true },
       bigfile = { enabled = true },
@@ -91,7 +101,7 @@ return {
         enabled = vim.g.picker_engine == 'snacks',
         formatters = {
           file = {
-            filename_first = true, -- display filename before the file path
+            filename_first = true,
           },
         },
         layout = function()
