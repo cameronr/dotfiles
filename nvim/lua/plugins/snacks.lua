@@ -160,7 +160,9 @@ return {
         sections = {
           {
             section = 'terminal',
-            cmd = '{cat ~/tmp/logo2.txt; echo "                                           '
+            cmd = '{cat '
+              .. vim.fn.stdpath('config')
+              .. '/logo.txt; echo "                                           '
               .. vim.version().major
               .. '.'
               .. vim.version().minor
