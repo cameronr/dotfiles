@@ -145,14 +145,6 @@ return {
       dashboard = {
         enabled = true,
         preset = {
-          header = [[
-███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
-████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
-██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
-██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
-██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
-                                            ]] .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
           keys = {
             { icon = ' ', key = 'f', desc = 'Find file', action = ":lua Snacks.dashboard.pick('files')" },
             { icon = ' ', key = 'g', desc = 'Find text', action = ":lua Snacks.dashboard.pick('live_grep')" },
@@ -165,7 +157,51 @@ return {
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
           },
         },
+        sections = {
+          {
+            section = 'terminal',
+            cmd = '{cat ~/tmp/logo2.txt; echo "                                           '
+              .. vim.version().major
+              .. '.'
+              .. vim.version().minor
+              .. '.'
+              .. vim.version().patch
+              .. '"} | { command -v lolcrab >/dev/null && lolcrab || cat; }',
+            height = 8,
+            align = 'center',
+            indent = 5,
+            padding = 0,
+          },
+          { section = 'keys', gap = 1, padding = 1 },
+          { section = 'startup' },
+        },
       },
+
+      -- dashboard = {
+      --   enabled = true,
+      --   preset = {
+      --     header = [[
+      --  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+      --  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+      --  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+      --  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+      --  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+      --  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
+      --                                       ]] .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
+      --     keys = {
+      --       { icon = ' ', key = 'f', desc = 'Find file', action = ":lua Snacks.dashboard.pick('files')" },
+      --       { icon = ' ', key = 'g', desc = 'Find text', action = ":lua Snacks.dashboard.pick('live_grep')" },
+      --       { icon = ' ', key = 'e', desc = 'New file', action = ':ene' },
+      --       { icon = ' ', key = 'r', desc = 'Recent files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+      --       { icon = '󰁯 ', key = 'w', desc = 'Restore session', action = ':SessionSearch' },
+      --       { icon = '󰊢 ', key = 'n', desc = 'Neogit', action = ':Neogit' },
+      --       { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
+      --       { icon = ' ', key = 'm', desc = 'Mason', action = ':Mason' },
+      --       { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+      --     },
+      --   },
+      -- },
+
       styles = {
         notification_history = {
           keys = { ['<esc>'] = 'close' },
