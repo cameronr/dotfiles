@@ -41,6 +41,14 @@ return {
         mappings = {
           add = 'S', -- Add surrounding in Normal and Visual modes
           delete = 'ds', -- Delete surrounding
+
+          -- disable these so flash search is fast
+          find = '', -- disables 'sf'
+          find_left = '', -- disables 'sF'
+          highlight = '', -- disables 'sh'
+          replace = '', -- disables 'sr'
+          update_n_lines = '', -- disables 'sn'
+
           -- find = 'Sf', -- Find surrounding (to the right)
           -- find_left = 'SF', -- Find surrounding (to the left)
           -- highlight = 'Sh', -- Highlight surrounding
