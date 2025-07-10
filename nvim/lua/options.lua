@@ -203,7 +203,9 @@ vim.o.jumpoptions = 'view,clean'
 
 if vim.fn.has('nvim-0.11') == 1 then
   -- Rounded borders by default on >= 0.11
-  vim.o.winborder = 'rounded'
+
+  -- Commenting out because of snacks.dashboard
+  -- vim.o.winborder = 'rounded'
 end
 
 -- vim: ts=2 sts=2 sw=2 et

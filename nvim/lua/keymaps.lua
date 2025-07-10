@@ -6,7 +6,7 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR><esc>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Diagnostic popup' })
+vim.keymap.set('n', '<leader>d', function() vim.diagnostic.open_float({ border = 'rounded' }) end, { desc = 'Diagnostic popup' })
 
 -- Quickfix
 vim.keymap.set('n', '[q', '<cmd>cprev<cr>', { desc = 'Previous quickfix' })
