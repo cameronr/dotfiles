@@ -362,6 +362,9 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+
+        -- https://github.com/mfussenegger/nvim-lint/issues/462#issuecomment-2291862784
+        { 'eslint_d', version = '13.1.2' },
       })
 
       if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
