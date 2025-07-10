@@ -252,6 +252,8 @@ vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
 vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
+vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
+
 vim.keymap.set('n', '<leader>cI', function()
   local function display_lsp_info(client, _)
     if not client then return end
