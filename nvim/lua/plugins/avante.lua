@@ -3,14 +3,13 @@ return {
   ---@type LazySpec
   {
     'yetone/avante.nvim',
-    cond = function() return vim.fn.executable('make') == 1 and vim.fn.has('nvim-0.10.1') == 1 end,
+    cond = function() return vim.fn.executable('make') == 1 end,
     cmd = 'AvanteToggle',
     keys = {
       { '<leader>aa', '<cmd>AvanteAsk<CR>', desc = 'avante: ask' },
       { '<leader>at', '<cmd>AvanteToggle<CR>', desc = 'avante: toggle' },
     },
 
-    version = '*',
     build = 'make',
 
     opts = {
@@ -41,7 +40,7 @@ return {
   },
   {
     'Kaiser-Yang/blink-cmp-avante',
-    enabled = vim.g.cmp_engine == 'blink' and vim.fn.has('nvim-0.10.1') == 1,
+    enabled = vim.g.cmp_engine == 'blink',
     lazy = true,
   },
   {
