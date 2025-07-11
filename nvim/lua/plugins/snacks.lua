@@ -26,11 +26,13 @@ return {
         { '<leader>sf', function() Snacks.picker.files() end, desc = 'Find Files' },
         -- find
         { '<leader>sB', function() Snacks.picker.pickers() end, desc = 'Pickers' },
-        { '<leader>sgf', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
+        { '<leader>sG', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
         { '<leader>s.', function() Snacks.picker.recent() end, desc = 'Recent' },
         -- git
         { '<leader>sgc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
         { '<leader>sgl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
+        { '<leader>sgL', function() Snacks.picker.git_log_line() end, desc = 'Git Log Line' },
+        { '<leader>sgf', function() Snacks.picker.git_log_file() end, desc = 'Git Log File' },
         { '<leader>sgs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
         { '<leader>sgb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
         { '<leader>sgz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
