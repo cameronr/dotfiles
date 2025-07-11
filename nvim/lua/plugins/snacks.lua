@@ -170,7 +170,7 @@ return {
               .. vim.version().minor
               .. '.'
               .. vim.version().patch
-              .. '"} | { command -v lolcrab >/dev/null && lolcrab || cat; }',
+              .. '"} | { command -v lolcrab >/dev/null && lolcrab || cat; }; sleep .01',
             height = 8,
             align = 'center',
             indent = 5,
