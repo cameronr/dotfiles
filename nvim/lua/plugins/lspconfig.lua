@@ -34,8 +34,8 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
-      { 'mason-org/mason.nvim', version = 'v1.*', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim', version = 'v1.*' },
+      { 'mason-org/mason.nvim', opts = {} },
+      { 'mason-org/mason-lspconfig.nvim' },
       'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
@@ -215,8 +215,13 @@ return {
         'yamlls',
       }
 
-      local ensure_installed = vim.tbl_extend('force', servers, {
+      ---@type MasonLspconfigSettings
+      ---@diagnostic disable-next-line: missing-fields
+      require('mason-lspconfig').setup({
+        automatic_enable = vim.tbl_keys(servers or {}),
+      })
 
+      local ensure_installed = vim.tbl_extend('force', servers, {
         -- pin eslint_d to 13.1.2:
         -- https://github.com/mfussenegger/nvim-lint/issues/462#issuecomment-2291862784
         { 'eslint_d', version = '13.1.2' },
