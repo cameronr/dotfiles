@@ -14,6 +14,7 @@ require('lazy').setup({
   {
     'NMAC427/guess-indent.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
+    opts = {},
   }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
