@@ -14,9 +14,17 @@
 --  config = function() ... end
 
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VeryLazy',
+    keys = {
+      { '<leader>sK', function() require('which-key').show({ global = false }) end, desc = 'Buffer Keymaps' },
+    },
+
+    ---@module 'which-key'
+    ---@type wk.Opts
     opts = {
       preset = 'modern',
       delay = 300,
@@ -29,7 +37,7 @@ return {
         { '<leader>c', group = 'Code' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = 'Harpoon' },
-        { '<leader>s', group = 'Search' },
+        { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
         { '<leader>v', group = 'View / UI' },
         { '<leader>w', group = 'Window / Workspace' },
         { '<leader>x', group = 'Trouble' },
