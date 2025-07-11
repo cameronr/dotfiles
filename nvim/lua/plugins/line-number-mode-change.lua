@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'cameronr/line-number-change-mode.nvim',
   branch = 'cursorline',

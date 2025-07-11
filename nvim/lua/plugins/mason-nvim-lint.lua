@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'rshkarin/mason-nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },

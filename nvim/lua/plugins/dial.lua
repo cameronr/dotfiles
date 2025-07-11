@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'monaqa/dial.nvim',
   keys = {

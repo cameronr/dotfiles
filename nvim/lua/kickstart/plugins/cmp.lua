@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   { -- Autocompletion
     -- 'hrsh7th/nvim-cmp',
     'iguanacucumber/magazine.nvim',

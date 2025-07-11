@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'numToStr/Comment.nvim',
   enabled = vim.fn.has('nvim-0.10') ~= 1,

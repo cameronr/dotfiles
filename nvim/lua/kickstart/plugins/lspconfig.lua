@@ -1,5 +1,7 @@
 -- LSP Plugins
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
@@ -13,7 +15,13 @@ return {
       },
     },
   },
+
+  ---@module 'lazy'
+  ---@type LazySpec
   { 'Bilal2453/luvit-meta', lazy = true },
+
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',

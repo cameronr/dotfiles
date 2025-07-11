@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'andymass/vim-matchup',
   -- enabled = false,

@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'saghen/blink.cmp',
     enabled = vim.g.cmp_engine ~= 'cmp',

@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
     event = 'VeryLazy',

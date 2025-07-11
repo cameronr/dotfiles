@@ -38,6 +38,8 @@ local function symbols_filter(entry, ctx)
   return vim.tbl_contains(ctx.symbols_filter, entry.kind)
 end
 
+---@module 'lazy'
+---@type LazySpec
 return {
   'ibhagwan/fzf-lua',
   enabled = vim.g.picker_engine == 'fzf',

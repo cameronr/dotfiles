@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'rachartier/tiny-code-action.nvim',
   -- enabled = false,

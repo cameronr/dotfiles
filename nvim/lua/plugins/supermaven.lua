@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'supermaven-inc/supermaven-nvim',
     dependencies = { 'saghen/blink.compat' },

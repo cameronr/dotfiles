@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'rmagatti/auto-session',
   -- dev = true,

@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'eandrju/cellular-automaton.nvim',
   keys = {

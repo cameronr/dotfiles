@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   { -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     enabled = false,

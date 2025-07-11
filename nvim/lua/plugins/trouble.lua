@@ -1,4 +1,6 @@
 return {
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'folke/trouble.nvim',
     event = { 'BufNewFile', 'BufReadPost' },

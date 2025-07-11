@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'andrewferrier/debugprint.nvim',
   keys = {

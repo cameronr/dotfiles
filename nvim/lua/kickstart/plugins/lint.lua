@@ -1,5 +1,7 @@
 return {
 
+  ---@module 'lazy'
+  ---@type LazySpec
   { -- Linting
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
