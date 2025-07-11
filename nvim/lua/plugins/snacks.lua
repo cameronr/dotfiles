@@ -80,6 +80,8 @@ return {
 
       return keys
     end,
+
+    ---@type snacks.Config
     opts = {
       debug = { enabled = true },
       indent = {
@@ -211,6 +213,11 @@ return {
       styles = {
         notification_history = {
           keys = { ['<esc>'] = 'close' },
+        },
+        input = {
+          keys = {
+            i_esc = { '<esc>', { 'cmp_close', 'close' }, mode = 'i', expr = true },
+          },
         },
       },
     },
