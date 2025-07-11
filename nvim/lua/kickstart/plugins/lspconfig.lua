@@ -7,6 +7,9 @@ return {
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
     ft = 'lua',
+
+    ---@module 'lazydev'
+    ---@type lazydev.Config
     opts = {
       library = {
         -- Load luvit types when the `vim.uv` word is found
@@ -18,7 +21,10 @@ return {
 
   ---@module 'lazy'
   ---@type LazySpec
-  { 'Bilal2453/luvit-meta', lazy = true },
+  {
+    'Bilal2453/luvit-meta',
+    lazy = true,
+  },
 
   ---@module 'lazy'
   ---@type LazySpec

@@ -4,6 +4,9 @@ return {
   'folke/todo-comments.nvim',
   event = { 'BufReadPre', 'BufNewFile' },
   cmd = { 'TodoTrouble', 'TodoTelescope' },
+
+  ---@module 'todo-comments'
+  ---@type TodoOptions
   opts = {
     keywords = {
       TODO = { icon = '󰄱' },
@@ -23,6 +26,7 @@ return {
         if vim.g.picker_engine == 'fzf' then
           require('todo-comments.fzf').todo()
         elseif vim.g.picker_engine == 'snacks' then
+          ---@diagnostic disable-next-line: undefined-field
           Snacks.picker.todo_comments()
         else
           vim.cmd('TodoTelescope')

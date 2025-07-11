@@ -27,6 +27,8 @@ return {
         end,
       }):map('<leader>vf')
 
+      ---@module 'conform'
+      ---@type conform.setupOpts
       require('conform').setup({
         notify_on_error = true,
         -- log_level = vim.log.levels.INFO,
