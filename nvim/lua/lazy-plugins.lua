@@ -33,7 +33,8 @@ require('lazy').setup({
 
   require('kickstart/plugins/telescope'),
 
-  require('kickstart/plugins/lspconfig'),
+  -- require('kickstart/plugins/lspconfig'),
+  require('plugins/lspconfig'),
 
   require('kickstart/plugins/conform'),
 
@@ -46,6 +47,7 @@ require('lazy').setup({
   require('kickstart/plugins/mini'),
 
   require('kickstart/plugins/treesitter'),
+  require('plugins/treesitter'),
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
