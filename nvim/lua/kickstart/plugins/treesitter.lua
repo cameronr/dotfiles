@@ -1,55 +1,20 @@
--- on main branch, treesitter isn't started automatically
-vim.api.nvim_create_autocmd({ 'Filetype' }, {
-  callback = function(event)
-    local ignored_fts = {
-      'snacks_dashboard',
-      'prompt', -- bt: snacks_picker_input
-    }
-
-    if vim.bo[event.buf].bt == 'nofile' then return end
-    if vim.tbl_contains(ignored_fts, event.match) then return end
-
-    local ok, result = pcall(vim.treesitter.start, event.buf)
-    if not ok then
-      local ft = vim.bo[event.buf].ft
-      local lang = vim.treesitter.language.get_lang(ft)
-      if lang then
-        if not require('nvim-treesitter').install({ lang }) then
-          vim.notify(result .. '\nbt: ' .. vim.bo[event.buf].bt)
-          return
-        end
-      end
-
-      ok, result = pcall(vim.treesitter.start, event.buf)
-      if not ok then return end
-    end
-
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-  end,
-})
-
 return {
-  ---@module 'lazy'
-  ---@type LazySpec
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     event = 'VeryLazy',
     dependencies = {
-      { 'folke/ts-comments.nvim', opts = {} },
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has('nvim-0.10.0') == 1 },
     },
-
-    branch = 'main',
     build = ':TSUpdate',
-
+    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+
     ---@module 'nvim-treesitter'
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
-    opts = {},
-
-    config = function(_, opts)
-      local ensure_installed = {
+    opts = {
+      ensure_installed = {
         'bash',
         'c',
         'css',
@@ -64,114 +29,83 @@ return {
         'query',
         'vim',
         'vimdoc',
-      }
+      },
+      -- Autoinstall languages that are not installed
+      auto_install = true,
+      highlight = {
+        enable = true,
+        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
+        --  If you are experiencing weird indenting issues, add the language to
+        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
+        additional_vim_regex_highlighting = { 'ruby' },
+      },
+      indent = {
+        enable = true,
+        disable = { 'ruby' },
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-space>',
+          node_incremental = '<C-space>',
+          scope_incremental = false,
+          node_decremental = '<bs>',
+        },
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          set_jumps = true,
+          -- don't include classes to not conflict with conflicts in a diff
+          -- (LazyVim has some clever code but i don't think we need it right now)
+          -- goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
+          -- goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
+          -- goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
+          -- goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
+          goto_next_start = {
+            [']f'] = '@function.outer',
+            [']a'] = '@parameter.inner',
+            [']s'] = '@block.outer',
+            -- [']s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+          },
+          goto_next_end = {
+            [']F'] = '@function.outer',
+            [']A'] = '@parameter.inner',
+            [']S'] = '@block.outer',
+          },
+          goto_previous_start = {
+            ['[f'] = '@function.outer',
+            ['[a'] = '@parameter.inner',
+            ['[s'] = '@block.outer',
+            -- ['[s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+          },
+          goto_previous_end = {
+            ['[F'] = '@function.outer',
+            ['[A'] = '@parameter.inner',
+            ['[S'] = '@block.outer',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['gan'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['gap'] = '@parameter.inner',
+          },
+        },
+      },
 
-      require('nvim-treesitter').install(ensure_installed)
-    end,
-  },
-
-  ---@module 'lazy'
-  ---@type LazySpec
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    event = 'VeryLazy',
-
-    branch = 'main',
-
-    keys = {
-      {
-        '[f',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects') end,
-        desc = 'prev function',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']f',
-        function() require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects') end,
-        desc = 'next function',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        '[F',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects') end,
-        desc = 'prev function end',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']F',
-        function() require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects') end,
-        desc = 'next function end',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        '[a',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_start('@parameter.outer', 'textobjects') end,
-        desc = 'prev argument',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']a',
-        function() require('nvim-treesitter-textobjects.move').goto_next_start('@parameter.outer', 'textobjects') end,
-        desc = 'next argument',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        '[A',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_end('@parameter.outer', 'textobjects') end,
-        desc = 'prev argument end',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']A',
-        function() require('nvim-treesitter-textobjects.move').goto_next_end('@parameter.outer', 'textobjects') end,
-        desc = 'next argument end',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        '[s',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_start('@block.outer', 'textobjects') end,
-        desc = 'prev block',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']s',
-        function() require('nvim-treesitter-textobjects.move').goto_next_start('@block.outer', 'textobjects') end,
-        desc = 'next block',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        '[S',
-        function() require('nvim-treesitter-textobjects.move').goto_previous_end('@block.outer', 'textobjects') end,
-        desc = 'prev block',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        ']S',
-        function() require('nvim-treesitter-textobjects.move').goto_next_end('@block.outer', 'textobjects') end,
-        desc = 'next block',
-        mode = { 'n', 'x', 'o' },
-      },
-      {
-        'gan',
-        function() require('nvim-treesitter-textobjects.swap').swap_next('@parameter.inner') end,
-        desc = 'swap next argument',
-      },
-      {
-        'gap',
-        function() require('nvim-treesitter-textobjects.swap').swap_previous('@parameter.inner') end,
-        desc = 'swap prev argument',
+      matchup = {
+        -- enable = true, -- mandatory, false will disable the whole extension
       },
     },
-
-    opts = {
-      move = {
-        enable = true,
-        set_jumps = true,
-      },
-      swap = {
-        enable = true,
-      },
-    },
+    -- There are additional nvim-treesitter modules that you can use to interact
+    -- with nvim-treesitter. You should go explore a few and see what interests you:
+    --
+    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
