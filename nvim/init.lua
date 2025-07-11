@@ -103,7 +103,7 @@ vim.g.no_mason_autoinstall = vim.env.NVIM_NO_MASON_AUTOINSTALL
 vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 
 -- Which completion engine to use
-vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or ((vim.fn.has('nvim-0.10') == 1) and 'blink' or 'cmp')
+vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
 -- [[ Setting options ]]
 require('options')
