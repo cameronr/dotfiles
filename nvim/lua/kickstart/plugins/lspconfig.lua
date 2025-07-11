@@ -173,7 +173,9 @@ return {
 
       if vim.g.cmp_engine == 'cmp' then
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-      else
+      elseif vim.fn.has('nvim-0.11') == 0 then
+        -- blink does this automatically in nvim >= 0.11
+        -- https://github.com/Saghen/blink.cmp/blob/102db2f5996a46818661845cf283484870b60450/plugin/blink-cmp.lua
         capabilities = vim.tbl_deep_extend('force', capabilities, require('blink.cmp').get_lsp_capabilities(capabilities))
       end
 
