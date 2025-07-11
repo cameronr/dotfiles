@@ -6,7 +6,6 @@ My dotfiles
 <img width="2102" alt="Screenshot 2025-07-06 at 21 20 01" src="https://github.com/user-attachments/assets/feabbca0-b387-484a-adaa-1eafb84cd642" />
 <img width="1584" alt="Screenshot 2025-07-06 at 21 26 56" src="https://github.com/user-attachments/assets/1e01e458-3a46-4176-864c-5b40a5e84faf" />
 
-
 Main features:
 
 - [WezTerm](https://wezfurlong.org/wezterm/index.html)
@@ -18,5 +17,5 @@ Main features:
   - [zimfw](https://github.com/zimfw/zimfw)
   - [powerlevel10k](https://github.com/romkatv/powerlevel10k)
   - [fzf](https://github.com/junegunn/fzf)
-- [NeoVim](https://neovim.io/)
+- [NeoVim](https://neovim.io/) (0.11+)
   - [Kickstart Modular](https://github.com/dam9000/kickstart-modular.nvim)
