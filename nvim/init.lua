@@ -105,6 +105,9 @@ vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 -- Which completion engine to use
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
+-- which branch of treesitter to use
+vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH == 'main' and 'main' or 'master'
+
 -- [[ Setting options ]]
 require('options')
 
