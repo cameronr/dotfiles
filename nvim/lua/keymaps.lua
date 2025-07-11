@@ -86,9 +86,9 @@ vim.api.nvim_create_user_command('X', 'x', {})
 -- Remap q: to :q
 vim.keymap.set('n', 'q:', ':q')
 
-vim.keymap.set('n', 'q', '<nop>', { noremap = true })
-vim.keymap.set('n', 'Q', 'q', { noremap = true, desc = 'Record macro' })
-vim.keymap.set('n', '<M-q>', 'Q', { noremap = true, desc = 'Replay last register' })
+vim.keymap.set('n', 'q', '<nop>')
+vim.keymap.set('n', 'Q', 'q', { desc = 'Record macro' })
+vim.keymap.set('n', '<M-q>', 'Q', { desc = 'Replay last register' })
 
 -- And now kill it with fire (unless brought up by ctrl-f). Credit to:
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
@@ -112,7 +112,7 @@ vim.api.nvim_create_autocmd('CmdWinEnter', {
 })
 
 -- Unamp g? (don't need rot-13)
-vim.keymap.set({ 'n', 'x' }, 'g?', '<nop>', { noremap = true })
+vim.keymap.set({ 'n', 'x' }, 'g?', '<nop>')
 
 -- Borrowed from LazyVim
 
@@ -209,8 +209,8 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<pageup>', '<c-u>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 
 -- map shift up/down to just up/down so it doesn't scroll jarringly
-vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>', { noremap = true })
-vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>', { noremap = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>')
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>')
 
 -- Undo all changes since last save
 vim.keymap.set('n', '<S-u>', '<cmd>undo<CR>', { desc = 'Undo' })
@@ -289,7 +289,7 @@ vim.keymap.set('n', '<leader>cI', function()
     vim.bo[buf].bh = 'delete'
     vim.diagnostic.enable(false, { bufnr = buf })
 
-    vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { noremap = true, silent = true })
+    vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { silent = true })
   end
 
   local clients = vim.lsp.get_clients()
