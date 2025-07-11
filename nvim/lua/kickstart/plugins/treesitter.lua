@@ -5,7 +5,7 @@ if vim.g.treesitter_branch ~= 'master' then return {} end
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
       { 'folke/ts-comments.nvim', opts = {}, enabled = vim.fn.has('nvim-0.10.0') == 1 },
