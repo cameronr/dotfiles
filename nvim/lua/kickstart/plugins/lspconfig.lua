@@ -348,6 +348,7 @@ return {
         yamlls = {
           settings = {
             yaml = {
+              schemastore = { enable = true },
               customTags = {
                 '!secret scalar',
                 '!include scalar',
