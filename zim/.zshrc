@@ -71,6 +71,25 @@ bindkey '^D' delete-char
 # map alt-x to kill line (because tmux uses c-k)
 bindkey '^[x' kill-line
 
+# # wrap arrows in cmd mode, forward-char doesn't work because of zsh limitation
+bindkey -M vicmd '^[[C' forward-char
+bindkey -M vicmd '^[OC' forward-char
+bindkey -M vicmd '^[[D' backward-char
+bindkey -M vicmd '^[OD' backward-char
+
+# Faster command mode with zsh-vi-mode
+# https://github.com/jeffreytse/zsh-vi-mode/issues/111
+export ZVM_FAST_ESCAPE=1
+
+# Always starting with insert mode for each command line
+ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+
+# Support clipboard
+source $DOTFILES/zsh/zvm_clipboard.zsh
+
+# Set tmux tab titles with customized icon
+source $DOTFILES/zsh/title-override.zsh
+
 # set vim as editor
 export EDITOR=vim
 alias vi='vim'
@@ -141,11 +160,15 @@ fi
 # set up fzf if installed
 if [[ (( $commands[fzf] )) ]]; then
 
-    # Load main fzf integration
-    source <(fzf --zsh)
+    # Load main fzf integration (but after zsh-vi-mode)
+    if [[ $ZVM_NAME == 'zsh-vi-mode' ]]; then
+        zvm_after_init_commands+=('source <(fzf --zsh)')
+    else
+        source <(fzf --zsh)
+    fi
 
-    # Custom keybind instead of ALT-c/ESC-c
-    bindkey '^N' fzf-cd-widget
+    # Use fzf for normal mode search
+    bindkey -M vicmd '/' fzf-history-widget
 
     # Just as a note, default keybind for scrolling the preview window is shift up/down
 
@@ -193,45 +216,6 @@ if [[ (( $commands[fzf] )) ]]; then
     zstyle ':fzf-tab:complete:cd:*' fzf-preview ${FZF_DIR_PREVIEW//\{\}/\$realpath}
     zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview ${FZF_DIR_PREVIEW//\{\}/\$realpath}
 fi
-
-# Override OMZ's title function for two reasons:
-# 1. If we're in an ssh session, add the machine name
-# 2. Add an icon for the currently running command (if we have one)
-source $DOTFILES/zsh/get-icon-for-command.zsh
-functions -c title omz_title
-title () {
-    local CMD=$1
-
-    # ALways add the machine name if we're in an ssh session
-    if [[ -n "$SSH_TTY" ]]; then
-        if [[ $1 != *"%m"* ]]; then
-            # %n is the user, but i don't think we need it
-            # CMD="%n@%m:$1"
-            CMD="%m:$1"
-        fi
-        if [[ $2 != *"%m"* ]]; then
-            LINE="%m:$2"
-        fi
-    fi
-    # echo "title cmd:'$CMD' line:'$LINE'"
-    local ICON=$(get_icon_for_command "$1")
-    local CMD_WITH_ICON="${ICON}$CMD"
-
-    # Zsh doesn't set tab/window with a tmux terminal, so we do it oursevles
-    if [[ "$TERM" == "tmux-256color" ]]; then
-        # Don't set the title if inside emacs, unless using vterm
-        [[ -n "${INSIDE_EMACS:-}" && "$INSIDE_EMACS" != vterm ]] && return
-
-        print -Pn "\e]2;${CMD_WITH_ICON:q}\a" # set window name
-        print -Pn "\e]1;${CMD_WITH_ICON:q}\a" # set tab name
-    else
-        omz_title $CMD_WITH_ICON
-    fi
-}
-
-# We also don't need the cwd hook as p10k handles all of that for us (and having this hook
-# introduces a visual glitch)
-add-zsh-hook -d precmd omz_termsupport_cwd
 
 
 ## Set up p10k

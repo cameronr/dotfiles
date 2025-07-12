@@ -17,6 +17,7 @@ zmodule ohmyzsh/ohmyzsh --root plugins/docker-compose --use degit
 zmodule ohmyzsh/ohmyzsh --source lib/grep.zsh --use degit           # better grep highlighting
 zmodule ohmyzsh/ohmyzsh --source lib/functions.zsh --use degit      # for omz_urlencode, used by termsupport.zsh
 zmodule ohmyzsh/ohmyzsh --source lib/termsupport.zsh --use degit    # set titlebar
+zmodule ohmyzsh/ohmyzsh --source lib/clipboard.zsh --use degit      # clipboard for yank
 
 # Better ssh completion
 # if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
@@ -34,6 +35,11 @@ zmodule zsh-users/zsh-completions --fpath src
 # Docker completion
 zmodule docker/cli --name docker --use mkdir --on-pull 'curl -fsSL -o _docker https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker' --fpath .
 
+# Better vi mode, fixes right arrow in command mode not crossing multiline
+# Use fork until this is merged:
+# https://github.com/jeffreytse/zsh-vi-mode/pull/308
+# zmodule jeffreytse/zsh-vi-mode
+zmodule jacobpbrugh/zsh-vi-mode
 
 # Enables and configures smart and extensive tab completion.
 # completion must be sourced after all modules that add completion definitions.
