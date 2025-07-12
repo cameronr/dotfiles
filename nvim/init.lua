@@ -105,8 +105,10 @@ vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 -- Which completion engine to use
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
--- which branch of treesitter to use
-vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH == 'main' and 'main' or 'master'
+-- Default to main branch of treesitter if we have a build environment
+local default_treesitter_branch = (vim.fn.executable('make') == 1) and 'main' or 'master'
+-- But allow env var override
+vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
 
 -- [[ Setting options ]]
 require('options')
