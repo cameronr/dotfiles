@@ -24,9 +24,6 @@ unset FZF_DEFAULT_OPTS
 # Globbing should be case sensitive, in quotes to make beautysh happy
 zstyle ':zim:glob' "case-sensitivity" sensitive
 
-# Add custom completions dir
-fpath=($DOTFILES/zim/completions $fpath)
-
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
