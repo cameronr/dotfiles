@@ -1,4 +1,4 @@
-if [[ $ZVM_NAME == 'zsh-vi-mode' ]]; then
+if [[ $ZVM_NAME == 'zsh-vi-mode' ]] && detect-clipboard; then
 
     # Duplicated from source ZVM, but added clipboard support.
     function zvm_yank() {
