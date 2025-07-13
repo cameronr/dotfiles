@@ -1,4 +1,7 @@
-name: Build Minimal Init
+name: Build minimal-init.lua
+
+permissions:
+  contents: write
 
 on:
   push:
