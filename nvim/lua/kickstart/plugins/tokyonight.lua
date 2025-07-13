@@ -9,6 +9,8 @@ return {
   'folke/tokyonight.nvim',
   lazy = false,
   priority = 1000, -- Make sure to load this before all the other start plugins.
+
+  ---@class tokyonight.Config
   opts = {
     style = 'night',
     styles = {
