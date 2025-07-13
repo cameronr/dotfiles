@@ -32,7 +32,7 @@ jobs:
         working-directory: ./nvim
 
       - name: Commit and push minimal-init.zsh if changed
-        if: steps.git_diff.output:set s.changed == 'true'
+        if: steps.git_diff.outputs.changed == 'true'
         run: |
           git add minimal-init.zsh
           git commit -m "chore: update minimal-init.zsh [auto]"
