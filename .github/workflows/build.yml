@@ -1,0 +1,40 @@
+name: Build Minimal Init
+
+on:
+  push:
+    paths:
+      - "nvim/lua/options.lua"
+      - "nvim/lua/keymaps.lua"
+      - "nvim/scripts/gen-minimal-init.zsh"
+  workflow_dispatch:
+
+jobs:
+  build-minimal-init:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run gen-minimal-init.zsh script
+        run: ./scripts/gen-minimal-init.zsh
+        working-directory: ./nvim
+
+      - name: Check for changes to minimal-init.zsh
+        id: git_diff
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if git status --porcelain minimal-init.zsh | grep '^ M'; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+        working-directory: ./nvim
+
+      - name: Commit and push minimal-init.zsh if changed
+        if: steps.git_diff.output:set s.changed == 'true'
+        run: |
+          git add minimal-init.zsh
+          git commit -m "chore: update minimal-init.zsh [auto]"
+          git push
+        working-directory: ./nvim
