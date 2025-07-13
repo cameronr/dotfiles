@@ -1,9 +1,9 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 if [[ ! -f lua/options.lua || ! -f lua/keymaps.lua ]]; then
-  echo "Error: can't find lua/options.lua or lua/keymaps.lua"
-  echo "Make sure you're running the script from the nvim directory"
-  exit 1
+    echo "Error: can't find lua/options.lua or lua/keymaps.lua"
+    echo "Make sure you're running the script from the nvim directory"
+    exit 1
 fi
 
 # Create minimal-init.lua with your fixed lines
