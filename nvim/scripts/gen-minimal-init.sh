@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/bash
 
 if [[ ! -f lua/options.lua || ! -f lua/keymaps.lua ]]; then
     echo "Error: can't find lua/options.lua or lua/keymaps.lua"
@@ -16,11 +16,14 @@ end
 vim.g.have_nerd_font = true
 EOF
 
-# Append lua/options.lua
-cat lua/options.lua >> minimal-init.lua
+# Append lua/options.lua, lua/keymaps.lua
+{
+    cat lua/options.lua
+    # add a new line
+    echo
+    cat lua/keymaps.lua
+} >> minimal-init.lua
 
-# Ensure a newline between files
-echo >> minimal-init.lua
 
-# Append lua/keymaps.lua
-cat lua/keymaps.lua >> minimal-init.lua
+
+
