@@ -15,6 +15,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Make script executable
+        run: chmod +x scripts/gen-minimal-init.zsh
+        working-directory: ./nvim
+
       - name: Run gen-minimal-init.zsh script
         run: ./scripts/gen-minimal-init.zsh
         working-directory: ./nvim
