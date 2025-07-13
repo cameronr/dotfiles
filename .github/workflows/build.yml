@@ -1,11 +1,14 @@
-name: Build Minimal Init
+name: Build minimal-init.lua
+
+permissions:
+  contents: write
 
 on:
   push:
     paths:
       - "nvim/lua/options.lua"
       - "nvim/lua/keymaps.lua"
-      - "nvim/scripts/gen-minimal-init.zsh"
+      - "nvim/scripts/gen-minimal-init.sh"
   workflow_dispatch:
 
 jobs:
@@ -15,26 +18,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run gen-minimal-init.zsh script
-        run: ./scripts/gen-minimal-init.zsh
+      - name: Generate minimal-init.lua
+        run: scripts/gen-minimal-init.sh
         working-directory: ./nvim
 
-      - name: Check for changes to minimal-init.zsh
+      - name: Check for changes to minimal-init.lua
         id: git_diff
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          if git status --porcelain minimal-init.zsh | grep '^ M'; then
-            echo "changed=true" >> $GITHUB_OUTPUT
+          if git status --porcelain minimal-init.lua | grep '^ M'; then
+          echo "changed=true" >> $GITHUB_OUTPUT
           else
-            echo "changed=false" >> $GITHUB_OUTPUT
+          echo "changed=false" >> $GITHUB_OUTPUT
           fi
         working-directory: ./nvim
 
-      - name: Commit and push minimal-init.zsh if changed
+      - name: Commit and push minimal-init.lua if changed
         if: steps.git_diff.outputs.changed == 'true'
         run: |
-          git add minimal-init.zsh
-          git commit -m "chore: update minimal-init.zsh [auto]"
+          git add minimal-init.lua
+          git commit -m "chore: update minimal-init.lua [auto]"
           git push
         working-directory: ./nvim
