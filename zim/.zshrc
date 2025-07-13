@@ -186,15 +186,14 @@ if [[ (( $commands[fzf] )) ]]; then
     # I like orange as the highlight color
     export FZF_DEFAULT_OPTS=$(echo "$FZF_DEFAULT_OPTS" | sed 's/--color=hl+:#2ac3de/--color=hl+:#ff9e64/g; s/--color=hl:#2ac3de/--color=hl:#ff9e64/g')
 
-    # Turn on wrap around
-    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --cycle"
+    # Turn on wrap around and make ctrl-space select and go down
+    export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --cycle --bind=ctrl-space:toggle+down"
 
     # set completion opts to same colors
     export FZF_COMPLETION_OPTS="$FZF_DEFAULT_OPTS"
 
     # set theme colors in fzf-tab as it doesn't pick up FZF_DEFAULT_OPTS automatically
     zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS | tr ' ' '\n')
-
 
     # disable sort when completing `git checkout`
     zstyle ':completion:*:git-checkout:*' sort false
@@ -207,7 +206,6 @@ if [[ (( $commands[fzf] )) ]]; then
 
     # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
     zstyle ':completion:*' menu no
-    # preview directory's content with eza when completing cd
 
     # zstyle needs an unexpanded $realpath in place of {}
     zstyle ':fzf-tab:complete:cd:*' fzf-preview ${FZF_DIR_PREVIEW//\{\}/\$realpath}
