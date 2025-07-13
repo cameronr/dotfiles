@@ -183,8 +183,8 @@ if [[ (( $commands[fzf] )) ]]; then
     # Tokyonight-night fzf theme
     # source $ZIM_HOME/modules/tokyonight.nvim/extras/fzf/tokyonight_night.sh
 
-    # I like orange as the highlight color
-    export FZF_DEFAULT_OPTS=$(echo "$FZF_DEFAULT_OPTS" | sed 's/--color=hl+:#2ac3de/--color=hl+:#ff9e64/g; s/--color=hl:#2ac3de/--color=hl:#ff9e64/g')
+    # I like orange as the highlight color, blue border
+    export FZF_DEFAULT_OPTS=$(echo "$FZF_DEFAULT_OPTS" | sed 's/--color=hl+:#2ac3de/--color=hl+:#ff9e64/g; s/--color=hl:#2ac3de/--color=hl:#ff9e64/g; s/--color=border:#27a1b9/--color=border:#7aa2f7/')
 
     # Turn on wrap around and make ctrl-space select and go down
     export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --cycle --bind=ctrl-space:toggle+down"
