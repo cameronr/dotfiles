@@ -16,7 +16,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run gen-minimal-init.sh script
-        run: scripts/gen-minimal-init.sh
+        run: |
+          scripts/gen-minimal-init.sh
+          git status --porcelain
         working-directory: ./nvim
 
       - name: Check for changes to minimal-init.sh
@@ -24,12 +26,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git status --porcelain minimal-init.sh
-          if git status --porcelain minimal-init.sh | grep '^ M'; then
-            echo "changed=true"
+          if git status --porcelain minimal-init.lua | grep '^ M'; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
-            echo "changed=false"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
         working-directory: ./nvim
