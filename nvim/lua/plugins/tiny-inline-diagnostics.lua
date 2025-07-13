@@ -14,6 +14,8 @@ return {
         vertical_end = ' └',
         left = '',
         right = '',
+        arrow = '   ',
+        up_arrow = '  ',
       },
       blend = {
         factor = 0.1,
