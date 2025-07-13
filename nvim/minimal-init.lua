@@ -209,7 +209,9 @@ vim.o.jumpoptions = 'view,clean'
 
 if vim.fn.has('nvim-0.11') == 1 then
   -- Rounded borders by default on >= 0.11
-  vim.o.winborder = 'rounded'
+
+  -- Commenting out because of snacks.dashboard
+  -- vim.o.winborder = 'rounded'
 end
 
 -- vim: ts=2 sts=2 sw=2 et
@@ -217,12 +219,14 @@ end
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
+-- test change
+
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR><esc>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Diagnostic popup' })
+vim.keymap.set('n', '<leader>d', function() vim.diagnostic.open_float({ border = 'rounded' }) end, { desc = 'Diagnostic popup' })
 
 -- Quickfix
 vim.keymap.set('n', '[q', '<cmd>cprev<cr>', { desc = 'Previous quickfix' })
@@ -242,9 +246,6 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 -- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 -- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -293,7 +294,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
 
 -- Map jk as alternate escape sequence
--- vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
+vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
 -- Sloppy aliases for accidental capital commands
 -- in 0.10, could use vim.keymap.set("ca", ...)
@@ -305,9 +306,9 @@ vim.api.nvim_create_user_command('X', 'x', {})
 -- Remap q: to :q
 vim.keymap.set('n', 'q:', ':q')
 
-vim.keymap.set('n', 'q', '<nop>', { noremap = true })
-vim.keymap.set('n', 'Q', 'q', { noremap = true, desc = 'Record macro' })
-vim.keymap.set('n', '<M-q>', 'Q', { noremap = true, desc = 'Replay last register' })
+vim.keymap.set('n', 'q', '<nop>')
+vim.keymap.set('n', 'Q', 'q', { desc = 'Record macro' })
+vim.keymap.set('n', '<M-q>', 'Q', { desc = 'Replay last register' })
 
 -- And now kill it with fire (unless brought up by ctrl-f). Credit to:
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
@@ -331,7 +332,7 @@ vim.api.nvim_create_autocmd('CmdWinEnter', {
 })
 
 -- Unamp g? (don't need rot-13)
-vim.keymap.set({ 'n', 'x' }, 'g?', '<nop>', { noremap = true })
+vim.keymap.set({ 'n', 'x' }, 'g?', '<nop>')
 
 -- Borrowed from LazyVim
 
@@ -354,8 +355,8 @@ vim.keymap.set('n', '<M-h>', '<cmd>vertical resize -2<cr>', { desc = 'Decrease W
 vim.keymap.set('n', '<M-l>', '<cmd>vertical resize +2<cr>', { desc = 'Increase Window Width' })
 
 -- Moving lines
-vim.keymap.set('v', '<A-Down>', ":m '>+1<cr>gv=gv", { desc = 'Move Down' })
-vim.keymap.set('v', '<A-Up>', ":m '<-2<cr>gv=gv", { desc = 'Move Up' })
+-- vim.keymap.set('v', '<A-Down>', ":m '>+1<cr>gv=gv", { desc = 'Move Down' })
+-- vim.keymap.set('v', '<A-Up>', ":m '<-2<cr>gv=gv", { desc = 'Move Up' })
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
 vim.keymap.set('n', 'n', "'Nn'[v:searchforward].'zv'", { expr = true, desc = 'Next Search Result' })
@@ -381,6 +382,7 @@ vim.keymap.set('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous
 vim.keymap.set('i', ',', ',<c-g>u')
 vim.keymap.set('i', '.', '.<c-g>u')
 vim.keymap.set('i', ';', ';<c-g>u')
+vim.keymap.set('i', '<cr>', '<cr><c-g>u')
 
 -- Quickly go to the start/end of the line while in insert mode.
 vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
@@ -427,8 +429,8 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<pageup>', '<c-u>')
 vim.keymap.set({ 'n', 'v', 'x' }, '<pagedown>', '<c-d>')
 
 -- map shift up/down to just up/down so it doesn't scroll jarringly
-vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>', { noremap = true })
-vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>', { noremap = true })
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Up>', '<Up>')
+vim.keymap.set({ 'n', 'v', 'x' }, '<S-Down>', '<Down>')
 
 -- Undo all changes since last save
 vim.keymap.set('n', '<S-u>', '<cmd>undo<CR>', { desc = 'Undo' })
@@ -470,90 +472,60 @@ vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
 vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
-vim.keymap.set('n', '<leader>cI', function()
-  local function display_lsp_info(client, _)
-    if not client then return end
-    -- Create a temporary buffer to show the configuration
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_open_win(buf, true, {
-      relative = 'editor',
-      width = math.floor(vim.o.columns * 0.75),
-      height = math.floor(vim.o.lines * 0.90),
-      col = math.floor(vim.o.columns * 0.125),
-      row = math.floor(vim.o.lines * 0.05),
-      style = 'minimal',
-      border = 'rounded',
-      title = ' ' .. (client.name:gsub('^%l', string.upper)) .. ': LSP Configuration ',
-      title_pos = 'center',
-    })
+vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 
-    local lines = {}
-    table.insert(lines, 'Client: ' .. client.name)
-    table.insert(lines, 'ID: ' .. client.id)
-    table.insert(lines, '')
-    table.insert(lines, 'Configuration:')
-
-    local config_lines = vim.split(vim.inspect(client.config), '\n')
-    vim.list_extend(lines, config_lines)
-
-    -- Set the lines in the buffer
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-
-    -- Set buffer options
-    vim.bo[buf].modifiable = false
-    vim.bo[buf].filetype = 'lua'
-    vim.bo[buf].bh = 'delete'
-    vim.diagnostic.enable(false, { bufnr = buf })
-
-    vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { noremap = true, silent = true })
-  end
-
-  local clients = vim.lsp.get_clients()
-
-  if #clients == 1 then
-    display_lsp_info(clients[1])
-  else
-    vim.ui.select(clients, {
-      prompt = 'Pick language server: ',
-      format_item = function(item) return item.name end,
-    }, display_lsp_info)
-  end
-end, { desc = 'Inspect LSP' })
+-- vim.keymap.set('n', '<leader>cI', function()
+--   local function display_lsp_info(client, _)
+--     if not client then return end
+--     -- Create a temporary buffer to show the configuration
+--     local buf = vim.api.nvim_create_buf(false, true)
+--     vim.api.nvim_open_win(buf, true, {
+--       relative = 'editor',
+--       width = math.floor(vim.o.columns * 0.75),
+--       height = math.floor(vim.o.lines * 0.90),
+--       col = math.floor(vim.o.columns * 0.125),
+--       row = math.floor(vim.o.lines * 0.05),
+--       style = 'minimal',
+--       border = 'rounded',
+--       title = ' ' .. (client.name:gsub('^%l', string.upper)) .. ': LSP Configuration ',
+--       title_pos = 'center',
+--     })
+--
+--     local lines = {}
+--     table.insert(lines, 'Client: ' .. client.name)
+--     table.insert(lines, 'ID: ' .. client.id)
+--     table.insert(lines, '')
+--     table.insert(lines, 'Configuration:')
+--
+--     local config_lines = vim.split(vim.inspect(client.config), '\n')
+--     vim.list_extend(lines, config_lines)
+--
+--     -- Set the lines in the buffer
+--     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+--
+--     -- Set buffer options
+--     vim.bo[buf].modifiable = false
+--     vim.bo[buf].filetype = 'lua'
+--     vim.bo[buf].bh = 'delete'
+--     vim.diagnostic.enable(false, { bufnr = buf })
+--
+--     vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':q<CR>', { silent = true })
+--   end
+--
+--   local clients = vim.lsp.get_clients()
+--
+--   if #clients == 1 then
+--     display_lsp_info(clients[1])
+--   else
+--     vim.ui.select(clients, {
+--       prompt = 'Pick language server: ',
+--       format_item = function(item) return item.name end,
+--     }, display_lsp_info)
+--   end
+-- end, { desc = 'Inspect LSP' })
 
 -- Duplicate and comment out
 vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
-
--- Command for diffing buffer vs disk
-vim.api.nvim_create_user_command('DiffOrig', 'vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis | wincmd p | diffthis', { desc = 'Diff vs disk' })
-
--- Delete from cursor to end of comment block
-vim.keymap.set('n', 'dc', function()
-  -- Get the commentstring and extract the prefix (before %s)
-  local cs = vim.bo.commentstring or ''
-  local prefix = cs:match('^(.-)%%s')
-  if not prefix or prefix == '' then
-    vim.notify('No commentstring found for this filetype', vim.log.levels.WARN)
-    return
-  end
-  prefix = vim.pesc(prefix) -- Escape for Lua patterns
-
-  local start = vim.fn.line('.')
-  local last = vim.fn.line('$')
-  local end_ = start
-
-  -- Scan downward for consecutive comment lines
-  for lnum = start, last do
-    local line = vim.fn.getline(lnum)
-    if line:match('^%s*' .. prefix) then
-      end_ = lnum
-    else
-      break
-    end
-  end
-
-  -- Delete the range if it's more than zero lines
-  if end_ >= start then vim.cmd(string.format('%d,%dd', start, end_)) end
-end, { desc = 'Delete inside comment block' })
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function()
