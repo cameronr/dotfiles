@@ -21,7 +21,7 @@ jobs:
 
       - name: Check for changes to minimal-init.lua
         id: git_diff
-        run: lua
+        run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           if git status --porcelain minimal-init.lua | grep '^ M'; then
