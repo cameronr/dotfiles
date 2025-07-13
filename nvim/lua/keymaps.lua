@@ -1,7 +1,7 @@
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
--- test change 7
+-- test change 8
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
