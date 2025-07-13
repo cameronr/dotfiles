@@ -15,14 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Make script executable
-        run: chmod +x scripts/gen-minimal-init.sh
-        working-directory: ./nvim
-
-      - name: List scripts directory for debugging
-        run: ls -l scripts
-        working-directory: ./nvim
-
       - name: Run gen-minimal-init.sh script
         run: scripts/gen-minimal-init.sh
         working-directory: ./nvim
@@ -32,9 +24,12 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git status --porcelain minimal-init.sh
           if git status --porcelain minimal-init.sh | grep '^ M'; then
+            echo "changed=true"
             echo "changed=true" >> $GITHUB_OUTPUT
           else
+            echo "changed=false"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
         working-directory: ./nvim
