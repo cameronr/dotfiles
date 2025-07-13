@@ -19,8 +19,12 @@ jobs:
         run: chmod +x scripts/gen-minimal-init.zsh
         working-directory: ./nvim
 
+      - name: List scripts directory for debugging
+        run: ls -l scripts
+        working-directory: ./nvim
+
       - name: Run gen-minimal-init.zsh script
-        run: ./scripts/gen-minimal-init.zsh
+        run: scripts/gen-minimal-init.zsh
         working-directory: ./nvim
 
       - name: Check for changes to minimal-init.zsh
