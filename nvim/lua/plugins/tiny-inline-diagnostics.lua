@@ -18,6 +18,14 @@ return {
       blend = {
         factor = 0.1,
       },
+      options = {
+        -- Display the source of the diagnostic (e.g., basedpyright, vsserver, lua_ls etc.)
+        -- But only when there are multiple
+        show_source = {
+          enabled = true,
+          if_many = true,
+        },
+      },
     })
   end,
 }
