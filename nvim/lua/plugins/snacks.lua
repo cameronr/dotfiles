@@ -63,12 +63,18 @@ return {
         { '<leader>u', function() Snacks.picker.undo() end, desc = 'Undotree' },
         -- { '<leader>qp', function() Snacks.picker.projects() end, desc = 'Projects' },
         -- LSP
-        { 'gd', function() Snacks.picker.lsp_definitions() end, desc = 'Goto Definition' },
+        { 'gd', function() Snacks.picker.lsp_definitions() end, desc = 'Definition' },
+        { 'grd', function() Snacks.picker.lsp_definitions() end, desc = 'Definition' },
         { 'gr', function() Snacks.picker.lsp_references() end, nowait = true, desc = 'References' },
-        { 'gI', function() Snacks.picker.lsp_implementations() end, desc = 'Goto Implementation' },
-        { 'gy', function() Snacks.picker.lsp_type_definitions() end, desc = 'Goto T[y]pe Definition' },
+        { 'grr', function() Snacks.picker.lsp_references() end, nowait = true, desc = 'References' },
+        { 'gri', function() Snacks.picker.lsp_implementations() end, desc = 'Implementation' },
+        { 'grt', function() Snacks.picker.lsp_type_definitions() end, desc = 'Type Definition' },
+        -- gO
+        -- gW
         { '<leader>ss', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
+        { 'gO', function() Snacks.picker.lsp_symbols() end, desc = 'LSP Symbols' },
         { '<leader>sS', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
+        { 'gW', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
 
         -- Notifications
         { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
