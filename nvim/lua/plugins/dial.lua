@@ -19,7 +19,7 @@ return {
     local checkbox_line_augend = augend.user.new({
 
       find = function(line, _)
-        local start, end_pos, checkbox_char = line:find('%- %[([%sx%-!%?/><%w])%]')
+        local start, _, _ = line:find('%- %[([%sx%-!%?/><%w])%]')
         if start then
           -- need to save where the start position is to restore the cursor
           saved_start_pos = start - 1
