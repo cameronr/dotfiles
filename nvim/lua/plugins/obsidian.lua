@@ -17,55 +17,38 @@ return {
       { '<leader>so', '<cmd>Obsidian search<CR>', desc = 'Obsidian search' },
     },
 
-    opts = function(_, opts)
-      -- vim.keymap.set('n', '<C-a>', function()
-      --   local line = vim.api.nvim_get_current_line()
-      --   -- Toggle the first checkbox on the line
-      --   local new = line:gsub('%[ %]', '[x]', 1)
-      --   if new == line then new = line:gsub('%[x%]', '[ ]', 1) end
-      --   vim.api.nvim_set_current_line(new)
-      -- end, { noremap = true, silent = true })
-
-      local mappings = require('obsidian.mappings')
-
-      ---@module 'obsidian'
-      ---@type obsidian.config.ClientOpts
-      return vim.tbl_deep_extend('force', opts or {}, {
-        workspaces = {
-          {
-            name = 'personal',
-            path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/personal/',
-          },
+    ---@module 'obsidian'
+    ---@type obsidian.config.ClientOpts
+    ---@diagnostic disable-next-line: missing-fields
+    opts = {
+      workspaces = {
+        {
+          name = 'personal',
+          path = '~/Library/Mobile Documents/iCloud~md~obsidian/Documents/personal/',
         },
-        ---@diagnostic disable-next-line: missing-fields
-        completion = {
-          blink = true,
-          nvim_cmp = false,
-        },
+      },
+      ---@diagnostic disable-next-line: missing-fields
+      completion = {
+        nvim_cmp = false,
+        blink = true,
+      },
 
-        -- mappings = {
-        --   ['gf'] = mappings.gf_passthrough(),
-        --   ['<c-a>'] = mappings.toggle_checkbox(),
-        --   ['<cr>'] = mappings.smart_action(),
-        -- },
+      ---@diagnostic disable-next-line: missing-fields
+      picker = {
+        name = 'snacks.pick',
+      },
 
-        ---@diagnostic disable-next-line: missing-fields
-        picker = {
-          name = 'snacks.pick',
-        },
+      ui = {
+        ignore_conceal_warn = true,
+      },
 
-        ui = {
-          ignore_conceal_warn = true,
-        },
+      callbacks = {
 
-        callbacks = {
-
-          enter_note = function(_, _)
-            vim.wo.conceallevel = 2 -- or your preferred conceallevel
-          end,
-        },
-      })
-    end,
+        enter_note = function(_, _)
+          vim.wo.conceallevel = 2 -- or your preferred conceallevel
+        end,
+      },
+    },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
         pattern = 'markdown',
