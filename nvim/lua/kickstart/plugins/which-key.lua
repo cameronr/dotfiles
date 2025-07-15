@@ -27,7 +27,7 @@ return {
     ---@type wk.Opts
     opts = {
       preset = 'modern',
-      delay = 300,
+      delay = 500,
       icons = {
         rules = false,
       },
