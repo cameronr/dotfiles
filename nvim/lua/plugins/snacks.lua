@@ -240,7 +240,8 @@ return {
           -- Create some toggle mappings
           Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'dark background' }):map('<leader>vb')
           Snacks.toggle.option('foldcolumn', { off = '0', on = '1', name = 'foldcolumn' }):map('<leader>vz')
-          Snacks.toggle.option('cursorline', { name = 'cursorline' }):map('<leader>vc')
+          Snacks.toggle.option('cursorline', { name = 'cursorline' }):map('<leader>vC')
+          Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }):map('<leader>vc')
           Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>vw')
           Snacks.toggle.inlay_hints():map('<leader>vH')
           Snacks.toggle.diagnostics():map('<leader>vd')

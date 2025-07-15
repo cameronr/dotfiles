@@ -39,17 +39,6 @@ return {
       picker = {
         name = 'snacks.pick',
       },
-
-      ui = {
-        ignore_conceal_warn = true,
-      },
-
-      callbacks = {
-
-        enter_note = function(_, _)
-          vim.wo.conceallevel = 2 -- or your preferred conceallevel
-        end,
-      },
     },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
