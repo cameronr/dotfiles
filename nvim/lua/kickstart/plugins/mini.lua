@@ -84,6 +84,17 @@ return {
 
       require('mini.icons').setup()
 
+      require('mini.trailspace').setup()
+      vim.api.nvim_create_user_command('StripWhiteSpace', MiniTrailspace.trim, {})
+
+      if Snacks then
+        Snacks.toggle({
+          name = 'mini.trailspace',
+          get = function() return not vim.g.minitrailspace_disable end,
+          set = function(state) vim.g.minitrailspace_disable = not state end,
+        }):map('<leader>vW')
+      end
+
       -- require('mini.tabline').setup()
 
       -- -- Simple and easy statusline.

@@ -158,6 +158,8 @@ return {
       -- hl.Marks = hl.DiagnosticInfo
       hl.MarkSignHL = hl.DiagnosticInfo
       hl.MarkSignNumHL = hl.LineNR
+
+      hl.MiniTrailspace = { fg = c.red }
     end,
   },
 
