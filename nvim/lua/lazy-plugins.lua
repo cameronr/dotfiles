@@ -6,15 +6,15 @@ require('lazy').setup(
     { import = 'plugins' },
     {
       import = 'plugins/dev',
-      cond = function() return vim.env.NVIM_PLUGINS_DEV ~= nil end,
+      cond = function() return vim.g.plugins_dev end,
     },
     {
       import = 'plugins/extra',
-      cond = function() return vim.env.NVIM_PLUGINS_EXTRA ~= nil end,
+      cond = function() return vim.g.plugins_extra end,
     },
     {
       import = 'plugins/fun',
-      cond = function() return vim.env.NVIM_PLUGINS_FUN ~= nil end,
+      cond = function() return vim.g.plugins_fun end,
     },
     {
       import = 'plugins/compat',
