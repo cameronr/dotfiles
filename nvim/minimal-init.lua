@@ -468,7 +468,7 @@ vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggl
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
 vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
-vim.keymap.set('n', '<leader>t', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
+vim.keymap.set('n', '<leader>cI', '<cmd>InspectTree<cr>', { desc = 'Inspect TS Tree' })
 
 vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 
