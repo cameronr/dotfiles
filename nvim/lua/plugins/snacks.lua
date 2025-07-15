@@ -164,6 +164,7 @@ return {
             { icon = ' ', key = 'r', desc = 'Recent files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = '󰁯 ', key = 'w', desc = 'Restore session', action = ':SessionSearch' },
             { icon = '󰊢 ', key = 'n', desc = 'Neogit', action = ':Neogit' },
+            { icon = '', key = 'o', desc = 'Obsidian', action = ':Obsidian search' },
             { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
             { icon = ' ', key = 'm', desc = 'Mason', action = ':Mason' },
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
