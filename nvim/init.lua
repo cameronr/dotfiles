@@ -110,6 +110,11 @@ local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.exe
 -- But allow env var override
 vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
 
+-- Plugin groups
+vim.g.plugins_dev = vim.env.NVIM_PLUGINS_DEV or false
+vim.g.plugins_extra = vim.env.NVIM_PLUGINS_EXTRA or false
+vim.g.plugins_fun = vim.env.NVIM_PLUGINS_FUN or false
+
 -- [[ Setting options ]]
 require('options')
 
