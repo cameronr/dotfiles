@@ -25,6 +25,10 @@ return {
       c.git.add = c.teal
       c.git.change = c.blue
       c.git.delete = c.red1
+
+      -- Make dark very slightly less dark
+      c.bg_dark = '#171821'
+      c.bg_statusline = c.bg_dark
     end,
 
     on_highlights = function(hl, c)
@@ -129,7 +133,7 @@ return {
 
       -- Make the colors in the Lualine x section dimmer
       local lualine = require('lualine.themes.tokyonight-night')
-      lualine.normal.x = { fg = hl.Comment.fg, bg = lualine.normal.c.bg }
+      lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
 
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
