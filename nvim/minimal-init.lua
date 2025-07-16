@@ -223,9 +223,6 @@ end
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR><esc>')
 
--- Diagnostic keymaps
-vim.keymap.set('n', '<leader>d', function() vim.diagnostic.open_float({ border = 'rounded' }) end, { desc = 'Diagnostic popup' })
-
 -- Quickfix
 vim.keymap.set('n', '[q', '<cmd>cprev<cr>', { desc = 'Previous quickfix' })
 vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next quickfix' })
@@ -408,7 +405,8 @@ local diagnostic_goto = function(next, severity)
     return function() go({ severity = severity }) end
   end
 end
-vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
+-- Diagnostic keymaps
+vim.keymap.set('n', '<leader>cd', function() vim.diagnostic.open_float({ border = 'rounded' }) end, { desc = 'Diagnostic popup' })
 vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
 vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
 vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
