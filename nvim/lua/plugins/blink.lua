@@ -112,6 +112,14 @@ return {
       -- Default sources here to be extended with plugins later in the conf
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
+
+        providers = {
+          snippets = {
+            opts = {
+              extended_filetypes = { typescriptreact = { 'javascriptreact' } },
+            },
+          },
+        },
       },
 
       cmdline = {
