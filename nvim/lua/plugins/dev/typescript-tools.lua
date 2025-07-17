@@ -2,6 +2,6 @@
 ---@type LazySpec
 return {
   'pmizio/typescript-tools.nvim',
-  ft = { 'javascript', 'typescript' },
+  ft = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
   opts = {},
 }
