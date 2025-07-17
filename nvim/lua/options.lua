@@ -195,8 +195,9 @@ vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 -- signcolumn on right exploration. ultimately, i like the numbers closers than the signs
 -- vim.o.statuscolumn = "%=%{v:virtnum < 1 ? (v:relnum ? v:relnum : v:lnum < 10 ? v:lnum . '' : v:lnum) : ''} %s"
 
--- Enable wrapping of long lines
+-- Enable wrapping of long lines and linebreak on words
 vim.o.wrap = true
+vim.o.linebreak = true
 
 -- Preserve view when using jumplist and remove unloaded buffers (experimental)
 vim.o.jumpoptions = 'view,clean'
