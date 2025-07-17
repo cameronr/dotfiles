@@ -163,7 +163,11 @@ return {
       hl.MarkSignHL = hl.DiagnosticInfo
       hl.MarkSignNumHL = hl.LineNR
 
+      -- Less bright trailing space indicator
       hl.MiniTrailspace = { fg = c.red }
+
+      -- Make win separator more prominent
+      hl.WinSeparator = { fg = c.bg_highlight }
     end,
   },
 
