@@ -39,6 +39,10 @@ return {
       picker = {
         name = 'snacks.pick',
       },
+
+      ui = {
+        ignore_conceal_warn = true,
+      },
     },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
