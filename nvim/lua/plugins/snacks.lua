@@ -157,6 +157,14 @@ return {
       dashboard = {
         enabled = true,
         preset = {
+          header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
+                                          ]] .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
           keys = {
             { icon = ' ', key = 'f', desc = 'Find file', action = ":lua Snacks.dashboard.pick('files')" },
             { icon = ' ', key = 'g', desc = 'Find text', action = ":lua Snacks.dashboard.pick('live_grep')" },
@@ -171,22 +179,27 @@ return {
           },
         },
         sections = {
-          {
-            section = 'terminal',
-            cmd = '{cat '
-              .. vim.fn.stdpath('config')
-              .. '/logo.txt; echo "                                           '
-              .. vim.version().major
-              .. '.'
-              .. vim.version().minor
-              .. '.'
-              .. vim.version().patch
-              .. '"} | { command -v lolcrab >/dev/null && lolcrab || cat; }; sleep .01',
-            height = 8,
-            align = 'center',
-            indent = 5,
-            padding = 0,
-          },
+          function()
+            if vim.fn.has('win32') == 1 or vim.fn.executable('lolcrab') == 0 or vim.env.NVIM_NO_LOLCRAB then return { section = 'header' } end
+
+            return {
+              section = 'terminal',
+              cmd = '{cat '
+                .. vim.fn.stdpath('config')
+                .. '/logo.txt; echo "                                           '
+                .. vim.version().major
+                .. '.'
+                .. vim.version().minor
+                .. '.'
+                .. vim.version().patch
+                .. '"} | lolcrab; sleep .01',
+              height = 8,
+              align = 'center',
+              indent = 5,
+              padding = 0,
+            }
+          end,
+
           { section = 'keys', gap = 1, padding = 1 },
           { section = 'startup' },
         },
