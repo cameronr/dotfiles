@@ -5,29 +5,27 @@ vim.api.nvim_create_autocmd({ 'Filetype' }, {
   callback = function(event)
     local ignored_fts = {
       'snacks_dashboard',
+      'snacks_input',
       'prompt', -- bt: snacks_picker_input
     }
 
-    if vim.bo[event.buf].bt == 'nofile' then return end
     if vim.tbl_contains(ignored_fts, event.match) then return end
 
-    local ok, result = pcall(vim.treesitter.start, event.buf)
-    if not ok then
-      local ft = vim.bo[event.buf].ft
-      local lang = vim.treesitter.language.get_lang(ft)
-      if lang then
-        if not require('nvim-treesitter').install({ lang }) then
-          vim.notify(result .. '\nbt: ' .. vim.bo[event.buf].bt)
-          return
-        end
+    -- make sure nvim-treesitter is loaded
+    local nvim_treesitter = require('nvim-treesitter')
+
+    local ft = vim.bo[event.buf].ft
+    local lang = vim.treesitter.language.get_lang(ft)
+    nvim_treesitter.install({ lang }):await(function(err)
+      if err then
+        vim.notify('Treesitter install error for ft: ' .. ft .. ' err: ' .. err)
+        return
       end
 
-      ok, result = pcall(vim.treesitter.start, event.buf)
-      if not ok then return end
-    end
-
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      pcall(vim.treesitter.start, event.buf)
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    end)
   end,
 })
 
