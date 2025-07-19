@@ -2,7 +2,7 @@
 ---@type LazySpec
 return {
   'akinsho/toggleterm.nvim',
-  cmds = {
+  cmd = {
     'ToggleTerm',
   },
   keys = {
