@@ -161,7 +161,6 @@ return {
 
       -- hl.Marks = hl.DiagnosticInfo
       hl.MarkSignHL = hl.DiagnosticInfo
-      hl.MarkSignNumHL = hl.LineNR
 
       -- Less bright trailing space indicator
       hl.MiniTrailspace = { fg = c.red }
