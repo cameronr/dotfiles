@@ -1,15 +1,15 @@
 -- Pull in the wezterm API
-local wezterm = require("wezterm")
+local wezterm = require('wezterm')
 
 -- From:
 -- https://wezfurlong.org/wezterm/config/lua/window-events/user-var-changed.html
-wezterm.on("user-var-changed", function(window, _, name, value)
-  wezterm.log_info("var", name, value)
+wezterm.on('user-var-changed', function(window, _, name, value)
+  wezterm.log_info('var', name, value)
 
-  if name == "FORCE_DAY_MODE" then
+  if name == 'FORCE_DAY_MODE' then
     local overrides = window:get_config_overrides() or {}
-    if value == "tokyonight_day" and not overrides.color_scheme then
-      overrides.color_scheme = "tokyonight_day"
+    if value == 'tokyonight_day' and not overrides.color_scheme then
+      overrides.color_scheme = 'tokyonight_day'
     else
       overrides.color_scheme = nil
     end
@@ -17,12 +17,12 @@ wezterm.on("user-var-changed", function(window, _, name, value)
   end
 end)
 
-local tabline = wezterm.plugin.require("https://github.com/michaelbrusegard/tabline.wez")
+local tabline = wezterm.plugin.require('https://github.com/michaelbrusegard/tabline.wez')
 
 tabline.setup({
   options = {
     icons_enabled = true,
-    theme = "tokyonight_night",
+    theme = 'tokyonight_night',
     color_overrides = {},
     section_separators = {
       left = wezterm.nerdfonts.pl_left_hard_divider,
@@ -38,7 +38,7 @@ tabline.setup({
     },
   },
   sections = {
-    tabline_a = { "mode" },
+    tabline_a = { 'mode' },
     -- tabline_a = {},
     tabline_b = {},
     -- tabline_c = { " " },
@@ -52,20 +52,20 @@ tabline.setup({
     -- tab_inactive = { "index", { "process", padding = { left = 0, right = 1 } } },
 
     tab_active = {
-      "index",
-      { "process", padding = { left = 0, right = 1 } },
-      { "zoomed", padding = 0 },
+      'index',
+      { 'process', padding = { left = 0, right = 1 } },
+      { 'zoomed', padding = 0 },
     },
     tab_inactive = {
-      "index",
-      { "process", padding = { left = 0, right = 1 } },
+      'index',
+      { 'process', padding = { left = 0, right = 1 } },
     },
 
     -- tabline_x = { 'ram', 'cpu' },
     -- tabline_y = { "datetime", "battery" },
     -- tabline_z = { "hostname" },
-    tabline_y = { "battery" },
-    tabline_z = { "datetime" },
+    tabline_y = { 'battery' },
+    tabline_z = { 'datetime' },
 
     tabline_x = {},
   },
@@ -82,23 +82,23 @@ config = {
 
   max_fps = 120,
 
-  font = wezterm.font({ family = "FiraCode Nerd Font", weight = "Regular" }),
+  font = wezterm.font({ family = 'FiraCode Nerd Font', weight = 'Regular' }),
   harfbuzz_features = {
-    "cv02", -- g
+    'cv02', -- g
     -- "cv29", -- {}
-    "ss03", -- &
-    "ss01", -- r
-    "ss02", -- <= >= !
-    "ss05", -- @
+    'ss03', -- &
+    'ss01', -- r
+    'ss02', -- <= >= !
+    'ss05', -- @
   },
   -- font = wezterm.font("MesloLGS Nerd Font"),
 
   font_size = 19,
 
   -- For example, changing the color scheme:
-  color_scheme = "tokyonight_night",
+  color_scheme = 'tokyonight_night',
 
-  window_decorations = "RESIZE",
+  window_decorations = 'RESIZE',
   window_background_opacity = 1,
   -- macos_window_background_blur = 8,
 
@@ -106,8 +106,10 @@ config = {
   -- tab_max_width = 50,
   hide_tab_bar_if_only_one_tab = true,
 
+  -- force_reverse_video_cursor = true,
+
   window_frame = {
-    font = wezterm.font({ family = "FiraCode Nerd Font", weight = "Bold" }),
+    font = wezterm.font({ family = 'FiraCode Nerd Font', weight = 'Bold' }),
     font_size = 20.0,
     -- active_titlebar_bg = "#1a1b26",
     -- inactive_titlebar_bg = "#1a1b26",
@@ -149,7 +151,7 @@ config = {
   --     },
   --   },
   -- },
-  bypass_mouse_reporting_modifiers = "SHIFT",
+  bypass_mouse_reporting_modifiers = 'SHIFT',
 }
 
 tabline.apply_to_config(config)
