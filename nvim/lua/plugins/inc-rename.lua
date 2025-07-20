@@ -12,6 +12,6 @@ return {
   },
   cmd = 'IncRename',
   opts = {
-    -- input_buffer_type = 'dressing',
+    input_buffer_type = 'snacks',
   },
 }
