@@ -23,10 +23,6 @@ zmodule ohmyzsh/ohmyzsh --source lib/clipboard.zsh --use degit      # clipboard 
 # if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
 zmodule sunlei/zsh-ssh
 
-# fzf support
-zmodule Aloxaf/fzf-tab
-zmodule folke/tokyonight.nvim --source extras/fzf/tokyonight_night.sh
-
 # Completion
 
 # Additional completion definitions for Zsh.
@@ -35,18 +31,25 @@ zmodule zsh-users/zsh-completions --fpath src
 # Docker completion
 zmodule docker/cli --name docker --use mkdir --on-pull 'curl -fsSL -o _docker https://raw.githubusercontent.com/docker/cli/master/contrib/completion/zsh/_docker' --fpath .
 
+
+# Enables and configures smart and extensive tab completion.
+# completion must be sourced after all modules that add completion definitions.
+zmodule zimfw/completion
+
+# Load fzf and zsh-vi-mode after completion
+
+# fzf support
+zmodule Aloxaf/fzf-tab
+zmodule folke/tokyonight.nvim --source extras/fzf/tokyonight_night.sh
+
 # Better vi mode, fixes right arrow in command mode not crossing multiline
 # Use fork until this is merged:
 # https://github.com/jeffreytse/zsh-vi-mode/pull/308
 # zmodule jeffreytse/zsh-vi-mode
 zmodule jacobpbrugh/zsh-vi-mode
 
-# Enables and configures smart and extensive tab completion.
-# completion must be sourced after all modules that add completion definitions.
-zmodule zimfw/completion
 
-# Modules that must be initialized last
-
+# Syntax highlighting modules should be loaded last
 # Fish-like syntax highlighting for Zsh.
 # zsh-users/zsh-syntax-highlighting must be sourced after completion
 zmodule zsh-users/zsh-syntax-highlighting

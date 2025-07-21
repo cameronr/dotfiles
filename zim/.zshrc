@@ -159,7 +159,12 @@ if [[ (( $commands[fzf] )) ]]; then
 
     # Load main fzf integration (but after zsh-vi-mode)
     if [[ $ZVM_NAME == 'zsh-vi-mode' ]]; then
-        zvm_after_init_commands+=('source <(fzf --zsh)')
+        # zvm_after_init_commands+=('source <(fzf --zsh)')
+        source <(fzf --zsh)
+
+        # zsh-vi-mode replaces the ^R keymap but doing zvm_after_init_commands+=('source <(fzf --zsh)')
+        # loads fzf too late and causes it to occasionally overwrite the prompt when selecting an option
+        zvm_after_init_commands+=("bindkey '^R' fzf-history-widget")
     else
         source <(fzf --zsh)
     fi
