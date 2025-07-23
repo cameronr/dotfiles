@@ -38,14 +38,14 @@ return {
       -- },
     },
   },
-  {
-    'Kaiser-Yang/blink-cmp-avante',
-    enabled = vim.g.cmp_engine == 'blink',
-    lazy = true,
-  },
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'saghen/blink.cmp',
     optional = true,
+    dependencies = {
+      'Kaiser-Yang/blink-cmp-avante',
+    },
     opts = {
       sources = {
         -- Add 'avante' to the list

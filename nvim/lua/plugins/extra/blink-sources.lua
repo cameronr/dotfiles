@@ -4,6 +4,7 @@ return {
   ---@type LazySpec
   {
     'saghen/blink.cmp',
+    optional = true,
     dependencies = {
       'Kaiser-Yang/blink-cmp-git',
     },
@@ -29,6 +30,7 @@ return {
   },
   {
     'saghen/blink.cmp',
+    optional = true,
     dependencies = {
       'mgalliou/blink-cmp-tmux',
     },
@@ -75,6 +77,7 @@ return {
   ---@type LazySpec
   {
     'saghen/blink.cmp',
+    optional = true,
     dependencies = {
       'mikavilpas/blink-ripgrep.nvim',
     },
