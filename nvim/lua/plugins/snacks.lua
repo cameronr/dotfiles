@@ -89,7 +89,9 @@ return {
 
     ---@type snacks.Config
     opts = {
+      bigfile = { enabled = true },
       debug = { enabled = true },
+      explorer = {},
       indent = {
         enabled = true,
         animate = { enabled = false },
@@ -104,7 +106,6 @@ return {
         end,
       },
       input = { enabled = true },
-      bigfile = { enabled = true },
       notifier = {
         enabled = true,
         style = 'fancy',
