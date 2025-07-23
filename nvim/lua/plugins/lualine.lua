@@ -58,23 +58,25 @@ return {
       return ret
     end
 
-    Snacks.toggle({
-      name = 'lualine symbols',
-      get = function() return vim.b.trouble_lualine ~= false end,
-      set = function(state) vim.b.trouble_lualine = state end,
-    }):map('<leader>vl')
+    if Snacks then
+      Snacks.toggle({
+        name = 'lualine symbols',
+        get = function() return vim.b.trouble_lualine ~= false end,
+        set = function(state) vim.b.trouble_lualine = state end,
+      }):map('<leader>vl')
 
-    Snacks.toggle({
-      name = 'lualine lsp names',
-      get = function() return vim.g.custom_lualine_show_lsp_names end,
-      set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
-    }):map('<leader>vL')
+      Snacks.toggle({
+        name = 'lualine lsp names',
+        get = function() return vim.g.custom_lualine_show_lsp_names end,
+        set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
+      }):map('<leader>vL')
 
-    Snacks.toggle({
-      name = 'lualine session name',
-      get = function() return vim.g.custom_lualine_show_session_name end,
-      set = function(state) vim.g.custom_lualine_show_session_name = state end,
-    }):map('<leader>vs')
+      Snacks.toggle({
+        name = 'lualine session name',
+        get = function() return vim.g.custom_lualine_show_session_name end,
+        set = function(state) vim.g.custom_lualine_show_session_name = state end,
+      }):map('<leader>vs')
+    end
 
     return vim.tbl_deep_extend('force', opts or {}, {
       options = {
@@ -142,6 +144,9 @@ return {
             fmt = trunc(0, 0, 60, true),
             separator = '',
           },
+          -- {
+          --   require('util.command_tracker').component,
+          -- },
           {
             function() return 'recording @' .. vim.fn.reg_recording() end,
             cond = function() return vim.fn.reg_recording() ~= '' end,

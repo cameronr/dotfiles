@@ -271,7 +271,10 @@ return {
   },
   {
     'nvim-lualine/lualine.nvim',
-    opts = function(_, opts) table.insert(opts.sections.lualine_x, Snacks.profiler.status()) end,
+    optional = true,
+    opts = function(_, opts)
+      if Snacks then table.insert(opts.sections.lualine_x, Snacks.profiler.status()) end
+    end,
   },
   {
     'folke/trouble.nvim',

@@ -15,17 +15,19 @@ return {
       },
     },
     config = function()
-      Snacks.toggle({
-        name = 'auto format buf',
-        get = function() return not vim.b.disable_autoformat ~= false end,
-        set = function(state)
-          if state then
-            vim.cmd('FormatEnable!')
-          else
-            vim.cmd('FormatDisable!')
-          end
-        end,
-      }):map('<leader>vf')
+      if Snacks then
+        Snacks.toggle({
+          name = 'auto format buf',
+          get = function() return not vim.b.disable_autoformat ~= false end,
+          set = function(state)
+            if state then
+              vim.cmd('FormatEnable!')
+            else
+              vim.cmd('FormatDisable!')
+            end
+          end,
+        }):map('<leader>vf')
+      end
 
       ---@module 'conform'
       ---@type conform.setupOpts
