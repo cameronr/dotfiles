@@ -78,7 +78,7 @@ local config = wezterm.config_builder()
 -- This is where you actually apply your config choices
 config = {
 
-  -- native_macos_fullscreen_mode = true,
+  native_macos_fullscreen_mode = true,
 
   max_fps = 120,
 
