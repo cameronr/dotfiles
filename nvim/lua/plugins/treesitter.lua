@@ -43,7 +43,10 @@ return {
     },
 
     branch = 'main',
-    build = ':TSUpdate',
+    build = function()
+      -- update parsers, if TSUpdate exists
+      if vim.fn.exists(':TSUpdate') == 2 then vim.cmd('TSUpdate') end
+    end,
 
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     ---@module 'nvim-treesitter'
