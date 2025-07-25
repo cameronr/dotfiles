@@ -187,53 +187,15 @@ return {
       })
 
       local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
-
         'lua_ls',
         'bashls',
-
-        -- HTML / CSS
         'html',
         'cssls',
-        -- tailwindcss = {},
-
-        -- Javascript/Typescript
-        -- ts_ls = {},
-
-        -- Python
         'pyright',
         'ruff',
-
-        -- Ruby for Shopify
-        -- ruby_lsp = {
-        --   init_options = {
-        --     formatter = 'standard',
-        --     linters = { 'standard' },
-        --   },
-        -- },
-
         'rust_analyzer',
-
-        -- TOML
         'taplo',
-
-        -- Shopify
-        -- theme_check = {},
-
         'typos_lsp',
-
-        -- YAML
         'yamlls',
       }
 
