@@ -26,8 +26,8 @@ return {
       c.git.change = c.blue
       c.git.delete = c.red1
 
-      -- Make dark very slightly less dark
-      c.bg_dark = '#171821'
+      -- If night style, make bg_dark very slightly less dark
+      if c.bg_dark == '#16161e' then c.bg_dark = '#171821' end
       c.bg_statusline = c.bg_dark
     end,
 
