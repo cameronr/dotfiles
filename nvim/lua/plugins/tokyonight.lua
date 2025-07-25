@@ -58,11 +58,22 @@ return {
         hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
 
         -- Visual selection should match visual mode
-        hl.Visual = { bg = '#3f3256' }
+        -- hl.Visual = { bg = '#3f3256' }
+        -- hl.Visual = { bg = '#9758b6' }
 
         -- Make TS context dimmer and color line numbers
         hl.TreesitterContext = { bg = '#272d45' }
         hl.TreesitterContextLineNumber = { fg = c.fg_gutter, bg = '#272d45' }
+
+        -- Make the colors in the Lualine x section dimmer
+        local lualine = require('lualine.themes.tokyonight-night')
+        lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
+
+        -- modes: I want a more muted green for the insert line
+        hl.ModesInsertCursorLineNr = { fg = c.green, bg = '#1a2526', bold = true }
+        hl.ModesInsertCursorLine = { bg = '#1a2526' }
+        hl.ModesInsertCursorLineSign = hl.ModesInsertCursorLine
+        hl.ModesInsertCursorLineFold = hl.ModesInsertCursorLine
       else
         -- Diff colors
         -- Brighten changes within a line
@@ -74,7 +85,7 @@ return {
         hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
 
         -- Visual selection should match visual mode
-        hl.Visual = { bg = '#b69de2' }
+        -- hl.Visual = { bg = '#b69de2' }
 
         -- Make TS context color line numbers
         hl.TreesitterContextLineNumber = { fg = '#939aba', bg = '#b3b8d1' }
@@ -85,6 +96,11 @@ return {
         -- Make flash label legible in light mode
         if hl.FlashLabel then hl.FlashLabel.fg = c.bg end
       end
+
+      -- extend cursorline to numbers
+      hl.CursorLineSign = hl.CursorLine
+      hl.CursorLineFold = hl.CursorLine
+      hl.CursorLineNr.bg = hl.CursorLine.bg
 
       -- telescope
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
@@ -130,10 +146,6 @@ return {
       hl.diffAdded = { fg = c.git.add }
       hl.diffRemoved = { fg = c.git.delete }
       hl.diffChanged = { fg = c.git.change }
-
-      -- Make the colors in the Lualine x section dimmer
-      local lualine = require('lualine.themes.tokyonight-night')
-      lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
 
       -- Make diagnostic text easier to read (and underlined)
       hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
