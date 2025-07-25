@@ -168,8 +168,8 @@ return {
         fg = c.orange,
       }
 
-      hl.HighlightUndo = hl.CurSearch
-      hl.HighlightRedo = hl.CurSearch
+      -- Highlight undo/redo in green
+      hl.HighlightUndo = { fg = c.bg, bg = c.green }
 
       -- hl.Marks = hl.DiagnosticInfo
       hl.MarkSignHL = hl.DiagnosticInfo
