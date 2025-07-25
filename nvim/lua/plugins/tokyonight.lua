@@ -70,8 +70,8 @@ return {
         lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
 
         -- modes: I want a more muted green for the insert line
-        hl.ModesInsertCursorLineNr = { fg = c.green, bg = '#1a2526', bold = true }
-        hl.ModesInsertCursorLine = { bg = '#1a2526' }
+        hl.ModesInsertCursorLineNr = { fg = c.green, bg = '#1c2526', bold = true }
+        hl.ModesInsertCursorLine = { bg = hl.ModesInsertCursorLineNr.bg }
         hl.ModesInsertCursorLineSign = hl.ModesInsertCursorLine
         hl.ModesInsertCursorLineFold = hl.ModesInsertCursorLine
       else
