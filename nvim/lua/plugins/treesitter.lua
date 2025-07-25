@@ -12,7 +12,10 @@ vim.api.nvim_create_autocmd({ 'Filetype' }, {
     if vim.tbl_contains(ignored_fts, event.match) then return end
 
     -- make sure nvim-treesitter is loaded
-    local nvim_treesitter = require('nvim-treesitter')
+    local ok, nvim_treesitter = pcall(require, 'nvim-treesitter')
+
+    -- no nvim-treesitter, maybe fresh install
+    if not ok then return end
 
     local ft = vim.bo[event.buf].ft
     local lang = vim.treesitter.language.get_lang(ft)
@@ -66,7 +69,13 @@ return {
         'vimdoc',
       }
 
-      require('nvim-treesitter').install(ensure_installed)
+      -- make sure nvim-treesitter can load
+      local ok, nvim_treesitter = pcall(require, 'nvim-treesitter')
+
+      -- no nvim-treesitter, maybe fresh install
+      if not ok then return end
+
+      nvim_treesitter.install(ensure_installed)
     end,
   },
 
