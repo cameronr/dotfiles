@@ -23,7 +23,7 @@ return {
 
       if vim.o.background == 'dark' then
         -- Brighten changes within a line
-        c.diff.text = '#224e38'
+        c.diff.text = '#204b23'
         -- Make changed lines more green instead of blue
         c.diff.add = '#182f23'
         -- Make deletes more saturated
