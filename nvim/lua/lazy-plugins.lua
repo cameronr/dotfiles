@@ -6,19 +6,19 @@ require('lazy').setup(
     { import = 'plugins' },
     {
       import = 'plugins/dev',
-      cond = function() return vim.g.plugins_dev end,
+      cond = vim.g.plugins_dev,
     },
     {
       import = 'plugins/extra',
-      cond = function() return vim.g.plugins_extra end,
+      cond = vim.g.plugins_extra,
     },
     {
       import = 'plugins/fun',
-      cond = function() return vim.g.plugins_fun end,
+      cond = vim.g.plugins_fun,
     },
     {
       import = 'plugins/compat',
-      cond = function() return vim.fn.has('nvim-0.11') == 0 end,
+      cond = vim.fn.has('nvim-0.11') == 0,
     },
   },
 
