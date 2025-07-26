@@ -22,6 +22,12 @@ return {
           buffer = bufnr,
         })
 
+        -- turn off gitsigns inline diff
+        ---@diagnostic disable-next-line: param-type-mismatch
+        pcall(vim.cmd, 'Gitsigns toggle_linehl false')
+        ---@diagnostic disable-next-line: param-type-mismatch
+        pcall(vim.cmd, 'Gitsigns toggle_word_diff false')
+
         -- clear highlights
         vim.cmd('nohl')
 

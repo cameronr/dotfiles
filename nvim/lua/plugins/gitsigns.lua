@@ -42,17 +42,21 @@ return {
         map('v', '<leader>hs', function() gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, { desc = 'stage git hunk' })
         map('v', '<leader>hr', function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, { desc = 'reset git hunk' })
         -- normal mode
-        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
-        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
-        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-        map('n', '<leader>hu', gitsigns.undo_stage_hunk, { desc = 'git [u]ndo stage hunk' })
-        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
-        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
+        map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git stage hunk' })
+        map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git reset hunk' })
+        map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git Stage buffer' })
+        map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git Reset buffer' })
+        map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git preview hunk' })
         map('n', '<leader>hb', function() gitsigns.blame_line({ full = false }) end, { desc = 'git blame line' })
-        map('n', '<leader>hD', function() gitsigns.diffthis('@') end, { desc = 'git diff against last commit' })
         -- Toggles
         map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git toggle show blame line' })
         map('n', '<leader>he', gitsigns.preview_hunk_inline, { desc = 'git show deleted' })
+        map('n', '<leader>hi', function()
+          gitsigns.toggle_linehl()
+          gitsigns.toggle_word_diff()
+        end, { desc = 'git toggle inline diff' })
+        -- Text object
+        map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
       end,
     },
   },

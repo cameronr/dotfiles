@@ -1,11 +1,6 @@
 ---@module 'lazy'
 ---@type LazySpec
 return {
-  -- You can easily change to a different colorscheme.
-  -- Change the name of the colorscheme plugin below, and then
-  -- change the command in the config to whatever the name of that colorscheme is.
-  --
-  -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
   'folke/tokyonight.nvim',
   lazy = false,
   priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -127,6 +122,11 @@ return {
       -- clean up Neogit diff colors (when committing)
       hl.NeogitDiffContextHighlight = { bg = hl.Normal.bg }
       hl.NeogitDiffContext = { bg = hl.Normal.bg }
+
+      -- clean up gitsigns inline diff colors
+      hl.GitSignsChangeInLine = { fg = c.git.change, reverse = true }
+      hl.GitSignsAddInLine = { fg = c.git.add, reverse = true }
+      hl.GitSignsDeleteInLine = { fg = c.git.delete, reverse = true }
 
       -- More subtle
       hl.IblScope = hl.LineNr
