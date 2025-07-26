@@ -26,6 +26,13 @@ return {
       c.git.change = c.blue
       c.git.delete = c.red1
 
+      -- Brighten changes within a line
+      c.diff.text = '#224e38'
+      -- Make changed lines more green instead of blue
+      c.diff.add = '#182f23'
+      -- Make deletes more saturated
+      c.diff.delete = '#4d1919'
+
       -- If night style, make bg_dark very slightly less dark
       if c.bg_dark == '#16161e' then c.bg_dark = '#171821' end
       c.bg_statusline = c.bg_dark
@@ -45,21 +52,8 @@ return {
         -- Use bg.dark from storm (not night) for the cursor line background to make it more subtle
         hl.CursorLine = { bg = '#1f2335' }
 
-        -- Diff colors
-        -- Brighten changes within a line
-        hl.DiffText = { bg = '#224e38' }
-        -- Make changed lines more green instead of blue
-        hl.DiffAdd = { bg = '#182f23' }
-
-        -- More saturated DiffDelete
-        hl.DiffDelete = { bg = '#4d1919' }
-
-        -- clean up Neogit diff colors (when committing)
-        hl.NeogitDiffAddHighlight = { fg = '#82a957', bg = hl.DiffAdd.bg }
-
-        -- Visual selection should match visual mode
-        -- hl.Visual = { bg = '#3f3256' }
-        -- hl.Visual = { bg = '#9758b6' }
+        -- Visual selection should match visual mode color, but more saturated
+        hl.Visual = { bg = '#2d213d' }
 
         -- Make TS context dimmer and color line numbers
         hl.TreesitterContext = { bg = '#272d45' }
