@@ -2,10 +2,10 @@ return {
   ---@module 'lazy'
   ---@type LazySpec
   {
-    'mvllow/modes.nvim',
+    'cameronr/modes.nvim',
     opts = function(_, opts)
       opts = opts or {}
-      if not string.find(vim.g.colors_name, '^tokyonight') then return opts end
+      if not vim.g.colors_name or not string.find(vim.g.colors_name, '^tokyonight') then return opts end
 
       local colors = require('tokyonight.colors').setup()
 
@@ -29,10 +29,7 @@ return {
           -- visual = '#9745be',
         },
 
-        set_cursor = true,
-        set_cursorline = true,
-        set_number = true,
-        set_signcolumn = true,
+        set_signcolumn = false,
       })
     end,
   },
