@@ -36,6 +36,7 @@ return {
       -- If night style, make bg_dark very slightly less dark
       if c.bg_dark == '#16161e' then c.bg_dark = '#171821' end
       c.bg_statusline = c.bg_dark
+      -- c.orange = '#d77f4a' --#f4975f '#ff9e64' #ff966c #d77f4a
     end,
 
     on_highlights = function(hl, c)
@@ -64,10 +65,7 @@ return {
         lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
 
         -- modes: I want a more muted green for the insert line
-        hl.ModesInsertCursorLineNr = { fg = c.green, bg = '#1c2526', bold = true }
-        hl.ModesInsertCursorLine = { bg = hl.ModesInsertCursorLineNr.bg }
-        hl.ModesInsertCursorLineSign = hl.ModesInsertCursorLine
-        hl.ModesInsertCursorLineFold = hl.ModesInsertCursorLine
+        hl.ModesInsertCursorLine = { bg = '#1c2526' }
       else
         -- Diff colors
         -- Brighten changes within a line
@@ -90,11 +88,6 @@ return {
         -- Make flash label legible in light mode
         if hl.FlashLabel then hl.FlashLabel.fg = c.bg end
       end
-
-      -- extend cursorline to numbers
-      hl.CursorLineSign = hl.CursorLine
-      hl.CursorLineFold = hl.CursorLine
-      hl.CursorLineNr.bg = hl.CursorLine.bg
 
       -- telescope
       hl.TelescopeMatching = { fg = hl.IncSearch.bg }
