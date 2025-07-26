@@ -68,7 +68,10 @@ return {
         lualine.normal.x = { fg = hl.Comment.fg, bg = c.bg_statusline }
 
         -- modes: I want a more muted green for the insert line
-        hl.ModesInsertCursorLine = { bg = '#1c2526' }
+        -- #1a2326 slightly less green
+        -- #1f2a2e a little brighter
+        -- #1d272a one notch less bright
+        hl.ModesInsertCursorLine = { bg = '#1f2a2e' }
 
         -- Don't want teal in neogit diff add
         hl.NeogitDiffAddHighlight = { fg = '#abd282', bg = hl.DiffAdd.bg }
