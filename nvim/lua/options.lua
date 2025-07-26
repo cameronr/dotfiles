@@ -98,12 +98,10 @@ vim.o.scrolloff = 4
 -- Don't autoinsert comments on o/O (but i still need the BufEnter at the bottom)
 vim.opt.formatoptions:remove({ 'o' })
 
-local options_user_augroup = vim.api.nvim_create_augroup('options_user_augroup', {})
-
 -- Really, really disable comment autoinsertion on o/O
 vim.api.nvim_create_autocmd('BufEnter', {
   callback = function() vim.opt_local.formatoptions:remove({ 'o' }) end,
-  group = options_user_augroup,
+  group = vim.api.nvim_create_augroup('user_options_augroup', {}),
   desc = 'Disable New Line Comment',
 })
 
@@ -155,32 +153,6 @@ if vim.fn.has('nvim-0.11') == 1 then
   -- otherwise we'll get numbers on buffers that shouldn't have them (e.g. help, alpha)
   -- vim.o.statuscolumn = "%C%s%=%{%(&number || &relativenumber) ? '%{v:relnum?v:relnum:v:lnum}' : ''%} "
 end
-
--- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
--- Jump to last position when reopening a file
-vim.api.nvim_create_autocmd('BufReadPost', {
-  desc = 'Open file at the last position it was edited earlier',
-  group = options_user_augroup,
-  command = 'silent! normal! g`"zv',
-})
-
--- vim.api.nvim_create_autocmd('BufReadPost', {
---   desc = 'Open file at the last position it was edited earlier',
---   callback = function()
---     local mark = vim.api.nvim_buf_get_mark(0, '"')
---     if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then vim.api.nvim_win_set_cursor(0, mark) end
---   end,
--- })
-
--- Always open help on the right
--- Open help window in a vertical split to the right.
-vim.api.nvim_create_autocmd('BufWinEnter', {
-  group = options_user_augroup,
-  pattern = { '*.txt' },
-  callback = function()
-    if vim.o.filetype == 'help' then vim.cmd.wincmd('L') end
-  end,
-})
 
 -- Set default tab options (but they should be overridden by guess-indent)
 vim.o.expandtab = true

@@ -45,18 +45,7 @@ vim.keymap.set('n', '<leader>wH', '<C-w>H', { desc = 'Move window left' })
 vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
 vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
 vim.keymap.set('n', '<leader>wK', '<C-w>K', { desc = 'Move window up' })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function() vim.highlight.on_yank() end,
-})
+vim.keymap.set('n', '<leader>wn', '<cmd>vnew<CR>', { desc = 'Window vsplit with new buffer' })
 
 -- blackhole single x
 vim.keymap.set('n', 'x', '"_x')
@@ -80,32 +69,20 @@ vim.api.nvim_create_user_command('Q', 'q', {})
 vim.api.nvim_create_user_command('W', 'w', {})
 vim.api.nvim_create_user_command('X', 'x', {})
 
--- Remap q: to :q
-vim.keymap.set('n', 'q:', ':q')
-
+-- Remap q to Q so I'm not accidentally recording macros all the time
 vim.keymap.set('n', 'q', '<nop>')
 vim.keymap.set('n', 'Q', 'q', { desc = 'Record macro' })
 vim.keymap.set('n', '<M-q>', 'Q', { desc = 'Replay last register' })
 
--- And now kill it with fire (unless brought up by ctrl-f). Credit to:
+-- Disable the command line window
+vim.keymap.set('n', 'q:', ':q')
+
+-- And now really, really disable it
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
-local function escape(keys) return vim.api.nvim_replace_termcodes(keys, true, false, true) end
-
-vim.keymap.set('c', '<C-f>', function()
-  vim.g.requested_cmdwin = true
-  vim.api.nvim_feedkeys(escape('<C-f>'), 'n', false)
-end)
-
 vim.api.nvim_create_autocmd('CmdWinEnter', {
   group = vim.api.nvim_create_augroup('CWE', { clear = true }),
   pattern = '*',
-  callback = function()
-    if vim.g.requested_cmdwin then
-      vim.g.requested_cmdwin = nil
-    else
-      vim.api.nvim_feedkeys(escape(':q<CR>:'), 'm', false)
-    end
-  end,
+  callback = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':q<CR>:', true, false, true), 'm', false) end,
 })
 
 -- Unamp g? (don't need rot-13)
@@ -227,6 +204,7 @@ vim.keymap.set('n', ']b', '<cmd>:bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>', { desc = 'Close buffer and window' })
 vim.keymap.set('n', '<leader>bD', '<cmd>bd!<CR>', { desc = 'Force close buffer and window' })
 vim.keymap.set('n', '<leader>bn', '<cmd>ene<CR>', { desc = 'New buffer and window' })
+vim.keymap.set('n', '<leader>bv', '<cmd>vnew<CR>', { desc = 'New buffer in vsplit' })
 
 -- Shortcut for surrounding a word (inner) with a '
 vim.keymap.set('n', 'S', '<nop>') -- Don't keep S mapping

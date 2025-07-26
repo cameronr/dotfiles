@@ -21,7 +21,13 @@ EOF
     cat lua/options.lua
     # add a new line
     echo
+
     cat lua/keymaps.lua
+    echo
+
+    cat lua/keymaps.lua
+    echo
+
 } >> minimal-init.lua
 
 

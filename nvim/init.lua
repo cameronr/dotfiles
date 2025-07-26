@@ -47,6 +47,9 @@ require('options')
 -- [[ Basic Keymaps ]]
 require('keymaps')
 
+-- [[ General Autocmds ]]
+require('autocmds')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 require('lazy-bootstrap')
 
