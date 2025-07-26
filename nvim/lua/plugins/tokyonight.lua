@@ -26,16 +26,19 @@ return {
       c.git.change = c.blue
       c.git.delete = c.red1
 
-      -- Brighten changes within a line
-      c.diff.text = '#224e38'
-      -- Make changed lines more green instead of blue
-      c.diff.add = '#182f23'
-      -- Make deletes more saturated
-      c.diff.delete = '#4d1919'
+      if vim.o.background == 'dark' then
+        -- Brighten changes within a line
+        c.diff.text = '#224e38'
+        -- Make changed lines more green instead of blue
+        c.diff.add = '#182f23'
+        -- Make deletes more saturated
+        c.diff.delete = '#4d1919'
 
-      -- If night style, make bg_dark very slightly less dark
-      if c.bg_dark == '#16161e' then c.bg_dark = '#171821' end
-      c.bg_statusline = c.bg_dark
+        -- If night style, make bg_dark very slightly less dark
+        c.bg_dark = '#171821'
+        c.bg_statusline = c.bg_dark
+      end
+
       -- c.orange = '#d77f4a' --#f4975f '#ff9e64' #ff966c #d77f4a
     end,
 
@@ -66,7 +69,16 @@ return {
 
         -- modes: I want a more muted green for the insert line
         hl.ModesInsertCursorLine = { bg = '#1c2526' }
+
+        -- Don't want teal in neogit diff add
+        hl.NeogitDiffAddHighlight = { fg = '#abd282', bg = hl.DiffAdd.bg }
       else
+        -- Visual selection should match visual mode
+        hl.Visual = { bg = '#d6cae1' }
+
+        -- Make TS context color line numbers
+        hl.TreesitterContextLineNumber = { fg = '#939aba', bg = '#b3b8d1' }
+
         -- Diff colors
         -- Brighten changes within a line
         hl.DiffText = { bg = '#a3dca9' }
@@ -75,12 +87,6 @@ return {
 
         -- clean up Neogit diff colors (when committing)
         hl.NeogitDiffAddHighlight = { fg = '#4d6534', bg = hl.DiffAdd.bg }
-
-        -- Visual selection should match visual mode
-        -- hl.Visual = { bg = '#b69de2' }
-
-        -- Make TS context color line numbers
-        hl.TreesitterContextLineNumber = { fg = '#939aba', bg = '#b3b8d1' }
 
         -- Make yaml properties and strings more distinct
         hl['@property.yaml'] = { fg = '#006a83' }
