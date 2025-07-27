@@ -152,6 +152,37 @@ return {
             },
           },
         },
+
+        sources = {
+          marks = {
+            actions = {
+              delmark = function(picker)
+                local cursor = picker.list.cursor
+                local deleted = {}
+                for _, it in ipairs(picker:selected({ fallback = true })) do
+                  local success
+                  if it.label:match('[a-z]') then
+                    success = vim.api.nvim_buf_del_mark(it.buf, it.label)
+                  else
+                    success = vim.api.nvim_del_mark(it.label)
+                  end
+                  if success then table.insert(deleted, it) end
+                end
+
+                picker:close()
+                local picker_new = Snacks.picker.marks()
+                picker_new.list:view(cursor - #deleted)
+              end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ['<a-d>'] = { 'delmark', mode = { 'i', 'n' } }, -- Bind "a-d" in input and normal mode
+                },
+              },
+            },
+          },
+        },
       },
       quickfile = { enabled = true },
       words = { enabled = true },
