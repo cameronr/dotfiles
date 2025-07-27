@@ -1,4 +1,6 @@
 return {
+  ---@module "lazy"
+  ---@type LazySpec
   {
     'saghen/blink.cmp',
     optional = true,
@@ -13,13 +15,9 @@ return {
         providers = {
           emoji = {
             module = 'blink-emoji',
-            name = 'Emoji',
+            name = '😃',
             score_offset = 15, -- Tune by preference
-            opts = {
-              insert = true, -- Insert emoji (default) or complete its name
-              ---@type string|table|fun():table
-              trigger = function() return { ':' } end,
-            },
+            max_items = 10,
             should_show_items = function()
               return vim.tbl_contains(
                 -- Enable emoji completion only for git commits and markdown.
@@ -28,6 +26,11 @@ return {
                 vim.o.filetype
               )
             end,
+            opts = {
+              insert = true, -- Insert emoji (default) or complete its name
+              ---@type string|table|fun():table
+              trigger = function() return { ':' } end,
+            },
           },
         },
       },
