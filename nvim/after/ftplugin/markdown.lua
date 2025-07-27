@@ -1,1 +1,1 @@
-vim.wo.conceallevel = 2
+-- vim.wo.conceallevel = 2
