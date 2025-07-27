@@ -19,6 +19,7 @@ return {
             module = 'blink-cmp-git',
             name = 'Git',
             should_show_items = function() return vim.o.filetype == 'gitcommit' or vim.o.filetype == 'markdown' end,
+            max_items = 7,
             opts = {
               use_items_pre_cache = false,
               -- options for the blink-cmp-git
@@ -57,6 +58,7 @@ return {
               enabled = function() return vim.g.custom_blink_cmp_tmux_enabled end,
               module = 'blink-cmp-tmux',
               name = 'tmux',
+              max_items = 3,
               -- default options
               opts = {
                 all_panes = true,
@@ -92,6 +94,7 @@ return {
           ripgrep = {
             module = 'blink-ripgrep',
             name = 'Ripgrep',
+            max_items = 3,
             ---@module "blink-ripgrep"
             ---@type blink-ripgrep.Options
             opts = {
