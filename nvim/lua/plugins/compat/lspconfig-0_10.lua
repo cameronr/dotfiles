@@ -370,12 +370,28 @@ return {
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
+      local extra_tools = {
+        'stylua',
+        'prettier',
+        'prettierd',
+        'isort',
+        'beautysh',
+      }
 
-      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
+      if vim.fn.executable('rustc') == 1 then servers.rust_analyzer = {} end
+      if vim.fn.executable('go') == 1 then
+        servers.gopls = {}
+        extra_tools = vim.list_extend(extra_tools, { 'goimports', 'gofumpt' })
+      end
+
+      local ensure_installed = vim.list_extend(vim.tbl_keys(servers) or {}, extra_tools)
+
+      if not vim.g.no_mason_autoinstall then
+        local mti = require('mason-tool-installer')
+        -- we lazy load so we trigger loading manually
+        mti.setup({ ensure_installed = ensure_installed, run_on_start = false })
+        mti.check_install()
+      end
 
       ---@diagnostic disable-next-line: missing-fields
       require('mason-lspconfig').setup({
@@ -392,10 +408,6 @@ return {
           end,
         },
       })
-
-      -- Install Conform formatters
-      if not vim.g.no_mason_autoinstall then require('mason-conform').setup({}) end
-
       -- Border for LSPInfo
       require('lspconfig.ui.windows').default_options.border = 'single'
     end,

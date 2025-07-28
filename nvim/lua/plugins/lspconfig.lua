@@ -208,7 +208,6 @@ return {
         'beautysh',
       }
 
-      if vim.fn.executable('cc') then table.insert(extra_tools, 'uncrustify') end
       if vim.fn.executable('rustc') == 1 then table.insert(servers, 'rust_analyzer') end
       if vim.fn.executable('go') == 1 then
         table.insert(servers, 'gopls')
@@ -217,7 +216,12 @@ return {
 
       local ensure_installed = vim.list_extend(servers, extra_tools)
 
-      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
+      if not vim.g.no_mason_autoinstall then
+        local mti = require('mason-tool-installer')
+        -- we lazy load so we trigger loading manually
+        mti.setup({ ensure_installed = ensure_installed, run_on_start = false })
+        mti.check_install()
+      end
 
       ---@type MasonLspconfigSettings
       ---@diagnostic disable-next-line: missing-fields
