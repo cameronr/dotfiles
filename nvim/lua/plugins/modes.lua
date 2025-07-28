@@ -3,6 +3,7 @@ return {
   ---@type LazySpec
   {
     'cameronr/modes.nvim',
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = function(_, opts)
       opts = opts or {}
       if not vim.g.colors_name or not string.find(vim.g.colors_name, '^tokyonight') then return opts end
