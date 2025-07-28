@@ -57,6 +57,7 @@ return {
         end, { desc = 'git toggle inline diff' })
         -- Text object
         map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
+        map({ 'o', 'x' }, 'ah', gitsigns.select_hunk)
       end,
     },
   },
