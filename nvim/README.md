@@ -10,6 +10,7 @@ I've had a lot of fun tweaking things along the way. Some features:
 - [Snacks.nvim](https://github.com/folke/snacks.nvim) with a Telescope feel
 - Multiple picker support (snacks, telescope, fzf-lua) controlled by env var (NVIM_PICKER_ENGINE)
 - Tweaked [Blink.cmp](https://github.com/Saghen/blink.cmp) config
+- Plugin groups controlled by [env vars](https://github.com/cameronr/dotfiles/blob/main/nvim/init.lua#L40-L42)
 - nvim-cmp support controlled by env var (NVIM_CMP_ENGINE)
 - Light and dark mode theme switching
 - [Neogit](https://github.com/NeogitOrg/neogit) + [Diffview](https://github.com/sindrets/diffview.nvim) with Github-like highlighting

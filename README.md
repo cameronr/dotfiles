@@ -17,5 +17,5 @@ Main features:
   - [zimfw](https://github.com/zimfw/zimfw)
   - [powerlevel10k](https://github.com/romkatv/powerlevel10k)
   - [fzf](https://github.com/junegunn/fzf)
-- [NeoVim](https://neovim.io/) (0.11+)
+- [NeoVim](https://github.com/cameronr/dotfiles/tree/main/nvim) (0.11+)
   - [Kickstart Modular](https://github.com/dam9000/kickstart-modular.nvim)
