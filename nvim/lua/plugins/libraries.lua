@@ -13,10 +13,6 @@ return {
   {
     'zapling/mason-conform.nvim',
     lazy = true,
-    opts = {
-      -- ensure_installed = { { 'eslint_d', version = '13.1.2' } },
-      -- need a specific version of eslint_d so don't install it here
-      ignore_install = { 'eslint_d' },
-    },
+    opts = {},
   },
 }

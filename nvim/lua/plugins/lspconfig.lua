@@ -191,6 +191,8 @@ return {
         'bashls',
         'html',
         'cssls',
+        'tailwindcss',
+        'eslint',
         'pyright',
         'ruff',
         'rust_analyzer',
@@ -205,11 +207,7 @@ return {
         automatic_enable = vim.tbl_keys(servers or {}),
       })
 
-      local ensure_installed = vim.tbl_extend('force', servers, {
-        -- pin eslint_d to 13.1.2:
-        -- https://github.com/mfussenegger/nvim-lint/issues/462#issuecomment-2291862784
-        { 'eslint_d', version = '13.1.2' },
-      })
+      local ensure_installed = vim.tbl_extend('force', servers, {})
 
       if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
 

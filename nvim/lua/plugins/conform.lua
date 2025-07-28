@@ -34,29 +34,16 @@ return {
       require('conform').setup({
         notify_on_error = true,
         -- log_level = vim.log.levels.INFO,
-        -- Conform for formatters
-        formatters = {
-          eslint_d = {
-            require_cwd = true,
-          },
-          yamlfix = {
-            env = {
-              YAMLFIX_SEQUENCE_STYLE = 'block_style',
-              YAMLFIX_preserve_quotes = 'true',
-            },
-          },
-        },
-        --
         formatters_by_ft = {
           lua = { 'stylua' },
           python = { 'isort' },
           --
           -- You can use a sub-list to tell conform to run *until* a formatter
           -- is found.
-          javascript = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
-          typescript = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
-          javascriptreact = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
-          typescriptreact = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
+          javascript = { 'prettierd', 'prettier', stop_after_first = true },
+          typescript = { 'prettierd', 'prettier', stop_after_first = true },
+          javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+          typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
           svelte = { 'prettierd', 'prettier', stop_after_first = true },
           css = { 'prettierd', 'prettier', stop_after_first = true },
           html = { 'prettierd', 'prettier', stop_after_first = true },
