@@ -36,10 +36,13 @@ return {
         -- log_level = vim.log.levels.INFO,
         formatters_by_ft = {
           lua = { 'stylua' },
+
+          c = { 'uncrustify' },
+          cpp = { 'uncrustify' },
+          go = { 'goimports', 'gofumpt' },
           python = { 'isort' },
-          --
-          -- You can use a sub-list to tell conform to run *until* a formatter
-          -- is found.
+
+          -- webdev
           javascript = { 'prettierd', 'prettier', stop_after_first = true },
           typescript = { 'prettierd', 'prettier', stop_after_first = true },
           javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
@@ -48,17 +51,16 @@ return {
           css = { 'prettierd', 'prettier', stop_after_first = true },
           html = { 'prettierd', 'prettier', stop_after_first = true },
           json = { 'prettierd', 'prettier', stop_after_first = true },
-          yaml = { 'prettierd', 'prettier', stop_after_first = true },
-          -- markdown = { 'prettierd', 'prettier', stop_after_first = true },
-          markdown = { 'prettierd', 'injected' },
           graphql = { 'prettierd', 'prettier', stop_after_first = true },
           liquid = { 'prettierd', 'prettier', stop_after_first = true },
-          c = { 'uncrustify' },
-          cpp = { 'uncrustify' },
 
+          -- text
+          yaml = { 'prettierd', 'prettier', stop_after_first = true },
+          markdown = { 'prettierd' },
+
+          -- shell
           sh = { 'beautysh' },
           zsh = { 'beautysh' },
-          -- yaml = { 'yamlfix' },
         },
 
         -- support a global format disable

@@ -195,26 +195,36 @@ return {
         'eslint',
         'pyright',
         'ruff',
-        'rust_analyzer',
         'taplo',
         'typos_lsp',
         'yamlls',
       }
+
+      local extra_tools = {
+        'stylua',
+        'prettier',
+        'prettierd',
+        'isort',
+        'beautysh',
+      }
+
+      if vim.fn.executable('cc') then table.insert(extra_tools, 'uncrustify') end
+      if vim.fn.executable('rustc') == 1 then table.insert(servers, 'rust_analyzer') end
+      if vim.fn.executable('go') == 1 then
+        table.insert(servers, 'gopls')
+        extra_tools = vim.list_extend(extra_tools, { 'goimports', 'gofumpt' })
+      end
+
+      local ensure_installed = vim.list_extend(servers, extra_tools)
+
+      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
 
       ---@type MasonLspconfigSettings
       ---@diagnostic disable-next-line: missing-fields
       require('mason-lspconfig').setup({
         automatic_enable = vim.tbl_keys(servers or {}),
       })
-
-      local ensure_installed = vim.tbl_extend('force', servers, {})
-
-      if not vim.g.no_mason_autoinstall then require('mason-tool-installer').setup({ ensure_installed = ensure_installed }) end
-
       vim.lsp.enable(servers)
-
-      -- Install Conform formatters
-      if not vim.g.no_mason_autoinstall then require('mason-conform') end
     end,
   },
 }
