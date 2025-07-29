@@ -70,6 +70,11 @@ return {
 
         -- Don't want teal in neogit diff add
         hl.NeogitDiffAddHighlight = { fg = '#abd282', bg = hl.DiffAdd.bg }
+
+        -- More subtle snacks indent colors
+        hl.SnacksIndent = { fg = '#1f202e' }
+        hl.SnacksIndentScope = hl.LineNr
+        -- hl.SnacksIndentScope = { fg = c.bg_highlight }
       else
         -- Visual selection should match visual mode
         hl.Visual = { bg = '#d6cae1' }
@@ -128,13 +133,6 @@ return {
       hl.GitSignsAddInLine = { fg = c.git.add, reverse = true }
       hl.GitSignsDeleteInLine = { fg = c.git.delete, reverse = true }
 
-      -- More subtle
-      hl.IblScope = hl.LineNr
-      -- hl.IblScope = { fg = '#283861' }
-      hl.IblIndent = { fg = '#1f202e' }
-      hl.SnacksIndent = { fg = '#1f202e' }
-      hl.SnacksIndentScope = hl.LineNr
-
       -- Make folds less prominent (especially important for DiffView)
       hl.Folded = { fg = c.blue0, italic = true }
 
@@ -174,7 +172,7 @@ return {
       hl.MiniTrailspace = { fg = c.red }
 
       -- Make win separator more prominent
-      hl.WinSeparator = { fg = c.bg_highlight }
+      hl.WinSeparator = { fg = c.terminal_black }
     end,
   },
 
