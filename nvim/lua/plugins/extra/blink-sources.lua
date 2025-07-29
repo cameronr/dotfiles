@@ -39,7 +39,7 @@ return {
       if Snacks then
         ---@diagnostic disable-next-line: undefined-field
         Snacks.toggle({
-          name = 'Blink tmux source',
+          name = 'blink-tmux',
           get = function() return vim.g.custom_blink_cmp_tmux_enabled end,
           ---@diagnostic disable-next-line: inject-field
           set = function(state) vim.g.custom_blink_cmp_tmux_enabled = state end,
