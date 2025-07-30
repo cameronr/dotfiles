@@ -43,6 +43,7 @@ return {
       ui = {
         ignore_conceal_warn = true,
       },
+      legacy_commands = false,
     },
     init = function()
       vim.api.nvim_create_autocmd('FileType', {
