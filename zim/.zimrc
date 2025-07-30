@@ -46,7 +46,7 @@ zmodule folke/tokyonight.nvim --source extras/fzf/tokyonight_night.sh
 # Use fork until this is merged:
 # https://github.com/jeffreytse/zsh-vi-mode/pull/308
 # zmodule jeffreytse/zsh-vi-mode
-zmodule jacobpbrugh/zsh-vi-mode
+zmodule cameronr/zsh-vi-mode
 
 
 # Syntax highlighting modules should be loaded last
