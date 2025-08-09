@@ -87,6 +87,11 @@ source $DOTFILES/zsh/zvm_clipboard.zsh
 # Set tmux tab titles with customized icon
 source $DOTFILES/zsh/title-override.zsh
 
+# safe aliases
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
 # set vim as editor
 export EDITOR=vim
 alias vi='vim'
