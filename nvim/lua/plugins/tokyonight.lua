@@ -141,9 +141,6 @@ return {
       hl.diffRemoved = { fg = c.git.delete }
       hl.diffChanged = { fg = c.git.change }
 
-      -- Make diagnostic text easier to read (and underlined)
-      hl.DiagnosticUnnecessary = hl.DiagnosticUnderlineWarn
-
       -- Make lsp cursor word highlights dimmer
       hl.LspReferenceWrite = { bg = c.bg_highlight }
       hl.LspReferenceText = { bg = c.bg_highlight }

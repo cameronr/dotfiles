@@ -291,6 +291,7 @@ return {
           Snacks.toggle.inlay_hints():map('<leader>vH')
           Snacks.toggle.diagnostics():map('<leader>vd')
           Snacks.toggle.indent():map('<leader>vi')
+          Snacks.toggle.dim():map('<leader>vD')
 
           -- Toggle the profiler
           Snacks.toggle.profiler():map('<leader>cp')
