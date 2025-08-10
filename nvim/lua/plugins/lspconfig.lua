@@ -173,9 +173,6 @@ return {
         severity_sort = true,
         virtual_text = false,
         float = { border = 'rounded', source = 'if_many' },
-      })
-
-      vim.diagnostic.config({
         signs = {
           text = {
             [vim.diagnostic.severity.ERROR] = ' ',
