@@ -29,6 +29,7 @@ return {
             i = { '@block.inner', '@conditional.inner', '@loop.inner' },
           }),
           f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- function
+          c = ai.gen_spec.treesitter({ a = '@call.outer', i = '@call.inner' }),
           i = require('mini.extra').gen_ai_spec.indent(),
           g = require('mini.extra').gen_ai_spec.buffer(),
         },
