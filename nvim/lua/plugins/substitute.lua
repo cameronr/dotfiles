@@ -1,6 +1,3 @@
--- show marks in sign column
-
--- don't show line number in virtual lines when wrapping
 ---@module 'lazy'
 ---@type LazySpec
 return {
