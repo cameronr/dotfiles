@@ -88,7 +88,6 @@ source $DOTFILES/zsh/zvm_clipboard.zsh
 source $DOTFILES/zsh/title-override.zsh
 
 # safe aliases
-alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
