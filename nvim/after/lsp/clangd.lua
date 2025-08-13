@@ -18,12 +18,7 @@ return {
       vim.api.nvim_buf_create_user_command(bufnr, name, def[1], { desc = def.description })
     end
 
-    vim.keymap.set(
-      'n',
-      '<leader>ch',
-      '<cmd>ClangdSwitchSourceHeader<cr>',
-      { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' }
-    )
+    vim.keymap.set('n', '<leader>ch', '<cmd>ClangdSwitchSourceHeader<cr>', { buffer = bufnr, desc = 'Switch Source/Header (C/C++)' })
   end,
   init_options = {
     usePlaceholders = true,

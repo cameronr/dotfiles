@@ -1,6 +1,6 @@
 return {
----@module 'lazy'
----@type LazySpec
+  ---@module 'lazy'
+  ---@type LazySpec
   {
     'stevearc/overseer.nvim',
     cmd = { 'OverseerToggle', 'OverseerRun', 'OverseerOpen', 'OverseerClose' },
