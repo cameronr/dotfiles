@@ -81,28 +81,18 @@ return {
     { '<leader>sm', '<cmd>FzfLua marks<cr>', desc = 'Marks' },
     { '<leader>sR', '<cmd>FzfLua resume<cr>', desc = 'Resume' },
     { '<leader>sq', '<cmd>FzfLua quickfix<cr>', desc = 'Quickfix list' },
-    { '<leader>sw', '<cmd>FzfLua grep_cword<cr>', desc = 'Currnt word' },
+    { '<leader>sw', '<cmd>FzfLua grep_cword<cr>', desc = 'Current word' },
     { '<leader>sw', '<cmd>FzfLua grep_visual<cr>', mode = 'v', desc = 'Selection' },
     { '<leader>sC', '<cmd>FzfLua colorschemes<cr>', desc = 'Colorschemes' },
     { '<leader>sz', '<cmd>FzfLua grep_curbuf<cr>', desc = 'Fuzzy find in buffer' },
-    {
-      '<leader>ss',
-      function()
-        require('fzf-lua').lsp_document_symbols({
-          regex_filter = symbols_filter,
-        })
-      end,
-      desc = 'Goto Symbol',
-    },
-    {
-      '<leader>sS',
-      function()
-        require('fzf-lua').lsp_live_workspace_symbols({
-          regex_filter = symbols_filter,
-        })
-      end,
-      desc = 'Goto Symbol (Workspace)',
-    },
+
+    -- LSP
+    { '<leader>ss', function() require('fzf-lua').lsp_document_symbols({ regex_filter = symbols_filter }) end, desc = 'Goto Symbol' },
+    { '<leader>sS', function() require('fzf-lua').lsp_live_workspace_symbols({ regex_filter = symbols_filter }) end, desc = 'Goto Symbol (Workspace)' },
+    { 'grd', '<cmd>FzfLua lsp_definitions     jump_to_single_result=true ignore_current_line=true<cr>', desc = 'Goto definition' },
+    { 'grr', '<cmd>FzfLua lsp_references      jump_to_single_result=true ignore_current_line=true<cr>', desc = 'References' },
+    { 'gri', '<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>', desc = 'Goto implementation' },
+    { 'grt', '<cmd>FzfLua lsp_typedefs        jump_to_single_result=true ignore_current_line=true<cr>', desc = 'Goto type definition' },
   },
 
   opts = function(_, _)
