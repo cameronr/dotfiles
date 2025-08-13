@@ -117,6 +117,9 @@ return {
             filename_first = true,
           },
         },
+        icons = {
+          diagnostics = require('globals').icons.diagnostics,
+        },
         layout = function()
           --- Use the vertical layout if screen is small
           if vim.o.columns < 120 then return { cycle = true, preset = 'vertical' } end

@@ -78,6 +78,8 @@ return {
       }):map('<leader>vs')
     end
 
+    local diagnostic_icons = require('globals').icons.diagnostics
+
     return vim.tbl_deep_extend('force', opts or {}, {
       options = {
         -- When theme is set to auto, Lualine uses dofile instead of require
@@ -130,8 +132,12 @@ return {
           },
           {
             'diagnostics',
-            -- symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
-            symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+            symbols = {
+              error = diagnostic_icons.Error,
+              warn = diagnostic_icons.Warn,
+              info = diagnostic_icons.Info,
+              hint = diagnostic_icons.Hint,
+            },
             separator = '',
           },
           {

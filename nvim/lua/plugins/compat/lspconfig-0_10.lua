@@ -182,21 +182,22 @@ return {
         float = { border = 'rounded', source = 'if_many' },
       })
 
+      local diagnostic_icons = require('globals').icons.diagnostics
       if vim.fn.has('nvim-0.10') == 1 then
         -- user newer mechanism if possible, fixes signs in neotree
         vim.diagnostic.config({
           signs = {
             text = {
-              [vim.diagnostic.severity.ERROR] = ' ',
-              [vim.diagnostic.severity.WARN] = ' ',
-              [vim.diagnostic.severity.INFO] = ' ',
-              [vim.diagnostic.severity.HINT] = '',
+              [vim.diagnostic.severity.ERROR] = diagnostic_icons.Error,
+              [vim.diagnostic.severity.WARN] = diagnostic_icons.Warn,
+              [vim.diagnostic.severity.INFO] = diagnostic_icons.Info,
+              [vim.diagnostic.severity.HINT] = diagnostic_icons.Hint,
             },
           },
         })
       else
         -- local signs = { Error = '󰅚 ', Warn = '󰀪 ', Info = ' ', Hint = '󰌶 ' }
-        local signs = { Error = ' ', Warn = ' ', Info = ' ', Hint = '' }
+        local signs = diagnostic_icons
 
         for type, icon in pairs(signs) do
           local hl = 'DiagnosticSign' .. type
