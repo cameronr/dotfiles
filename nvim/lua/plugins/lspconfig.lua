@@ -196,6 +196,7 @@ return {
         'taplo',
         'typos_lsp',
         'yamlls',
+        'clangd',
       }
 
       local extra_tools = {
@@ -221,11 +222,6 @@ return {
         mti.check_install()
       end
 
-      ---@type MasonLspconfigSettings
-      ---@diagnostic disable-next-line: missing-fields
-      require('mason-lspconfig').setup({
-        automatic_enable = vim.tbl_keys(servers or {}),
-      })
       vim.lsp.enable(servers)
     end,
   },
