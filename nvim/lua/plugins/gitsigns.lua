@@ -11,6 +11,9 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
 
     opts = {
+      preview_config = {
+        border = 'rounded',
+      },
       on_attach = function(bufnr)
         local gitsigns = require('gitsigns')
 
@@ -47,14 +50,35 @@ return {
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git Stage buffer' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git Reset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git preview hunk' })
-        map('n', '<leader>hb', function() gitsigns.blame_line({ full = false }) end, { desc = 'git blame line' })
-        -- Toggles
-        map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git toggle show blame line' })
+        map('n', '<leader>hb', function() gitsigns.blame_line({ full = true }) end, { desc = 'git blame line' })
+        map('n', '<leader>hB', function() gitsigns.blame() end, { desc = 'git blame' })
         map('n', '<leader>he', gitsigns.preview_hunk_inline, { desc = 'git show deleted' })
-        map('n', '<leader>hi', function()
-          gitsigns.toggle_linehl()
-          gitsigns.toggle_word_diff()
-        end, { desc = 'git toggle inline diff' })
+        -- Toggles
+
+        if Snacks then
+          local config = require('gitsigns.config').config
+          Snacks.toggle({
+            name = 'git inline blame line',
+            get = function() return config.current_line_blame end,
+            set = function(state) gitsigns.toggle_current_line_blame(state) end,
+          }):map('<leader>ht')
+
+          Snacks.toggle({
+            name = 'git inline diff',
+            get = function() return config.linehl and config.word_diff end,
+            set = function(state)
+              gitsigns.toggle_linehl(state)
+              gitsigns.toggle_word_diff(state)
+            end,
+          }):map('<leader>hi')
+        else
+          map('n', '<leader>ht', gitsigns.toggle_current_line_blame, { desc = 'git toggle show blame line' })
+          map('n', '<leader>hi', function()
+            gitsigns.toggle_linehl()
+            gitsigns.toggle_word_diff()
+          end, { desc = 'git toggle inline diff' })
+        end
+
         -- Text object
         map({ 'o', 'x' }, 'ih', gitsigns.select_hunk)
         map({ 'o', 'x' }, 'ah', gitsigns.select_hunk)
