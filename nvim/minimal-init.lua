@@ -245,7 +245,7 @@ vim.keymap.set('n', 'x', '"_x')
 vim.keymap.set('n', 'c', '"_c')
 
 -- <leader>d blackhole delete
-vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
+vim.keymap.set({ 'n', 'v' }, '<leader>D', '"_d')
 
 -- Able to use semicolon in normal mode
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
@@ -586,7 +586,7 @@ vim.keymap.set('n', 'x', '"_x')
 vim.keymap.set('n', 'c', '"_c')
 
 -- <leader>d blackhole delete
-vim.keymap.set({ 'n', 'v' }, '<leader>d', '"_d')
+vim.keymap.set({ 'n', 'v' }, '<leader>D', '"_d')
 
 -- Able to use semicolon in normal mode
 vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
