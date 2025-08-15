@@ -63,13 +63,13 @@ return {
         name = 'lualine symbols',
         get = function() return vim.b.trouble_lualine ~= false end,
         set = function(state) vim.b.trouble_lualine = state end,
-      }):map('<leader>vl')
+      }):map('<leader>vL')
 
       Snacks.toggle({
         name = 'lualine lsp names',
         get = function() return vim.g.custom_lualine_show_lsp_names end,
         set = function(state) vim.g.custom_lualine_show_lsp_names = state end,
-      }):map('<leader>vL')
+      }):map('<leader>vl')
 
       Snacks.toggle({
         name = 'lualine session name',
