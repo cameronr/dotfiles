@@ -141,6 +141,9 @@ return {
       hl.diffRemoved = { fg = c.git.delete }
       hl.diffChanged = { fg = c.git.change }
 
+      -- Make diffview deleted areas dimmer
+      hl.DiffviewDiffDeleteDim = { fg = c.fg_gutter }
+
       -- Make lsp cursor word highlights dimmer
       hl.LspReferenceWrite = { bg = c.bg_highlight }
       hl.LspReferenceText = { bg = c.bg_highlight }
