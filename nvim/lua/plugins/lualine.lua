@@ -131,6 +131,11 @@ return {
             cond = function() return vim.g.custom_lualine_show_session_name end,
           },
           {
+            function() return '  ' .. require('dap').status() end,
+            cond = function() return package.loaded['dap'] and require('dap').status() ~= '' end,
+            color = function() return { fg = Snacks.util.color('Debug') } end,
+          },
+          {
             'diagnostics',
             symbols = {
               error = diagnostic_icons.Error,
