@@ -59,8 +59,8 @@ return {
           markdown = { 'prettierd' },
 
           -- shell
-          sh = { 'beautysh' },
-          zsh = { 'beautysh' },
+          sh = { 'shfmt' },
+          zsh = { 'shfmt' },
         },
 
         -- support a global format disable
