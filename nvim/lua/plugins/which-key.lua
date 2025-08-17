@@ -35,6 +35,7 @@ return {
         { '<leader>a', group = 'Avante' },
         { '<leader>b', group = 'Buffer' },
         { '<leader>c', group = 'Code' },
+        { '<leader>d', group = 'Debug' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = 'Harpoon' },
         { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
