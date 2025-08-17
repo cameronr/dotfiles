@@ -55,34 +55,17 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end, desc = 'Widgets' },
     },
     config = function()
-      -- get opts for dap
-      local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
-      require('mason-nvim-dap').setup(require('lazy.core.plugin').values(dap_spec, 'opts', false))
-
-      vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
-
-      for name, sign in pairs(require('globals').icons.dap) do
-        sign = type(sign) == 'table' and sign or { sign }
-        ---@cast sign table
-        vim.fn.sign_define('Dap' .. name, { text = sign[1], texthl = sign[2] or 'DiagnosticInfo', linehl = sign[3], numhl = sign[3] })
-      end
-
-      -- Install golang specific config
-      -- require('dap-go').setup {
-      --   delve = {
-      --     -- On Windows delve must be run attached or it crashes.
-      --     -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
-      --     detached = vim.fn.has 'win32' == 0,
-      --   },
-      -- }
+      local dap = require('dap')
 
       --- TODO: get these in their own files
+
+      --- NOTE:
+      --- These have to come before mason-nvim-dap in order to not
+      --- overwrite things (e.g. for cpp)
 
       -- local dap_utils = require 'user.plugins.configs.dap.utils'
       local BASH_DEBUG_ADAPTER_BIN = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/bash-debug-adapter'
       local BASHDB_DIR = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir'
-
-      local dap = require('dap')
 
       dap.adapters.sh = {
         type = 'executable',
@@ -127,6 +110,29 @@ return {
           },
         }
       end
+
+      -- Get the opts from the plugin spec and use them in the setup call
+      -- Have to do this because setup has to happen after adding the configurations
+      -- above
+      local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
+      require('mason-nvim-dap').setup(require('lazy.core.plugin').values(dap_spec, 'opts', false))
+
+      vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
+
+      for name, sign in pairs(require('globals').icons.dap) do
+        sign = type(sign) == 'table' and sign or { sign }
+        ---@cast sign table
+        vim.fn.sign_define('Dap' .. name, { text = sign[1], texthl = sign[2] or 'DiagnosticInfo', linehl = sign[3], numhl = sign[3] })
+      end
+
+      -- Install golang specific config
+      -- require('dap-go').setup {
+      --   delve = {
+      --     -- On Windows delve must be run attached or it crashes.
+      --     -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
+      --     detached = vim.fn.has 'win32' == 0,
+      --   },
+      -- }
     end,
   },
 
