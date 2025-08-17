@@ -157,6 +157,7 @@ return {
         'typos_lsp',
         'yamlls',
         'clangd',
+        'marksman',
       }
 
       local extra_tools = {
