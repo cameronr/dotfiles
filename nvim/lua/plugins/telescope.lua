@@ -88,29 +88,29 @@ return {
 
       -- LSP
       -- Find references for the word under your cursor.
-      { 'grr', require('telescope.builtin').lsp_references, desc = '[G]oto [R]eferences' },
+      { 'grr', function() require('telescope.builtin').lsp_references() end, desc = '[G]oto [R]eferences' },
 
       -- Jump to the implementation of the word under your cursor.
       --  Useful when your language has ways of declaring types without an actual implementation.
-      { 'gri', require('telescope.builtin').lsp_implementations, desc = '[G]oto [I]mplementation' },
+      { 'gri', function() require('telescope.builtin').lsp_implementations() end, desc = '[G]oto [I]mplementation' },
 
       -- Jump to the definition of the word under your cursor.
       --  This is where a variable was first declared, or where a function is defined, etc.
       --  To jump back, press <C-t>.
-      { 'grd', require('telescope.builtin').lsp_definitions, desc = '[G]oto [D]efinition' },
+      { 'grd', function() require('telescope.builtin').lsp_definitions() end, desc = '[G]oto [D]efinition' },
 
       -- Jump to the type of the word under your cursor.
       --  Useful when you're not sure what type a variable is and you want to see
       --  the definition of its *type*, not where it was *defined*.
-      { 'grt', require('telescope.builtin').lsp_type_definitions, desc = '[G]oto [T]ype Definition' },
+      { 'grt', function() require('telescope.builtin').lsp_type_definitions() end, desc = '[G]oto [T]ype Definition' },
 
       -- Fuzzy find all the symbols in your current document.
       --  Symbols are things like variables, functions, types, etc.
-      { 'gO', require('telescope.builtin').lsp_document_symbols, desc = 'Open Document Symbols' },
+      { 'gO', function() require('telescope.builtin').lsp_document_symbols() end, desc = 'Open Document Symbols' },
 
       -- Fuzzy find all the symbols in your current workspace.
       --  Similar to document symbols, except searches over your entire project.
-      { 'gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, desc = 'Open Workspace Symbols' },
+      { 'gW', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, desc = 'Open Workspace Symbols' },
 
       -- Fuzzy find all the symbols in your current document.
       --  Symbols are things like variables, functions, types, etc.
