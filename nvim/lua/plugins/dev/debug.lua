@@ -55,67 +55,13 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end, desc = 'Widgets' },
     },
     config = function()
-      local dap = require('dap')
-
-      --- TODO: get these in their own files
-
-      --- NOTE:
-      --- These have to come before mason-nvim-dap in order to not
-      --- overwrite things (e.g. for cpp)
-
-      -- local dap_utils = require 'user.plugins.configs.dap.utils'
-      local BASH_DEBUG_ADAPTER_BIN = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/bash-debug-adapter'
-      local BASHDB_DIR = vim.fn.stdpath('data') .. '/mason/packages/bash-debug-adapter/extension/bashdb_dir'
-
-      dap.adapters.sh = {
-        type = 'executable',
-        command = BASH_DEBUG_ADAPTER_BIN,
-      }
-      dap.configurations.sh = {
-        {
-          name = 'Launch Bash debugger',
-          type = 'sh',
-          request = 'launch',
-          program = '${file}',
-          cwd = '${fileDirname}',
-          pathBashdb = BASHDB_DIR .. '/bashdb',
-          pathBashdbLib = BASHDB_DIR,
-          pathBash = 'bash',
-          pathCat = 'cat',
-          pathMkfifo = 'mkfifo',
-          pathPkill = 'pkill',
-          env = {},
-          args = {},
-          -- showDebugOutput = true,
-          -- trace = true,
-        },
-      }
-
-      -- c/cpp debugging
-      for _, lang in ipairs({ 'c', 'cpp' }) do
-        dap.configurations[lang] = {
-          {
-            type = 'codelldb',
-            request = 'launch',
-            name = 'Launch file',
-            program = function() return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file') end,
-            cwd = '${workspaceFolder}',
-          },
-          {
-            type = 'codelldb',
-            request = 'attach',
-            name = 'Attach to process',
-            pid = require('dap.utils').pick_process,
-            cwd = '${workspaceFolder}',
-          },
-        }
+      if not vim.g.no_mason_autoinstall then
+        -- Get the opts from the plugin spec and use them in the setup call
+        -- Have to do this because setup has to happen after adding the configurations
+        -- above
+        local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
+        require('mason-nvim-dap').setup(require('lazy.core.plugin').values(dap_spec, 'opts', false))
       end
-
-      -- Get the opts from the plugin spec and use them in the setup call
-      -- Have to do this because setup has to happen after adding the configurations
-      -- above
-      local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
-      require('mason-nvim-dap').setup(require('lazy.core.plugin').values(dap_spec, 'opts', false))
 
       vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
 

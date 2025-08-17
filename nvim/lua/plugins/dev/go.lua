@@ -6,7 +6,7 @@ return {
     opts = { servers = { 'gopls' } },
   },
   {
-    'mason-org/mason.nvim',
-    opts = { ensure_installed = { 'goimports', 'gofumpt' } },
+    'stevearc/conform.nvim',
+    opts = { formatters_by_ft = { go = { 'goimports', 'gofumpt' } } },
   },
 }

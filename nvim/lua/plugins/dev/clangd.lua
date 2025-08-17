@@ -38,12 +38,6 @@ return {
   {
     'mfussenegger/nvim-dap',
     optional = true,
-    dependencies = {
-      -- Ensure C/C++ debugger is installed
-      'mason-org/mason.nvim',
-      optional = true,
-      opts = { ensure_installed = { 'codelldb' } },
-    },
     opts = function()
       local dap = require('dap')
       if not dap.adapters['codelldb'] then
