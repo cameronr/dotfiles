@@ -294,7 +294,7 @@ return {
         -- ts_ls = {},
 
         -- Python
-        pyright = {},
+        basedpyright = {},
         ruff = {},
 
         -- Ruby for Shopify

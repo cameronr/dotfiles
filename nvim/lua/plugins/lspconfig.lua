@@ -52,7 +52,7 @@ return {
         'cssls',
         'tailwindcss',
         'eslint',
-        'pyright',
+        'basedpyright',
         'ruff',
         'taplo',
         'typos_lsp',
