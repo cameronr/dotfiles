@@ -56,9 +56,6 @@ vim.keymap.set('n', 'c', '"_c')
 -- <leader>d blackhole delete
 vim.keymap.set({ 'n', 'v' }, '<leader>D', '"_d')
 
--- Able to use semicolon in normal mode
-vim.keymap.set('n', ';', ':', { desc = '; Command mode' })
-
 -- Map jk as alternate escape sequence
 vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
 
@@ -159,6 +156,7 @@ local diagnostic_goto = function(next, severity)
     severity = severity and vim.diagnostic.severity[severity] or nil
     return function() vim.diagnostic.jump({ severity = severity, count = count }) end
   else
+    ---@diagnostic disable-next-line: deprecated
     local go = next and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
     severity = severity and vim.diagnostic.severity[severity] or nil
     return function() go({ severity = severity }) end
