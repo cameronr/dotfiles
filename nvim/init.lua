@@ -4,7 +4,7 @@
 
 if not vim.g.man_pager then
   vim.g.mapleader = ' '
-  vim.g.maplocalleader = ' '
+  vim.g.maplocalleader = '\\'
 end
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal

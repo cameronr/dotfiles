@@ -117,6 +117,7 @@ return {
             filename_first = true,
           },
         },
+        ---@diagnostic disable-next-line: missing-fields
         icons = {
           diagnostics = require('globals').icons.diagnostics,
         },
