@@ -187,6 +187,9 @@ if vim.fn.has('nvim-0.11') == 1 then
   -- vim.o.winborder = 'rounded'
 end
 
+-- Don't always keep splits the same size
+vim.o.equalalways = false
+
 -- vim: ts=2 sts=2 sw=2 et
 
 -- [[ Basic Keymaps ]]
