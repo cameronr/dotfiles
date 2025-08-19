@@ -6,6 +6,19 @@ return {
     },
   },
   {
+    'stevearc/conform.nvim',
+    optional = true,
+    ---@module 'conform'
+    ---@type conform.setupOpts
+    opts = {
+      formatters_by_ft = {
+        c = { 'uncrustify' },
+        cpp = { 'uncrustify' },
+      },
+    },
+  },
+
+  {
     'p00f/clangd_extensions.nvim',
     lazy = true,
     config = function() end,

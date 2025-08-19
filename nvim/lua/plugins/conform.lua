@@ -22,9 +22,6 @@ return {
       -- log_level = vim.log.levels.INFO,
       formatters_by_ft = {
         lua = { 'stylua' },
-
-        c = { 'uncrustify' },
-        cpp = { 'uncrustify' },
         python = { 'isort' },
 
         -- webdev
