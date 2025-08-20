@@ -74,6 +74,18 @@ bindkey -M vicmd '^[OC' forward-char
 bindkey -M vicmd '^[[D' backward-char
 bindkey -M vicmd '^[OD' backward-char
 
+# better history search
+bindkey "^[[A" history-substring-search-up
+bindkey "^[OA" history-substring-search-up
+bindkey "^[[B" history-substring-search-down
+bindkey "^[OB" history-substring-search-down
+# 208 is orange
+export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=208,bold'
+export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
+
+# case sensitive history search
+export HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=""
+
 # Faster command mode with zsh-vi-mode
 # https://github.com/jeffreytse/zsh-vi-mode/issues/111
 export ZVM_FAST_ESCAPE=1

@@ -23,6 +23,9 @@ zmodule ohmyzsh/ohmyzsh --source lib/clipboard.zsh --use degit      # clipboard 
 # if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
 zmodule sunlei/zsh-ssh
 
+# Better history search
+zmodule zsh-users/zsh-history-substring-search
+
 # Completion
 
 # Additional completion definitions for Zsh.
