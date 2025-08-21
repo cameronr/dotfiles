@@ -5,6 +5,7 @@ vim.api.nvim_create_autocmd({ 'Filetype' }, {
   callback = function(event)
     local ignored_fts = {
       'snacks_dashboard',
+      'snacks_notif',
       'snacks_input',
       'prompt', -- bt: snacks_picker_input
     }
