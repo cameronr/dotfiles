@@ -38,7 +38,7 @@ return {
 
         -- text
         yaml = { 'prettierd', 'prettier', stop_after_first = true },
-        markdown = { 'prettierd' },
+        markdown = { 'prettierd', 'injected' },
 
         -- shell
         sh = { 'shfmt' },
