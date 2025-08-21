@@ -158,6 +158,13 @@ return {
         },
 
         sources = {
+          notifications = {
+            win = {
+              wo = {
+                wrap = true,
+              },
+            },
+          },
           marks = {
             actions = {
               delmark = function(picker)
