@@ -4,13 +4,8 @@ return {
   'folke/flash.nvim',
   event = { 'BufReadPost', 'BufNewFile', 'CmdlineEnter' },
   ---@type Flash.Config
-  opts = {
-    modes = {
-      char = {
-        -- autohide = true,
-      },
-    },
-  },
+  ---@diagnostic disable-next-line: missing-fields
+  opts = {},
   -- stylua: ignore
   keys = {
     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
