@@ -23,6 +23,7 @@ return {
         { '<leader>d', group = 'Debug' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = 'Harpoon' },
+        { '<leader>t', group = 'Obsidian (todo)' },
         { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
         { '<leader>v', group = 'View / UI' },
         { '<leader>w', group = 'Window / Workspace' },
