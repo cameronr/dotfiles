@@ -8,6 +8,11 @@ return {
   },
   cmd = 'DiffviewOpen',
   opts = {
+    view = {
+      merge_tool = {
+        layout = 'diff3_mixed',
+      },
+    },
     enhanced_diff_hl = true,
     hooks = {
       diff_buf_win_enter = function(bufnr, winid, ctx)
