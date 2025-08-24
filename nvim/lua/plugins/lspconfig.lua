@@ -105,7 +105,11 @@ return {
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
-          map('K', function() vim.lsp.buf.hover({ border = 'rounded' }) end, 'Hover Documentation')
+          map(
+            'K',
+            function() vim.lsp.buf.hover({ border = 'rounded', close_events = { 'CursorMoved', 'BufLeave', 'WinLeave' }, focusable = false }) end,
+            'Hover Documentation'
+          )
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           -- Enable inlay hints by default
