@@ -43,7 +43,7 @@ return {
       require('mini.surround').setup({
         mappings = {
           add = 'S', -- Add surrounding in Normal and Visual modes
-          delete = 'ds', -- Delete surrounding
+          delete = 'dS', -- Delete surrounding
 
           -- disable these so flash search is fast
           find = '', -- disables 'sf'
