@@ -30,6 +30,7 @@ return {
       -- virtual text for the debugger
       { 'theHamsta/nvim-dap-virtual-text', opts = {} },
     },
+    cmd = { 'DapClearBreakpoints', 'DapNew', 'DapInstall', 'DapUninstall', 'DapToggleBreakpoint', 'DapShowLog' },
     keys = {
       { '<F5>', function() require('dap').continue() end, desc = 'Debug: Start/Continue' },
       { '<F1>', function() require('dap').step_into() end, desc = 'Debug: Step Into' },
@@ -55,13 +56,13 @@ return {
       { '<leader>dw', function() require('dap.ui.widgets').hover() end, desc = 'Widgets' },
     },
     config = function()
-      if not vim.g.no_mason_autoinstall then
-        -- Get the opts from the plugin spec and use them in the setup call
-        -- Have to do this because setup has to happen after adding the configurations
-        -- above
-        local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
-        require('mason-nvim-dap').setup(require('lazy.core.plugin').values(dap_spec, 'opts', false))
-      end
+      -- Get the opts from the plugin spec and use them in the setup call
+      -- Have to do this because setup has to happen after adding the configurations
+      -- above
+      local dap_spec = require('lazy.core.config').spec.plugins['mason-nvim-dap.nvim']
+      local mason_dap_opts = require('lazy.core.plugin').values(dap_spec, 'opts', false)
+      if vim.g.no_mason_autoinstall then mason_dap_opts.automatic_installation = false end
+      require('mason-nvim-dap').setup(mason_dap_opts)
 
       vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
 
