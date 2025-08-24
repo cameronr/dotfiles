@@ -34,4 +34,8 @@ return {
       semanticTokens = true,
     },
   },
+  on_attach = function(client, bufnr)
+    local bufname = vim.api.nvim_buf_get_name(bufnr)
+    if bufname:match('^diffview://') then client.stop() end
+  end,
 }
