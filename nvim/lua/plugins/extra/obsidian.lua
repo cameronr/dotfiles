@@ -51,8 +51,8 @@ return {
         callback = function()
           vim.keymap.set('i', '<CR>', function()
             local line = vim.api.nvim_get_current_line()
-            local checkbox_pat = '^%s*%- %[[ xX]?%] '
-            local bullet_pat = '^%s*%- '
+            local checkbox_pat = '^%s*%- %[[ xX]?%]'
+            local bullet_pat = '^%s*%-'
 
             if line:match(checkbox_pat) then
               return '<CR>- [ ] '
