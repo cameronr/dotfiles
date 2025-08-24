@@ -18,8 +18,8 @@
 
 [delta]
     navigate = true    # use n and N to move between diff sections
+    side-by-side = true
     line-numbers = true
-
     line-numbers-zero-style       = "#3b4261"
 
     minus-style                   = syntax "#4d1919"
