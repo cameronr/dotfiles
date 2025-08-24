@@ -11,6 +11,9 @@ return {
     styles = {
       floats = { 'transparent' },
     },
+    plugins = {
+      rainbow = true, -- for blink.pairs
+    },
     lualine_bold = true,
 
     on_colors = function(c)
