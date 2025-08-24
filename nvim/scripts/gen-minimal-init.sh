@@ -7,7 +7,7 @@ if [[ ! -f lua/options.lua || ! -f lua/keymaps.lua ]]; then
 fi
 
 # Create minimal-init.lua with your fixed lines
-cat > minimal-init.lua <<'EOF'
+cat >minimal-init.lua <<'EOF'
 if not vim.g.man_pager then
   vim.g.mapleader = ' '
   vim.g.maplocalleader = ' '
@@ -16,7 +16,6 @@ end
 vim.g.have_nerd_font = true
 EOF
 
-# Append lua/options.lua, lua/keymaps.lua
 {
     cat lua/options.lua
     # add a new line
@@ -25,11 +24,7 @@ EOF
     cat lua/keymaps.lua
     echo
 
-    cat lua/keymaps.lua
+    cat lua/autocmds.lua
     echo
 
-} >> minimal-init.lua
-
-
-
-
+} >>minimal-init.lua
