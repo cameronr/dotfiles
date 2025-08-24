@@ -184,4 +184,10 @@ end
 -- Don't always keep splits the same size
 vim.o.equalalways = false
 
+if vim.fn.has('nvim-0.12') == 1 then
+  vim.o.diffopt = 'internal,filler,closeoff,inline:word,linematch:40'
+elseif vim.fn.has('nvim-0.11') == 1 then
+  vim.o.diffopt = 'internal,filler,closeoff,linematch:40'
+end
+
 -- vim: ts=2 sts=2 sw=2 et
