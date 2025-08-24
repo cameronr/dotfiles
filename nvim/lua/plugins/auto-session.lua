@@ -1,4 +1,6 @@
 local function save_extra_data(_)
+  if not package.loaded['dap'] then return end
+
   local ok, breakpoints = pcall(require, 'dap.breakpoints')
   if not ok or not breakpoints then return end
 
