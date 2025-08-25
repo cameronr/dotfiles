@@ -1,3 +1,15 @@
+---Get env value, with default
+---@param env_var_name string
+---@param default? boolean
+---@return boolean
+local function get_env(env_var_name, default)
+  default = default or false
+  local value = os.getenv(env_var_name)
+  if not value then return default end
+  value = value:lower()
+  return value == 'true' or value == '1' or value == 'yes' or value == 'on'
+end
+
 require('lazy').setup(
 
   ---@module 'lazy'
@@ -6,15 +18,15 @@ require('lazy').setup(
     { import = 'plugins' },
     {
       import = 'plugins/dev',
-      cond = vim.g.plugins_dev,
+      cond = get_env('NVIM_PLUGINS_DEV', true),
     },
     {
       import = 'plugins/extra',
-      cond = vim.g.plugins_extra,
+      cond = get_env('NVIM_PLUGINS_EXTRA'),
     },
     {
       import = 'plugins/fun',
-      cond = vim.g.plugins_fun,
+      cond = get_env('NVIM_PLUGINS_EXTRA'),
     },
     {
       import = 'plugins/compat',
