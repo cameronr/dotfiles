@@ -45,12 +45,23 @@ return {
         -- HACK: turn off inlay hints, but diffview is triggering the lsp
         -- to renable them even if they were off (re-editing the buffer?)
         -- add a 100ms delay to make sure they're off. gross.
+        local wins = vim.api.nvim_tabpage_list_wins(0)
         vim.defer_fn(function()
-          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          for _, win in ipairs(wins) do
             local buf = vim.api.nvim_win_get_buf(win)
             vim.lsp.inlay_hint.enable(false, { bufnr = buf })
           end
         end, 100)
+      end,
+
+      -- disable ts context while in diffview
+      view_enter = function(_)
+        local ok, ts_context = pcall(require, 'treesitter-context')
+        if ok and ts_context then ts_context.disable() end
+      end,
+      view_leave = function(_)
+        local ok, ts_context = pcall(require, 'treesitter-context')
+        if ok and ts_context then ts_context.enable() end
       end,
     },
   },
