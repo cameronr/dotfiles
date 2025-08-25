@@ -10,7 +10,7 @@ return {
 
       local colors = require('tokyonight.colors').setup()
 
-      return vim.tbl_deep_extend('force', opts or {}, {
+      return vim.tbl_deep_extend('force', opts, {
         colors = {
           copy = colors.orange,
           delete = colors.red,
