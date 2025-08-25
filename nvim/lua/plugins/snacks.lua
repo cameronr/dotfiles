@@ -119,7 +119,7 @@ return {
         },
         ---@diagnostic disable-next-line: missing-fields
         icons = {
-          diagnostics = require('globals').icons.diagnostics,
+          diagnostics = require('settings').icons.diagnostics,
         },
         layout = function()
           --- Use the vertical layout if screen is small

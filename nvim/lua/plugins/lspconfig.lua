@@ -117,7 +117,7 @@ return {
         end,
       })
 
-      local diagnostic_icons = require('globals').icons.diagnostics
+      local diagnostic_icons = require('settings').icons.diagnostics
       vim.diagnostic.config({
         severity_sort = true,
         virtual_text = false,

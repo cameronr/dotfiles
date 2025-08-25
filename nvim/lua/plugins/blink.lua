@@ -65,7 +65,7 @@ return {
         -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
         nerd_font_variant = 'mono',
-        kind_icons = require('globals').icons.kinds,
+        kind_icons = require('settings').icons.kinds,
       },
 
       -- Default sources here to be extended with plugins later in the conf

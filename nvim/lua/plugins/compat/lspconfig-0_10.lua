@@ -182,7 +182,7 @@ return {
         float = { border = 'rounded', source = 'if_many' },
       })
 
-      local diagnostic_icons = require('globals').icons.diagnostics
+      local diagnostic_icons = require('settings').icons.diagnostics
       if vim.fn.has('nvim-0.10') == 1 then
         -- user newer mechanism if possible, fixes signs in neotree
         vim.diagnostic.config({
