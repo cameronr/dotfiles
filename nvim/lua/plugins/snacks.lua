@@ -274,9 +274,11 @@ return {
       -- },
 
       styles = {
+        ---@diagnostic disable-next-line: missing-fields
         notification_history = {
           keys = { ['<esc>'] = 'close' },
         },
+        ---@diagnostic disable-next-line: missing-fields
         input = {
           keys = {
             i_esc = { '<esc>', { 'cmp_close', 'close' }, mode = 'i', expr = true },
