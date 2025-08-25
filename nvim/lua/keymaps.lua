@@ -220,7 +220,6 @@ vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g
 vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
 vim.keymap.set('n', 'vp', "'[V']", { desc = 'Select pasted lines' })
 
-vim.keymap.set('n', '<leader>vt', '<cmd>TSToggle highlight<CR>', { desc = 'Toggle Treesitter highlight' })
 vim.keymap.set('n', '<leader>vh', '<cmd>nohl<CR>', { desc = 'Clear highlights' })
 vim.keymap.set('n', '<leader>vr', vim.cmd.checktime, { desc = 'Refresh files' })
 
