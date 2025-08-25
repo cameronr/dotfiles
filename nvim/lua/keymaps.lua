@@ -281,6 +281,45 @@ vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 -- Duplicate and comment out
 vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
 
+local function cycle_diff_algorithm()
+  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' }
+
+  local function index_of(list, value)
+    for i, v in ipairs(list) do
+      if v == value then return i end
+    end
+    return nil -- not found
+  end
+
+  local algo_index = index_of(algorithms, vim.o.diffopt:match('algorithm:([^,]+)'))
+
+  if not algo_index then
+    vim.notify("Can't find current algorithm in vim.o.diffopt")
+    return
+  end
+
+  local new_algo = algorithms[(algo_index % #algorithms) + 1]
+  vim.opt.diffopt:remove('algorithm:' .. algorithms[algo_index])
+  vim.opt.diffopt:append('algorithm:' .. new_algo)
+  vim.notify('Algorithm set too: ' .. new_algo)
+end
+
+vim.keymap.set('n', '<leader>cDa', cycle_diff_algorithm, {
+  desc = 'Cycle diffopt algorithm (myers/minimal/patience/histogram)',
+})
+
+vim.keymap.set('n', '<leader>cDl', function()
+  local linematch = vim.o.diffopt:match('(linematch:%d+)')
+  if linematch then
+    vim.opt.diffopt:remove(linematch)
+    vim.notify(linematch .. ' removed')
+  else
+    linematch = 'linematch:40'
+    vim.opt.diffopt:append(linematch)
+    vim.notify(linematch .. ' added')
+  end
+end, { desc = 'Toggle linematch' })
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end, { desc = 'debugging function' })
 

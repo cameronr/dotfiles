@@ -308,6 +308,21 @@ return {
           Snacks.toggle.profiler():map('<leader>cp')
           -- Toggle the profiler highlights
           Snacks.toggle.profiler_highlights():map('<leader>vP')
+
+          -- Toggle for diff linematch
+          Snacks.toggle({
+            name = 'diffopt linematch',
+            get = function() return vim.o.diffopt:match('(linematch:%d+)') end,
+            set = function(state)
+              if state then
+                vim.opt.diffopt:append('linematch:40')
+              else
+                vim.opt.diffopt:remove(vim.o.diffopt:match('(linematch:%d+)'))
+              end
+            end,
+          }):map('<leader>cDl')
+
+          -- Toggle for diffopt algorithm
         end,
       })
     end,
