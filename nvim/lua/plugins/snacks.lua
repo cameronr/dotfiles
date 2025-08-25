@@ -325,7 +325,7 @@ return {
           -- Toggle for diffopt algorithm
           Snacks.toggle({
             name = 'treesitter',
-            get = function() return not vim.tbl_isempty(vim.treesitter.highlighter.active[vim.api.nvim_win_get_buf(0)]) end,
+            get = function() return vim.treesitter.highlighter.active[vim.api.nvim_win_get_buf(0)] ~= nil end,
             set = function(state)
               if state then
                 vim.treesitter.start()
