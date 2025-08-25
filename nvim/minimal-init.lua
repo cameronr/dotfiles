@@ -210,10 +210,12 @@ end
 -- Don't always keep splits the same size
 vim.o.equalalways = false
 
+-- Set better diffopt defaults
+-- https://www.reddit.com/r/neovim/comments/1myfvla/comment/nad22ts/
 if vim.fn.has('nvim-0.12') == 1 then
-  vim.o.diffopt = 'internal,filler,closeoff,inline:word,linematch:40'
+  vim.o.diffopt = 'internal,filler,closeoff,algorithm:patience,indent-heuristic,inline:char,linematch:40'
 elseif vim.fn.has('nvim-0.11') == 1 then
-  vim.o.diffopt = 'internal,filler,closeoff,linematch:40'
+  vim.o.diffopt = 'internal,filler,closeoff,algorithm:patience,indent-heuristic,linematch:40'
 end
 
 -- vim: ts=2 sts=2 sw=2 et
@@ -501,59 +503,47 @@ vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 -- Duplicate and comment out
 vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
 
+local function cycle_diff_algorithm()
+  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' }
+
+  local function index_of(list, value)
+    for i, v in ipairs(list) do
+      if v == value then return i end
+    end
+    return nil -- not found
+  end
+
+  local algo_index = index_of(algorithms, vim.o.diffopt:match('algorithm:([^,]+)'))
+
+  if not algo_index then
+    vim.notify("Can't find current algorithm in vim.o.diffopt")
+    return
+  end
+
+  local new_algo = algorithms[(algo_index % #algorithms) + 1]
+  vim.opt.diffopt:remove('algorithm:' .. algorithms[algo_index])
+  vim.opt.diffopt:append('algorithm:' .. new_algo)
+  vim.notify('Algorithm set too: ' .. new_algo)
+end
+
+vim.keymap.set('n', '<leader>cDa', cycle_diff_algorithm, {
+  desc = 'Cycle diffopt algorithm (myers/minimal/patience/histogram)',
+})
+
+vim.keymap.set('n', '<leader>cDl', function()
+  local linematch = vim.o.diffopt:match('(linematch:%d+)')
+  if linematch then
+    vim.opt.diffopt:remove(linematch)
+    vim.notify(linematch .. ' removed')
+  else
+    linematch = 'linematch:40'
+    vim.opt.diffopt:append(linematch)
+    vim.notify(linematch .. ' added')
+  end
+end, { desc = 'Toggle linematch' })
+
 -- Debugging key
-vim.keymap.set('n', '<Bslash>d', function()
-  -- local harpoon = require('harpoon')
-  --
-  -- vim.notify(vim.inspect(harpoon:list().items))
-
-  --   StatusCol({ win = current_win })
-  -- end
-  -- -- code to be profiled
-  --
-  -- end_time = vim.uv.hrtime()
-  --
-  -- vim.notify('Function time: ' .. end_time - start_time)
-
-  -- local start = vim.loop.hrtime()
-  -- your_function()
-  -- local end = vim.loop.hrtime()
-  -- print(string.format("Elapsed time: %.6f", (end - start) / 1e6))  -- Convert nanoseconds to milliseconds
-  --
-  -- local bufs = vim.api.nvim_list_bufs()
-  -- for _, buf in ipairs(bufs) do
-  --   local filename = vim.api.nvim_buf_get_name(buf)
-  --   local buftype = vim.api.nvim_get_option_value('buftype', { buf = buf })
-  --   local filetype = vim.api.nvim_get_option_value('filetype', { buf = buf })
-  --   vim.notify(buf .. ': file_name: ' .. filename .. ' buftype: ' .. buftype .. ' filetype: ' .. filetype)
-  -- end
-
-  -- local filename = vim.fn.fnamemodify(vim.uv.fs_realpath(vim.api.nvim_buf_get_name(0)), ':~:.')
-  -- local Path = require('plenary.path')
-  --
-  -- local blah = Path:new(filename)
-  -- vim.notify(blah:shorten(3, { -1, -2 }))
-
-  -- -- Get the current buffer number
-  -- local bufnr = vim.api.nvim_get_current_buf()
-  --
-  -- -- Get the cursor position
-  -- local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-  -- row = row - 1 -- API uses 0-based row numbers
-  --
-  -- -- Get the syntax ID at the cursor position
-  -- local syntax_id = vim.fn.synID(row + 1, col + 1, 1)
-  --
-  -- -- Get the name of the syntax group
-  -- local syntax_name = vim.fn.synIDattr(syntax_id, 'name')
-  --
-  -- -- Get the linked highlight group
-  -- local linked_hl_group = vim.fn.synIDattr(vim.fn.synIDtrans(syntax_id), 'name')
-  --
-  -- -- Print the results
-  -- vim.notify('Syntax group: ' .. syntax_name)
-  -- vim.notify('Linked highlight group: ' .. linked_hl_group)
-end, { desc = 'debugging function' })
+vim.keymap.set('n', '<Bslash>d', function() end, { desc = 'debugging function' })
 
 -- vim: ts=2 sts=2 sw=2 et
 
