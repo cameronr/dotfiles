@@ -10,7 +10,7 @@ fi
 cat >minimal-init.lua <<'EOF'
 if not vim.g.man_pager then
   vim.g.mapleader = ' '
-  vim.g.maplocalleader = ' '
+  vim.g.maplocalleader = '\\'
 end
 
 vim.g.have_nerd_font = true
