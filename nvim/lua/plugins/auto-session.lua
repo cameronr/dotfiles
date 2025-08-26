@@ -45,9 +45,9 @@ return {
   lazy = false,
   keys = {
 
-    { '<leader>wr', '<cmd>SessionSearch<CR>', desc = 'Session picker' },
-    { '<leader>ws', '<cmd>SessionSave<CR>', desc = 'Save session' },
-    { '<leader>wD', '<cmd>SessionDelete<CR>', desc = 'Delete session' },
+    { '<leader>wr', '<cmd>AutoSession search<CR>', desc = 'Session picker' },
+    { '<leader>ws', '<cmd>AutoSession save<CR>', desc = 'Save session' },
+    { '<leader>wD', '<cmd>AutoSession delete<CR>', desc = 'Delete session' },
   },
 
   opts = function(_, opts)
@@ -55,7 +55,7 @@ return {
       Snacks.toggle({
         name = 'session autosave',
         get = function() return require('auto-session.config').auto_save end,
-        set = function() vim.cmd('SessionToggleAutoSave') end,
+        set = function() vim.cmd('AutoSession toggle') end,
       }):map('<leader>wa')
     end
 
