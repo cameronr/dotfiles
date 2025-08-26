@@ -299,6 +299,8 @@ return {
           Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'dark background' }):map('<leader>vb')
           Snacks.toggle.option('foldcolumn', { off = '0', on = '1', name = 'foldcolumn' }):map('<leader>vz')
           Snacks.toggle.option('cursorline', { name = 'cursorline' }):map('<leader>vC')
+          Snacks.toggle.option('winfixheight', { name = 'winfixheight' }):map('<leader>wfh')
+          Snacks.toggle.option('winfixwidth', { name = 'winfixwidth' }):map('<leader>wfw')
           Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }):map('<leader>vc')
           Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>vw')
           Snacks.toggle.inlay_hints():map('<leader>vH')
@@ -324,7 +326,6 @@ return {
             end,
           }):map('<leader>cDl')
 
-          -- Toggle for diffopt algorithm
           Snacks.toggle({
             name = 'treesitter',
             get = function() return vim.treesitter.highlighter.active[vim.api.nvim_win_get_buf(0)] ~= nil end,

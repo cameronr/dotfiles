@@ -181,8 +181,9 @@ if vim.fn.has('nvim-0.11') == 1 then
   -- vim.o.winborder = 'rounded'
 end
 
--- Don't always keep splits the same size
-vim.o.equalalways = false
+-- Don't always keep splits the same size.
+-- Commenting out while I try out setting winfixwidth/winfixheight
+-- vim.o.equalalways = false
 
 -- Set better diffopt defaults
 -- https://www.reddit.com/r/neovim/comments/1myfvla/comment/nad22ts/

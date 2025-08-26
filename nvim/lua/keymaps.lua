@@ -46,6 +46,8 @@ vim.keymap.set('n', '<leader>wL', '<C-w>L', { desc = 'Move window right' })
 vim.keymap.set('n', '<leader>wJ', '<C-w>J', { desc = 'Move window down' })
 vim.keymap.set('n', '<leader>wK', '<C-w>K', { desc = 'Move window up' })
 vim.keymap.set('n', '<leader>wn', '<cmd>vnew<CR>', { desc = 'Window vsplit with new buffer' })
+vim.keymap.set('n', '<leader>wfh', '<cmd>set winfixheight<CR>', { desc = 'Window fix height' })
+vim.keymap.set('n', '<leader>wfw', '<cmd>set winfixwidth<CR>', { desc = 'Window fix width' })
 
 -- blackhole single x
 vim.keymap.set('n', 'x', '"_x')
