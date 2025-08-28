@@ -17,6 +17,7 @@ return {
     lualine_bold = true,
 
     on_colors = function(c)
+      -- blue borders instead of teal
       c.border_highlight = c.blue
 
       -- brighten up the git colors, used for gitsigns (column and lualine)
@@ -106,30 +107,47 @@ return {
         if hl.FlashLabel then hl.FlashLabel.fg = c.bg end
       end
 
-      -- telescope
-      hl.TelescopeMatching = { fg = hl.IncSearch.bg }
-
       -- cmp
+      -- Highlight matches in orange instead of cyan
       hl.CmpItemAbbrMatchFuzzy = { fg = hl.IncSearch.bg }
       hl.CmpItemAbbrMatch = { fg = hl.IncSearch.bg }
       -- Darken cmp menu (src for the completion)
       hl.CmpItemMenu = hl.CmpGhostText
 
       -- Blink
+      -- Make Pmenu have same bg
       hl.Pmenu.bg = c.bg
       hl.PmenuMatch.bg = c.bg
+      -- Highlight matches in orange instead of cyan
       hl.BlinkCmpLabelMatch = { fg = hl.IncSearch.bg }
+      -- Make source more muted
       hl.BlinkCmpSource = { fg = c.terminal_black }
 
+      -- Telescope
+      -- Highlight matches in orange instead of cyan
+      hl.TelescopeMatching = { fg = hl.IncSearch.bg }
+      -- Tweak telescope picker colors
+      hl.TelescopePromptTitle = { fg = c.fg }
+      hl.TelescopePromptBorder = { fg = c.blue1 }
+      hl.TelescopeResultsTitle = { fg = c.purple }
+      hl.TelescopePreviewTitle = { fg = c.orange }
+
       -- FzfLua
+      -- Show directory in darker gray
       hl.FzfLuaDirPart = hl.NonText
+      -- Make line number muted (not nuclear green)
       hl.FzfLuaPathLineNr = { fg = c.fg_dark }
+      -- Keep blue as cursor line picker
       hl.FzfLuaFzfCursorLine = hl.NonText
+      -- Highlight matches in orange instead of cyan
       hl.FzfLuaFzfMatch = { fg = hl.IncSearch.bg }
+      -- Reduce prominence of bufnr
       hl.FzfLuaBufNr = { fg = c.fg }
 
       -- Snacks
+      -- Make bufnr gray instead of orange
       hl.SnacksPickerBufNr = hl.NonText
+      -- Highlight matches in orange instead of cyan
       hl.SnacksPickerMatch = { fg = hl.IncSearch.bg }
 
       -- clean up Neogit diff colors (when committing)
@@ -157,23 +175,10 @@ return {
       hl.LspReferenceText = { bg = c.bg_highlight }
       hl.LspReferenceRead = { bg = c.bg_highlight }
 
-      hl.TelescopePromptTitle = {
-        fg = c.fg,
-      }
-      hl.TelescopePromptBorder = {
-        fg = c.blue1,
-      }
-      hl.TelescopeResultsTitle = {
-        fg = c.purple,
-      }
-      hl.TelescopePreviewTitle = {
-        fg = c.orange,
-      }
-
       -- Highlight undo/redo in green
       hl.HighlightUndo = { fg = c.bg, bg = c.green }
 
-      -- hl.Marks = hl.DiagnosticInfo
+      -- Make marks look like info diagnostics
       hl.MarkSignHL = hl.DiagnosticInfo
 
       -- Less bright trailing space indicator
