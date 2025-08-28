@@ -62,10 +62,55 @@ return {
               return '<CR>'
             end
           end, { buffer = true, expr = true })
-          vim.keymap.set('n', '<C-a>', require('dial.map').inc_normal('markdown'), { buffer = true })
-          vim.keymap.set('n', '<C-x>', require('dial.map').dec_normal('markdown'), { buffer = true })
-          vim.keymap.set('v', '<C-a>', require('dial.map').inc_visual('markdown'), { buffer = true })
-          vim.keymap.set('v', '<C-x>', require('dial.map').dec_visual('markdown'), { buffer = true })
+
+          local function move_checked_item()
+            local buf = vim.api.nvim_get_current_buf()
+            local cursor_pos = vim.api.nvim_win_get_cursor(0)
+            local current_line_num = cursor_pos[1] - 1
+
+            -- Get the current line content
+            local current_line = vim.api.nvim_buf_get_lines(buf, current_line_num, current_line_num + 1, false)[1]
+
+            -- Check if current line is checked
+            if not current_line:match('^%s*[%-%*%+]%s*%[%s*[xX]%s*%]') then return end
+
+            -- Find first empty line or checked line below current position
+            local total_lines = vim.api.nvim_buf_line_count(buf)
+            local target_line = nil
+
+            for line_num = current_line_num + 1, total_lines do
+              local line = vim.api.nvim_buf_get_lines(buf, line_num, line_num + 1, false)[1]
+              if line == '' or line:match('^%s*[%-%*%+]%s*%[%s*[xX]%s*%]') then
+                target_line = line_num
+                break
+              end
+            end
+
+            -- If no target found, move to end of buffer
+            if not target_line then target_line = total_lines + 1 end
+
+            -- Cut current line and insert BEFORE target (to be at top of checked items)
+            vim.api.nvim_buf_set_lines(buf, current_line_num, current_line_num + 1, false, {})
+            vim.api.nvim_buf_set_lines(buf, target_line - 1, target_line - 1, false, { current_line })
+
+            -- adjust cursor so it doesn't move down if checking and then rechecking in the completed section
+            if target_line == cursor_pos[1] then vim.api.nvim_win_set_cursor(0, { target_line, cursor_pos[2] }) end
+          end
+
+          -- Create a command to call the function
+          vim.api.nvim_create_user_command('MoveChecked', move_checked_item, {
+            desc = 'Sort checked markdown items to the bottom of the current paragraph',
+          })
+
+          local function dial_and_move(increment)
+            require('dial.map').manipulate((increment and 'increment' or 'decrement'), 'normal', 'markdown')
+            move_checked_item()
+          end
+
+          vim.keymap.set('n', '<C-a>', function() dial_and_move(true) end, { buffer = true })
+          vim.keymap.set('n', '<C-x>', function() dial_and_move(false) end, { buffer = true })
+          vim.keymap.set('v', '<C-a>', function() dial_and_move(true) end, { buffer = true })
+          vim.keymap.set('v', '<C-x>', function() dial_and_move(false) end, { buffer = true })
         end,
       })
     end,
