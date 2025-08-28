@@ -2,7 +2,7 @@ return {
   ---@module 'lazy'
   ---@type LazySpec
   { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     event = 'VeryLazy',
 
     -- Mock web-dev-icons with mini-icons
