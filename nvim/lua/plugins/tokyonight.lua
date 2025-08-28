@@ -77,7 +77,12 @@ return {
         -- More subtle snacks indent colors
         hl.SnacksIndent = { fg = '#1f202e' }
         hl.SnacksIndentScope = hl.LineNr
-        -- hl.SnacksIndentScope = { fg = c.bg_highlight }
+
+        -- brighter blue for search, washes out txt less
+        hl.Search.bg = '#2c52b3'
+
+        -- Less nuclear flash
+        hl.FlashLabel.bg = '#c2357a'
       else
         -- Visual selection should match visual mode
         hl.Visual = { bg = '#d6cae1' }
