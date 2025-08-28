@@ -43,6 +43,9 @@ return {
         -- shell
         sh = { 'shfmt' },
         zsh = { 'shfmt' },
+
+        -- sql
+        sql = { 'sqruff' },
       },
 
       -- support a global format disable
