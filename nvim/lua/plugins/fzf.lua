@@ -111,6 +111,8 @@ return {
     config.defaults.keymap.builtin['<c-p>'] = 'toggle-preview'
     config.defaults.keymap.builtin['<c-w>'] = 'toggle-preview-cw'
 
+    config.defaults.keymap.builtin['<M-/>'] = 'toggle-help'
+
     -- Trouble
     config.defaults.actions.files['ctrl-t'] = require('trouble.sources.fzf').actions.open
 
