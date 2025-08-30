@@ -83,7 +83,7 @@ return {
         hl.Search.bg = '#2c52b3'
 
         -- Less nuclear flash
-        hl.FlashLabel.bg = '#c2357a'
+        if hl.FlashLabel then hl.FlashLabel.bg = '#c2357a' end
       else
         -- Visual selection should match visual mode
         hl.Visual = { bg = '#d6cae1' }
