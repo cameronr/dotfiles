@@ -42,7 +42,7 @@ return {
 
         -- shell
         sh = { 'shfmt' },
-        zsh = { 'shfmt' },
+        zsh = { 'beautysh' },
 
         -- sql
         sql = { 'sqruff' },
