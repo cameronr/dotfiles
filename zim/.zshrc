@@ -68,6 +68,9 @@ bindkey '^D' delete-char
 # map alt-x to kill line (because tmux uses c-k)
 bindkey '^[x' kill-line
 
+# Clear screen with C-g (because C-l is for switching panes in nvim/tmux)
+bindkey '^G' clear-screen
+
 # # wrap arrows in cmd mode, forward-char doesn't work because of zsh limitation
 bindkey -M vicmd '^[[C' forward-char
 bindkey -M vicmd '^[OC' forward-char
