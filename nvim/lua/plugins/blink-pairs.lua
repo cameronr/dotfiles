@@ -1,5 +1,6 @@
 return {
   'saghen/blink.pairs',
+  enabled = false,
   event = { 'BufReadPre', 'BufNewFile' },
   version = '*', -- (recommended) only required with prebuilt binaries
 
