@@ -54,3 +54,20 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
   end,
 })
+
+-- Disable relative line numbers when leaving a window
+vim.api.nvim_create_autocmd('WinLeave', {
+  group = user_autocmds_augroup,
+  callback = function()
+    vim.w.had_relativenumber = vim.wo.relativenumber
+    vim.wo.relativenumber = false
+  end,
+})
+
+-- Restore relative line numbers when entering a window
+vim.api.nvim_create_autocmd('WinEnter', {
+  group = user_autocmds_augroup,
+  callback = function()
+    if vim.w.had_relativenumber ~= nil then vim.wo.relativenumber = vim.w.had_relativenumber end
+  end,
+})
