@@ -6,8 +6,11 @@ permissions:
 on:
   push:
     paths:
+      - "nvim/lua/globals.lua"
       - "nvim/lua/options.lua"
       - "nvim/lua/keymaps.lua"
+      - "nvim/lua/autocmds.lua"
+      - "nvim/lua/minimal-custom.lua"
       - "nvim/scripts/gen-minimal-init.sh"
   workflow_dispatch:
 
