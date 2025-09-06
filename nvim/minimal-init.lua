@@ -278,8 +278,8 @@ vim.keymap.set('n', 'x', '"_x')
 -- Put change into the blackhole register
 vim.keymap.set('n', 'c', '"_c')
 
--- <leader>d blackhole delete
-vim.keymap.set({ 'n', 'v' }, '<leader>D', '"_d')
+-- X blackhole delete
+vim.keymap.set({ 'n', 'v' }, 'X', '"_d')
 
 -- Map jk as alternate escape sequence
 vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
