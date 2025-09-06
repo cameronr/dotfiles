@@ -117,7 +117,7 @@ vim.opt.fillchars = {
   fold = ' ',
   foldsep = ' ',
   eob = ' ', -- Don't show ~ at end of buffer
-  diff = '╱', -- Nicer background in DiffView
+  diff = '╱', -- Nicer delete lines in DiffView
 }
 
 if vim.fn.has('nvim-0.10') == 1 then
