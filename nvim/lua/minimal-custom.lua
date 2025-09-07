@@ -19,6 +19,9 @@ vim.api.nvim_create_autocmd({ 'TextChangedI', 'TextChangedP' }, {
   end,
 })
 
+-- Set in case auto-detection fails
+vim.o.termguicolors = true
+
 -- Tokyonight "night" palette (distilled)
 local palette = {
   bg = '#1a1b26',
