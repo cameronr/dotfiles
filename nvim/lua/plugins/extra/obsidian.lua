@@ -80,7 +80,7 @@ return {
 
             for line_num = current_line_num + 1, total_lines do
               local line = vim.api.nvim_buf_get_lines(buf, line_num, line_num + 1, false)[1]
-              if line == '' or line:match('^%s*[%-%*%+]%s*%[%s*[xX]%s*%]') then
+              if not line or line:match('^%s*[%-%*%+]%s*%[%s*[xX]%s*%]') then
                 target_line = line_num
                 break
               end
