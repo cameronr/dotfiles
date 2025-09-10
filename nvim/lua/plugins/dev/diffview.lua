@@ -51,7 +51,7 @@ return {
             local buf = vim.api.nvim_win_get_buf(win)
             vim.lsp.inlay_hint.enable(false, { bufnr = buf })
           end
-        end, 100)
+        end, 500)
       end,
 
       -- disable ts context while in diffview
