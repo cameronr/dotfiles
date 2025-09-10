@@ -372,6 +372,10 @@ vim.keymap.set('i', '<cr>', '<cr><c-g>u')
 vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
 vim.keymap.set('i', '<C-e>', '<C-o>A', { desc = 'Go to the end of the line' })
 
+-- Poor man's vim-rsi:
+vim.keymap.set('c', '<C-a>', '<Home>')
+vim.keymap.set('c', '<C-e>', '<End>')
+
 -- better indenting
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
