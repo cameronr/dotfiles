@@ -176,4 +176,7 @@ elseif vim.fn.has('nvim-0.11') == 1 then
   vim.o.diffopt = 'internal,filler,closeoff,algorithm:patience,indent-heuristic,linematch:40'
 end
 
+-- Add ** to the path for expansion in :find
+vim.opt.path:append('**')
+
 -- vim: ts=2 sts=2 sw=2 et
