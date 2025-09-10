@@ -255,6 +255,28 @@ vim.keymap.set('n', '<leader>wn', '<cmd>vnew<CR>', { desc = 'Window vsplit with 
 vim.keymap.set('n', '<leader>wfh', '<cmd>set winfixheight<CR>', { desc = 'Window fix height' })
 vim.keymap.set('n', '<leader>wfw', '<cmd>set winfixwidth<CR>', { desc = 'Window fix width' })
 
+local function toggle_split()
+  local buf = vim.api.nvim_get_current_buf()
+  local pos = vim.api.nvim_win_get_cursor(0)
+  local height_pct = vim.api.nvim_win_get_height(0) / vim.o.lines
+  local width_pct = vim.api.nvim_win_get_width(0) / vim.o.columns
+
+  vim.api.nvim_win_close(0, false)
+
+  -- Decide which split to use based on dimensions of current window
+  if height_pct > width_pct then
+    vim.cmd('split')
+  else
+    vim.cmd('vsplit')
+  end
+
+  -- Restore buffer and cursor
+  vim.api.nvim_set_current_buf(buf)
+  vim.api.nvim_win_set_cursor(0, pos)
+end
+
+vim.keymap.set('n', '<leader>w<space>', toggle_split, { noremap = true, silent = true })
+
 -- blackhole single x
 vim.keymap.set('n', 'x', '"_x')
 
