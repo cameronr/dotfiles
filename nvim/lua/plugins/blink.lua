@@ -88,6 +88,7 @@ return {
           ['<Down>'] = {},
           ['<Right>'] = {},
           ['<Left>'] = {},
+          ['<C-e>'] = { 'hide', 'fallback' },
         },
         completion = {
           list = {
