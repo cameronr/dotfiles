@@ -51,7 +51,6 @@ return {
       { '<leader>dO', function() require('dap').step_over() end, desc = 'Step Over' },
       { '<leader>dP', function() require('dap').pause() end, desc = 'Pause' },
       { '<leader>dr', function() require('dap').repl.toggle() end, desc = 'Toggle REPL' },
-      { '<leader>ds', function() require('dap').session() end, desc = 'Session' },
       { '<leader>dt', function() require('dap').terminate() end, desc = 'Terminate' },
       { '<leader>dw', function() require('dap.ui.widgets').hover() end, desc = 'Widgets' },
     },
