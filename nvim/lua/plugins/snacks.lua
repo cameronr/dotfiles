@@ -218,7 +218,7 @@ return {
             { icon = ' ', key = 'g', desc = 'Find text', action = ":lua Snacks.dashboard.pick('live_grep')" },
             { icon = ' ', key = 'e', desc = 'New file', action = ':ene' },
             { icon = ' ', key = 'r', desc = 'Recent files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
-            { icon = '󰁯 ', key = 'w', desc = 'Restore session', action = ':SessionSearch' },
+            { icon = '󰁯 ', key = 'w', desc = 'Restore session', action = ':AutoSession search' },
             { icon = '󰊢 ', key = 'n', desc = 'Neogit', action = ':Neogit', enabled = function() return vim.fn.exists(':Neogit') == 2 end },
             { icon = ' ', key = 'o', desc = 'Obsidian', action = ':Obsidian search', enabled = function() return vim.fn.exists(':Obsidian') == 2 end },
             { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
