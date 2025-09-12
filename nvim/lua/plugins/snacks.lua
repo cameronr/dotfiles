@@ -121,7 +121,7 @@ return {
         icons = {
           diagnostics = require('settings').icons.diagnostics,
         },
-        layout = function()
+        layout = function(source)
           --- Use the vertical layout if screen is small
           if vim.o.columns < 120 then return { cycle = true, preset = 'vertical' } end
 
@@ -137,9 +137,14 @@ return {
           -- enable backdrop
           telescope.layout['backdrop'] = nil
 
+          -- make help preview width wide enough to display all txt
+          local preview_widths = {
+            help = 0.58,
+          }
+
           -- find the preview box element and make it slightly larger
           for _, elem in ipairs(telescope.layout) do
-            if type(elem) == 'table' and elem['win'] == 'preview' then elem['width'] = 0.52 end
+            if type(elem) == 'table' and elem['win'] == 'preview' then elem['width'] = preview_widths[source] or 0.52 end
           end
           return telescope
         end,
