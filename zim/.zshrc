@@ -89,12 +89,11 @@ export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
 # case sensitive history search
 export HISTORY_SUBSTRING_SEARCH_GLOBBING_FLAGS=""
 
-# Faster command mode with zsh-vi-mode
-# https://github.com/jeffreytse/zsh-vi-mode/issues/111
-export ZVM_FAST_ESCAPE=1
-
 # Always starting with insert mode for each command line
 ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
+
+# Enable ZVM system clipboard support
+ZVM_SYSTEM_CLIPBOARD_ENABLED=true
 
 # Support clipboard
 source $DOTFILES/zsh/zvm_clipboard.zsh
