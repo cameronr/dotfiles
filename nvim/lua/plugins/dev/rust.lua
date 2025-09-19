@@ -21,12 +21,12 @@ return {
                 enable = true,
               },
             },
-            -- Add clippy lints for Rust if using rust-analyzer
-            checkOnSave = diagnostics == 'rust-analyzer',
-            -- Enable diagnostics if using rust-analyzer
-            diagnostics = {
-              enable = diagnostics == 'rust-analyzer',
-            },
+            -- -- Add clippy lints for Rust if using rust-analyzer
+            -- checkOnSave = diagnostics == 'rust-analyzer',
+            -- -- Enable diagnostics if using rust-analyzer
+            -- diagnostics = {
+            --   enable = diagnostics == 'rust-analyzer',
+            -- },
             procMacro = {
               enable = true,
               ignored = {
@@ -52,7 +52,8 @@ return {
         },
       },
     },
-    config = function()
+    config = function(_, opts)
+      vim.g.rustaceanvim = vim.tbl_deep_extend('keep', vim.g.rustaceanvim or {}, opts or {})
       if vim.fn.executable('rust-analyzer') == 0 then
         vim.notify('**rust-analyzer** not found in PATH, please install it.\nhttps://rust-analyzer.github.io/', { title = 'rustaceanvim' })
       end
