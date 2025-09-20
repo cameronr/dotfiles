@@ -179,7 +179,8 @@ return {
       hl.HighlightUndo = { fg = c.bg, bg = c.green }
 
       -- Make marks look like info diagnostics
-      hl.MarkSignHL = hl.DiagnosticInfo
+      hl.GutterMarksLocal = hl.DiagnosticInfo
+      hl.GutterMarksGlobal = hl.DiagnosticInfo
 
       -- Less bright trailing space indicator
       hl.MiniTrailspace = { fg = c.red }
