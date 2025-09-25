@@ -140,8 +140,8 @@ vim.opt.iskeyword:append({ '-' })
 vim.opt.fillchars = {
   foldopen = '',
   foldclose = '',
-  fold = ' ',
-  foldsep = ' ',
+  fold = '-',
+  -- foldsep = ' ',
   eob = ' ', -- Don't show ~ at end of buffer
   diff = '╱', -- Nicer delete lines in DiffView
 }
