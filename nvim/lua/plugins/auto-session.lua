@@ -62,12 +62,29 @@ return {
     ---@module "auto-session"
     ---@type AutoSession.Config
     local _opts = {
+      legacy_cmds = false,
       bypass_save_filetypes = { 'snacks_dashboard' },
       cwd_change_handling = true,
       -- log_level = 'debug',
       lsp_stop_on_restore = true,
       -- git_use_branch_name = true,
       -- git_auto_restore_on_branch_change = true,
+
+      pre_save_cmds = {
+        function()
+          local cwd = vim.uv.cwd()
+          local bufs = vim.api.nvim_list_bufs()
+
+          -- only save buffers if they're nested in cwd
+          if not cwd then return end
+          for _, buf in ipairs(bufs) do
+            if vim.api.nvim_buf_is_loaded(buf) then
+              local name = vim.api.nvim_buf_get_name(buf)
+              if name ~= '' and not name:find(cwd, 1, true) then vim.api.nvim_buf_delete(buf, { force = true }) end
+            end
+          end
+        end,
+      },
 
       pre_restore_cmds = {
         function() require('harpoon'):sync() end,
