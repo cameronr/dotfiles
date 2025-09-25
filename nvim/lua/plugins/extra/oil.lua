@@ -2,14 +2,14 @@
 ---@type LazySpec
 return {
   'stevearc/oil.nvim',
-
+  enabled = false,
   cmd = 'Oil',
   keys = {
-    {
-      '<Bslash><Bslash>',
-      function() require('oil').toggle_float() end,
-      desc = 'Oil',
-    },
+    -- {
+    --   '<Bslash><Bslash>',
+    --   function() require('oil').toggle_float() end,
+    --   desc = 'Oil',
+    -- },
   },
   opts = {
     default_file_explorer = true,
