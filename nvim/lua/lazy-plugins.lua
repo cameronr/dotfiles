@@ -26,7 +26,7 @@ require('lazy').setup(
     },
     {
       import = 'plugins/fun',
-      cond = get_env('NVIM_PLUGINS_EXTRA'),
+      cond = get_env('NVIM_PLUGINS_FUN'),
     },
     {
       import = 'plugins/compat',
