@@ -105,15 +105,19 @@ return {
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap.
-          map(
-            'K',
-            function() vim.lsp.buf.hover({ border = 'rounded', close_events = { 'CursorMoved', 'BufLeave', 'WinLeave' }, focusable = false }) end,
-            'Hover Documentation'
-          )
+          map('K', function() vim.lsp.buf.hover({ border = 'rounded', focusable = false }) end, 'Hover Documentation')
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           -- Enable inlay hints by default
           if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then vim.lsp.inlay_hint.enable() end
+
+          -- Enable on type formatting if it exists
+          -- https://www.reddit.com/r/neovim/comments/1n59kir/neovim_now_supports_lsp_ontype_formatting/
+          if vim.lsp.on_type_formatting then
+            -- TODO: add snacks toggle for this
+            vim.notify('enabling on type formatting')
+            vim.lsp.on_type_formatting.enable(true, { client_id = event.data.client_id })
+          end
         end,
       })
 
