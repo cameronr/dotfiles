@@ -160,7 +160,7 @@ return {
       hl.GitSignsDeleteInLine = { fg = c.git.delete, reverse = true }
 
       -- Make folds less prominent (especially important for DiffView)
-      hl.Folded = { fg = c.fg, italic = true }
+      hl.Folded = { fg = c.comment, italic = true }
 
       -- Make diff* transparent for DiffView file panel
       hl.diffAdded = { fg = c.git.add }
