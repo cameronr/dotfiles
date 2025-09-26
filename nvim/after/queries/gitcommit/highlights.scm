@@ -1,4 +1,4 @@
-;; extends
+; extends
 
 ((subject) @comment.error
   (#vim-match? @comment.error ".\{50,}")
