@@ -6,7 +6,6 @@ return {
       bs = {
         enable = false,
       },
-      --Config goes here
     },
   },
 }
