@@ -95,9 +95,6 @@ ZVM_LINE_INIT_MODE=$ZVM_MODE_INSERT
 # Enable ZVM system clipboard support
 ZVM_SYSTEM_CLIPBOARD_ENABLED=true
 
-# Support clipboard
-source $DOTFILES/zsh/zvm_clipboard.zsh
-
 # Set tmux tab titles with customized icon
 source $DOTFILES/zsh/title-override.zsh
 
