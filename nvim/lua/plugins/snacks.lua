@@ -157,7 +157,6 @@ return {
               ['<c-p>'] = { 'toggle_preview', mode = { 'i', 'n' } },
               ['<pagedown>'] = { 'list_scroll_down', mode = { 'i', 'n' } },
               ['<pageup>'] = { 'list_scroll_up', mode = { 'i', 'n' } },
-              ['<a-d>'] = { 'bufdelete', mode = { 'i', 'n' } },
             },
           },
         },
@@ -167,6 +166,24 @@ return {
             win = {
               wo = {
                 wrap = true,
+              },
+            },
+          },
+          buffers = {
+            win = {
+              input = {
+                keys = {
+                  ['<a-d>'] = { 'bufdelete', mode = { 'i', 'n' } },
+                },
+              },
+            },
+          },
+          files = {
+            win = {
+              input = {
+                keys = {
+                  ['<a-s-h>'] = { 'toggle_hidden', mode = { 'i', 'n' } },
+                },
               },
             },
           },
