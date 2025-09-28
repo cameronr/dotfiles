@@ -11,7 +11,7 @@ zmodule zimfw/utility
 zmodule romkatv/powerlevel10k --use degit
 
 # OMZ modules
-zmodule ohmyzsh/ohmyzsh --root plugins/command-not-found --use degit 
+zmodule ohmyzsh/ohmyzsh --root plugins/command-not-found --use degit
 zmodule ohmyzsh/ohmyzsh --root plugins/magic-enter --use degit
 zmodule ohmyzsh/ohmyzsh --root plugins/docker-compose --use degit
 zmodule ohmyzsh/ohmyzsh --source lib/grep.zsh --use degit           # better grep highlighting
