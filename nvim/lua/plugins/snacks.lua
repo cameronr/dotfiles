@@ -187,6 +187,21 @@ return {
               },
             },
           },
+          highlights = {
+            actions = {
+              yank_item_and_close = function(picker, item)
+                if item.hl_group then vim.fn.setreg('+', item.hl_group) end
+                picker:close()
+              end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ['<cr>'] = { 'yank_item_and_close', mode = { 'i', 'n' } },
+                },
+              },
+            },
+          },
           marks = {
             actions = {
               delmark = function(picker)
