@@ -157,7 +157,6 @@ vim.keymap.set('n', '<leader><tab>[', '<cmd>tabprevious<cr>', { desc = 'Previous
 vim.keymap.set('i', ',', ',<c-g>u')
 vim.keymap.set('i', '.', '.<c-g>u')
 vim.keymap.set('i', ';', ';<c-g>u')
-vim.keymap.set('i', '<cr>', '<cr><c-g>u')
 
 -- Quickly go to the start/end of the line while in insert mode.
 vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
