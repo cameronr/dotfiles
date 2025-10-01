@@ -3,6 +3,7 @@ return {
   ---@type LazySpec
   {
     'yetone/avante.nvim',
+    enabled = false,
     cond = function() return vim.fn.executable('make') == 1 end,
     cmd = 'AvanteToggle',
     keys = {
