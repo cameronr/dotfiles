@@ -12,8 +12,8 @@ return {
         { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
         { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
         { '<leader>cP', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
-        { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
-        { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
+        -- { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
+        -- { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
         { '<leader>e', function() Snacks.picker.explorer() end, desc = 'Explorer' },
         { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Close buffer' },
       }
@@ -77,7 +77,7 @@ return {
         { 'gW', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
 
         -- Notifications
-        { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
+        -- { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
       }
 
       for _, entry in ipairs(picker_keys) do
@@ -107,7 +107,7 @@ return {
       },
       input = { enabled = true },
       notifier = {
-        enabled = true,
+        enabled = false,
         style = 'fancy',
       },
       picker = {
