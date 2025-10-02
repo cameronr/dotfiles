@@ -39,6 +39,9 @@ return {
       { 'mason-org/mason.nvim', opts = {} },
       -- we'll manually call mason-lspconfig's config function
       { 'mason-org/mason-lspconfig.nvim', config = function() end },
+
+      -- Useful status updates for LSP.
+      { 'j-hui/fidget.nvim', opts = {} },
     },
     opts_extend = { 'servers' },
     opts = {
