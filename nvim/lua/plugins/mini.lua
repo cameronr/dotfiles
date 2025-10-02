@@ -137,31 +137,31 @@ return {
         }):map('<leader>vW')
       end
 
-      require('mini.notify').setup({
-        content = {
-          format = function(notif)
-            local str = MiniNotify.default_format(notif)
-            local result = {}
-            for line in str:gmatch('([^\n]*)\n?') do
-              if line ~= '' then
-                table.insert(result, ' ' .. line .. ' ')
-              else
-                table.insert(result, line)
-              end
-            end
-            if result[#result] == '' then table.remove(result) end
-            return table.concat(result, '\n')
-          end,
-        },
-        window = {
-          config = {
-            border = 'rounded',
-          },
-          winblend = 0,
-        },
-      })
-      vim.keymap.set('n', '<leader>sp', function() MiniNotify.show_history() end, { desc = 'Notifications' })
-      vim.keymap.set('n', '<leader>wp', function() MiniNotify.clear() end, { desc = 'Clear notifications' })
+      -- require('mini.notify').setup({
+      --   content = {
+      --     format = function(notif)
+      --       local str = MiniNotify.default_format(notif)
+      --       local result = {}
+      --       for line in str:gmatch('([^\n]*)\n?') do
+      --         if line ~= '' then
+      --           table.insert(result, ' ' .. line .. ' ')
+      --         else
+      --           table.insert(result, line)
+      --         end
+      --       end
+      --       if result[#result] == '' then table.remove(result) end
+      --       return table.concat(result, '\n')
+      --     end,
+      --   },
+      --   window = {
+      --     config = {
+      --       border = 'rounded',
+      --     },
+      --     winblend = 0,
+      --   },
+      -- })
+      -- vim.keymap.set('n', '<leader>sp', function() MiniNotify.show_history() end, { desc = 'Notifications' })
+      -- vim.keymap.set('n', '<leader>wp', function() MiniNotify.clear() end, { desc = 'Clear notifications' })
 
       -- require('mini.tabline').setup()
 
