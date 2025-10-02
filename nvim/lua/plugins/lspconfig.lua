@@ -39,34 +39,6 @@ return {
       { 'mason-org/mason.nvim', opts = {} },
       -- we'll manually call mason-lspconfig's config function
       { 'mason-org/mason-lspconfig.nvim', config = function() end },
-
-      -- -- Useful status updates for LSP.
-      -- {
-      --   'j-hui/fidget.nvim',
-      --   lazy = false,
-      --   keys = {
-      --     { '<leader>sp', function() require('fidget').notification.show_history() end },
-      --   },
-      --   opts = {
-      --     progress = {
-      --       display = {
-      --         render_limit = 8,
-      --         done_ttl = 2,
-      --       },
-      --     },
-      --     notification = {
-      --       override_vim_notify = true, -- this makes vim.notify go through fidget
-      --       window = {
-      --         winblend = 0,
-      --         relative = 'editor',
-      --         anchor = 'NE', -- top-right corner
-      --         row = 0,
-      --         col = vim.o.columns,
-      --         border = 'rounded',
-      --       },
-      --     },
-      --   },
-      -- },
     },
     opts_extend = { 'servers' },
     opts = {
