@@ -20,7 +20,7 @@ return {
     },
 
     ---@module 'obsidian'
-    ---@type obsidian.config.ClientOpts
+    ---@type obsidian.config
     ---@diagnostic disable-next-line: missing-fields
     opts = {
       workspaces = {
