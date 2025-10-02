@@ -187,6 +187,10 @@ return {
 
       -- Make win separator more prominent
       hl.WinSeparator = { fg = c.terminal_black }
+
+      hl.SnacksNotifierMinimal = {
+        bg = c.bg_statusline,
+      }
     end,
   },
 
