@@ -20,8 +20,22 @@ return {
         filetypes = { 'md', 'rmd', 'quarto', 'opencode_output', 'markdown' },
         ignore_buftypes = {},
       },
+      markdown = {
+        headings = {
+          heading_1 = {
+            sign = false,
+          },
+          heading_2 = {
+            sign = false,
+          },
+        },
+        code_blocks = {
+          sign = false,
+        },
+      },
     },
-    config = function()
+    config = function(_, opts)
+      require('markview').setup(opts)
       require('markview.highlights').setup()
       if Snacks then
         Snacks.toggle({
