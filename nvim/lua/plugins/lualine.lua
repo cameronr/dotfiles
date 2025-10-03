@@ -78,7 +78,7 @@ return {
       }):map('<leader>vs')
     end
 
-    local diagnostic_icons = require('settings').icons.diagnostics
+    local Settings = require('settings')
 
     return vim.tbl_deep_extend('force', opts or {}, {
       options = {
@@ -137,12 +137,7 @@ return {
           },
           {
             'diagnostics',
-            symbols = {
-              error = diagnostic_icons.Error,
-              warn = diagnostic_icons.Warn,
-              info = diagnostic_icons.Info,
-              hint = diagnostic_icons.Hint,
-            },
+            symbols = Settings.transform(Settings.icons.diagnostics, true),
             separator = '',
           },
           {

@@ -109,6 +109,7 @@ return {
       notifier = {
         enabled = true,
         style = 'minimal',
+        icons = Settings.transform(Settings.icons.diagnostics, true),
       },
       picker = {
         enabled = vim.g.picker_engine == 'snacks',
@@ -119,7 +120,7 @@ return {
         },
         ---@diagnostic disable-next-line: missing-fields
         icons = {
-          diagnostics = require('settings').icons.diagnostics,
+          diagnostics = Settings.icons.diagnostics,
         },
         layout = function(source)
           --- Use the vertical layout if screen is small
@@ -319,6 +320,11 @@ return {
         input = {
           keys = {
             i_esc = { '<esc>', { 'cmp_close', 'close' }, mode = 'i', expr = true },
+          },
+        },
+        notification = {
+          wo = {
+            wrap = true, -- enable line wrapping in notifications
           },
         },
       },

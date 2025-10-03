@@ -58,4 +58,18 @@ M.icons = {
   },
 }
 
+---Transform table keys to lower case
+---@param tbl table Table to transform
+---@param lower_case? boolean If true, transform keys to lower case
+function M.transform(tbl, lower_case)
+  local new_tbl = {}
+  for k, v in pairs(tbl) do
+    local key = lower_case and string.lower(k) or k
+    local val = v
+
+    new_tbl[key] = val
+  end
+  return new_tbl
+end
+
 return M
