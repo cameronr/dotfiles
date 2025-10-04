@@ -12,5 +12,6 @@ return {
     commit_editor = {
       staged_diff_split_kind = 'vsplit',
     },
+    notification_icon = '󰊢 ',
   },
 }
