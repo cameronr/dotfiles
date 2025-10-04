@@ -1,3 +1,5 @@
+local Settings = require('settings')
+
 return {
   ---@module 'lazy'
   ---@type LazySpec
