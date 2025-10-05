@@ -43,6 +43,9 @@ return {
       ui = {
         ignore_conceal_warn = true,
       },
+      checkbox = {
+        order = { ' ', 'x' },
+      },
       legacy_commands = false,
     },
     init = function()
