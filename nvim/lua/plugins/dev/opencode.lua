@@ -13,6 +13,8 @@ return {
           submit = '<c-s>',
           submit_insert = '<c-s>',
           close = false,
+          prev_prompt_history = false,
+          next_prompt_history = false,
         },
       },
       ui = {
@@ -25,6 +27,20 @@ return {
         },
       },
     },
+    init = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'opencode', -- trigger only for this filetype
+        callback = function(args)
+          local map = require('opencode.keymap').buf_keymap
+          local nav_history = require('opencode.ui.util').navigate_history
+
+          local prev_prompt_history = '<UP>'
+          local next_prompt_history = '<DOWN>'
+          map(prev_prompt_history, nav_history(prev_prompt_history, 'prev'), args.buf, { 'n' })
+          map(next_prompt_history, nav_history(next_prompt_history, 'next'), args.buf, { 'n' })
+        end,
+      })
+    end,
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
