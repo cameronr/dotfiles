@@ -35,4 +35,13 @@ return {
     },
     -- ft = { 'markdown', 'Avante', 'copilot-chat', 'opencode_output' },
   },
+  {
+    'nvim-lualine/lualine.nvim',
+    optional = true,
+    opts = function(_, opts)
+      opts.options.ignore_focus = opts.options.ignore_focus or {}
+      table.insert(opts.options.ignore_focus, 'opencode')
+      table.insert(opts.options.ignore_focus, 'opencode_output')
+    end,
+  },
 }
