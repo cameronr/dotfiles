@@ -15,6 +15,7 @@ return {
           close = false,
           prev_prompt_history = false,
           next_prompt_history = false,
+          toggle_pane = false,
         },
       },
       ui = {
@@ -33,11 +34,14 @@ return {
         callback = function(args)
           local map = require('opencode.keymap').buf_keymap
           local nav_history = require('opencode.ui.util').navigate_history
+          local api = require('opencode.api')
 
           local prev_prompt_history = '<UP>'
           local next_prompt_history = '<DOWN>'
+          local toggle_pane = '<tab>'
           map(prev_prompt_history, nav_history(prev_prompt_history, 'prev'), args.buf, { 'n' })
           map(next_prompt_history, nav_history(next_prompt_history, 'next'), args.buf, { 'n' })
+          map(toggle_pane, api.toggle_pane, args.buf, { 'n' })
         end,
       })
     end,
