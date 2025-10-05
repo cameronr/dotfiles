@@ -49,8 +49,8 @@ return {
       legacy_commands = false,
     },
     init = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'markdown',
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'ObsidianNoteEnter',
         callback = function()
           vim.keymap.set('i', '<CR>', function()
             local line = vim.api.nvim_get_current_line()
@@ -105,15 +105,16 @@ return {
             desc = 'Sort checked markdown items to the bottom of the current paragraph',
           })
 
-          local function dial_and_move(increment)
-            require('dial.map').manipulate((increment and 'increment' or 'decrement'), 'normal', 'markdown')
-            move_checked_item()
+          local function smarter_action()
+            local cmd = require('obsidian.api').smart_action():match('<cmd>(.-)<cr>')
+            if not cmd then return end
+            vim.cmd(cmd)
+            if cmd:find('toggle_checkbox', 1, true) then move_checked_item() end
           end
 
-          vim.keymap.set('n', '<C-a>', function() dial_and_move(true) end, { buffer = true })
-          vim.keymap.set('n', '<C-x>', function() dial_and_move(false) end, { buffer = true })
-          vim.keymap.set('v', '<C-a>', function() dial_and_move(true) end, { buffer = true })
-          vim.keymap.set('v', '<C-x>', function() dial_and_move(false) end, { buffer = true })
+          vim.keymap.set('n', '<CR>', function() smarter_action() end, { buffer = true })
+          vim.keymap.set('n', '<C-a>', function() smarter_action() end, { buffer = true })
+          vim.keymap.set('v', '<C-a>', function() smarter_action() end, { buffer = true })
         end,
       })
     end,
