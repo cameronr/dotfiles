@@ -21,6 +21,9 @@ return {
       ui = {
         input_width = 0.42,
         input_height = 0.21,
+        loading_animation = {
+          frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+        },
         input = {
           text = {
             wrap = true, -- Wraps text inside input window
