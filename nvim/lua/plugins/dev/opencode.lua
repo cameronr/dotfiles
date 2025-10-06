@@ -36,8 +36,8 @@ return {
           local nav_history = require('opencode.ui.util').navigate_history
           local api = require('opencode.api')
 
-          local prev_prompt_history = '<UP>'
-          local next_prompt_history = '<DOWN>'
+          local prev_prompt_history = '<C-UP>'
+          local next_prompt_history = '<C-DOWN>'
           local toggle_pane = '<tab>'
           map(prev_prompt_history, nav_history(prev_prompt_history, 'prev'), args.buf, { 'n' })
           map(next_prompt_history, nav_history(next_prompt_history, 'next'), args.buf, { 'n' })
