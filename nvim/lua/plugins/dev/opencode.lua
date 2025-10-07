@@ -1,24 +1,19 @@
 local function load_opencode(callback)
   pcall(require, 'opencode')
-  local function run_or_open()
-    if vim.fn.exists(':Opencode') == 2 then
-      if callback then callback() end
-      return true
-    end
-    return false
-  end
-  if run_or_open() then return end
   local tries = 0
   local function tick()
-    if run_or_open() then return end
+    if vim.fn.exists(':Opencode') == 2 then
+      if callback then callback() end
+      return
+    end
     tries = tries + 1
     if tries > 30 then
-      if vim.notify then vim.notify('Failed to load Opencode', vim.log.levels.WARN) end
+      vim.notify('Failed to load Opencode', vim.log.levels.WARN)
       return
     end
     vim.defer_fn(tick, 100)
   end
-  vim.defer_fn(tick, 100)
+  tick()
 end
 
 return {
