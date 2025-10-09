@@ -33,18 +33,36 @@ return {
     opts = {
       preferred_picker = 'snacks',
       keymap = {
-        window = {
-          submit = '<c-s>',
-          submit_insert = '<c-s>',
-          close = false,
-          focus_input = false,
-          prev_prompt_history = false,
-          next_prompt_history = false,
-          toggle_pane = false,
+        output_window = {
+          ['<esc>'] = false,
+        },
+        input_window = {
+          -- submit = '<c-s>',
+          -- submit_insert = '<c-s>',
+          -- close = false,
+          -- focus_input = false,
+          -- prev_prompt_history = false,
+          -- next_prompt_history = false,
+          -- toggle_pane = false,
+
+          ['<esc>'] = false,
+          ['<c-i>'] = false,
+          ['<up>'] = false,
+          ['<down>'] = false,
+          ['<cr>'] = false,
+          ['<c-s>'] = {
+            function()
+              vim.cmd('stopinsert')
+              require('opencode.api').submit_input_prompt()
+            end,
+            mode = { 'i', 'n' },
+          },
+          ['<c-up>'] = { 'prev_prompt_history', mode = { 'i', 'n' } },
+          ['<c-down>'] = { 'next_prompt_history', mode = { 'i', 'n' } },
         },
       },
       ui = {
-        input_width = 0.42,
+        window_width = 0.42,
         input_height = 0.21,
         loading_animation = {
           frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
@@ -56,34 +74,6 @@ return {
         },
       },
     },
-    init = function()
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'opencode', -- trigger only for this filetype
-        callback = function(args)
-          local map = require('opencode.keymap').buf_keymap
-          local nav_history = require('opencode.ui.util').navigate_history
-          local api = require('opencode.api')
-
-          local prev_prompt_history = '<C-UP>'
-          local next_prompt_history = '<C-DOWN>'
-          local toggle_pane = '<tab>'
-          map(prev_prompt_history, nav_history(prev_prompt_history, 'prev'), args.buf, { 'n' })
-          map(next_prompt_history, nav_history(next_prompt_history, 'next'), args.buf, { 'n' })
-          map(toggle_pane, api.toggle_pane, args.buf, { 'n' })
-        end,
-      })
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'opencode_output', -- trigger only for this filetype
-        callback = function(args)
-          local map = require('opencode.keymap').buf_keymap
-          local api = require('opencode.api')
-
-          local toggle_pane = '<tab>'
-          map(toggle_pane, api.toggle_pane, args.buf, { 'n' })
-        end,
-      })
-    end,
     config = function(_, opts)
       local ok, opencode = pcall(require, 'opencode')
       if not ok then return end
@@ -91,19 +81,10 @@ return {
 
       local map = vim.keymap.set
       local api = require('opencode.api')
-      map('n', '<leader>aa', api.switch_to_next_mode, { desc = 'Opencode: toggle agent/build' })
+      map('n', '<leader>aa', api.switch_mode, { desc = 'Opencode: toggle agent/build' })
       map('n', '<leader>as', api.select_session, { desc = 'Opencode: select session' })
       map('n', '<leader>ap', api.configure_provider, { desc = 'Opencode: configure provider' })
     end,
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    optional = true,
-    opts = {
-      anti_conceal = { enabled = false },
-      file_types = { 'markdown', 'opencode_output' },
-    },
-    -- ft = { 'markdown', 'Avante', 'copilot-chat', 'opencode_output' },
   },
   {
     'nvim-lualine/lualine.nvim',
