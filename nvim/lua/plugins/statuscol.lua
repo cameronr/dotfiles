@@ -4,12 +4,6 @@ return {
   {
     'luukvbaal/statuscol.nvim',
     event = { 'BufNewFile', 'BufReadPost' },
-
-    -- trying out markit instead for mark toggling
-    -- dependencies = {
-    --   { 'yaocccc/vim-showmarks' },
-    -- },
-
     opts = function(_, opts)
       local builtin = require('statuscol.builtin')
       return vim.tbl_deep_extend('force', opts or {}, {
