@@ -11,21 +11,23 @@ return {
     ---@module 'which-key'
     ---@type wk.Opts
     opts = {
-      preset = 'modern',
+      preset = 'helix',
       delay = 500,
       icons = {
         rules = false,
       },
       spec = {
-        { '<leader>a', group = 'Avante' },
+        { '<leader>a', group = 'AI' },
         { '<leader>b', group = 'Buffer' },
         { '<leader>c', group = 'Code' },
         { '<leader>d', group = 'Debug' },
+        { '<leader>f', group = 'Fun' },
         { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
         { '<leader>o', group = 'Harpoon' },
         { '<leader>t', group = 'Obsidian (todo)' },
         { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
         { '<leader>v', group = 'View / UI' },
+        { '<leader>vB', group = 'Blink sources' },
         { '<leader>w', group = 'Window / Workspace' },
         { '<leader>x', group = 'Trouble' },
         { '<leader><tab>', group = 'Tabs' },
