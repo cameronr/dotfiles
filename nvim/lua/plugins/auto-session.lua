@@ -71,7 +71,7 @@ return {
       -- git_auto_restore_on_branch_change = true,
 
       pre_save_cmds = {
-        function()
+        function(_)
           local cwd = vim.uv.cwd()
           local bufs = vim.api.nvim_list_bufs()
 
@@ -87,7 +87,7 @@ return {
       },
 
       pre_restore_cmds = {
-        function() require('harpoon'):sync() end,
+        function(_) require('harpoon'):sync() end,
       },
       post_restore_cmds = {
         function()
