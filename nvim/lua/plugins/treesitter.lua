@@ -79,6 +79,31 @@ return {
       -- no nvim-treesitter, maybe fresh install
       if not ok then return end
 
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'TSUpdate',
+        callback = function()
+          local tmux_parser = require('nvim-treesitter.parsers')['tmux']
+          tmux_parser.install_info = {
+            url = 'https://github.com/Freed-Wu/tree-sitter-tmux',
+            branch = 'all-fixes',
+            revision = '7b63f7399c8756316ed46fdfa0cc3971572a249e',
+          }
+        end,
+      })
+
+      -- vim.api.nvim_create_autocmd('User', {
+      --   pattern = 'TSUpdate',
+      --   callback = function()
+      --     local tmux_parser = require('nvim-treesitter.parsers')['tmux']
+      --     ---@diagnostic disable-next-line: missing-fields
+      --     tmux_parser.install_info = {
+      --       path = '~/dev/neovim-dev/tree-sitter-tmux/',
+      --       generate = true,
+      --       generate_from_json = false,
+      --     }
+      --   end,
+      -- })
+
       nvim_treesitter.install(ensure_installed)
     end,
   },
@@ -186,6 +211,27 @@ return {
       },
     },
   },
+
+  ---@module 'lazy'
+  ---@type LazySpec
+  -- {
+  --   'MeanderingProgrammer/treesitter-modules.nvim',
+  --   -- dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   ---@module 'treesitter-modules'
+  --   ---@type ts.mod.UserConfig
+  --   opts = {
+  --     incremental_selection = {
+  --       enable = true,
+  --       keymaps = {
+  --         init_selection = '<c-space>',
+  --         node_incremental = '<C-space>',
+  --         scope_incremental = false,
+  --         node_decremental = false,
+  --       },
+  --     },
+  --   },
+  -- },
 }
 
 -- vim: ts=2 sts=2 sw=2 et
