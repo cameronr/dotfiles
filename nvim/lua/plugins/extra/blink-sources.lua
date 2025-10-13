@@ -43,7 +43,7 @@ return {
           get = function() return vim.g.custom_blink_cmp_tmux_enabled end,
           ---@diagnostic disable-next-line: inject-field
           set = function(state) vim.g.custom_blink_cmp_tmux_enabled = state end,
-        }):map('<leader>vT')
+        }):map('<leader>vBt')
       end
 
       -- Don't want to replace sources but add to it
@@ -101,12 +101,67 @@ return {
               mode = 'off', -- default to off
               prefix_min_len = 5,
               toggles = {
-                on_off = '<leader>vG',
+                on_off = '<leader>vBg',
               },
             },
           },
         },
       },
     },
+  },
+
+  ---@module "lazy"
+  ---@type LazySpec
+  {
+    'saghen/blink.cmp',
+    optional = true,
+    dependencies = {
+      'fang2hou/blink-copilot',
+      opts = {
+        max_completions = 1, -- Global default for max completions
+        max_attempts = 2, -- Global default for max attempts
+      },
+    },
+    opts = function(_, opts)
+      if Snacks then
+        ---@diagnostic disable-next-line: undefined-field
+        Snacks.toggle({
+          name = 'blink-copilot',
+          get = function() return vim.g.custom_blink_cmp_copilot_enabled end,
+          ---@diagnostic disable-next-line: inject-field
+          set = function(state) vim.g.custom_blink_cmp_copilot_enabled = state end,
+        }):map('<leader>vBc')
+      end
+
+      vim.g.custom_blink_cmp_copilot_enabled = true
+
+      -- Don't want to replace sources but add to it
+      table.insert(opts.sources.default, 'copilot')
+
+      ---@module 'blink.cmp'
+      ---@type blink.cmp.Config
+      return vim.tbl_deep_extend('force', opts or {}, {
+        sources = {
+          providers = {
+            copilot = {
+              name = 'copilot',
+              enabled = function() return vim.g.custom_blink_cmp_copilot_enabled end,
+              module = 'blink-copilot',
+              -- score_offset = 15,
+              async = true,
+              opts = {
+                -- Local options override global ones
+                max_completions = 3, -- Override global max_completions
+
+                -- Final settings:
+                -- * max_completions = 3
+                -- * max_attempts = 2
+                -- * all other options are default
+              },
+            },
+          },
+        },
+      })
+    end,
   },
 }
