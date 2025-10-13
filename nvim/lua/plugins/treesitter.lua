@@ -53,9 +53,8 @@ return {
     ---@module 'nvim-treesitter'
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
-    opts = {},
 
-    config = function(_, opts)
+    config = function(_, _)
       local ensure_installed = {
         'bash',
         'c',
@@ -79,18 +78,19 @@ return {
       -- no nvim-treesitter, maybe fresh install
       if not ok then return end
 
-      vim.api.nvim_create_autocmd('User', {
-        pattern = 'TSUpdate',
-        callback = function()
-          local tmux_parser = require('nvim-treesitter.parsers')['tmux']
-          tmux_parser.install_info = {
-            url = 'https://github.com/Freed-Wu/tree-sitter-tmux',
-            branch = 'all-fixes',
-            revision = '7b63f7399c8756316ed46fdfa0cc3971572a249e',
-          }
-        end,
-      })
-
+      -- no longer need to override but keeping here as a reference
+      -- vim.api.nvim_create_autocmd('User', {
+      --   pattern = 'TSUpdate',
+      --   callback = function()
+      --     local tmux_parser = require('nvim-treesitter.parsers')['tmux']
+      --     tmux_parser.install_info = {
+      --       url = 'https://github.com/Freed-Wu/tree-sitter-tmux',
+      --       branch = 'all-fixes',
+      --       revision = '7b63f7399c8756316ed46fdfa0cc3971572a249e',
+      --     }
+      --   end,
+      -- })
+      --
       -- vim.api.nvim_create_autocmd('User', {
       --   pattern = 'TSUpdate',
       --   callback = function()
