@@ -134,7 +134,7 @@ return {
 
       -- FzfLua
       -- Show directory in darker gray
-      hl.FzfLuaDirPart = hl.NonText
+      hl.FzfLuaDirPart = { link = 'NonText' }
       -- Make line number muted (not nuclear green)
       hl.FzfLuaPathLineNr = { fg = c.fg_dark }
       -- Keep blue as cursor line picker
@@ -146,7 +146,7 @@ return {
 
       -- Snacks
       -- Make bufnr gray instead of orange
-      hl.SnacksPickerBufNr = hl.NonText
+      hl.SnacksPickerBufNr = { link = 'NonText' }
       -- Highlight matches in orange instead of cyan
       hl.SnacksPickerMatch = { fg = hl.IncSearch.bg }
 
@@ -179,18 +179,23 @@ return {
       hl.HighlightUndo = { fg = c.bg, bg = c.green }
 
       -- Make marks look like info diagnostics
-      hl.GutterMarksLocal = hl.DiagnosticInfo
-      hl.GutterMarksGlobal = hl.DiagnosticInfo
+      hl.GutterMarksLocal = { link = 'DiagnosticInfo' }
+      hl.GutterMarksGlobal = { link = 'DiagnosticInfo' }
 
       -- Less bright trailing space indicator
       hl.MiniTrailspace = { fg = c.red }
 
       -- Make win separator more prominent
       hl.WinSeparator = { fg = c.terminal_black }
+      -- Sometimes Neogit's highlight gets saved as the separator and without
+      -- this link, it'll be the default highlight, which I don't want
+      hl.NeogitWinSeparator = { link = 'WinSeparator' }
 
       hl.SnacksNotifierMinimal = {
         bg = c.bg_statusline,
       }
+
+      hl.OpencodeInputLegend = { link = 'DiagnosticHint' }
     end,
   },
 
