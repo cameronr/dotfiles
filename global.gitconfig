@@ -23,7 +23,7 @@
     line-numbers-zero-style       = "#3b4261"
 
     minus-style                   = syntax "#4d1919"
-    minus-non-emph-style          = syntax "#4d1919"
+    minus-non-emph-style          = syntax "#3A232B"
     minus-emph-style              = syntax "#713137"
     minus-empty-line-marker-style = syntax "#4d1919"
     line-numbers-minus-style      = "#b2555b"
