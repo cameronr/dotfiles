@@ -3,6 +3,7 @@ return {
   ---@type LazySpec
   {
     'folke/trouble.nvim',
+    dev = true,
     event = { 'BufNewFile', 'BufReadPost' },
     cmd = 'Trouble',
     opts = {
@@ -117,7 +118,7 @@ return {
 
       table.insert(opts.sections.lualine_c, {
         trouble_symbols and trouble_symbols.get,
-        cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 120 and trouble_symbols.has() end,
+        cond = function() return vim.b.trouble_lualine ~= false and vim.fn.winwidth(0) > 65 and trouble_symbols.has() end,
       })
 
       opts.options.ignore_focus = opts.options.ignore_focus or {}
