@@ -41,6 +41,7 @@ return {
 
         -- set wrap
         vim.wo[winid].wrap = true
+        vim.wo[winid].relativenumber = false
 
         -- HACK: turn off inlay hints, but diffview is triggering the lsp
         -- to renable them even if they were off (re-editing the buffer?)
