@@ -1,58 +1,29 @@
-local function load_opencode(callback)
-  pcall(require, 'opencode')
-  local tries = 0
-  local function tick()
-    if vim.fn.exists(':Opencode') == 2 then
-      if callback then callback() end
-      return
-    end
-    tries = tries + 1
-    if tries > 30 then
-      vim.notify('Failed to load Opencode', vim.log.levels.WARN)
-      return
-    end
-    vim.defer_fn(tick, 100)
-  end
-  tick()
-end
-
 return {
   {
     'sudo-tee/opencode.nvim',
-    -- dev = true,
     cond = function() return vim.fn.executable('opencode') == 1 end,
     cmd = 'Opencode',
     keys = {
-      {
-        '<leader>aa',
-        function()
-          load_opencode(function() vim.cmd('Opencode') end)
-        end,
-        desc = 'Opencode toggle',
-      },
+      { '<leader>aa', desc = 'Opencode toggle', mode = { 'n', 'v' } },
+      { '<leader>ai', desc = 'Opencode input', mode = { 'n', 'v' } },
+      { '<leader>aI', desc = 'Opencode input new session', mode = { 'n', 'v' } },
     },
     opts = {
+      default_mode = 'plan',
       preferred_picker = 'snacks',
       keymap_prefix = '<leader>a',
       keymap = {
         editor = {
-          -- ['<leader>aO'] = { 'open_output' },
           ['<leader>am'] = { 'switch_mode' },
           ['<leader>aR'] = { function() require('opencode.ui.ui').render_output(true) end },
-          ['<leader>aa'] = { 'toggle' },
+          ['<leader>aa'] = { 'toggle', mode = { 'n', 'v' } },
+          ['<leader>ai'] = { function() require('opencode.core').open({ new_session = false, focus = 'input' }) end, mode = { 'n', 'v' } }, -- open input without insert mode
+          ['<leader>aI'] = { function() require('opencode.core').open({ new_session = true, focus = 'input' }) end, mode = { 'n', 'v' } }, -- open input without insert mode
         },
         output_window = {
           ['<esc>'] = false,
         },
         input_window = {
-          -- submit = '<c-s>',
-          -- submit_insert = '<c-s>',
-          -- close = false,
-          -- focus_input = false,
-          -- prev_prompt_history = false,
-          -- next_prompt_history = false,
-          -- toggle_pane = false,
-
           ['<esc>'] = false,
           ['<c-i>'] = false,
           ['<up>'] = false,
@@ -71,13 +42,19 @@ return {
       },
       ui = {
         window_width = 0.42,
-        input_height = 0.21,
+        -- input_height = 0.21,
         loading_animation = {
           frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
         },
         input = {
           text = {
             wrap = true, -- Wraps text inside input window
+          },
+        },
+        icons = {
+          overrides = {
+            header_user = '▏💬',
+            border = '▏',
           },
         },
       },
@@ -107,7 +84,7 @@ return {
         opts = opts or {}
         vim.api.nvim_echo({ { msg } }, true, opts)
       end
-      require('tests.manual.streaming_renderer_replay').start({ set_statuscolumn = false })
+      require('tests.manual.renderer_replay').start({ set_statuscolumn = false })
     end, {}),
   },
   {
@@ -119,16 +96,28 @@ return {
       table.insert(opts.options.ignore_focus, 'opencode_output')
     end,
   },
+  -- {
+  --   'OXY2DEV/markview.nvim',
+  --   optional = true,
+  --   ft = { 'opencode_output' },
+  --   opts = {
+  --     preview = {
+  --       filetypes = { 'opencode_output' },
+  --     },
+  --   },
+  --   opts_extend = { 'preview.filetypes' },
+  -- },
   {
-    'OXY2DEV/markview.nvim',
-    optional = true,
+    'MeanderingProgrammer/render-markdown.nvim',
+    enabled = true,
+    cmd = 'RenderMarkdown',
     ft = { 'opencode_output' },
+
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
     opts = {
-      preview = {
-        filetypes = { 'opencode_output' },
-      },
+      file_types = { 'opencode_output' },
     },
-    opts_extend = { 'preview.filetypes' },
   },
   {
     'luukvbaal/statuscol.nvim',
