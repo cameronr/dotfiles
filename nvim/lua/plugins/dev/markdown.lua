@@ -1,23 +1,27 @@
 return {
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    enabled = false,
-    cmd = 'RenderMarkdown',
-
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {
-      file_types = { 'markdown', 'Avante' },
-    },
-  },
+  -- {
+  --   'MeanderingProgrammer/render-markdown.nvim',
+  --   enabled = true,
+  --   cmd = 'RenderMarkdown',
+  --
+  --   ---@module 'render-markdown'
+  --   ---@type render.md.UserConfig
+  --   opts = {
+  --     file_types = { 'opencode_output' },
+  --   },
+  -- },
   {
     'OXY2DEV/markview.nvim',
+    lazy = false,
+    -- add lazy loading back in once this release goes live:
+    -- https://github.com/OXY2DEV/markview.nvim/pull/401
+    -- enabled = false,
     cmd = 'Markview',
-    ft = { 'markdown', 'opencode_output' },
+    ft = { 'markdown' },
     opts = {
       preview = {
         enable = true,
-        filetypes = { 'md', 'rmd', 'quarto', 'opencode_output', 'markdown' },
+        filetypes = { 'md', 'rmd', 'quarto', 'markdown' },
         ignore_buftypes = {},
       },
       markdown = {
