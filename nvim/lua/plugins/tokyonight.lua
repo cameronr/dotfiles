@@ -196,6 +196,10 @@ return {
       }
 
       hl.OpencodeInputLegend = { link = 'DiagnosticHint' }
+      hl.OpencodeDiffAdd = { link = 'DiffAdd' }
+      hl.OpencodeDiffDelete = { link = 'DiffDelete' }
+
+      hl.MarkviewBlockQuoteError = { link = 'Error' }
     end,
   },
 
