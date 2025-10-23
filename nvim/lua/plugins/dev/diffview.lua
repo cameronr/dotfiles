@@ -59,10 +59,14 @@ return {
       view_enter = function(_)
         local ok, ts_context = pcall(require, 'treesitter-context')
         if ok and ts_context then ts_context.disable() end
+        -- vim.cmd('Sidekick nes disable')
+        vim.g.sidekick_nes = false
       end,
       view_leave = function(_)
         local ok, ts_context = pcall(require, 'treesitter-context')
         if ok and ts_context then ts_context.enable() end
+        vim.g.sidekick_nes = true
+        -- vim.cmd('Sidekick nes enable')
       end,
     },
   },
