@@ -154,6 +154,18 @@ config = {
   bypass_mouse_reporting_modifiers = 'SHIFT',
 }
 
+if wezterm.target_triple:find('windows') then
+  config.keys = {
+    { key = 'v', mods = 'CTRL', action = wezterm.action.PasteFrom('Clipboard') },
+    { key = 'c', mods = 'CTRL', action = wezterm.action.CopyTo('Clipboard') },
+  }
+  config.font_size = 16
+  -- For Windows PowerShell 5.x (classic)
+  -- config.default_prog = { 'powershell.exe', '-NoLogo' }
+  -- OR for PowerShell Core 7+:
+  config.default_prog = { 'pwsh.exe', '-NoLogo' }
+end
+
 tabline.apply_to_config(config)
 
 -- and finally, return the configuration to wezterm
