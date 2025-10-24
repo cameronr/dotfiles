@@ -72,7 +72,7 @@ return {
 
       pre_save_cmds = {
         function(_)
-          local cwd = vim.uv.cwd()
+          local cwd = vim.uv.cwd():gsub('\\', '/')
           local bufs = vim.api.nvim_list_bufs()
 
           -- only save buffers if they're nested in cwd
