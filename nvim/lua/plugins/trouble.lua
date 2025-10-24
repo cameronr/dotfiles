@@ -3,7 +3,7 @@ return {
   ---@type LazySpec
   {
     'folke/trouble.nvim',
-    dev = true,
+    -- dev = true,
     event = { 'BufNewFile', 'BufReadPost' },
     cmd = 'Trouble',
     opts = {
