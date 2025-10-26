@@ -13,4 +13,11 @@ return {
     'MunifTanjim/nui.nvim',
     lazy = true,
   },
+
+  ---@module 'lazy'
+  ---@type LazySpec
+  {
+    'Bilal2453/luvit-meta',
+    lazy = true,
+  },
 }

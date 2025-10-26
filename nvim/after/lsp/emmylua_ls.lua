@@ -8,22 +8,13 @@ return {
       workspace = {
         library = {
           '$VIMRUNTIME', -- for vim.*
+          '$HOME/.local/share/nvim/lazy/luvit-meta/library',
         },
         ignoreGlobs = {
           '**/*_spec.lua', -- to avoid some weird type defs in a plugin
         },
       },
 
-      -- workspace = {
-      --   -- Include Neovim's runtime files for API awareness
-      --   library = {
-      --     vim.env.VIMRUNTIME .. '/lua',
-      --     vim.env.VIMRUNTIME .. '/lua/vim',
-      --     vim.env.VIMRUNTIME .. '/lua/vim/lsp',
-      --   },
-      --   -- If your plugin depends on other Lua paths:
-      --   -- checkThirdParty = false,
-      -- },
       diagnostics = {
         enable = true,
         globals = {
