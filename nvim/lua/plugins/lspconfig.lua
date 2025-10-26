@@ -58,6 +58,7 @@ return {
         'typos_lsp',
         'yamlls',
         'marksman',
+        'copilot',
       },
     },
     config = function(_, opts)
@@ -139,8 +140,18 @@ return {
       local mlspc_opts = {}
       if not vim.g.no_mason_autoinstall then mlspc_opts.ensure_installed = opts.servers end
 
+      if vim.tbl_contains(opts.servers, 'lua_ls') and vim.tbl_contains(opts.servers, 'emmylua_ls') then
+        mlspc_opts.automatic_enable = {
+          exclude = {
+            'lua_ls',
+          },
+        }
+      end
+
       -- automatically enable servers and install (unless autoinstall disabled)
       require('mason-lspconfig').setup(mlspc_opts)
+
+      if vim.fn.has('nvim-0.12') == 1 then vim.lsp.inline_completion.enable() end
     end,
   },
 }
