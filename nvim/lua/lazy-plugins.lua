@@ -11,9 +11,6 @@ local function get_env(env_var_name, default)
 end
 
 require('lazy').setup(
-
-  ---@module 'lazy'
-  ---@type LazySpec
   {
     { import = 'plugins' },
     {
@@ -34,8 +31,7 @@ require('lazy').setup(
     },
   },
 
-  ---@module 'lazy'
-  ---@type LazyConfig
+  ---@diagnostic disable-next-line: missing-fields, param-type-not-match
   {
     ui = {
       -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -69,19 +65,22 @@ require('lazy').setup(
       notify = false,
       frequency = 3600,
     },
-    performance = {
-      rtp = {
-        ---@type string[] list any plugins you want to disable here
-        disabled_plugins = {
-          -- 'matchparen',
-          -- "netrwPlugin",
-          -- 'gzip',
-          -- 'tarPlugin',
-          -- 'zipPlugin',
-          -- 'tohtml',
-        },
-      },
+    change_detection = {
+      enabled = false,
     },
+    -- performance = {
+    --   rtp = {
+    --     ---@type string[] list any plugins you want to disable here
+    --     disabled_plugins = {
+    --       -- 'matchparen',
+    --       -- "netrwPlugin",
+    --       -- 'gzip',
+    --       -- 'tarPlugin',
+    --       -- 'zipPlugin',
+    --       -- 'tohtml',
+    --     },
+    --   },
+    -- },
     dev = {
       path = '~/Dev/neovim-dev/',
       fallback = false,
