@@ -7,6 +7,7 @@ return {
       { '<leader>aa', desc = 'Opencode toggle', mode = { 'n', 'v' } },
       { '<leader>ai', desc = 'Opencode input', mode = { 'n', 'v' } },
       { '<leader>aI', desc = 'Opencode input new session', mode = { 'n', 'v' } },
+      { '<leader>as', desc = 'Opencode load session' },
     },
     opts = {
       default_mode = 'plan',
