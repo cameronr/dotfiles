@@ -1,14 +1,13 @@
 return {
   settings = {
     emmylua = {
-      -- runtimeVersion = 'LuaJIT',
-
       runtime = {
         version = 'LuaJIT', -- the version nvim uses
       },
+
       workspace = {
         library = {
-          -- '$VIMRUNTIME', -- for vim.*
+          '$VIMRUNTIME', -- for vim.*
         },
         ignoreGlobs = {
           '**/*_spec.lua', -- to avoid some weird type defs in a plugin
@@ -35,6 +34,7 @@ return {
           'before_each',
           'after_each',
         },
+        disable = { 'unnecessary-if' },
       },
 
       -- Hints

@@ -46,7 +46,7 @@ return {
     opts_extend = { 'servers' },
     opts = {
       servers = {
-        'lua_ls',
+        'emmylua_ls',
         'bashls',
         'html',
         'cssls',
