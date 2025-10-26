@@ -110,7 +110,9 @@ return {
 
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           -- Enable inlay hints by default
-          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then vim.lsp.inlay_hint.enable() end
+          if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+            vim.lsp.inlay_hint.enable()
+          end
 
           -- Enable on type formatting if it exists
           -- https://www.reddit.com/r/neovim/comments/1n59kir/neovim_now_supports_lsp_ontype_formatting/
@@ -140,7 +142,7 @@ return {
       local mlspc_opts = {}
       if not vim.g.no_mason_autoinstall then mlspc_opts.ensure_installed = opts.servers end
 
-      if vim.tbl_contains(opts.servers, 'lua_ls') and vim.tbl_contains(opts.servers, 'emmylua_ls') then
+      if vim.tbl_contains(opts.servers, 'emmylua_ls') then
         mlspc_opts.automatic_enable = {
           exclude = {
             'lua_ls',
