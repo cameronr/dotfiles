@@ -1,5 +1,10 @@
 {
+  "$schema": "https://raw.githubusercontent.com/EmmyLuaLs/emmylua-analyzer-rust/refs/heads/main/crates/emmylua_code_analysis/resources/schema.json",
+  "runtime": {
+    "version": "LuaJIT"
+  },
   "workspace": {
-    "library": ["$VIMRUNTIME", "$HOME/.local/share/nvim/lazy"]
+    "library": ["$VIMRUNTIME", "$HOME/.local/share/nvim/lazy"],
+    "ignoreGlobs": ["**/*_spec.lua"]
   }
 }
