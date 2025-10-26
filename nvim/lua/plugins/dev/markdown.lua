@@ -44,7 +44,10 @@ return {
       if Snacks then
         Snacks.toggle({
           name = 'Markview',
-          get = function() return require('markview').state.buffer_states[vim.api.nvim_get_current_buf()].enable end,
+          get = function()
+            local state = require('markview').state.buffer_states[vim.api.nvim_get_current_buf()]
+            return state and state.enable or false
+          end,
           set = function(_) vim.cmd('Markview toggle') end,
         }):map('<leader>vm')
       end
