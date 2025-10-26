@@ -44,9 +44,6 @@ return {
       ui = {
         window_width = 0.42,
         -- input_height = 0.21,
-        loading_animation = {
-          frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
-        },
         input = {
           text = {
             wrap = true, -- Wraps text inside input window
@@ -54,7 +51,7 @@ return {
         },
         icons = {
           overrides = {
-            header_user = '▏💬',
+            header_user = '▏󰭻 ',
             border = '▏',
           },
         },
@@ -64,18 +61,6 @@ return {
         capture_streamed_events = true,
       },
     },
-    -- config = function(_, opts)
-    --   local ok, opencode = pcall(require, 'opencode')
-    --   if not ok then return end
-    --   opencode.setup(opts)
-    --
-    --   -- local map = vim.keymap.set
-    --   -- local api = require('opencode.api')
-    --   -- map('n', '<leader>aa', api.switch_mode, { desc = 'Opencode: toggle agent/build' })
-    --   -- map('n', '<leader>as', api.select_session, { desc = 'Opencode: select session' })
-    --   -- map('n', '<leader>ap', api.configure_provider, { desc = 'Opencode: configure provider' })
-    --   -- map('n', '<leader>aR', function() require('opencode.ui.ui').render_output(true) end, { desc = 'Opencode full reload' })
-    -- end,
 
     vim.api.nvim_create_user_command('OpencodeReplay', function()
       vim.opt.runtimepath:append('.')
