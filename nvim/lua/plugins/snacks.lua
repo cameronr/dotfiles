@@ -14,10 +14,11 @@ return {
         { '<leader>cc', function() Snacks.scratch() end, desc = 'Scratch pad' },
         { '<leader>cC', function() Snacks.scratch.select() end, desc = 'Select scratch pad' },
         { '<leader>cP', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
-        { '<leader>sp', function() Snacks.notifier.show_history({ reverse = true }) end, desc = 'Show notifs' },
+        { '<leader>sp', function() Snacks.notifier.show_history({ reverse = false }) end, desc = 'Show notifs' },
         { '<leader>wp', function() Snacks.notifier.hide() end, desc = 'Dismiss popups' },
         { '<leader>e', function() Snacks.picker.explorer() end, desc = 'Explorer' },
         { '<leader>bd', function() Snacks.bufdelete() end, desc = 'Close buffer' },
+        { '<leader>bD', function() Snacks.bufdelete({ force = true }) end, desc = 'Force close buffer' },
       }
       if vim.g.picker_engine ~= 'snacks' then return keys end
 
@@ -233,6 +234,11 @@ return {
               },
             },
           },
+        },
+      },
+      profiler = {
+        globals = {
+          'vim',
         },
       },
       quickfile = { enabled = true },
