@@ -109,6 +109,7 @@ alias vi='vim'
 if [[ (( $commands[nvim] )) ]]; then
     export EDITOR=nvim
     export MANPAGER="nvim --cmd 'set laststatus=0 | let g:man_pager=1' +'set statuscolumn= nowrap laststatus=0' +Man\!"
+    export SUDO_EDITOR="nvim"
     alias vim='nvim'
     alias v='nvim'
     alias n='nvim'
