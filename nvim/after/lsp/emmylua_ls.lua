@@ -12,7 +12,13 @@ return {
         },
         ignoreGlobs = {
           '**/*_spec.lua', -- to avoid some weird type defs in a plugin
+          '.test/**',
         },
+      },
+
+      completion = {
+        enable = true,
+        autoRequire = false,
       },
 
       diagnostics = {
