@@ -23,6 +23,7 @@ return {
         enable = true,
         filetypes = { 'md', 'rmd', 'quarto', 'markdown' },
         ignore_buftypes = {},
+        map_gx = false,
       },
       markdown = {
         headings = {
