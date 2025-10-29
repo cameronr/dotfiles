@@ -167,8 +167,14 @@ return {
       hl.diffRemoved = { fg = c.git.delete }
       hl.diffChanged = { fg = c.git.change }
 
-      -- Make diffview deleted areas dimmer
+      -- Make deleted lines less prominent
+      hl.DiffviewDiffDelete = { fg = '#880000' }
+
+      -- DiffView has a highlight for less important deleted areas, make them even dimmer
       hl.DiffviewDiffDeleteDim = { fg = c.fg_gutter }
+
+      -- we don't need the background highlight of changes with the new word highlighting
+      hl.DiffChange = { bg = c.bg }
 
       -- Make lsp cursor word highlights dimmer
       hl.LspReferenceWrite = { bg = c.bg_highlight }
@@ -227,7 +233,12 @@ return {
         ---@diagnostic disable-next-line: undefined-field
         local stdout = vim.loop.new_tty(1, false)
         if stdout then
-          stdout:write(('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format('FORCE_DAY_MODE', vim.fn.system({ 'base64' }, color_scheme)))
+          stdout:write(
+            ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format(
+              'FORCE_DAY_MODE',
+              vim.fn.system({ 'base64' }, color_scheme)
+            )
+          )
           vim.cmd.redraw()
         end
       end,
