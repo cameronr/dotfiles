@@ -176,7 +176,10 @@ vim.keymap.set({ 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save File' })
 -- save file with undo point in insert mode
 vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr><esc>', { desc = 'Save File' })
 
--- diagnostic
+---Navigate to the next diagnostic
+---@param next boolean Next or previous?
+---@param severity? string Optional severity filter
+---@return fun()  -- always returns a function
 local diagnostic_goto = function(next, severity)
   if vim.fn.has('nvim-0.11') == 1 then
     local count = next and 1 or -1
@@ -308,7 +311,7 @@ vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
 
 local function cycle_diff_algorithm()
-  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' }
+  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' } --[[@as string[] ]]
 
   local function index_of(list, value)
     for i, v in ipairs(list) do
