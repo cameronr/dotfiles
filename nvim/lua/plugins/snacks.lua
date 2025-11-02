@@ -32,22 +32,36 @@ return {
         { '<leader>sG', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
         { '<leader>s.', function() Snacks.picker.recent() end, desc = 'Recent' },
         -- git
-        { '<leader>sgc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
-        { '<leader>sgl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
-        { '<leader>sgL', function() Snacks.picker.git_log_line() end, desc = 'Git Log Line' },
-        { '<leader>sgf', function() Snacks.picker.git_log_file() end, desc = 'Git Log File' },
-        { '<leader>sgs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
-        { '<leader>sgb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
-        { '<leader>sgz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
+        { '<leader>gc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
+        { '<leader>gl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
+        { '<leader>gL', function() Snacks.picker.git_log_line() end, desc = 'Git Log Line' },
+        { '<leader>gf', function() Snacks.picker.git_log_file() end, desc = 'Git Log File' },
+        { '<leader>gs', function() Snacks.picker.git_status() end, desc = 'Git Status' },
+        { '<leader>gb', function() Snacks.picker.git_branches() end, desc = 'Git Branches' },
+        { '<leader>gz', function() Snacks.picker.git_stash() end, desc = 'Git Stash' },
         { 'gX', function() Snacks.gitbrowse() end, desc = 'Git browse', mode = { 'n', 'x' } },
+        -- GH
+        { '<leader>gi', function() Snacks.picker.gh_issue() end, desc = 'GitHub Issues (open)' },
+        { '<leader>gI', function() Snacks.picker.gh_issue({ state = 'all' }) end, desc = 'GitHub Issues (all)' },
+        { '<leader>gp', function() Snacks.picker.gh_pr() end, desc = 'GitHub Pull Requests (open)' },
+        { '<leader>gP', function() Snacks.picker.gh_pr({ state = 'all' }) end, desc = 'GitHub Pull Requests (all)' },
         -- Grep
         { '<leader>sz', function() Snacks.picker.lines() end, desc = 'Fuzzy find in buffer' },
         { '<leader>sb', function() Snacks.picker.grep_buffers() end, desc = 'Grep Open Buffers' },
-        { '<leader>sw', function() Snacks.picker.grep_word() end, desc = 'Visual selection or word', mode = { 'n', 'x' } },
+        {
+          '<leader>sw',
+          function() Snacks.picker.grep_word() end,
+          desc = 'Visual selection or word',
+          mode = { 'n', 'x' },
+        },
         -- search
         { '<leader>s"', function() Snacks.picker.registers() end, desc = 'Registers' },
         { '<leader>sa', function() Snacks.picker.autocmds() end, desc = 'Autocmds' },
-        { '<leader>sc', function() Snacks.picker.command_history({ layout = { preset = 'select' } }) end, desc = 'Command History' },
+        {
+          '<leader>sc',
+          function() Snacks.picker.command_history({ layout = { preset = 'select' } }) end,
+          desc = 'Command History',
+        },
         { '<leader>sv', function() Snacks.picker.commands() end, desc = 'Commands' },
         { '<leader>sd', function() Snacks.picker.diagnostics() end, desc = 'Diagnostics' },
         { '<leader>sh', function() Snacks.picker.help() end, desc = 'Help Pages' },
@@ -148,7 +162,9 @@ return {
 
           -- find the preview box element and make it slightly larger
           for _, elem in ipairs(telescope.layout) do
-            if type(elem) == 'table' and elem['win'] == 'preview' then elem['width'] = preview_widths[source] or 0.52 end
+            if type(elem) == 'table' and elem['win'] == 'preview' then
+              elem['width'] = preview_widths[source] or 0.52
+            end
           end
           return telescope
         end,
@@ -253,15 +269,32 @@ return {
 ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
 ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
 ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
-                                          ]] .. vim.version().major .. '.' .. vim.version().minor .. '.' .. vim.version().patch,
+                                          ]]
+            .. vim.version().major
+            .. '.'
+            .. vim.version().minor
+            .. '.'
+            .. vim.version().patch,
           keys = {
             { icon = ' ', key = 'f', desc = 'Find file', action = ":lua Snacks.dashboard.pick('files')" },
             { icon = ' ', key = 'g', desc = 'Find text', action = ":lua Snacks.dashboard.pick('live_grep')" },
             { icon = ' ', key = 'e', desc = 'New file', action = ':ene' },
             { icon = ' ', key = 'r', desc = 'Recent files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
             { icon = '󰁯 ', key = 'w', desc = 'Restore session', action = ':AutoSession search' },
-            { icon = '󰊢 ', key = 'n', desc = 'Neogit', action = ':Neogit', enabled = function() return vim.fn.exists(':Neogit') == 2 end },
-            { icon = ' ', key = 'o', desc = 'Obsidian', action = ':Obsidian search', enabled = function() return vim.fn.exists(':Obsidian') == 2 end },
+            {
+              icon = '󰊢 ',
+              key = 'n',
+              desc = 'Neogit',
+              action = ':Neogit',
+              enabled = function() return vim.fn.exists(':Neogit') == 2 end,
+            },
+            {
+              icon = ' ',
+              key = 'o',
+              desc = 'Obsidian',
+              action = ':Obsidian search',
+              enabled = function() return vim.fn.exists(':Obsidian') == 2 end,
+            },
             { icon = '󰒲 ', key = 'l', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
             { icon = ' ', key = 'm', desc = 'Mason', action = ':Mason' },
             { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
@@ -269,7 +302,9 @@ return {
         },
         sections = {
           function()
-            if vim.fn.has('win32') == 1 or vim.fn.executable('lolcrab') == 0 or vim.env.NVIM_NO_LOLCRAB then return { section = 'header' } end
+            if vim.fn.has('win32') == 1 or vim.fn.executable('lolcrab') == 0 or vim.env.NVIM_NO_LOLCRAB then
+              return { section = 'header' }
+            end
 
             return {
               section = 'terminal',
@@ -352,7 +387,12 @@ return {
           Snacks.toggle.option('cursorline', { name = 'cursorline' }):map('<leader>vC')
           Snacks.toggle.option('winfixheight', { name = 'winfixheight' }):map('<leader>wfh')
           Snacks.toggle.option('winfixwidth', { name = 'winfixwidth' }):map('<leader>wfw')
-          Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }):map('<leader>vc')
+          Snacks.toggle
+            .option(
+              'conceallevel',
+              { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2, name = 'Conceal Level' }
+            )
+            :map('<leader>vc')
           Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>vw')
           Snacks.toggle.inlay_hints():map('<leader>vH')
           Snacks.toggle.diagnostics():map('<leader>vd')
