@@ -38,13 +38,17 @@ vim.schedule(function()
     vim.g.clipboard = {
       name = 'OSC 52',
       copy = {
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
       },
       paste = {
         -- No OSC52 paste action since wezterm doesn't support it
         -- Should still paste from nvim
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['+'] = my_paste('+'),
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['*'] = my_paste('*'),
       },
     }
@@ -109,6 +113,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.opt.whichwrap:append('<,>,[,]')
 
 -- Add characters to set used to identify words
+---@diagnostic disable-next-line: undefined-field
 vim.opt.iskeyword:append({ '-' })
 
 vim.opt.fillchars = {
