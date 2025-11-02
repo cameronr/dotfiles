@@ -13,13 +13,24 @@ return {
       default_mode = 'plan',
       preferred_picker = 'snacks',
       keymap_prefix = '<leader>a',
+      legacy_commands = false,
       keymap = {
         editor = {
           ['<leader>am'] = { 'switch_mode' },
           ['<leader>aR'] = { function() require('opencode.ui.ui').render_output(true) end },
           ['<leader>aa'] = { 'toggle', mode = { 'n', 'v' } },
-          ['<leader>ai'] = { function() require('opencode.core').open({ new_session = false, focus = 'input' }) end, mode = { 'n', 'v' } }, -- open input without insert mode
-          ['<leader>aI'] = { function() require('opencode.core').open({ new_session = true, focus = 'input' }) end, mode = { 'n', 'v' } }, -- open input without insert mode
+
+          -- open input without insert mode
+          ['<leader>ai'] = {
+            function() require('opencode.core').open({ new_session = false, focus = 'input' }) end,
+            mode = { 'n', 'v' },
+          },
+
+          -- open input without insert mode
+          ['<leader>aI'] = {
+            function() require('opencode.core').open({ new_session = true, focus = 'input' }) end,
+            mode = { 'n', 'v' },
+          },
         },
         output_window = {
           ['<esc>'] = false,
@@ -52,6 +63,7 @@ return {
         icons = {
           overrides = {
             header_user = '▏󰭻 ',
+            header_assistant = '',
             border = '▏',
           },
         },
@@ -109,7 +121,7 @@ return {
     'luukvbaal/statuscol.nvim',
     event = { 'BufNewFile', 'BufReadPost' },
     opts = {
-      ft_ignore = { 'opencode_output' },
+      ft_ignore = { 'opencode_output', 'opencode_input' },
     },
     opts_extend = { 'ft_ignore' },
   },
