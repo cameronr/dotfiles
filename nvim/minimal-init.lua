@@ -64,13 +64,17 @@ vim.schedule(function()
     vim.g.clipboard = {
       name = 'OSC 52',
       copy = {
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
       },
       paste = {
         -- No OSC52 paste action since wezterm doesn't support it
         -- Should still paste from nvim
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['+'] = my_paste('+'),
+        ---@diagnostic disable-next-line: assign-type-mismatch
         ['*'] = my_paste('*'),
       },
     }
@@ -135,6 +139,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.opt.whichwrap:append('<,>,[,]')
 
 -- Add characters to set used to identify words
+---@diagnostic disable-next-line: undefined-field
 vim.opt.iskeyword:append({ '-' })
 
 vim.opt.fillchars = {
@@ -385,7 +390,10 @@ vim.keymap.set({ 'x', 'n', 's' }, '<C-s>', '<cmd>w<cr>', { desc = 'Save File' })
 -- save file with undo point in insert mode
 vim.keymap.set('i', '<C-s>', '<c-g>u<cmd>w<cr><esc>', { desc = 'Save File' })
 
--- diagnostic
+---Navigate to the next diagnostic
+---@param next boolean Next or previous?
+---@param severity? string Optional severity filter
+---@return fun()  -- always returns a function
 local diagnostic_goto = function(next, severity)
   if vim.fn.has('nvim-0.11') == 1 then
     local count = next and 1 or -1
@@ -517,7 +525,7 @@ vim.keymap.set('n', '<leader>ci', '<cmd>Inspect<cr>', { desc = 'Inspect' })
 vim.keymap.set('n', 'yc', 'yy<cmd>normal gcc<CR>p')
 
 local function cycle_diff_algorithm()
-  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' }
+  local algorithms = { 'myers', 'minimal', 'patience', 'histogram' } --[[@as string[] ]]
 
   local function index_of(list, value)
     for i, v in ipairs(list) do
