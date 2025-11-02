@@ -102,6 +102,12 @@ return {
         mappings = {
           delete_session = { 'i', '<A-d>' },
         },
+        -- previewer = function() return { 'local a = 1' }, 'lua' end,
+        previewer = 'summary',
+        picker_opts = vim.g.picker_engine == 'snacks' and {
+          preset = 'telescope',
+          preview = true,
+        },
       },
       suppressed_dirs = { '~/', '~/Downloads', '~/Documents', '~/Desktop', '~/tmp' },
     }
