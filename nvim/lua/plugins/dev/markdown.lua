@@ -12,10 +12,6 @@ return {
   -- },
   {
     'OXY2DEV/markview.nvim',
-    lazy = false,
-    -- add lazy loading back in once this release goes live:
-    -- https://github.com/OXY2DEV/markview.nvim/pull/401
-    -- enabled = false,
     cmd = 'Markview',
     ft = { 'markdown' },
     opts = {
