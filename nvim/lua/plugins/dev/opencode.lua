@@ -75,6 +75,7 @@ return {
     },
 
     vim.api.nvim_create_user_command('OpencodeReplay', function()
+      ---@diagnostic disable-next-line: undefined-field
       vim.opt.runtimepath:append('.')
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.notify = function(msg, level, opts)
