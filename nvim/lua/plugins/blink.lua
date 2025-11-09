@@ -73,10 +73,20 @@ return {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
 
         providers = {
+          path = {
+            -- don't show snippets/buffer suggestions in a path
+            fallbacks = { 'snippets', 'buffer' },
+          },
           snippets = {
+            min_keyword_length = 3,
+            max_items = 2,
             opts = {
               extended_filetypes = { typescriptreact = { 'javascriptreact' } },
             },
+          },
+          buffer = {
+            min_keyword_length = 3,
+            max_items = 2,
           },
         },
       },
