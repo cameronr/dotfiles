@@ -47,6 +47,7 @@ return {
     opts = {
       servers = {
         'emmylua_ls',
+        -- 'lua_ls',
         'bashls',
         'html',
         'cssls',
@@ -94,7 +95,11 @@ return {
 
           map('<leader>cI', '<cmd>LspInfo<CR>', 'Inspect LSs')
 
-          map('<leader>vR', '<cmd>LspRestart<CR>', 'Restart LSP')
+          map('<leader>vR', function()
+            vim.cmd('LspRestart')
+
+            if vim.g.cmp_engine == 'blink' then vim.defer_fn(function() require('blink.cmp').reload() end, 2000) end
+          end, 'Restart LSP')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
@@ -146,6 +151,14 @@ return {
         mlspc_opts.automatic_enable = {
           exclude = {
             'lua_ls',
+          },
+        }
+      end
+
+      if vim.tbl_contains(opts.servers, 'lua_ls') then
+        mlspc_opts.automatic_enable = {
+          exclude = {
+            'emmylua_ls',
           },
         }
       end
