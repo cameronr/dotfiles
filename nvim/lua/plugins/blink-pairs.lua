@@ -18,13 +18,14 @@ return {
     highlights = {
       groups = {
         'RainbowDelimiterRed',
-        --  'RainbowDelimiterOrange',
         'RainbowDelimiterYellow',
-        'RainbowDelimiterGreen',
         'RainbowDelimiterBlue',
+        'RainbowDelimiterOrange',
+        'RainbowDelimiterGreen',
         'RainbowDelimiterViolet',
         'RainbowDelimiterCyan',
       },
+      unmatched_group = 'ModesReplaceCursor',
     },
   },
 }
