@@ -95,6 +95,7 @@ return {
         local o, c = pair:sub(1, 1), pair:sub(2, 2)
         local line = vim.api.nvim_get_current_line()
         local cursor = vim.api.nvim_win_get_cursor(0)
+        if not cursor[1] or not cursor[2] then return nil end
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
         if pairs_opts.markdown and o == '`' and vim.bo.filetype == 'markdown' and before:match('^%s*``') then
@@ -103,6 +104,7 @@ return {
         if pairs_opts.skip_next and next ~= '' and next:match(pairs_opts.skip_next) then return o end
         if pairs_opts.skip_ts and #pairs_opts.skip_ts > 0 then
           local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
+          ---@cast captures table[]
           for _, capture in ipairs(ok and captures or {}) do
             if vim.tbl_contains(pairs_opts.skip_ts, capture.capture) then return o end
           end
@@ -127,6 +129,7 @@ return {
       require('mini.icons').setup()
 
       require('mini.trailspace').setup()
+      ---@diagnostic disable-next-line: undefined-global
       vim.api.nvim_create_user_command('StripWhiteSpace', MiniTrailspace.trim, {})
 
       if Snacks then
