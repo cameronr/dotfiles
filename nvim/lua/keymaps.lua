@@ -193,7 +193,12 @@ local diagnostic_goto = function(next, severity)
   end
 end
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>cd', function() vim.diagnostic.open_float({ border = 'rounded' }) end, { desc = 'Diagnostic popup' })
+vim.keymap.set(
+  'n',
+  '<leader>cd',
+  function() vim.diagnostic.open_float({ border = 'rounded' }) end,
+  { desc = 'Diagnostic popup' }
+)
 vim.keymap.set('n', ']d', diagnostic_goto(true), { desc = 'Next Diagnostic' })
 vim.keymap.set('n', '[d', diagnostic_goto(false), { desc = 'Prev Diagnostic' })
 vim.keymap.set('n', ']e', diagnostic_goto(true, 'ERROR'), { desc = 'Next Error' })
@@ -244,7 +249,12 @@ vim.keymap.set('n', 'Sb', 'Saw}', { desc = 'Wrap word with {}', remap = true })
 vim.keymap.set('n', '<leader>,', '<C-6>', { desc = 'Alt buffer' })
 
 -- quick replace of current word
-vim.keymap.set({ 'n', 'v', 'x' }, '<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = 'Replace current word' })
+vim.keymap.set(
+  { 'n', 'v', 'x' },
+  '<leader>r',
+  [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+  { desc = 'Replace current word' }
+)
 
 -- select last pasted lines
 vim.keymap.set('n', 'gp', "'[V']", { desc = 'Select pasted lines' })
