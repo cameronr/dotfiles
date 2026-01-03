@@ -3,20 +3,15 @@ if vim.g.treesitter_branch ~= 'main' then return {} end
 -- on main branch, treesitter isn't started automatically
 vim.api.nvim_create_autocmd({ 'Filetype' }, {
   callback = function(event)
-    local ignored_fts = {
-      'snacks_dashboard',
-      'snacks_notif',
-      'snacks_input',
-      'prompt', -- bt: snacks_picker_input
-    }
-
-    if vim.tbl_contains(ignored_fts, event.match) then return end
-
     -- make sure nvim-treesitter is loaded
     local ok, nvim_treesitter = pcall(require, 'nvim-treesitter')
 
     -- no nvim-treesitter, maybe fresh install
     if not ok then return end
+
+    local parsers = require('nvim-treesitter.parsers')
+
+    if not parsers[event.match] or not nvim_treesitter.install then return end
 
     local ft = vim.bo[event.buf].ft
     local lang = vim.treesitter.language.get_lang(ft)
