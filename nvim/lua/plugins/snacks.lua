@@ -25,14 +25,18 @@ return {
       local picker_keys = {
         { '<leader><leader>', function() Snacks.picker.buffers() end, desc = 'Buffers' },
         { '<leader>/', function() Snacks.picker.grep() end, desc = 'Grep' },
-        { '<leader>:', function() Snacks.picker.command_history({ layout = { preset = 'select' } }) end, desc = 'Command History' },
+        {
+          '<leader>:',
+          function() Snacks.picker.command_history({ layout = { preset = 'select' } }) end,
+          desc = 'Command History',
+        },
         { '<leader>sf', function() Snacks.picker.files() end, desc = 'Find Files' },
         -- find
         { '<leader>sB', function() Snacks.picker.pickers() end, desc = 'Pickers' },
         { '<leader>sG', function() Snacks.picker.git_files() end, desc = 'Find Git Files' },
         { '<leader>s.', function() Snacks.picker.recent() end, desc = 'Recent' },
         -- git
-        { '<leader>gb', function() Snacks.git.blame_line() end, desc = 'Git Log' },
+        { '<leader>gb', function() Snacks.git.blame_line() end, desc = 'Git Blame' },
         { '<leader>gc', function() Snacks.picker.git_log() end, desc = 'Git Log' },
         { '<leader>gl', function() Snacks.picker.git_log() end, desc = 'Git Log' },
         { '<leader>gL', function() Snacks.picker.git_log_line() end, desc = 'Git Log Line' },
@@ -95,7 +99,7 @@ return {
         { 'gW', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'LSP Workspace Symbols' },
 
         -- Notifications
-        -- { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
+        { '<leader>sP', function() Snacks.picker.notifications() end, desc = 'Search notifs' },
       }
 
       for _, entry in ipairs(picker_keys) do

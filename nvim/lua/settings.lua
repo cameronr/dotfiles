@@ -1,4 +1,15 @@
-M = {}
+---@class dotfiles.Settings
+---@field icons dotfiles.Settings.Icons
+---@field transform fun(tbl: table, lower_case?: boolean): table
+
+---@class dotfiles.Settings.Icons
+---@field diagnostics table<string, string>
+---@field dap table<string, any>
+---@field kinds table<string, string>
+
+---@type dotfiles.Settings
+---@diagnostic disable-next-line: missing-fields
+local M = {}
 
 M.icons = {
   diagnostics = {
@@ -61,6 +72,7 @@ M.icons = {
 ---Transform table keys to lower case
 ---@param tbl table Table to transform
 ---@param lower_case? boolean If true, transform keys to lower case
+---@return table
 function M.transform(tbl, lower_case)
   local new_tbl = {}
   for k, v in pairs(tbl) do
