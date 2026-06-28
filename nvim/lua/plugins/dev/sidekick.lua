@@ -1,7 +1,7 @@
 return {
   {
     'folke/sidekick.nvim',
-    enabled = true,
+    enabled = vim.g.use_copilot == true,
     keys = {
       {
         '<tab>',

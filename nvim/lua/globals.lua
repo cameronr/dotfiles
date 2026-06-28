@@ -20,6 +20,10 @@ vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
 -- Default to main branch of treesitter if we have a build environment and tree-sitter
-local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.executable('tree-sitter') == 1) and 'main' or 'master'
+local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.executable('tree-sitter') == 1) and 'main'
+  or 'master'
 -- But allow env var override
 vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
+
+-- Use copilot
+vim.g.use_copilot = vim.env.NVIM_USE_COPILOT == '1'
