@@ -210,6 +210,8 @@ end
 -- Add ** to the path for expansion in :find
 vim.opt.path:append('**')
 
+if vim.fn.has('nvim-0.12') == 1 then require('vim._core.ui2').enable() end
+
 -- vim: ts=2 sts=2 sw=2 et
 
 -- [[ Basic Keymaps ]]
@@ -572,6 +574,12 @@ vim.keymap.set('n', '<leader>cDl', function()
     vim.notify(linematch .. ' added')
   end
 end, { desc = 'Toggle linematch' })
+
+if vim.fn.has('nvim-0.12') == 1 then
+  vim.keymap.set('i', '<Tab>', function()
+    if not vim.lsp.inline_completion.get() then return '<Tab>' end
+  end, { expr = true, desc = 'Accept inline completion' })
+end
 
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end, { desc = 'debugging function' })
