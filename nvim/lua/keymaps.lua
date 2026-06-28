@@ -359,6 +359,12 @@ vim.keymap.set('n', '<leader>cDl', function()
   end
 end, { desc = 'Toggle linematch' })
 
+if vim.fn.has('nvim-0.12') == 1 then
+  vim.keymap.set('i', '<Tab>', function()
+    if not vim.lsp.inline_completion.get() then return '<Tab>' end
+  end, { expr = true, desc = 'Accept inline completion' })
+end
+
 -- Debugging key
 vim.keymap.set('n', '<Bslash>d', function() end, { desc = 'debugging function' })
 

@@ -123,7 +123,6 @@ return {
           -- https://www.reddit.com/r/neovim/comments/1n59kir/neovim_now_supports_lsp_ontype_formatting/
           if vim.lsp.on_type_formatting then
             -- TODO: add snacks toggle for this
-            vim.notify('enabling on type formatting')
             vim.lsp.on_type_formatting.enable(true, { client_id = event.data.client_id })
           end
         end,

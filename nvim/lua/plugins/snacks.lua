@@ -433,6 +433,19 @@ return {
               end
             end,
           }):map('<leader>vt')
+
+          if vim.fn.has('nvim-0.12') == 1 then
+            Snacks
+              .toggle
+              ---@diagnostic disable-next-line: param-type-mismatch
+              .new({
+                id = 'native_inline_completion',
+                name = 'Native Inline Completion',
+                get = vim.lsp.inline_completion.is_enabled,
+                set = vim.lsp.inline_completion.enable,
+              })
+              :map('<leader>vI')
+          end
         end,
       })
     end,
