@@ -30,12 +30,6 @@ return {
         },
       },
       ---@diagnostic disable-next-line: missing-fields
-      completion = {
-        nvim_cmp = false,
-        blink = true,
-      },
-
-      ---@diagnostic disable-next-line: missing-fields
       picker = {
         name = 'snacks.pick',
       },
