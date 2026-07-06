@@ -1,0 +1,43 @@
+theme = "custom"
+line_numbers = true
+transparent_background = false
+wrap_lines = false
+
+[custom_theme]
+base = "tokyo-night"
+label = "Tokyonight Night"
+background = "#171821"      # Main editor background - tokyonight night
+panel = "#171821"           # Sidebar background - YOUR custom bg_dark (line 37)
+panelAlt = "#171821"        # Alt panel background
+border = "#7aa2f7"          # Border color - YOUR blue override (line 21: c.blue instead of teal)
+accent = "#7aa2f7"          # Accent color - vibrant blue
+text = "#c0caf5"            # Main text foreground
+muted = "#565f89"           # Muted text - tokyonight comment color
+noteBorder = "#bb9af7"      # Note border - magenta
+addedBg = "#182f23"         # Added line bg - YOUR override (line 32)
+removedBg = "#4d1919"       # Removed line bg - YOUR override (line 34)
+addedContentBg = "#204b23"  # Added content highlight - YOUR override (line 30: diff.text)
+removedContentBg = "#4d1919"  # Removed content highlight
+contextContentBg = "#171821"
+contextBg = "#171821"
+addedSignColor = "#1abc9c"  # Added sign - YOUR git.add override (line 24: c.teal)
+removedSignColor = "#db4b4b"  # Removed sign - YOUR git.delete override (line 26: c.red1)
+lineNumberBg = "#1a1b26"    # Line number background
+lineNumberFg = "#3b4261"    # Line number foreground
+badgeAdded = "#1abc9c"      # Badge for additions - YOUR git.add (c.teal)
+badgeRemoved = "#db4b4b"    # Badge for deletions - YOUR git.delete (c.red1)
+badgeModified = "#7aa2f7"   # Badge for modifications - YOUR git.change (c.blue)
+fileNew = "#1abc9c"         # New file indicator - git.add
+fileDeleted = "#db4b4b"     # Deleted file indicator - git.delete
+fileRenamed = "#7aa2f7"     # Renamed file indicator - git.change
+fileModified = "#7aa2f7"    # Modified file indicator - git.change
+fileUntracked = "#1abc9c"   # Untracked file indicator - git.add
+
+[custom_theme.syntax]
+keyword = "#7dcfff"       # Cyan - vibrant keyword color
+string = "#9ece6a"        # Green - easy to distinguish strings
+comment = "#565f89"       # Muted comment color
+operator = "#89ddff"      # Bright cyan for operators
+variable = "#c0caf5"      # Clean foreground color
+function = "#7aa2f7"      # Blue - matches your function highlights
+number = "#ff9e64"        # Orange - vibrant number highlighting
