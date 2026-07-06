@@ -29,6 +29,9 @@ source ${ZIM_HOME}/init.zsh
 
 ## Settings after zim modules loaded
 
+# enable zmv for moving files with globbing
+autoload -Uz zmv
+
 # Change some settings set by zimfw
 # I like the default grep highlights vs what zimfw/utility sets
 unset GREP_COLOR GREP_COLORS
@@ -169,6 +172,11 @@ if [[ (( $commands[rg] )) ]]; then
     export RIPGREP_CONFIG_PATH=$DOTFILES/.ripgreprc
 fi
 
+# check for worktrunk
+if [[ (( $commands[wt] )) ]]; then
+    eval "$(command wt config shell init zsh)";
+fi
+
 # set up fzf if installed
 if [[ (( $commands[fzf] )) ]]; then
 
@@ -239,4 +247,5 @@ fi
 
 typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=magenta
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+
 
