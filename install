@@ -24,11 +24,29 @@ for file in $DOTFILES; do
     ln -snf $DOTFILES_DIR/$file $link_name
 done
 
-# Tmux special case
-ln -snf $DOTFILES_DIR/tmux/tmux.conf .tmux.conf
-
 DOTFILE_DIRS=(nvim stylua eza)
 
 for dir in $DOTFILE_DIRS; do
     ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
+done
+
+# Config files with directory creation - format: source[:destination]
+# If destination is omitted, uses source as destination
+CONFIG_FILES=(
+    agents/AGENTS.md:opencode/AGENTS.md
+    hunk/config.toml
+    tmux/tmux.conf
+)
+
+for entry in $CONFIG_FILES; do
+    if [[ "$entry" == *:* ]]; then
+        source="${entry%%:*}"
+        dest="${entry##*:}"
+    else
+        source="$entry"
+        dest="$entry"
+    fi
+    dest_dir="$CONFIG_DIR/$(dirname "$dest")"
+    mkdir -p "$dest_dir"
+    ln -snf "$DOTFILES_DIR/$source" "$CONFIG_DIR/$dest"
 done
