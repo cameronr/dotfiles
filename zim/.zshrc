@@ -24,6 +24,12 @@ unset FZF_DEFAULT_OPTS
 # Globbing should be case sensitive, in quotes to make beautysh happy
 zstyle ':zim:glob' "case-sensitivity" sensitive
 
+# Ctrl-W should stop at path separators
+# https://mikebian.co/fixing-word-navigation-in-zsh/
+autoload -Uz select-word-style
+select-word-style normal
+zstyle ':zle:*' word-chars "${WORDCHARS//\/}"
+
 # Initialize modules.
 source ${ZIM_HOME}/init.zsh
 
