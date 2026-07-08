@@ -5,16 +5,6 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.config}"
 
-# # (.) at end tells zsh to only return files
-# for file in $DOTFILES_DIR/.*(.); do
-#     echo ln -s $file `basename $file`
-# done
-#
-# for dir in $DOTFILES_DIR/*(/); do
-#     echo $dir
-# done
-#
-
 cd ~
 
 DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc)
@@ -24,21 +14,25 @@ for file in $DOTFILES; do
     ln -snf $DOTFILES_DIR/$file $link_name
 done
 
-DOTFILE_DIRS=(nvim stylua eza)
+DIR_SYMLINKS=(nvim stylua eza)
 
-for dir in $DOTFILE_DIRS; do
+for dir in $DIR_SYMLINKS; do
     ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
 done
 
-# Config files with directory creation - format: source[:destination]
+# Symlink files with directory creation - format: source[:destination]
 # If destination is omitted, uses source as destination
-CONFIG_FILES=(
+# Destination is relative to CONFIG_DIR by default, unless prefixed with ~/ in which
+# case it's relative to HOME instead (for tools that don't use CONFIG_DIR)
+FILE_SYMLINKS=(
     agents/AGENTS.md:opencode/AGENTS.md
+    "agents/AGENTS.md:~/.pi/agent/AGENTS.md"
     hunk/config.toml
     tmux/tmux.conf
+    herdr/config.toml
 )
 
-for entry in $CONFIG_FILES; do
+for entry in $FILE_SYMLINKS; do
     if [[ "$entry" == *:* ]]; then
         source="${entry%%:*}"
         dest="${entry##*:}"
@@ -46,7 +40,11 @@ for entry in $CONFIG_FILES; do
         source="$entry"
         dest="$entry"
     fi
-    dest_dir="$CONFIG_DIR/$(dirname "$dest")"
-    mkdir -p "$dest_dir"
-    ln -snf "$DOTFILES_DIR/$source" "$CONFIG_DIR/$dest"
+    if [[ "$dest" == "~/"* ]]; then
+        dest_path="${HOME}/${dest#\~/}"
+    else
+        dest_path="$CONFIG_DIR/$dest"
+    fi
+    mkdir -p "$(dirname "$dest_path")"
+    ln -snf "$DOTFILES_DIR/$source" "$dest_path"
 done
