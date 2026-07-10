@@ -98,6 +98,9 @@ config = {
 
   font_size = 19,
 
+  -- enable csi encoding for modifier keys + enter
+  enable_csi_u_key_encoding = true,
+
   -- For example, changing the color scheme:
   color_scheme = 'tokyonight_night',
 
