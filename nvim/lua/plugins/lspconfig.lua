@@ -59,7 +59,7 @@ return {
         'typos_lsp',
         'yamlls',
         'marksman',
-        'copilot',
+        vim.g.use_copilot and 'copilot' or nil,
       },
     },
     config = function(_, opts)
