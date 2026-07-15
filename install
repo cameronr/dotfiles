@@ -30,6 +30,7 @@ FILE_SYMLINKS=(
     hunk/config.toml
     tmux/tmux.conf
     herdr/config.toml
+    opencode/tui.json
 )
 
 for entry in $FILE_SYMLINKS; do
