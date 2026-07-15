@@ -8,14 +8,13 @@ wezterm.on('user-var-changed', function(window, _, name, value)
 
   if name == 'FORCE_DAY_MODE' then
     local overrides = window:get_config_overrides() or {}
-    overrides.color_scheme = value
-    -- if overrides ~= nil then wezterm.log_info('overrides', overrides.color_scheme) end
-    -- if value == 'tokyonight_day' and not overrides.color_scheme then
-    --   overrides.color_scheme = 'tokyonight_day'
-    -- else
-    --   overrides.color_scheme = 'tokyonight_night'
-    -- end
-    wezterm.log_info('overrides', overrides.color_scheme)
+    if overrides ~= nil then wezterm.log_info('overrides', overrides.color_scheme) end
+    if value == 'tokyonight_day' then
+      overrides.color_scheme = 'tokyonight_day'
+    else
+      overrides.color_scheme = nil
+    end
+    wezterm.log_info('setting wezterm colorscheme', overrides.color_scheme)
     window:set_config_overrides(overrides)
   end
 end)

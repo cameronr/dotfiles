@@ -220,42 +220,36 @@ return {
     -- Activate the colorscheme here. Tokyonight will pick the right style as set above
     vim.cmd.colorscheme('tokyonight')
 
-    -- NOTE: 2026-07-06 this code requires tmux to have allow-passthrough on
-    -- but i'm having issues with escape sequeneces leaking through to the terminal
-    -- with hunk.
-    -- As an alternate approach, could have wezterm catch the colorscheme event change
-    -- and then have nvim watch for that file to change
-
     -- restore light/dark background
-    -- local colorscheme_file = vim.fn.stdpath('data') .. '/last-colorscheme'
-    -- local success, colorscheme = pcall(vim.fn.readfile, colorscheme_file)
-    -- if success and vim.tbl_contains(colorscheme, 'tokyonight-day') then
-    --   -- vim.schedule(function() vim.o.background = 'light' end)
-    -- end
+    local colorscheme_file = vim.fn.stdpath('data') .. '/last-colorscheme'
+    local success, colorscheme = pcall(vim.fn.readfile, colorscheme_file)
+    if success and vim.tbl_contains(colorscheme, 'tokyonight-day') then
+      vim.schedule(function() vim.o.background = 'light' end)
+    end
 
     -- Sync nvim theme to wezterm, mostly to fix cursor color in day mode.
     -- See:
     -- https://github.com/folke/tokyonight.nvim/issues/26
     -- https://github.com/folke/zen-mode.nvim/pull/61
-    -- vim.api.nvim_create_autocmd('ColorScheme', {
-    --   pattern = '*',
-    --   callback = function()
-    --     -- vim.fn.writefile({ vim.g.colors_name }, colorscheme_file)
-    --
-    --     local color_scheme = vim.g.colors_name:gsub('-', '_')
-    --     ---@diagnostic disable-next-line: undefined-field
-    --     local stdout = vim.loop.new_tty(1, false)
-    --     if stdout then
-    --       stdout:write(
-    --         ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format(
-    --           'FORCE_DAY_MODE',
-    --           vim.fn.system({ 'base64' }, color_scheme)
-    --         )
-    --       )
-    --       vim.cmd.redraw()
-    --     end
-    --   end,
-    -- })
+    vim.api.nvim_create_autocmd('ColorScheme', {
+      pattern = '*',
+      callback = function()
+        vim.fn.writefile({ vim.g.colors_name }, colorscheme_file)
+
+        local color_scheme = vim.g.colors_name:gsub('-', '_')
+        ---@diagnostic disable-next-line: undefined-field
+        local stdout = vim.loop.new_tty(1, false)
+        if stdout then
+          stdout:write(
+            ('\x1bPtmux;\x1b\x1b]1337;SetUserVar=%s=%s\b\x1b\\'):format(
+              'FORCE_DAY_MODE',
+              vim.fn.system({ 'base64' }, color_scheme)
+            )
+          )
+          vim.cmd.redraw()
+        end
+      end,
+    })
   end,
 }
 -- vim: ts=2 sts=2 sw=2 et
