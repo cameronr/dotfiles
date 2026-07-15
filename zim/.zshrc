@@ -85,6 +85,7 @@ bindkey -M vicmd '^[[C' forward-char
 bindkey -M vicmd '^[OC' forward-char
 bindkey -M vicmd '^[[D' backward-char
 bindkey -M vicmd '^[OD' backward-char
+bindkey -M vicmd '^W' backward-kill-word
 
 # better history search
 bindkey "^[[A" history-substring-search-up
