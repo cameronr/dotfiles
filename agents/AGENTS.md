@@ -12,3 +12,4 @@
 - Apply that same high standard to engineering excellence: lint, test failures, and test flakiness.
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 - Be extremely concise. Sacrifice grammar for the sake of brevity.
+- Use conventional style commits
