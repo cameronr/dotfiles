@@ -59,7 +59,7 @@ function generate_inactive_window_string() {
     fi
 
     # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$inactive_window_icon}#W ${separator_end}"
-    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #{?window_zoomed_flag,$zoomed_window_icon,}#T ${separator_end}"
+    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title}#{E:@theme_agent_icon} ${separator_end}"
 }
 
 function generate_active_window_string() {
@@ -81,8 +81,7 @@ function generate_active_window_string() {
     fi
 
     # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$active_window_icon}#W #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
-    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #{?window_zoomed_flag,$zoomed_window_icon,}#T #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
+    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title}#{E:@theme_agent_icon} #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
 }
-
 
 export PALLETE

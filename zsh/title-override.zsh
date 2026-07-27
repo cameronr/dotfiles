@@ -1,7 +1,3 @@
-
-# Override OMZ's title function for two reasons:
-# 1. If we're in an ssh session, add the machine name
-# 2. Add an icon for the currently running command (if we have one)
 source $DOTFILES/zsh/get-icon-for-command.zsh
 functions -c title omz_title
 title () {
