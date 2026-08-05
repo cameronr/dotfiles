@@ -3,5 +3,13 @@
   "keybinds": {
     "leader": "ctrl+o"
   },
-  "plugin": ["vimcode@git+https://github.com/oribarilan/vimcode.git#v0.15.3"]
+  "plugin": [
+    [
+      "@leohenon/opencode-vim-plugin",
+      {
+        "enabled": true,
+        "vim_initial_mode": "normal"
+      }
+    ]
+  ]
 }
