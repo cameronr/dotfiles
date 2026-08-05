@@ -3,6 +3,7 @@ return {
   ---@type LazySpec
   {
     'luukvbaal/statuscol.nvim',
+    enabled = false,
     event = { 'BufNewFile', 'BufReadPost' },
     opts = function(_, opts)
       local builtin = require('statuscol.builtin')
