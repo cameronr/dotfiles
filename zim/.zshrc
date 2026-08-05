@@ -87,6 +87,12 @@ bindkey -M vicmd '^[[D' backward-char
 bindkey -M vicmd '^[OD' backward-char
 bindkey -M vicmd '^W' backward-kill-word
 
+# Ctrl+Arrow word navigation in vim mode
+bindkey -M viins '^[[1;5C' forward-word
+bindkey -M viins '^[[1;5D' backward-word
+bindkey -M vicmd '^[[1;5C' forward-word
+bindkey -M vicmd '^[[1;5D' backward-word
+
 # better history search
 bindkey "^[[A" history-substring-search-up
 bindkey "^[OA" history-substring-search-up
