@@ -59,7 +59,16 @@ function generate_inactive_window_string() {
     fi
 
     # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$inactive_window_icon}#W ${separator_end}"
-    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title}#{E:@theme_agent_icon} ${separator_end}"
+    local working_icon
+    working_icon=$(get_tmux_option "@theme_agent_working_icon" "󰔟")
+    local waiting_icon
+    waiting_icon=$(get_tmux_option "@theme_agent_waiting_icon" "󰆆")
+    local idle_icon
+    idle_icon=$(get_tmux_option "@theme_agent_idle_icon" "")
+    local error_icon
+    error_icon=$(get_tmux_option "@theme_agent_error_icon" "")
+    local agent_icon="#{?#{==:#{@agent_status},working},#[fg=${PALLETE[yellow]}]${working_icon} ,}#{?#{==:#{@agent_status},waiting},#[fg=${PALLETE[blue]}]${waiting_icon} ,}#{?#{==:#{@agent_status},idle},#[fg=${PALLETE[green]}]${idle_icon} ,}#{?#{==:#{@agent_status},error},#[fg=${PALLETE[red]}]${error_icon} ,}"
+    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title} ${agent_icon}${separator_end}"
 }
 
 function generate_active_window_string() {
@@ -81,7 +90,7 @@ function generate_active_window_string() {
     fi
 
     # echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[white]}] #{?window_zoomed_flag,$zoomed_window_icon,$active_window_icon}#W #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
-    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title}#{E:@theme_agent_icon} #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
+    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}] #{?window_zoomed_flag,$zoomed_window_icon,}#{=/20/…:pane_title} #{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
 }
 
 export PALLETE
