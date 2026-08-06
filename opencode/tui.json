@@ -8,7 +8,8 @@
       "@leohenon/opencode-vim-plugin",
       {
         "enabled": true,
-        "vim_initial_mode": "normal"
+        "vim_initial_mode": "normal",
+        "vim_system_clipboard_register": true
       }
     ]
   ]
