@@ -185,7 +185,7 @@ if [[ (( $commands[rg] )) ]]; then
     export RIPGREP_CONFIG_PATH=$DOTFILES/.ripgreprc
 fi
 
-# check for worktrunk
+# worktrunk completions
 if [[ (( $commands[wt] )) ]]; then
     eval "$(command wt config shell init zsh)";
 fi
