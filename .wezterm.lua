@@ -169,6 +169,14 @@ if wezterm.target_triple:find('windows') then
   -- config.default_prog = { 'powershell.exe', '-NoLogo' }
   -- OR for PowerShell Core 7+:
   config.default_prog = { 'pwsh.exe', '-NoLogo' }
+else
+  -- disable built in tab switching in favor of tmux
+  config.keys = {
+    -- Option A: Unbind Ctrl+Tab from WezTerm so it passes cleanly to tmux
+    { key = 'Tab', mods = 'CTRL', action = wezterm.action.DisableDefaultAssignment },
+    { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.DisableDefaultAssignment },
+    -- { key = 'Tab', mods = 'CTRL|SHIFT', action = wezterm.action.SendString('\x1b[9;6u') },
+  }
 end
 
 tabline.apply_to_config(config)
