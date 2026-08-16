@@ -188,6 +188,9 @@ fi
 # worktrunk completions
 if [[ (( $commands[wt] )) ]]; then
     eval "$(command wt config shell init zsh)";
+    alias wts='wt switch'
+    alias wtl='wt list'
+    alias wtm='wt merge'
 fi
 
 # set up fzf if installed
