@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/tui.json",
+  "theme": "tokyonight",
   "keybinds": {
     "leader": "ctrl+o"
   },
@@ -11,6 +12,7 @@
         "vim_initial_mode": "normal",
         "vim_system_clipboard_register": true
       }
-    ]
+    ],
+    "./plugins/tmux-status.js"
   ]
 }

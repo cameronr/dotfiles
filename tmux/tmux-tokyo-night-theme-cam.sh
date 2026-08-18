@@ -67,8 +67,16 @@ function generate_inactive_window_string() {
     local error_icon
     error_icon=$(get_tmux_option "@theme_agent_error_icon" "✗")
 
-    local agent_icon="#{?#{==:#{@agent_status},working},#[fg=${PALLETE[yellow]}]${working_icon},}#{?#{==:#{@agent_status},waiting},#[fg=${PALLETE[blue]}]${waiting_icon},}#{?#{==:#{@agent_status},idle},#[fg=${PALLETE[green]}]${idle_icon},}#{?#{==:#{@agent_status},error},#[fg=${PALLETE[red]}]${error_icon},}"
-    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}]#{?window_zoomed_flag,$zoomed_window_icon,}#{?#{@agent_status},#{=/13/…:#{s/^OC \| /󰰕 /:pane_title}},#{=/15/…:#{s/^OC \| /󰰕 /:pane_title}}}#{?#{@agent_status}, ,}${agent_icon}${separator_end}"
+    # Agent status is encoded into the pane title by the opencode plugin as
+    # "OC | <char> <session>" where <char> is a single char: w/q/i/e/-
+    # (working/waiting/idle/error/none). Parse the char out of pane_title.
+    local agent_char="#{s/ .*//:#{s/^OC \| //:pane_title}}"
+    # Non-empty ("1") when the char is a real state (w/q/i/e), empty otherwise.
+    local has_agent_status="#{?#{==:$agent_char,w},1,#{?#{==:$agent_char,q},1,#{?#{==:$agent_char,i},1,#{?#{==:$agent_char,e},1,}}}}"
+    local agent_icon="#{?#{==:$agent_char,w},#[fg=${PALLETE[yellow]}]${working_icon},}#{?#{==:$agent_char,q},#[fg=${PALLETE[blue]}]${waiting_icon},}#{?#{==:$agent_char,i},#[fg=${PALLETE[green]}]${idle_icon},}#{?#{==:$agent_char,e},#[fg=${PALLETE[red]}]${error_icon},}"
+    # Session with the "OC | <char> " prefix swapped for the opencode icon.
+    local agent_session="#{s/^OC \| . /󰰕 /:pane_title}"
+    echo "${separator_start}#[fg=${PALLETE[white]}]#I${separator_internal}#[fg=${PALLETE[fg_dark]}]#{?window_zoomed_flag,$zoomed_window_icon,}#{?${has_agent_status},#{=/13/…:${agent_session}},#{=/15/…:${agent_session}}}#{?${has_agent_status}, ,}${agent_icon}${separator_end}"
 }
 
 function generate_active_window_string() {
@@ -89,7 +97,7 @@ function generate_active_window_string() {
         separator_end="#[bg=${PALLETE[bg_highlight]},fg=${PALLETE['purple']}]${left_separator:?}#[none]"
     fi
 
-    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}]#{?window_zoomed_flag,$zoomed_window_icon,}#{=/15/…:#{s/^OC \| /󰰕 /:pane_title}}#{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
+    echo "${separator_start}#[fg=${PALLETE[white2]}]#I${separator_internal}#[fg=${PALLETE[white2]}]#{?window_zoomed_flag,$zoomed_window_icon,}#{=/15/…:#{s/^OC \| . /󰰕 /:pane_title}}#{?pane_synchronized,$pane_synchronized_icon,}${separator_end}#[none]"
 }
 
 export PALLETE
