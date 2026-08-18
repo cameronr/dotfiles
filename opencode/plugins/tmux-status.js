@@ -24,7 +24,8 @@
 
 // Module-level state, kept so it survives across events for the TUI's life.
 let status = "-"; // one of: w q i e -
-let acknowledged = false; // whether the user has seen the current done state
+let questionMode = false; // true while the TUI is showing a pending question
+let lastTitle = ""; // last OSC title pushed, to skip redundant writes
 
 export default {
   id: "tmux-status",
@@ -36,7 +37,8 @@ export default {
       api.kv.set("terminal_title_enabled", false);
 
       status = "-";
-      acknowledged = false;
+      questionMode = false;
+      lastTitle = "";
 
       // The session currently in focus (from the route), or the home
       // placeholder.
@@ -50,17 +52,37 @@ export default {
         return { id: null, title: "OpenCode" };
       }
 
-      // Push the encoded status + session title to the terminal.
+      // The effective status char: a pending question overrides everything to
+      // "q" (the TUI is blocked waiting for the user's answer).
+      function effectiveStatus() {
+        return questionMode ? "q" : status;
+      }
+
+      // Push the encoded status + session title to the terminal, skipping the
+      // OSC write if the resulting title is unchanged.
       function emit() {
         const { title } = currentSession();
         const session = (title ?? "OpenCode").slice(0, 40);
-        api.renderer.setTerminalTitle(`OC | ${status} ${session}`);
+        const next = `OC | ${effectiveStatus()} ${session}`;
+        if (next === lastTitle) return;
+        lastTitle = next;
+        api.renderer.setTerminalTitle(next);
       }
 
-      // Change status and re-emit, skipping the OSC write if unchanged.
+      // A question can only be pending while the turn is active (working, or
+      // waiting on a permission). Used to gate the question-mode poll.
+      function turnActive() {
+        return status === "w" || status === "q";
+      }
+
+      // Change the base status and re-emit, skipping the OSC write if the
+      // effective title is unchanged.
       function applyStatus(next) {
         if (status === next) return;
         status = next;
+        // A question can't survive the turn ending; clear a stale flag so the
+        // title doesn't stick on "q" after the session goes idle.
+        if (!turnActive() && questionMode) questionMode = false;
         emit();
       }
 
@@ -99,10 +121,8 @@ export default {
           const st = event?.properties?.status ?? event?.data?.status;
           const t = typeof st === "string" ? st : st?.type;
           if (t === "busy") {
-            acknowledged = false;
             applyStatus("w");
           } else if (t === "idle") {
-            acknowledged = false;
             applyStatus("i");
           } else if (t === "retry") {
             applyStatus("e");
@@ -110,7 +130,8 @@ export default {
         }),
       );
 
-      // Waiting on user input (permission/question).
+      // Waiting on user input (permission). This event does fire on the
+      // current opencode version.
       api.event.on(
         "permission.v2.asked",
         safe((event) => {
@@ -119,6 +140,9 @@ export default {
         }),
       );
 
+      // Waiting on user input (question). Kept as a defensive fallback: on the
+      // current opencode version this event does NOT reach the plugin event
+      // bus, so the mode poll below is the primary question signal.
       api.event.on(
         "question.v2.asked",
         safe((event) => {
@@ -144,13 +168,35 @@ export default {
         }),
       );
 
+      // Poll the TUI mode to detect pending questions, but only while the turn
+      // is active (a question can't be pending once the session goes idle).
+      // There is no event for a question being asked on the current opencode
+      // version, but the TUI enters a "question" mode while one is up, and
+      // `api.mode.current()` exposes it.
+      setInterval(() => {
+        if (!turnActive()) return;
+        try {
+          let mode = "base";
+          try {
+            mode = api.mode.current();
+          } catch {
+            return;
+          }
+          const next = mode === "question";
+          if (next === questionMode) return;
+          questionMode = next;
+          emit();
+        } catch {
+          // Best-effort; ignore.
+        }
+      }, 1000);
+
       // Clear the green "done" check when the terminal is focused again.
       // This replaces the old tmux pane-focus-in hook.
       api.renderer.on("focus", () => {
         try {
           if (status === "i") {
             status = "-";
-            acknowledged = true;
             emit();
           }
         } catch {
