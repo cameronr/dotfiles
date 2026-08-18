@@ -1,0 +1,85 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "model": "local/qwen3.8-27B-MTP-IQ4_KS",
+
+  "provider": {
+    "local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "local",
+      "options": {
+        "baseURL": "{env:LLAMA_URL}"
+      },
+      "models": {
+        "qwen3.6-27B-MTP-IQ4_KS": {
+          "name": "qwen3.6-27b",
+          "limit": {
+            "context": 150000,
+            "output": 66560
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
+        },
+        "qwen3.8-27B-MTP-IQ4_KS": {
+          "name": "qwen3.8-27b",
+          "limit": {
+            "context": 150000,
+            "output": 66560
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "variants": {
+            "low": {
+              "extra_body": {
+                "chat_template_kwargs": { "reasoning_effort": "low" }
+              }
+            },
+            "medium": {
+              "extra_body": {
+                "chat_template_kwargs": { "reasoning_effort": "medium" }
+              }
+            },
+            "high": {
+              "extra_body": {
+                "chat_template_kwargs": { "reasoning_effort": "high" }
+              }
+            },
+            "xhigh": {
+              "extra_body": {
+                "chat_template_kwargs": { "reasoning_effort": "xhigh" }
+              }
+            }
+          }
+        },
+        "dev_qwen3.6-27B-MTP-IQ4_KS": {
+          "name": "dev_qwen3.6-27b",
+          "limit": {
+            "context": 150000,
+            "output": 66560
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
+        }
+      }
+    },
+    "openrouter": {
+      "models": {
+        "poolside/laguna-s-2.1:free": {
+          "name": "Poolside: Laguna S 2.1 (free)"
+        }
+      }
+    }
+  },
+
+  "experimental": {
+    "disable_paste_summary": true
+  }
+
+  // "plugin": ["opencode-sandbox"]
+}

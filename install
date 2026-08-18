@@ -31,6 +31,7 @@ FILE_SYMLINKS=(
     tmux/tmux.conf
     herdr/config.toml
     worktrunk/config.toml
+    opencode/opencode.json
     opencode/tui.json
     opencode/plugins/tmux-status.js
 )

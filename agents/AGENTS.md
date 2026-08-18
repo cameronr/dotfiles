@@ -12,4 +12,8 @@
 - Apply that same high standard to engineering excellence: lint, test failures, and test flakiness.
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 - Be extremely concise. Sacrifice grammar for the sake of brevity.
-- Use conventional style commits
+- Use conventional style commits. Use scope modifiers when appropriate.
+- When using a local model (e.g. any version of qwen), run subagents sequentially, not in parallel.
+- When working on a larger change, use Worktrunk (`wt switch --create feature-x`) to create a temporary branch for your work. This allows multiple agents to work in parallel. When you're ready to merge the changes back in, make sure to commit your changes first with an appropriate message and then use `wt merge ` to bring the changes back into the main branch. Consider if you should squash commits to keep the history cleaner.
+- Generate any temporary files in a project local directory (not in /tmp) and clean them up after use. This is to avoid polluting the system with temporary files and to ensure that the files are accessible to other agents if needed.
+- Use `timeout` with commands that might not terminate on their own. This is to prevent agents from hanging indefinitely.
