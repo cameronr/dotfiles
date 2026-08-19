@@ -34,6 +34,7 @@ FILE_SYMLINKS=(
     opencode/opencode.json
     opencode/tui.json
     opencode/plugins/tmux-status.js
+    opencode/agents
 )
 
 for entry in $FILE_SYMLINKS; do

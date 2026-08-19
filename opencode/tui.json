@@ -14,5 +14,9 @@
       }
     ],
     "./plugins/tmux-status.js"
-  ]
+  ],
+  "attention": {
+    "enabled": true, // requires OPENTUI_NOTIFICATION_PROTOCOL=osc777 for wezterm+tmux
+    "sound": false
+  }
 }
