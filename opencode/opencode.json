@@ -79,6 +79,22 @@
 
   "experimental": {
     "disable_paste_summary": true
+  },
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      // @playwright/mcp 0.0.79+ defaults to headed and --no-sandbox; pass --headless --sandbox explicitly.
+      // Add "--headed" to watch the browser operate instead of running headless.
+      "command": [
+        "npx",
+        "-y",
+        "@playwright/mcp@latest",
+        "--headless",
+        "--sandbox"
+      ],
+      "enabled": true
+    }
   }
 
   // "plugin": ["opencode-sandbox"]
