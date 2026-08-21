@@ -1,0 +1,10 @@
+{
+  "overrides": [
+    {
+      "files": ["*.json", "*.jsonc"],
+      "options": {
+        "printWidth": 140
+      }
+    }
+  ]
+}
