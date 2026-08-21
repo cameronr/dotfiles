@@ -12,7 +12,7 @@
       },
       "models": {
         "qwen3.8": {
-          "limit": { "context": 150000, "output": 66560 },
+          "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
@@ -22,7 +22,7 @@
           }
         },
         "qwen3.8-27b": {
-          "limit": { "context": 150000, "output": 66560 },
+          "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
@@ -32,7 +32,7 @@
           }
         },
         "qwen3.8-27B-MTP-IQ4_KS": {
-          "limit": { "context": 150000, "output": 66560 },
+          "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
@@ -42,7 +42,7 @@
           }
         },
         "qwen3.8-27B-vllm": {
-          "limit": { "context": 150000, "output": 32768 },
+          "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
@@ -52,7 +52,7 @@
           }
         },
         "qwen3.6-27B-MTP-IQ4_KS": {
-          "limit": { "context": 150000, "output": 66560 },
+          "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] }
         }
       }
