@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "model": "local/qwen3.8-27B-MTP-IQ4_KS",
+  "model": "local/qwen3.8",
 
   "provider": {
     "local": {
@@ -11,60 +11,49 @@
         "baseURL": "{env:LLAMA_URL}"
       },
       "models": {
-        "qwen3.6-27B-MTP-IQ4_KS": {
-          "name": "qwen3.6-27b",
-          "limit": {
-            "context": 150000,
-            "output": 66560
-          },
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
+        "qwen3.8": {
+          "limit": { "context": 150000, "output": 66560 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "variants": {
+            "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
+            "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
+            "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
+            "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
+          }
+        },
+        "qwen3.8-27b": {
+          "limit": { "context": 150000, "output": 66560 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "variants": {
+            "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
+            "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
+            "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
+            "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
           }
         },
         "qwen3.8-27B-MTP-IQ4_KS": {
-          "name": "qwen3.8-27b",
-          "limit": {
-            "context": 150000,
-            "output": 66560
-          },
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          },
+          "limit": { "context": 150000, "output": 66560 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
-            "low": {
-              "extra_body": {
-                "chat_template_kwargs": { "reasoning_effort": "low" }
-              }
-            },
-            "medium": {
-              "extra_body": {
-                "chat_template_kwargs": { "reasoning_effort": "medium" }
-              }
-            },
-            "high": {
-              "extra_body": {
-                "chat_template_kwargs": { "reasoning_effort": "high" }
-              }
-            },
-            "xhigh": {
-              "extra_body": {
-                "chat_template_kwargs": { "reasoning_effort": "xhigh" }
-              }
-            }
+            "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
+            "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
+            "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
+            "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
           }
         },
-        "dev_qwen3.6-27B-MTP-IQ4_KS": {
-          "name": "dev_qwen3.6-27b",
-          "limit": {
-            "context": 150000,
-            "output": 66560
-          },
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
+        "qwen3.8-27B-vllm": {
+          "limit": { "context": 150000, "output": 32768 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] },
+          "variants": {
+            "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
+            "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
+            "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
+            "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
           }
+        },
+        "qwen3.6-27B-MTP-IQ4_KS": {
+          "limit": { "context": 150000, "output": 66560 },
+          "modalities": { "input": ["text", "image"], "output": ["text"] }
         }
       }
     },
@@ -86,13 +75,7 @@
       "type": "local",
       // @playwright/mcp 0.0.79+ defaults to headed and --no-sandbox; pass --headless --sandbox explicitly.
       // Add "--headed" to watch the browser operate instead of running headless.
-      "command": [
-        "npx",
-        "-y",
-        "@playwright/mcp@latest",
-        "--headless",
-        "--sandbox"
-      ],
+      "command": ["npx", "-y", "@playwright/mcp@latest", "--headless", "--sandbox"],
       "enabled": true
     }
   }

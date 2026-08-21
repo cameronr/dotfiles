@@ -1,8 +1,7 @@
 ---
 description: Code execution worker that implements edits, fixes bugs, and writes components.
 mode: subagent
-model: local/qwen3.8-27B-MTP-IQ4_KS
-variant: medium
+model: local/qwen3.8
 ---
 
 # Role & Purpose

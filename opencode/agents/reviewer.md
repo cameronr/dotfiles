@@ -1,7 +1,7 @@
 ---
 description: Code review and verification agent that validates logic, runs tests, and catches regressions.
 mode: subagent
-model: local/qwen3.8-27B-MTP-IQ4_KS
+model: local/qwen3.8
 variant: xhigh
 permissions:
   - action: edit
