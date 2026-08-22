@@ -1,7 +1,6 @@
 ---
 description: High-level orchestrator that breaks down user requests and delegates tasks sequentially to subagents.
 mode: primary
-model: local/qwen3.8
 variant: xhigh
 permissions:
   - action: edit

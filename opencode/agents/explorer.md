@@ -1,7 +1,6 @@
 ---
 description: Fast context gathering agent for reading files and exploring the codebase.
 mode: subagent
-model: local/qwen3.8
 permissions:
   - action: edit
     resource: "*"
