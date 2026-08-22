@@ -1,0 +1,30 @@
+services:
+  llama-swap:
+    image: ghcr.io/mostlygeek/llama-swap:unified-cuda
+    container_name: llama-swap
+    restart: unless-stopped
+    ports:
+      - "8020:8080"
+    volumes:
+      - /home/media/models:/models
+      - /home/media/apps/llama-swap:/etc/llama-swap
+      - /home/media/qwen38-27b-rtx3090:/home/media/qwen38-27b-rtx3090
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+      # If using Docker Compose v2, mount the plugin too:
+      - /usr/libexec/docker/cli-plugins:/usr/libexec/docker/cli-plugins:ro
+    env_file:
+      - path: .env
+    networks:
+      - llama-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+networks:
+  llama-net:
+    external: true
