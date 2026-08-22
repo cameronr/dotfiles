@@ -1,6 +1,6 @@
 # Settings for the swap orchestrator
-healthCheckTimeout: 120 # How long to wait for the server to spin up before timing out
-globalTTL: 900 # Automatically unload models after 15 minutes of inactivity
+healthCheckTimeout: 300 # How long to wait for the server to spin up before timing out
+globalTTL: 3600 # Automatically unload models after 15 minutes of inactivity
 includeAliasesInList: true # Exposes "qwen3.8" and "qwen3.8-default" in /v1/models list
 
 store:
@@ -16,10 +16,10 @@ macros:
     /usr/local/bin/ik-llama-server
     --port ${PORT}
     --host 0.0.0.0
+    --main-gpu 0
     --image-min-tokens 1024
     --image-max-tokens 1024
     -ngl 99
-    -np 1
     --merge-qkv
     -fa on
     --jinja
@@ -32,12 +32,8 @@ macros:
     --repeat-penalty 1.0
 
   qwen3_8_params: >-
-    --model /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/Qwen3.8-27B-MTP-IQ4_KS.gguf
     --alias "Qwen3.8-27B"
-    --mmproj /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/mmproj-Qwen3.8-27B-Q8_0.gguf
     --no-mmproj-offload
-    --ctx-size 175000
-    --spec-type mtp:n_max=2,p_min=0.6
     --spec-ckpt-mode auto
     -ngld 99
     --chat-template-kwargs '{"preserve_thinking": true}'
@@ -48,7 +44,6 @@ macros:
     --alias "Qwen3.6-27B"
     --mmproj /models/qwen3.6-27b-gguf/mmproj-F16.gguf
     --no-mmproj-offload
-    --ctx-size 150000
     --spec-type mtp:n_max=2,p_min=0.0
     --spec-ckpt-mode auto
     -ngld 99
@@ -59,77 +54,100 @@ macros:
     -ctk q4_0 -ctv q4_0
     -khad -vhad
 
+  qwen3_8_iq4_single_cmd: >-
+    ${ik_llama_base}
+    ${qwen3_8_params}
+    -np 1
+    --model /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/Qwen3.8-27B-MTP-IQ4_KS.gguf
+    --mmproj /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/mmproj-Qwen3.8-27B-Q8_0.gguf
+    --split-mode none
+    --ctx-size 175000
+    --spec-type mtp:n_max=2,p_min=0.6
+    ${kv_quant}
+    -b 1024 -ub 1024
+    -cram 6144
+    -t 1 -tb 8 -tm 8
+
 # ==============================================================================
 # Active Models
 # ==============================================================================
 models:
   # --- Qwen 3.8 Single GPU ---
-  qwen3.8-27B-MTP-IQ4_KS-single:
+  qwen3.8-4090:
+    aliases:
+      - "qwen3.8-single"
+      - "qwen3.8-27B-MTP-IQ4_KS-4090"
+    env:
+      - "CUDA_VISIBLE_DEVICES=0"
+    cmd: ${qwen3_8_iq4_single_cmd}
+
+  qwen3.8-3090:
+    aliases:
+      - "qwen3.8-27B-MTP-IQ4_KS-3090"
+    env:
+      - "CUDA_VISIBLE_DEVICES=1"
+    cmd: ${qwen3_8_iq4_single_cmd}
+
+  # --- Qwen 3.8 Dual GPU ---
+  qwen3.8-ik-dual:
     aliases:
       - "qwen3.8"
       - "qwen3.8-27b"
-      - "qwen3.8-27B-MTP-IQ4_KS"
+      - "qwen3.8-27B-UD-Q6_K_XL"
       - "coding"
       - "assistant"
-    env:
-      - "CUDA_VISIBLE_DEVICES=0"
-    cmd: >-
-      ${ik_llama_base}
-      ${qwen3_8_params}
-      --split-mode none
-      --main-gpu 0
-      ${kv_quant}
-      -b 1024 -ub 1024
-      -cram 6144
-      -t 1 -tb 8 -tm 8
-
-  # --- Qwen 3.8 Dual GPU ---
-  qwen3.8-27B-MTP-IQ4_KS-dual:
-    aliases:
       - "qwen3.8-dual"
     env:
       - "CUDA_VISIBLE_DEVICES=0,1"
     cmd: >-
       ${ik_llama_base}
       ${qwen3_8_params}
+      -np 1
+      --model /models/qwen3.8-27b-gguf/unsloth/Qwen3.8-27B-UD-Q6_K_XL.gguf
+      --mmproj /models/qwen3.8-27b-gguf/unsloth/mmproj-Qwen3.8-27B-Q8_0.gguf
       --split-mode layer
-      --tensor-split 1,1
-      --main-gpu 0
-      -ctk f16 -ctv f16
-      -b 2048 -ub 2048
+      --tensor-split 55,45
+      --ctx-size 262144
+      --spec-type mtp:n_max=1,p_min=0.0
+      -ctk q8_0 -ctv q8_0 -ctkd q8_0 -ctvd q8_0
+      -b 2048 -ub 512
       -cram 16384
-      -t 1 -tb 4 -tm 4
+      -t 8 -tb 8 -tm 4
 
-  qwen3.8-27B-vllm:
-    cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
-    cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+  qwen3.8-vllm:
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+    cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
+    cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     proxy: http://qwen38-27b-rtx3090-single:18020
     healthCheckTimeout: 600
 
   # --- Qwen 3.6 Single GPU (Thinking) ---
-  qwen3.6-27B-MTP-IQ4_KS:
+  qwen3.6-4090:
     env:
       - "CUDA_VISIBLE_DEVICES=0"
     cmd: >-
       ${ik_llama_base}
       ${qwen3_6_params}
+      -np 1
       --split-mode none
-      --main-gpu 0
+      --ctx-size 150000
       ${kv_quant}
       -b 1024 -ub 1024
       -cram 16384
       -t 1 -tb 8 -tm 8
 
   # --- Qwen 3 VL ---
-  qwen3-vl-32b-instruct-q4_k_m.gguf:
+  qwen3-instruct:
     env:
-      - "CUDA_VISIBLE_DEVICES=0"
+      - "CUDA_VISIBLE_DEVICES=1"
     cmd: >-
       ${ik_llama_base}
+      -np 1
       --model /models/Huihui-Qwen3-VL-32B-Instruct-abliterated.Q4_K_M.gguf
       --mmproj /models/mmproj-qwen3-vl-32b-instruct-Q4_K_M.gguf
       ${kv_quant}
-      --ctx-size 60000 
+      --ctx-size 60000
       --spec-ckpt-mode auto
       -ngld 99
       --chat-template-kwargs '{"preserve_thinking": true}'
@@ -146,30 +164,28 @@ models:
 profiles:
   ik:
     pins:
-      "qwen3.8": "qwen3.8-27B-MTP-IQ4_KS-single"
-      "qwen3.8-27b": "qwen3.8-27B-MTP-IQ4_KS-single"
-      "qwen3.8-27B-MTP-IQ4_KS": "qwen3.8-27B-MTP-IQ4_KS-single"
-      "coding": "qwen3.8-27B-MTP-IQ4_KS-single"
-      "assistant": "qwen3.8-27B-MTP-IQ4_KS-single"
+      "qwen3.8": "qwen3.8-4090"
+      "qwen3.8-27b": "qwen3.8-4090"
+      "coding": "qwen3.8-4090"
+      "assistant": "qwen3.8-4090"
+  ik-3090:
+    pins:
+      "qwen3.8": "qwen3.8-3090"
+      "qwen3.8-27b": "qwen3.8-3090"
+      "coding": "qwen3.8-3090"
+      "assistant": "qwen3.8-3090"
   vllm:
     pins:
-      "qwen3.8": "qwen3.8-27B-vllm"
-      "qwen3.8-27b": "qwen3.8-27B-vllm"
-      "coding": "qwen3.8-27B-vllm"
-      "assistant": "qwen3.8-27B-vllm"
+      "qwen3.8": "qwen3.8-vllm"
+      "qwen3.8-27b": "qwen3.8-vllm"
+      "coding": "qwen3.8-vllm"
+      "assistant": "qwen3.8-vllm"
   ik-dual:
     pins:
-      "qwen3.8": "qwen3.8-27B-MTP-IQ4_KS-dual"
-      "qwen3.8-27b": "qwen3.8-27B-MTP-IQ4_KS-dual"
-      "qwen3.8-27B-MTP-IQ4_KS": "qwen3.8-27B-MTP-IQ4_KS-dual"
-      "coding": "qwen3.8-27B-MTP-IQ4_KS-dual"
-      "assistant": "qwen3.8-27B-MTP-IQ4_KS-dual"
-  vllm-dual:
-    pins:
-      "qwen3.8": "qwen3.8-27B-vllm"
-      "qwen3.8-27b": "qwen3.8-27B-vllm"
-      "coding": "qwen3.8-27B-vllm"
-      "assistant": "qwen3.8-27B-vllm"
+      "qwen3.8": "qwen3.8-ik-dual"
+      "qwen3.8-27b": "qwen3.8-ik-dual"
+      "coding": "qwen3.8-ik-dual"
+      "assistant": "qwen3.8-ik-dual"
   external:
     pins:
       "coding": "openrouter-laguna"
