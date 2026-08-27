@@ -193,6 +193,23 @@ if [[ (( $commands[wt] )) ]]; then
     alias wtm='wt merge'
 fi
 
+
+# Work around for: https://github.com/nvm-sh/nvm/issues/3885
+# Temporarily turn off extendedglob if it's enabled
+[[ -o extendedglob ]] && local reset_eg=1 && unsetopt extendedglob
+
+# Load NVM safely
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Restore extendedglob
+[[ -n $reset_eg ]] && setopt extendedglob
+
 # set up fzf if installed
 if [[ (( $commands[fzf] )) ]]; then
 
