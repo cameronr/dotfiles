@@ -35,6 +35,7 @@ FILE_SYMLINKS=(
     opencode/tui.json
     opencode/plugins/tmux-status.js
     opencode/agents
+    ./bat/tokyonight_night.tmTheme:bat/themes/tokyonight_night.tmTheme
 )
 
 for entry in $FILE_SYMLINKS; do
