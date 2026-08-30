@@ -243,6 +243,9 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/.p10k.zsh.
 [[ ! -f $DOTFILES/.p10k.zsh ]] || source $DOTFILES/.p10k.zsh
 
+# Load the custom mise segment wrapper
+[[ ! -f $DOTFILES/.p10k.mise.zsh ]] || source $DOTFILES/.p10k.mise.zsh
+
 typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=magenta
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
