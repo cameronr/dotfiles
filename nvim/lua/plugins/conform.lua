@@ -47,6 +47,11 @@ return {
         -- sql
         sql = { 'sqruff' },
       },
+      formatters = {
+        beautysh = {
+          prepend_args = { '--indent-size', '2' },
+        },
+      },
 
       -- support a global format disable
       format_on_save = function(bufnr)
