@@ -98,6 +98,19 @@ bindkey "^[[A" history-substring-search-up
 bindkey "^[OA" history-substring-search-up
 bindkey "^[[B" history-substring-search-down
 bindkey "^[OB" history-substring-search-down
+
+
+# bind 'i' in visual mode to switch to insert without deleting selection
+function my_visual_to_insert() {
+  zvm_exit_visual_mode   # clear the visual selection
+  zvm_select_vi_mode $ZVM_MODE_INSERT
+}
+
+function zvm_after_lazy_keybindings() {
+  zvm_define_widget my_visual_to_insert
+  zvm_bindkey visual 'i' my_visual_to_insert
+}
+
 # 208 is orange
 export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=208,bold'
 export HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='fg=red,bold'
