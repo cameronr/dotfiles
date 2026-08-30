@@ -20,9 +20,13 @@ vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
 -- Default to main branch of treesitter if we have a build environment and tree-sitter
-local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.executable('tree-sitter') == 1) and 'main' or 'master'
+local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.executable('tree-sitter') == 1) and 'main'
+  or 'master'
 -- But allow env var override
 vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
+
+-- Use copilot
+vim.g.use_copilot = vim.env.NVIM_USE_COPILOT == '1'
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -178,8 +182,12 @@ vim.o.smartindent = true
 -- Recommended session options from auto-sessions
 vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
--- signcolumn on right exploration. ultimately, i like the numbers closers than the signs
--- vim.o.statuscolumn = "%=%{v:virtnum < 1 ? (v:relnum ? v:relnum : v:lnum < 10 ? v:lnum . '' : v:lnum) : ''} %s"
+vim.opt.statuscolumn = table.concat({
+  '%s', -- signs
+  '%=', -- right-align what follows
+  '%{v:virtnum > 0 ? "↳" : (v:relnum ? v:relnum : v:lnum)}',
+  ' ', -- trailing space
+})
 
 -- Enable wrapping of long lines and linebreak on words
 vim.o.wrap = true
