@@ -185,7 +185,7 @@ vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 vim.opt.statuscolumn = table.concat({
   '%s', -- signs
   '%=', -- right-align what follows
-  '%{v:virtnum > 0 ? "↳" : (v:relnum ? v:relnum : v:lnum)}',
+  '%{v:virtnum > 0 ? "󱞩" : (v:relnum ? v:relnum : v:lnum)}',
   ' ', -- trailing space
 })
 
