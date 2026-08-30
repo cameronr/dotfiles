@@ -19,6 +19,9 @@ zmodule ohmyzsh/ohmyzsh --source lib/functions.zsh --use degit      # for omz_ur
 zmodule ohmyzsh/ohmyzsh --source lib/termsupport.zsh --use degit    # set titlebar
 zmodule ohmyzsh/ohmyzsh --source lib/clipboard.zsh --use degit      # clipboard for yank
 
+# zoxide that replaces cd
+zmodule cameronr/zim-zoxide
+
 # Better ssh completion
 # if you get a PCRE error: https://github.com/zthxxx/jovial/issues/12
 zmodule sunlei/zsh-ssh
@@ -50,6 +53,11 @@ fi
 # Better vi mode, fixes right arrow in command mode not crossing multiline
 zmodule jeffreytse/zsh-vi-mode
 
+# worktrunk
+zmodule cameronr/zim-worktrunk
+
+# mise
+zmodule joke/zim-mise
 
 # Syntax highlighting modules should be loaded last
 # Fish-like syntax highlighting for Zsh.
