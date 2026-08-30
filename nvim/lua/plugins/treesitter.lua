@@ -7,23 +7,36 @@ vim.api.nvim_create_autocmd({ 'Filetype' }, {
     local ok, nvim_treesitter = pcall(require, 'nvim-treesitter')
 
     -- no nvim-treesitter, maybe fresh install
-    if not ok then return end
+    if not ok or nvim_treesitter == nil then return end
 
     local parsers = require('nvim-treesitter.parsers')
 
-    if not parsers[event.match] or not nvim_treesitter.install then return end
-
-    local ft = vim.bo[event.buf].ft
+    local buf = event.buf --[[@as integer]]
+    local ft = vim.bo[buf].ft
     local lang = vim.treesitter.language.get_lang(ft)
+
+    -- no parser resolvable for this filetype
+    if not lang then return end
+
+    local function start()
+      pcall(vim.treesitter.start, buf)
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    end
+
+    -- unknown filetypes (e.g. registered aliases like opencode_output) skip install
+    if not parsers[ft] or not nvim_treesitter.install then
+      start()
+      return
+    end
+
     nvim_treesitter.install({ lang }):await(function(err)
       if err then
         vim.notify('Treesitter install error for ft: ' .. ft .. ' err: ' .. err)
         return
       end
 
-      pcall(vim.treesitter.start, event.buf)
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      start()
     end)
   end,
 })
@@ -48,7 +61,6 @@ return {
     ---@module 'nvim-treesitter'
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
-
     config = function(_, _)
       local ensure_installed = {
         'bash',
@@ -71,7 +83,7 @@ return {
       local ok, nvim_treesitter = pcall(require, 'nvim-treesitter')
 
       -- no nvim-treesitter, maybe fresh install
-      if not ok then return end
+      if not ok or nvim_treesitter == nil then return end
 
       -- no longer need to override but keeping here as a reference
       -- vim.api.nvim_create_autocmd('User', {
@@ -207,8 +219,8 @@ return {
     },
   },
 
-  ---@module 'lazy'
-  ---@type LazySpec
+  -- ---@module 'lazy'
+  -- ---@type LazySpec
   -- {
   --   'MeanderingProgrammer/treesitter-modules.nvim',
   --   -- dependencies = { 'nvim-treesitter/nvim-treesitter' },
