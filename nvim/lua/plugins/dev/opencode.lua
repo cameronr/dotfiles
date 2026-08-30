@@ -40,14 +40,6 @@ return {
           ['<c-i>'] = false,
           ['<up>'] = false,
           ['<down>'] = false,
-          ['<cr>'] = false,
-          ['<c-s>'] = {
-            function()
-              vim.cmd('stopinsert')
-              require('opencode.api').submit_input_prompt()
-            end,
-            mode = { 'i', 'n' },
-          },
           ['<c-up>'] = { 'prev_prompt_history', mode = { 'i', 'n' } },
           ['<c-down>'] = { 'next_prompt_history', mode = { 'i', 'n' } },
         },
@@ -95,21 +87,8 @@ return {
       table.insert(opts.options.ignore_focus, 'opencode_output')
     end,
   },
-  -- {
-  --   'OXY2DEV/markview.nvim',
-  --   optional = true,
-  --   ft = { 'opencode_output' },
-  --   opts = {
-  --     preview = {
-  --       filetypes = { 'opencode_output' },
-  --     },
-  --   },
-  --   opts_extend = { 'preview.filetypes' },
-  -- },
   {
     'MeanderingProgrammer/render-markdown.nvim',
-    enabled = true,
-    cmd = 'RenderMarkdown',
     ft = { 'opencode_output' },
 
     ---@module 'render-markdown'
@@ -118,12 +97,20 @@ return {
       file_types = { 'opencode_output' },
     },
   },
-  {
-    'luukvbaal/statuscol.nvim',
-    event = { 'BufNewFile', 'BufReadPost' },
-    opts = {
-      ft_ignore = { 'opencode_output', 'opencode_input' },
-    },
-    opts_extend = { 'ft_ignore' },
-  },
+  -- {
+  --   'ice345/markdown-table-wrap.nvim',
+  --   ft = { 'opencode_output' },
+  --   opts = {
+  --     extra_filetypes = { 'opencode_output' },
+  --   },
+  -- },
+
+  -- {
+  --   'luukvbaal/statuscol.nvim',
+  --   event = { 'BufNewFile', 'BufReadPost' },
+  --   opts = {
+  --     ft_ignore = { 'opencode_output', 'opencode_input' },
+  --   },
+  --   opts_extend = { 'ft_ignore' },
+  -- },
 }

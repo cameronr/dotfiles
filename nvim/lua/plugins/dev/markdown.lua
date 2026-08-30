@@ -1,53 +1,41 @@
 return {
-  -- {
-  --   'MeanderingProgrammer/render-markdown.nvim',
-  --   enabled = true,
-  --   cmd = 'RenderMarkdown',
-  --
-  --   ---@module 'render-markdown'
-  --   ---@type render.md.UserConfig
-  --   opts = {
-  --     file_types = { 'opencode_output' },
-  --   },
-  -- },
   {
-    'OXY2DEV/markview.nvim',
-    cmd = 'Markview',
-    ft = { 'markdown' },
+    'MeanderingProgrammer/render-markdown.nvim',
+    lazy = false,
+    cmd = 'RenderMarkdown',
+    ft = { 'markdown', 'opencode_output' },
+
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
     opts = {
-      preview = {
-        enable = true,
-        filetypes = { 'md', 'rmd', 'quarto', 'markdown' },
-        ignore_buftypes = {},
-        map_gx = false,
-      },
-      markdown = {
-        headings = {
-          heading_1 = {
-            sign = false,
-          },
-          heading_2 = {
-            sign = false,
-          },
-        },
-        code_blocks = {
-          sign = false,
-        },
-      },
+      file_types = { 'markdown', 'opencode_output' },
+      heading = { icons = false },
+
+      -- disable tables to use markdown-table-wrap below
+      -- pipe_table = { enabled = false },
+      sign = { enabled = false },
     },
+    opts_extend = { 'file_types' },
     config = function(_, opts)
-      require('markview').setup(opts)
-      require('markview.highlights').setup()
+      require('render-markdown').setup(opts)
       if Snacks then
         Snacks.toggle({
-          name = 'Markview',
-          get = function()
-            local state = require('markview').state.buffer_states[vim.api.nvim_get_current_buf()]
-            return state and state.enable or false
-          end,
-          set = function(_) vim.cmd('Markview toggle') end,
+          name = 'RenderMarkdown',
+          get = function() return require('render-markdown').get() end,
+          set = function(_) vim.cmd('RenderMarkdown toggle') end,
         }):map('<leader>vm')
       end
     end,
+  },
+  {
+    'ice345/markdown-table-wrap.nvim',
+    enabled = false,
+    -- ft = { 'markdown', 'opencode_output' },
+    ft = { 'markdown' },
+    opts = {
+      inline_wrap_scope = 'always',
+      -- extra_filetypes = { 'opencode_output' },
+    },
+    -- opts_extend = { 'extra_filetypes' },
   },
 }
