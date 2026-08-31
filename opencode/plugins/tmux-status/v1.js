@@ -1,4 +1,14 @@
-// OpenCode TUI plugin (V2 API): reports live agent status via the terminal (OSC) title.
+// tmux-status plugin, OpenCode V1 TUI API version (preserved, not loaded).
+//
+// This is the last version that ran on the V1 TUI plugin API
+// (export default { id, tui(api) } with api.kv / api.state.session /
+// api.renderer). It is referenced from ./tui.js so the V2 port stays
+// diffable against it while the remaining V2 gaps are fixed. It does not
+// run under V2: the V1 api surface (kv, state.session.question/permission,
+// route.current) does not exist there.
+//
+// Original: OpenCode TUI plugin reporting live agent status via the terminal
+// (OSC) title.
 //
 // Why the title and not a tmux pane option? When opencode runs inside the sbx
 // microVM, tmux is unreachable from inside the VM, so `tmux set-option -p`
@@ -15,37 +25,8 @@
 // The tmux theme (tmux-tokyo-night-theme-cam.sh) parses <char> and <session>
 // out of the pane title and renders an icon accordingly.
 //
-// Discovered by the TUI from ~/.config/opencode/plugins/tmux-status/ (symlinked
-// here by dotfiles/install). Do NOT register it in cli.json "plugins": the TUI
-// silently skips cli.json entries that point at existing local files. The
-// sibling index.js is a no-op server plugin so the server's own discovery of
-// this directory doesn't fail (it can't resolve "@opencode-ai/plugin/tui").
-//
-// Requires:
-//   - cli.json "terminal": { "title": false } so the TUI core's own reactive
-//     title effect doesn't fight this plugin (V1 disabled this via kv; V2 has
-//     no plugin-facing equivalent, so it must be set in cli.json).
-//   - tmux with `set -g focus-events on` so terminal focus events reach the
-//     TUI (used to clear the "done" check when you focus the pane again).
-//
-// V2 API notes (ported from the V1 tui(api) plugin):
-//   - api.event.on(type, fn)        -> context.data.on(type, fn); payload in event.data
-//   - api.state.session.*           -> context.data.session.*
-//   - api.state.session.question()  -> context.data.session.form.list() (questions are forms)
-//   - api.state.session.status()    -> "idle" | "running"
-//   - api.route.current             -> context.ui.router.current()
-//   - api.renderer.setTerminalTitle -> context.renderer.setTerminalTitle()
-//   - api.renderer.on("focus")      -> context.renderer.on("focus")
-//   - "question.v2.asked" event     -> "form.created" (data.form.sessionID)
-//   - "session.error" event         -> "session.execution.failed"
-//   - "tui.session.select" event    -> "session.viewed" + route check in the poll
-
-import { Plugin } from "@opencode-ai/plugin/tui";
-
-// Preserved V1 API implementation (V1 tui(api) surface). Referenced so the
-// V2 port stays diffable against it while the remaining gaps are fixed.
-import v1 from "./v1.js";
-export { v1 };
+// Requires: tmux with `set -g focus-events on` so terminal focus events reach
+// the TUI (used to clear the "done" check when you focus the pane again).
 
 // Module-level state, kept so it survives across events for the TUI's life.
 let status = "-"; // one of: w i e -  ("q" is derived, never stored here)
@@ -56,26 +37,28 @@ let lastTitle = ""; // last OSC title pushed, to skip redundant writes
 // subagent IDs from events and track them here. Cleared on session switch.
 const subagentSessions = new Set();
 
-export default Plugin.define({
+export default {
   id: "tmux-status",
-  setup(context) {
+  tui: async (api) => {
     // Best-effort: a failure here must never take down the TUI.
     try {
+      // Take ownership of the terminal title: disable the TUI core's own
+      // reactive title-setting so it doesn't fight us.
+      api.kv.set("terminal_title_enabled", false);
+
       status = "-";
       waitingInput = false;
       lastTitle = "";
       subagentSessions.clear();
 
-      const data = context.data;
-      const renderer = context.renderer;
-
       // The session currently in focus (from the route), or the home
       // placeholder.
       function currentSession() {
-        const route = context.ui.router.current();
-        if (route && route.type === "session") {
-          const s = data.session.get(route.sessionID);
-          return { id: route.sessionID, title: s?.title };
+        const route = api.route.current;
+        if (route && route.name === "session") {
+          const id = route.params?.sessionID;
+          const s = api.state.session.get(id);
+          return { id: id ?? null, title: s?.title };
         }
         return { id: null, title: "OpenCode" };
       }
@@ -94,7 +77,7 @@ export default Plugin.define({
         const next = `OC | ${effectiveStatus()} ${session}`;
         if (next === lastTitle) return;
         lastTitle = next;
-        renderer.setTerminalTitle(next);
+        api.renderer.setTerminalTitle(next);
       }
 
       // A question/permission can only be pending while the turn is working.
@@ -105,11 +88,12 @@ export default Plugin.define({
         for (const sid of subagentSessions) {
           let st;
           try {
-            st = data.session.status(sid);
+            st = api.state.session.status(sid);
           } catch {
             continue; // a throw mustn't break the loop
           }
-          if (st === "running") return true;
+          const t = typeof st === "string" ? st : st?.type;
+          if (t === "busy") return true;
         }
         return false;
       }
@@ -126,10 +110,10 @@ export default Plugin.define({
         emit();
       }
 
-      // Events carry the sessionID in data.sessionID, or in data.form.sessionID
-      // for form.created.
+      // Events carry the sessionID in properties.sessionID or
+      // properties.info.id.
       function eventSessionID(event) {
-        return event?.data?.sessionID ?? event?.data?.form?.sessionID;
+        return event?.properties?.sessionID ?? event?.properties?.info?.id;
       }
 
       // Only let an event affect the title if it belongs to the focused
@@ -150,7 +134,7 @@ export default Plugin.define({
         for (let i = 0; i < 10; i++) {
           if (cur == null) return false;
           if (cur === ancestorID) return true;
-          cur = data.session.get(cur)?.parentID;
+          cur = api.state.session.get(cur)?.parentID;
         }
         return false;
       }
@@ -182,80 +166,71 @@ export default Plugin.define({
         }
       };
 
-      const stops = [];
-
       // Primary working/done/error signal. status is an object
-      // ({ type: "busy" | "idle" | "retry" }).
-      stops.push(
-        data.on(
-          "session.status",
-          safe((event) => {
-            if (!matchesFocused(event)) return;
-            const t = event?.data?.status?.type;
-            if (t === "busy") {
-              applyStatus("w");
-            } else if (t === "idle") {
-              applyStatus("i");
-            } else if (t === "retry") {
-              applyStatus("e");
-            }
-          }),
-        ),
+      // ({ type: "busy" | "idle" | "retry", ... }) on this opencode version,
+      // but be defensive about a plain string too.
+      api.event.on(
+        "session.status",
+        safe((event) => {
+          if (!matchesFocused(event)) return;
+          const st = event?.properties?.status ?? event?.data?.status;
+          const t = typeof st === "string" ? st : st?.type;
+          if (t === "busy") {
+            applyStatus("w");
+          } else if (t === "idle") {
+            applyStatus("i");
+          } else if (t === "retry") {
+            applyStatus("e");
+          }
+        }),
       );
 
       // Waiting on user input (permission). Fast path: flag the waiting state
       // immediately so the title flips to "q" without waiting for the poll.
       // The poll below is the authoritative source (this event alone can be
       // clobbered by a later "busy" status).
-      stops.push(
-        data.on(
-          "permission.asked",
-          safe((event) => {
-            if (!matchesFocusedOrSubagent(event)) return;
-            if (!waitingInput) {
-              waitingInput = true;
-              emit();
-            }
-          }),
-        ),
+      api.event.on(
+        "permission.v2.asked",
+        safe((event) => {
+          if (!matchesFocusedOrSubagent(event)) return;
+          if (!waitingInput) {
+            waitingInput = true;
+            emit();
+          }
+        }),
       );
 
-      // Waiting on user input (question). Questions are forms in V2; this is
-      // the primary question signal alongside the poll.
-      stops.push(
-        data.on(
-          "form.created",
-          safe((event) => {
-            if (!matchesFocusedOrSubagent(event)) return;
-            if (!waitingInput) {
-              waitingInput = true;
-              emit();
-            }
-          }),
-        ),
+      // Waiting on user input (question). Defensive fast path: on the current
+      // opencode version this event does NOT reach the plugin event bus, so the
+      // poll below is the primary question signal.
+      api.event.on(
+        "question.v2.asked",
+        safe((event) => {
+          if (!matchesFocusedOrSubagent(event)) return;
+          if (!waitingInput) {
+            waitingInput = true;
+            emit();
+          }
+        }),
       );
 
       // Error.
-      stops.push(
-        data.on(
-          "session.execution.failed",
-          safe((event) => {
-            if (!matchesFocused(event)) return;
-            applyStatus("e");
-          }),
-        ),
+      api.event.on(
+        "session.error",
+        safe((event) => {
+          if (!matchesFocused(event)) return;
+          applyStatus("e");
+        }),
       );
 
       // The focused session changed; re-emit for the newly focused session.
       // Drop tracked subagents first: they belonged to the old focused session.
-      stops.push(
-        data.on(
-          "session.viewed",
-          safe(() => {
-            subagentSessions.clear();
-            emit();
-          }),
-        ),
+      api.event.on(
+        "tui.session.select",
+        safe(() => {
+          subagentSessions.clear();
+          emit();
+        }),
       );
 
       // Authoritatively poll for pending input (question OR permission), but
@@ -263,27 +238,20 @@ export default Plugin.define({
       // goes idle). This is the primary signal: the permission route does not
       // push a distinct keymap mode (unlike the question route's "question"
       // mode), and the permission event alone can be clobbered by a later
-      // "busy" status. The data store is the same source the footer uses.
-      // Also catches focused-session changes that session.viewed missed.
-      let lastRouteID = null;
-      const timer = setInterval(() => {
+      // "busy" status. The state store is the same source the footer uses.
+      setInterval(() => {
+        if (!turnActive()) return;
         try {
           const { id } = currentSession();
-          if (id !== lastRouteID) {
-            lastRouteID = id;
-            subagentSessions.clear();
-            emit();
-          }
-          if (!turnActive()) return;
           if (id == null) return;
-          const questions = data.session.form.list(id) ?? [];
-          const permissions = data.session.permission.list(id) ?? [];
+          const questions = api.state.session.question(id) ?? [];
+          const permissions = api.state.session.permission(id) ?? [];
           let next = questions.length > 0 || permissions.length > 0;
           // The focused session isn't pending, but a tracked subagent might be.
           if (!next) {
             for (const sid of subagentSessions) {
-              const qs = data.session.form.list(sid) ?? [];
-              const ps = data.session.permission.list(sid) ?? [];
+              const qs = api.state.session.question(sid) ?? [];
+              const ps = api.state.session.permission(sid) ?? [];
               if (qs.length > 0 || ps.length > 0) {
                 next = true;
                 break;
@@ -300,7 +268,7 @@ export default Plugin.define({
 
       // Clear the green "done" check when the terminal is focused again.
       // This replaces the old tmux pane-focus-in hook.
-      const onFocus = () => {
+      api.renderer.on("focus", () => {
         try {
           if (status === "i") {
             status = "-";
@@ -309,29 +277,12 @@ export default Plugin.define({
         } catch {
           // Ignore.
         }
-      };
-      renderer.on("focus", onFocus);
+      });
 
       // Initial title.
       emit();
-
-      return () => {
-        clearInterval(timer);
-        for (const stop of stops) {
-          try {
-            stop();
-          } catch {
-            // Ignore.
-          }
-        }
-        try {
-          renderer.off("focus", onFocus);
-        } catch {
-          // Ignore.
-        }
-      };
     } catch {
       // Best-effort; never take down the TUI.
     }
   },
-});
+};
