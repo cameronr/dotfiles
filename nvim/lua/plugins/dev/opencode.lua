@@ -4,31 +4,33 @@ return {
     cond = function() return vim.fn.executable('opencode') == 1 end,
     cmd = 'Opencode',
     keys = {
-      { '<leader>aa', desc = 'Opencode toggle', mode = { 'n', 'v' } },
-      { '<leader>ai', desc = 'Opencode input', mode = { 'n', 'v' } },
-      { '<leader>aI', desc = 'Opencode input new session', mode = { 'n', 'v' } },
-      { '<leader>as', desc = 'Opencode load session' },
+      { '<leader>oa', desc = 'Opencode toggle', mode = { 'n', 'v' } },
+      { '<leader>oi', desc = 'Opencode input', mode = { 'n', 'v' } },
+      { '<leader>oI', desc = 'Opencode input new session', mode = { 'n', 'v' } },
+      { '<leader>os', desc = 'Opencode select session' },
+      { '<leader>ol', desc = 'Opencode select session' },
     },
     opts = {
       default_mode = 'plan',
       preferred_picker = 'snacks',
-      keymap_prefix = '<leader>a',
       legacy_commands = false,
       keymap = {
         editor = {
-          ['<leader>am'] = { 'switch_mode' },
-          ['<leader>aR'] = { function() require('opencode.ui.ui').render_output(true) end },
-          ['<leader>aa'] = { 'toggle', mode = { 'n', 'v' } },
+          ['<leader>ol'] = { 'select_session' },
+          ['<leader>oM'] = { 'configure_provider' },
+          ['<leader>om'] = { 'switch_mode' },
+          ['<leader>oR'] = { function() require('opencode.ui.ui').render_output(true) end },
+          ['<leader>oa'] = { 'toggle', mode = { 'n', 'v' } },
 
           -- open input without insert mode
-          ['<leader>ai'] = {
-            function() require('opencode.core').open({ new_session = false, focus = 'input' }) end,
+          ['<leader>oi'] = {
+            function() require('opencode.services.session_runtime').open({ new_session = false, focus = 'input' }) end,
             mode = { 'n', 'v' },
           },
 
-          -- open input without insert mode
-          ['<leader>aI'] = {
-            function() require('opencode.core').open({ new_session = true, focus = 'input' }) end,
+          -- open input with new session but without insert mode
+          ['<leader>oI'] = {
+            function() require('opencode.services.session_runtime').open({ new_session = true, focus = 'input' }) end,
             mode = { 'n', 'v' },
           },
         },
