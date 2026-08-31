@@ -1,0 +1,38 @@
+{
+  "$schema": "https://opencode.ai/v2/cli.json",
+  "theme": {
+    "name": "tokyonight"
+  },
+  "keybinds": {
+    "leader": "ctrl+o",
+    "session.tab.previous": "alt+left",
+    "session.tab.next": "alt+right",
+    "session.last": "alt+down"
+  },
+  "plugins": [
+    // {
+    //   "package": "@leohenon/opencode-vim-plugin",
+    //   "options": {
+    //     "enabled": true,
+    //     "vim_initial_mode": "normal",
+    //     "vim_system_clipboard_register": true
+    //   }
+    // }
+  ],
+  "attention": {
+    "enabled": true,
+    "sound": false
+  },
+  "diffs": {
+    "wrap": "word"
+  },
+  "terminal": {
+    "title": false
+  },
+  "session": {
+    "sidebar": "auto",
+    "scrollbar": false,
+    "thinking": "hide"
+  },
+  "animations": true
+}

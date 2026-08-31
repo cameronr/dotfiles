@@ -33,7 +33,10 @@ FILE_SYMLINKS=(
     worktrunk/config.toml
     opencode/opencode.json
     opencode/tui.json
-    opencode/plugins/tmux-status.js
+    opencode/cli.json
+    # TUI plugin: dir must contain tui.js (TUI) + index.js (server shim);
+    # the TUI only discovers plugins/<name>/tui.js, never cli.json paths
+    opencode/plugins/tmux-status
     opencode/agents
     ./bat/tokyonight_night.tmTheme:bat/themes/tokyonight_night.tmTheme
 )
