@@ -13,7 +13,7 @@
         "vim_system_clipboard_register": true
       }
     ],
-    "./plugins/tmux-status.js"
+    "./plugins/tmux-status/v1.js"
   ],
   "attention": {
     "enabled": true, // requires OPENTUI_NOTIFICATION_PROTOCOL=osc777 for wezterm+tmux
