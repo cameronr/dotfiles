@@ -19,9 +19,18 @@ return {
       }):map('<leader>vo')
     end
 
+    local excluded_filetypes = { opencode_output = true }
+
+    local function on_attach(bufnr)
+      local ft = vim.bo[bufnr].filetype
+      if excluded_filetypes[ft] then return false end
+      return true
+    end
+
     return vim.tbl_deep_extend('force', opts or {}, {
       max_lines = 10,
       multiline_threshold = 3,
+      on_attach = on_attach,
     })
   end,
 }
