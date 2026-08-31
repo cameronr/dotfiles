@@ -29,6 +29,9 @@
   "terminal": {
     "title": false
   },
+  "prompt": {
+    "paste": "full"
+  },
   "session": {
     "sidebar": "auto",
     "scrollbar": false,
