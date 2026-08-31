@@ -384,7 +384,12 @@ vim.keymap.set('i', ';', ';<c-g>u')
 
 -- Quickly go to the start/end of the line while in insert mode.
 vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
-vim.keymap.set('i', '<C-e>', '<C-o>A', { desc = 'Go to the end of the line' })
+vim.keymap.set('i', '<C-e>', function()
+  if vim.lsp.inline_completion.get({ on_accept = function() return nil end }) then
+    return ''
+  end
+  return '<C-o>A'
+end, { expr = true, desc = 'Go to end of line / Dismiss inline completion' })
 
 -- Poor man's vim-rsi:
 vim.keymap.set('c', '<C-a>', '<Home>')
@@ -584,8 +589,8 @@ vim.keymap.set('n', '<leader>cDl', function()
 end, { desc = 'Toggle linematch' })
 
 if vim.fn.has('nvim-0.12') == 1 then
-  vim.keymap.set('i', '<Tab>', function()
-    if not vim.lsp.inline_completion.get() then return '<Tab>' end
+  vim.keymap.set('i', '<C-Right>', function()
+    if not vim.lsp.inline_completion.get() then return '<C-Right>' end
   end, { expr = true, desc = 'Accept inline completion' })
 end
 
