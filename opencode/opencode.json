@@ -15,6 +15,7 @@
           "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
+            "default": {},
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
             "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
             "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
@@ -25,6 +26,7 @@
           "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
+            "default": {},
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
             "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
             "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
@@ -35,6 +37,7 @@
           "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
+            "default": {},
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
             "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
             "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
@@ -45,6 +48,7 @@
           "limit": { "context": 175000, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
+            "default": {},
             "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
             "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
             "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
