@@ -262,4 +262,4 @@ fi
 typeset -g POWERLEVEL9K_PROMPT_CHAR_OK_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=magenta
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 
-
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
