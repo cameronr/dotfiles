@@ -324,7 +324,8 @@ vim.keymap.set('n', 'q:', ':q')
 
 -- And now really, really disable it
 -- https://www.reddit.com/r/neovim/comments/15bvtr4/what_is_that_command_line_mode_where_i_see_the/
-vim.api.nvim_create_autocmd('CmdWinEnter', {
+---@diagnostic disable-next-line: param-type-mismatch
+vim.api.nvim_create_autocmd({ 'CmdWinEnter' }, {
   group = vim.api.nvim_create_augroup('CWE', { clear = true }),
   pattern = '*',
   callback = function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(':q<CR>:', true, false, true), 'm', false) end,
