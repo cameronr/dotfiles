@@ -9,7 +9,7 @@ return {
     ---@type render.md.UserConfig
     opts = {
       file_types = { 'markdown', 'opencode_output' },
-      heading = { icons = false },
+      -- heading = { icons = false },
 
       -- disable tables to use markdown-table-wrap below
       -- pipe_table = { enabled = false },
@@ -29,7 +29,6 @@ return {
   },
   {
     'ice345/markdown-table-wrap.nvim',
-    enabled = false,
     -- ft = { 'markdown', 'opencode_output' },
     ft = { 'markdown' },
     opts = {

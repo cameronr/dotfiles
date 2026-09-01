@@ -4,7 +4,7 @@ return {
     cond = function() return vim.fn.executable('opencode') == 1 end,
     cmd = 'Opencode',
     keys = {
-      { '<leader>oa', desc = 'Opencode toggle', mode = { 'n', 'v' } },
+      { '<leader>og', desc = 'Opencode toggle', mode = { 'n', 'v' } },
       { '<leader>oi', desc = 'Opencode input', mode = { 'n', 'v' } },
       { '<leader>oI', desc = 'Opencode input new session', mode = { 'n', 'v' } },
       { '<leader>os', desc = 'Opencode select session' },
@@ -17,10 +17,9 @@ return {
       keymap = {
         editor = {
           ['<leader>ol'] = { 'select_session' },
-          ['<leader>oM'] = { 'configure_provider' },
-          ['<leader>om'] = { 'switch_mode' },
+          ['<leader>om'] = { 'configure_provider' },
+          ['<leader>oa'] = { 'switch_mode' },
           ['<leader>oR'] = { function() require('opencode.ui.ui').render_output(true) end },
-          ['<leader>oa'] = { 'toggle', mode = { 'n', 'v' } },
 
           -- open input without insert mode
           ['<leader>oi'] = {
