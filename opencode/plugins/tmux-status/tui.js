@@ -39,6 +39,19 @@
 //   - "question.v2.asked" event     -> "form.created" (data.form.sessionID)
 //   - "session.error" event         -> "session.execution.failed"
 //   - "tui.session.select" event    -> "session.viewed" + route check in the poll
+//
+// Status model: the displayed char is derived per focused session from the
+// data store, never stored globally. "w" comes from data.session.status()
+// (running); "q" from non-empty form/permission lists for the session or a
+// validated subagent; "i"/"e" from SessionInfo.time.idle + outcome, shown
+// until the user has seen the result. "Seen" is tracked two ways: the
+// server's time.viewed watermark, trusted only for completions the plugin
+// did NOT observe live, and the local `dismissed` watermark (set on route
+// arrival and terminal focus). Live completions ignore time.viewed because
+// the TUI auto-sends session.viewed when a turn ends while its route is on
+// the session - a route-based notion of "viewed" that does not reflect
+// whether the user's eyes were on the terminal (e.g. they switched tmux
+// tabs). The check therefore persists until arrival or terminal focus.
 
 import { Plugin } from "@opencode-ai/plugin/tui";
 
@@ -48,23 +61,37 @@ import v1 from "./v1.js";
 export { v1 };
 
 // Module-level state, kept so it survives across events for the TUI's life.
-let status = "-"; // one of: w i e -  ("q" is derived, never stored here)
-let waitingInput = false; // true while a question or permission is pending
 let lastTitle = ""; // last OSC title pushed, to skip redundant writes
-// SessionIDs of subagents that descend from the focused session and have been
-// seen asking for input. The plugin API can't enumerate sessions, so we learn
-// subagent IDs from events and track them here. Cleared on session switch.
-const subagentSessions = new Set();
+// Local "user has seen this" watermark per session (epoch ms). Supplements the
+// server's time.viewed, which updates asynchronously after a terminal focus or
+// route change.
+const dismissed = new Map();
+// SessionIDs with known pending input, validated as descendants of the focused
+// session at event time. Cleared on route change.
+const pendingWatch = new Set();
+// SessionIDs whose turn-end we observed live (execution.succeeded/failed/
+// interrupted). For those the server's time.viewed is untrustworthy: the TUI
+// auto-sends session.viewed the moment a turn ends while its route is on the
+// session, which is a route-based notion of "viewed" that does not reflect
+// whether the user's eyes were on the terminal (e.g. they switched tmux
+// tabs). Only the local `dismissed` watermark (arrival / terminal focus)
+// reliably means "user saw it".
+const liveEnd = new Set();
 
 export default Plugin.define({
   id: "tmux-status",
   setup(context) {
     // Best-effort: a failure here must never take down the TUI.
     try {
-      status = "-";
-      waitingInput = false;
+      // Last route sessionID seen, for arrival detection (session.viewed and
+      // the poll). Referenced by the handlers below.
+      let lastRouteID = null;
+
       lastTitle = "";
-      subagentSessions.clear();
+      dismissed.clear();
+      pendingWatch.clear();
+      liveEnd.clear();
+      lastRouteID = null;
 
       const data = context.data;
       const renderer = context.renderer;
@@ -80,10 +107,51 @@ export default Plugin.define({
         return { id: null, title: "OpenCode" };
       }
 
-      // The effective status char: a pending question or permission overrides
-      // everything to "q" (the TUI is blocked waiting for the user's input).
+      // The effective status char, derived per focused session from the data
+      // store: pending input beats working; working beats a done/error result;
+      // a result only shows while unviewed (server watermark or local
+      // `dismissed`).
       function effectiveStatus() {
-        return waitingInput ? "q" : status;
+        const { id } = currentSession();
+        if (id == null) return "-";
+        if (pendingInput(id)) return "q";
+        try {
+          if (data.session.status(id) === "running") return "w";
+        } catch {}
+        try {
+          const info = data.session.get(id);
+          const idle = info?.time?.idle;
+          if (idle == null || info?.outcome == null) return "-";
+          const viewed = liveEnd.has(id)
+            ? (dismissed.get(id) ?? 0)
+            : Math.max(info.time.viewed ?? 0, dismissed.get(id) ?? 0);
+          if (viewed >= idle) return "-";
+          return info.outcome === "failed" ? "e" : "i";
+        } catch {
+          return "-";
+        }
+      }
+
+      // True if the focused session or one of its subagents (family members or
+      // event-learned pending IDs validated against it) has a pending question
+      // or permission.
+      function pendingInput(id) {
+        const ids = [id];
+        try {
+          for (const sid of data.session.family(id) ?? []) {
+            if (sid !== id && isDescendantOf(sid, id)) ids.push(sid);
+          }
+        } catch {}
+        for (const sid of pendingWatch) {
+          if (!ids.includes(sid)) ids.push(sid);
+        }
+        for (const sid of ids) {
+          try {
+            if ((data.session.form.list(sid) ?? []).length > 0) return true;
+            if ((data.session.permission.list(sid) ?? []).length > 0) return true;
+          } catch {}
+        }
+        return false;
       }
 
       // Push the encoded status + session title to the terminal, skipping the
@@ -97,49 +165,10 @@ export default Plugin.define({
         renderer.setTerminalTitle(next);
       }
 
-      // A question/permission can only be pending while the turn is working.
-      // Used to gate the waiting-input poll. Also stays active while a tracked
-      // subagent is still working, so its pending input keeps being polled.
-      function turnActive() {
-        if (status === "w") return true;
-        for (const sid of subagentSessions) {
-          let st;
-          try {
-            st = data.session.status(sid);
-          } catch {
-            continue; // a throw mustn't break the loop
-          }
-          if (st === "running") return true;
-        }
-        return false;
-      }
-
-      // Change the base status and re-emit, skipping the OSC write if the
-      // effective title is unchanged.
-      function applyStatus(next) {
-        if (status === next) return;
-        status = next;
-        // A pending question/permission can't survive the turn ending; clear a
-        // stale flag so the title doesn't stick on "q" after the session goes
-        // idle.
-        if (!turnActive() && waitingInput) waitingInput = false;
-        emit();
-      }
-
       // Events carry the sessionID in data.sessionID, or in data.form.sessionID
       // for form.created.
       function eventSessionID(event) {
         return event?.data?.sessionID ?? event?.data?.form?.sessionID;
-      }
-
-      // Only let an event affect the title if it belongs to the focused
-      // session, so subagent/background sessions don't clobber the focused
-      // pane's title. Events with no sessionID are always applied.
-      function matchesFocused(event) {
-        const sid = eventSessionID(event);
-        if (sid == null) return true;
-        const cur = currentSession();
-        return cur.id != null && sid === cur.id;
       }
 
       // True if `sessionID` is a descendant of `ancestorID`, walking the
@@ -155,22 +184,17 @@ export default Plugin.define({
         return false;
       }
 
-      // Like matchesFocused, but also accepts events from subagents that
+      // Like a focused-only match, but also accepts events from subagents that
       // descend from the focused session. Used by the permission/question
       // handlers only (a subagent's busy/idle/error must NOT touch the focused
-      // pane's status char). Tracks accepted subagent IDs so the poll can keep
-      // the turn active and look them up.
+      // pane's status char).
       function matchesFocusedOrSubagent(event) {
         const sid = eventSessionID(event);
         if (sid == null) return true;
         const cur = currentSession();
         if (cur.id == null) return false;
         if (sid === cur.id) return true;
-        if (isDescendantOf(sid, cur.id)) {
-          subagentSessions.add(sid);
-          return true;
-        }
-        return false;
+        return isDescendantOf(sid, cur.id);
       }
 
       // Wrap a handler so a thrown error can't break the event bus.
@@ -184,38 +208,76 @@ export default Plugin.define({
 
       const stops = [];
 
-      // Primary working/done/error signal. status is an object
-      // ({ type: "busy" | "idle" | "retry" }).
+      // Turn lifecycle events. State is per-session and only the focused
+      // session is displayed, so these simply trigger a recompute; the poll
+      // below is the safety net.
       stops.push(
         data.on(
-          "session.status",
-          safe((event) => {
-            if (!matchesFocused(event)) return;
-            const t = event?.data?.status?.type;
-            if (t === "busy") {
-              applyStatus("w");
-            } else if (t === "idle") {
-              applyStatus("i");
-            } else if (t === "retry") {
-              applyStatus("e");
-            }
+          "session.execution.started",
+          safe(() => {
+            emit();
           }),
         ),
       );
 
-      // Waiting on user input (permission). Fast path: flag the waiting state
-      // immediately so the title flips to "q" without waiting for the poll.
-      // The poll below is the authoritative source (this event alone can be
-      // clobbered by a later "busy" status).
+      stops.push(
+        data.on(
+          "session.execution.succeeded",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) liveEnd.add(sid);
+            emit();
+          }),
+        ),
+      );
+
+      // A user/shutdown/superseded interruption still ends the turn cleanly.
+      stops.push(
+        data.on(
+          "session.execution.interrupted",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) liveEnd.add(sid);
+            emit();
+          }),
+        ),
+      );
+
+      // Error.
+      stops.push(
+        data.on(
+          "session.execution.failed",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) liveEnd.add(sid);
+            emit();
+          }),
+        ),
+      );
+
+      // Defensive fallback: some builds may still emit "session.status"
+      // (status is an object: { type: "busy" | "idle" | "retry" }). v2
+      // primarily uses the session.execution.* events above.
+      stops.push(
+        data.on(
+          "session.status",
+          safe(() => {
+            emit();
+          }),
+        ),
+      );
+
+      // Waiting on user input (permission). Fast path: remember the session so
+      // pendingInput() keeps checking it, and recompute immediately so the
+      // title flips to "q" without waiting for the poll.
       stops.push(
         data.on(
           "permission.asked",
           safe((event) => {
             if (!matchesFocusedOrSubagent(event)) return;
-            if (!waitingInput) {
-              waitingInput = true;
-              emit();
-            }
+            const sid = eventSessionID(event);
+            if (sid != null) pendingWatch.add(sid);
+            emit();
           }),
         ),
       );
@@ -227,71 +289,78 @@ export default Plugin.define({
           "form.created",
           safe((event) => {
             if (!matchesFocusedOrSubagent(event)) return;
-            if (!waitingInput) {
-              waitingInput = true;
-              emit();
-            }
-          }),
-        ),
-      );
-
-      // Error.
-      stops.push(
-        data.on(
-          "session.execution.failed",
-          safe((event) => {
-            if (!matchesFocused(event)) return;
-            applyStatus("e");
-          }),
-        ),
-      );
-
-      // The focused session changed; re-emit for the newly focused session.
-      // Drop tracked subagents first: they belonged to the old focused session.
-      stops.push(
-        data.on(
-          "session.viewed",
-          safe(() => {
-            subagentSessions.clear();
+            const sid = eventSessionID(event);
+            if (sid != null) pendingWatch.add(sid);
             emit();
           }),
         ),
       );
 
-      // Authoritatively poll for pending input (question OR permission), but
-      // only while the turn is active (input can't be pending once the session
-      // goes idle). This is the primary signal: the permission route does not
-      // push a distinct keymap mode (unlike the question route's "question"
-      // mode), and the permission event alone can be clobbered by a later
-      // "busy" status. The data store is the same source the footer uses.
-      // Also catches focused-session changes that session.viewed missed.
-      let lastRouteID = null;
+      // Fast-path clears: drop the watched ID as soon as the user answers,
+      // cancels, or replies, and recompute without waiting for the poll.
+      stops.push(
+        data.on(
+          "form.replied",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) pendingWatch.delete(sid);
+            emit();
+          }),
+        ),
+      );
+
+      stops.push(
+        data.on(
+          "form.cancelled",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) pendingWatch.delete(sid);
+            emit();
+          }),
+        ),
+      );
+
+      stops.push(
+        data.on(
+          "permission.replied",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            if (sid != null) pendingWatch.delete(sid);
+            emit();
+          }),
+        ),
+      );
+
+      // Arrived at a session: mark it seen locally (the server's time.viewed
+      // updates asynchronously), drop watched IDs from the old route, and
+      // recompute.
+      stops.push(
+        data.on(
+          "session.viewed",
+          safe((event) => {
+            const sid = eventSessionID(event);
+            const { id } = currentSession();
+            if (sid != null && sid === id && id !== lastRouteID) {
+              lastRouteID = id;
+              pendingWatch.clear();
+              dismissed.set(id, Date.now());
+            }
+            emit();
+          }),
+        ),
+      );
+
+      // Safety-net poll: emit() is cheap local reads and dedupes via
+      // lastTitle. Also catches focused-session changes that session.viewed
+      // missed.
       const timer = setInterval(() => {
         try {
           const { id } = currentSession();
           if (id !== lastRouteID) {
             lastRouteID = id;
-            subagentSessions.clear();
-            emit();
+            pendingWatch.clear();
+            if (id != null) dismissed.set(id, Date.now());
           }
-          if (!turnActive()) return;
-          if (id == null) return;
-          const questions = data.session.form.list(id) ?? [];
-          const permissions = data.session.permission.list(id) ?? [];
-          let next = questions.length > 0 || permissions.length > 0;
-          // The focused session isn't pending, but a tracked subagent might be.
-          if (!next) {
-            for (const sid of subagentSessions) {
-              const qs = data.session.form.list(sid) ?? [];
-              const ps = data.session.permission.list(sid) ?? [];
-              if (qs.length > 0 || ps.length > 0) {
-                next = true;
-                break;
-              }
-            }
-          }
-          if (next === waitingInput) return;
-          waitingInput = next;
           emit();
         } catch {
           // Best-effort; ignore.
@@ -302,8 +371,9 @@ export default Plugin.define({
       // This replaces the old tmux pane-focus-in hook.
       const onFocus = () => {
         try {
-          if (status === "i") {
-            status = "-";
+          if (effectiveStatus() === "i") {
+            const { id } = currentSession();
+            if (id != null) dismissed.set(id, Date.now());
             emit();
           }
         } catch {
