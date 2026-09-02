@@ -6,7 +6,7 @@ return {
   keys = function()
     local keys = {
       {
-        '<leader>oo',
+        '<leader>Oo',
         function()
           local harpoon = require('harpoon')
           harpoon.ui:toggle_quick_menu(harpoon:list())
@@ -14,17 +14,17 @@ return {
         desc = 'Harpoon open',
       },
       {
-        '<leader>oa',
+        '<leader>Oa',
         function() require('harpoon'):list():add() end,
         desc = 'Harpoon file',
       },
       {
-        '<leader>or',
+        '<leader>Or',
         function() require('harpoon'):list():remove() end,
         desc = 'Unharpoon file',
       },
       {
-        '<leader>oc',
+        '<leader>Oc',
         function() require('harpoon'):list():clear() end,
         desc = 'Unharpoon all files',
       },
@@ -38,7 +38,7 @@ return {
       })
 
       table.insert(keys, {
-        '<leader>o' .. i,
+        '<leader>O' .. i,
         function() require('harpoon'):list():replace_at(i) end,
         desc = 'Set buffer as ' .. i,
       })
