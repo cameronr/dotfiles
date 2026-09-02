@@ -31,7 +31,8 @@ return {
     end,
   },
   {
-    'ice345/markdown-table-wrap.nvim',
+    -- 'ice345/markdown-table-wrap.nvim',
+    'cameronr/markdown-table-wrap.nvim',
     -- ft = { 'markdown', 'opencode_output' },
     ft = { 'markdown' },
     opts = {
