@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "devDependencies": {
+    "prettier-plugin-compact-markdown-table": "^0.1.0"
+  }
+}

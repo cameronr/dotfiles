@@ -7,17 +7,22 @@ CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.config}"
 
 cd ~
 
-DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc prettier/.prettierrc)
+DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc prettier/.prettierrc.js)
 
 for file in $DOTFILES; do
-    link_name=$(basename "$file")
-    ln -snf $DOTFILES_DIR/$file $link_name
+  link_name=$(basename "$file")
+  ln -snf $DOTFILES_DIR/$file $link_name
 done
 
-DIR_SYMLINKS=(nvim stylua eza)
+# Install prettier plugins (referenced by .prettierrc.js via __dirname)
+if [[ -n "${commands[npm]}" ]]; then
+  (cd "$DOTFILES_DIR/prettier" && npm install --no-audit --no-fund)
+fi
+
+DIR_SYMLINKS=(nvim stylua eza biome)
 
 for dir in $DIR_SYMLINKS; do
-    ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
+  ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir
 done
 
 # Symlink files with directory creation - format: source[:destination]
@@ -25,35 +30,35 @@ done
 # Destination is relative to CONFIG_DIR by default, unless prefixed with ~/ in which
 # case it's relative to HOME instead (for tools that don't use CONFIG_DIR)
 FILE_SYMLINKS=(
-    agents/AGENTS.md:opencode/AGENTS.md
-    "agents/AGENTS.md:~/.pi/agent/AGENTS.md"
-    hunk/config.toml
-    tmux/tmux.conf
-    herdr/config.toml
-    worktrunk/config.toml
-    opencode/opencode.json
-    opencode/tui.json
-    opencode/cli.json
-    # TUI plugin: dir must contain tui.js (TUI) + index.js (server shim);
-    # the TUI only discovers plugins/<name>/tui.js, never cli.json paths
-    opencode/plugins/tmux-status
-    opencode/agents
-    ./bat/tokyonight_night.tmTheme:bat/themes/tokyonight_night.tmTheme
+  agents/AGENTS.md:opencode/AGENTS.md
+  "agents/AGENTS.md:~/.pi/agent/AGENTS.md"
+  hunk/config.toml
+  tmux/tmux.conf
+  herdr/config.toml
+  worktrunk/config.toml
+  opencode/opencode.json
+  opencode/tui.json
+  opencode/cli.json
+  opencode/plugins/tmux-status
+  opencode/agents
+  opencode/skills
+  ./bat/tokyonight_night.tmTheme:bat/themes/tokyonight_night.tmTheme
+  "biome:~/Library/Application Support/biome"
 )
 
 for entry in $FILE_SYMLINKS; do
-    if [[ "$entry" == *:* ]]; then
-        source="${entry%%:*}"
-        dest="${entry##*:}"
-    else
-        source="$entry"
-        dest="$entry"
-    fi
-    if [[ "$dest" == "~/"* ]]; then
-        dest_path="${HOME}/${dest#\~/}"
-    else
-        dest_path="$CONFIG_DIR/$dest"
-    fi
-    mkdir -p "$(dirname "$dest_path")"
-    ln -snf "$DOTFILES_DIR/$source" "$dest_path"
+  if [[ "$entry" == *:* ]]; then
+    source="${entry%%:*}"
+    dest="${entry##*:}"
+  else
+    source="$entry"
+    dest="$entry"
+  fi
+  if [[ "$dest" == "~/"* ]]; then
+    dest_path="${HOME}/${dest#\~/}"
+  else
+    dest_path="$CONFIG_DIR/$dest"
+  fi
+  mkdir -p "$(dirname "$dest_path")"
+  ln -snf "$DOTFILES_DIR/$source" "$dest_path"
 done
