@@ -9,6 +9,7 @@ return {
     keys = {
       {
         '<leader>vF',
+        ---@diagnostic disable-next-line: param-type-mismatch
         function() require('conform').format({ async = true, lsp_format = 'fallback' }) end,
         mode = '',
         desc = 'Format buffer',
@@ -24,16 +25,19 @@ return {
         lua = { 'stylua' },
         python = { 'isort' },
 
-        -- webdev
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
-        typescript = { 'prettierd', 'prettier', stop_after_first = true },
-        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        -- webdev (strictly using Biome)
+        javascript = { 'biome' },
+        typescript = { 'biome' },
+        javascriptreact = { 'biome' },
+        typescriptreact = { 'biome' },
+        json = { 'biome' },
+        jsonc = { 'biome' },
+        css = { 'biome' },
+        graphql = { 'biome' },
+
+        -- languages not yet formatted by Biome (retained Prettier)
         svelte = { 'prettierd', 'prettier', stop_after_first = true },
-        css = { 'prettierd', 'prettier', stop_after_first = true },
         html = { 'prettierd', 'prettier', stop_after_first = true },
-        json = { 'prettierd', 'prettier', stop_after_first = true },
-        graphql = { 'prettierd', 'prettier', stop_after_first = true },
         liquid = { 'prettierd', 'prettier', stop_after_first = true },
 
         -- text
@@ -51,6 +55,11 @@ return {
         beautysh = {
           prepend_args = { '--indent-size', '2' },
         },
+        biome = {
+          -- By default conform requires a biome.json in the project root.
+          -- Set require_cwd = false to let Biome format anywhere using its default rules.
+          require_cwd = false,
+        },
       },
 
       -- support a global format disable
@@ -58,13 +67,6 @@ return {
         -- Disable with a global or buffer-local variable
         if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then return end
 
-        -- Language specific configuration of lsp fallback
-        --
-        -- Disable "format_on_save lsp_fallback" for languages that don't
-        -- have a well standardized coding style. You can add additional
-        -- languages here or re-enable it for the disabled ones.
-        --
-        -- For python, we want to fallback to the rust lsp formatter (not stop at isort)
         local language_lsp_format_opts = {
           c = 'never',
           cpp = 'never',
@@ -94,10 +96,8 @@ return {
 
       require('conform').setup(opts)
 
-      -- From: https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#command-to-toggle-format-on-save
       vim.api.nvim_create_user_command('FormatDisable', function(args)
         if args.bang then
-          -- FormatDisable! will disable formatting just for this buffer
           vim.b.disable_autoformat = true
         else
           vim.g.disable_autoformat = true
@@ -129,4 +129,3 @@ return {
     opts = {},
   },
 }
--- vim: ts=2 sts=2 sw=2 et

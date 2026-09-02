@@ -49,6 +49,7 @@ return {
         'emmylua_ls',
         -- 'lua_ls',
         'bashls',
+        'biome',
         'html',
         'cssls',
         'tailwindcss',
