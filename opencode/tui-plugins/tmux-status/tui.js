@@ -28,6 +28,13 @@
 //   - tmux with `set -g focus-events on` so terminal focus events reach the
 //     TUI (used to clear the "done" check when you focus the pane again).
 //
+// Manual refresh/clear: ctrl+shift+r (default) clears the focused session's
+// "done" / error check, the same as refocusing the pane. Also available via
+// the command palette and /tmux-refresh. The bind is configurable through a
+// `refresh_key` option, but only if this plugin is listed in cli.json
+// "plugins" with options (it is not: it is directory-discovered, so the
+// default bind applies).
+//
 // V2 API notes (ported from the V1 tui(api) plugin):
 //   - api.event.on(type, fn)        -> context.data.on(type, fn); payload in event.data
 //   - api.state.session.*           -> context.data.session.*
@@ -54,6 +61,7 @@
 // tabs). The check therefore persists until arrival or terminal focus.
 
 import { Plugin } from "@opencode-ai/plugin/tui";
+import { createComponent } from "@opentui/solid";
 
 // Preserved V1 API implementation (V1 tui(api) surface). Referenced so the
 // V2 port stays diffable against it while the remaining gaps are fixed.
@@ -163,6 +171,19 @@ export default Plugin.define({
         if (next === lastTitle) return;
         lastTitle = next;
         renderer.setTerminalTitle(next);
+      }
+
+      // Mark the focused session as seen (local `dismissed` watermark) and
+      // re-emit, clearing its "done" / error check. No-op unless the focused
+      // session is currently showing the check (i or e). Shared by terminal
+      // focus and the manual refresh keybind.
+      function dismissFocused() {
+        const { id } = currentSession();
+        if (id == null) return;
+        const status = effectiveStatus();
+        if (status !== "i" && status !== "e") return;
+        dismissed.set(id, Date.now());
+        emit();
       }
 
       // Events carry the sessionID in data.sessionID, or in data.form.sessionID
@@ -367,20 +388,49 @@ export default Plugin.define({
         }
       }, 1000);
 
-      // Clear the green "done" check when the terminal is focused again.
+      // Clear the "done" / error check when the terminal is focused again.
       // This replaces the old tmux pane-focus-in hook.
       const onFocus = () => {
         try {
-          if (effectiveStatus() === "i") {
-            const { id } = currentSession();
-            if (id != null) dismissed.set(id, Date.now());
-            emit();
-          }
+          dismissFocused();
         } catch {
           // Ignore.
         }
       };
       renderer.on("focus", onFocus);
+
+      // Manual refresh/clear: same dismissal as a terminal focus. The keymap
+      // layer is owned by this component (per the plugin SDK contract), so it
+      // must be claimed through a UI slot component that is released on
+      // cleanup below.
+      function KeymapSetup() {
+        context.keymap.layer(() => ({
+          mode: "base",
+          priority: 10,
+          commands: [
+            {
+              id: "tmux.status.refresh",
+              title: "Refresh tmux status",
+              group: "Plugin",
+              palette: true,
+              slash: { name: "tmux-refresh" },
+              bind: context.options?.refresh_key ?? "ctrl+shift+r",
+              run: () => {
+                try {
+                  dismissFocused();
+                } catch {
+                  // Ignore.
+                }
+              },
+            },
+          ],
+        }));
+        return null;
+      }
+      const releaseStatusSlot = context.ui.slot({
+        append: "prompt.footer.status",
+        render: () => createComponent(KeymapSetup, {}),
+      });
 
       // Initial title.
       emit();
@@ -393,6 +443,11 @@ export default Plugin.define({
           } catch {
             // Ignore.
           }
+        }
+        try {
+          releaseStatusSlot();
+        } catch {
+          // Ignore.
         }
         try {
           renderer.off("focus", onFocus);
