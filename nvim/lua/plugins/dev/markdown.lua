@@ -31,13 +31,16 @@ return {
     end,
   },
   {
+    'davidmh/mdx.nvim',
+  },
+  {
     -- 'ice345/markdown-table-wrap.nvim',
     'cameronr/markdown-table-wrap.nvim',
     -- ft = { 'markdown', 'opencode_output' },
-    ft = { 'markdown' },
+    ft = { 'markdown', 'mdx' },
     opts = {
       inline_wrap_scope = 'always',
-      -- extra_filetypes = { 'opencode_output' },
+      extra_filetypes = { 'mdx' },
     },
     -- opts_extend = { 'extra_filetypes' },
     config = function(_, opts)
