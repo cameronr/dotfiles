@@ -15,11 +15,12 @@
 // The tmux theme (tmux-tokyo-night-theme-cam.sh) parses <char> and <session>
 // out of the pane title and renders an icon accordingly.
 //
-// Discovered by the TUI from ~/.config/opencode/plugins/tmux-status/ (symlinked
-// here by dotfiles/install). Do NOT register it in cli.json "plugins": the TUI
-// silently skips cli.json entries that point at existing local files. The
-// sibling index.js is a no-op server plugin so the server's own discovery of
-// this directory doesn't fail (it can't resolve "@opencode-ai/plugin/tui").
+// Loading: the v2 TUI loads this through the cli.json "plugins" entry
+// "./tui-plugins/tmux-status" (this directory is symlinked into the config
+// dir by dotfiles/install). tui.json is v1-only: the V1 runtime loads the
+// sibling v1.js through its entry there. The sibling index.js is a no-op
+// server plugin so the server's own discovery of this directory doesn't
+// fail (it can't resolve "@opencode-ai/plugin/tui").
 //
 // Requires:
 //   - cli.json "terminal": { "title": false } so the TUI core's own reactive
@@ -28,12 +29,13 @@
 //   - tmux with `set -g focus-events on` so terminal focus events reach the
 //     TUI (used to clear the "done" check when you focus the pane again).
 //
-// Manual refresh/clear: ctrl+shift+r (default) clears the focused session's
-// "done" / error check, the same as refocusing the pane. Also available via
-// the command palette and /tmux-refresh. The bind is configurable through a
-// `refresh_key` option, but only if this plugin is listed in cli.json
-// "plugins" with options (it is not: it is directory-discovered, so the
-// default bind applies).
+// Manual refresh/clear: ctrl+l clears the focused session's "done" / error
+// check, the same as refocusing the pane. The layer is base-mode only, so
+// the key never fires while a dialog or the autocomplete/slash menu is
+// open. The bind is a plain ctrl+letter on purpose: ctrl+shift+* sequences
+// are undetectable in non-kitty terminals (ctrl+letter is a single byte,
+// shift is not distinguishable), so a ctrl+shift+r bind can never fire
+// there.
 //
 // V2 API notes (ported from the V1 tui(api) plugin):
 //   - api.event.on(type, fn)        -> context.data.on(type, fn); payload in event.data
@@ -61,7 +63,8 @@
 // tabs). The check therefore persists until arrival or terminal focus.
 
 import { Plugin } from "@opencode-ai/plugin/tui";
-import { createComponent } from "@opentui/solid";
+import { createComponent, createElement, insertNode, setProp } from "@opentui/solid";
+import { TextAttributes } from "@opentui/core";
 
 // Preserved V1 API implementation (V1 tui(api) surface). Referenced so the
 // V2 port stays diffable against it while the remaining gaps are fixed.
@@ -399,37 +402,52 @@ export default Plugin.define({
       };
       renderer.on("focus", onFocus);
 
-      // Manual refresh/clear: same dismissal as a terminal focus. The keymap
-      // layer is owned by this component (per the plugin SDK contract), so it
-      // must be claimed through a UI slot component that is released on
-      // cleanup below.
+      // Manual refresh/clear: same dismissal as a terminal focus.
+      const runRefresh = () => {
+        try {
+          dismissFocused();
+        } catch {
+          // Ignore.
+        }
+      };
+
+      // The keymap layer is owned by this component (per the plugin SDK
+      // contract), so it must be claimed through a UI slot component that
+      // is released on cleanup below. "base" mode at the vim plugin's
+      // bind-layer priority: the key never fires while the palette, a
+      // dialog, or the autocomplete/slash menu is open.
       function KeymapSetup() {
-        context.keymap.layer(() => ({
-          mode: "base",
-          priority: 10,
-          commands: [
-            {
-              id: "tmux.status.refresh",
-              title: "Refresh tmux status",
-              group: "Plugin",
-              palette: true,
-              slash: { name: "tmux-refresh" },
-              bind: context.options?.refresh_key ?? "ctrl+shift+r",
-              run: () => {
-                try {
-                  dismissFocused();
-                } catch {
-                  // Ignore.
-                }
+        try {
+          context.keymap.layer(() => ({
+            mode: "base",
+            priority: 100,
+            commands: [
+              {
+                id: "tmux-status.refresh",
+                bind: "ctrl+l",
+                run: runRefresh,
               },
-            },
-          ],
-        }));
+            ],
+          }));
+        } catch {
+          // A keymap contract mismatch must not take down the rest of setup.
+        }
         return null;
+      }
+      // A zero-size hidden element so the slot render has real content: the current v2 runtime unmounts a null-only slot claim and drops its keymap layers with it.
+      function SlotAnchor() {
+        const box = createElement("box");
+        const text = createElement("text");
+        insertNode(box, text);
+        setProp(text, "attributes", TextAttributes.HIDDEN);
+        return box;
       }
       const releaseStatusSlot = context.ui.slot({
         append: "prompt.footer.status",
-        render: () => createComponent(KeymapSetup, {}),
+        render: () => [
+          createComponent(KeymapSetup, {}),
+          createComponent(SlotAnchor, {}),
+        ],
       });
 
       // Initial title.
