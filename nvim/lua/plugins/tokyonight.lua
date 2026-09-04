@@ -210,7 +210,8 @@ return {
       hl.OpencodeAgentPlan = { link = 'Title' }
       hl.OpencodeAgentBuild = { fg = hl.WarningMsg.fg, bold = true }
 
-      hl.MarkviewBlockQuoteError = { link = 'Error' }
+      hl['@markup.raw.markdown_inline'] = { fg = c.blue, bold = true }
+      hl['@markup.strong'] = { fg = c.orange }
     end,
   },
 
