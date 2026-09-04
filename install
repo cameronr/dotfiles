@@ -7,7 +7,7 @@ CONFIG_DIR="${XDG_DATA_HOME:-${HOME}/.config}"
 
 cd ~
 
-DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc prettier/.prettierrc.js)
+DOTFILES=(zim/.zshrc zim/.zimrc .wezterm.lua .ripgreprc prettier/.prettierrc.js git/.gitconfig)
 
 for file in $DOTFILES; do
   link_name=$(basename "$file")

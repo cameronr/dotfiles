@@ -1,0 +1,15 @@
+[user]
+	name = Cameron Ring
+	email = 38429+cameronr@users.noreply.github.com
+[core]
+	excludesfile = /Users/cam/.gitignore
+	; pager = delta
+	pager = hunk pager
+[include]
+	path=~/dotfiles/git/global.gitconfig
+
+; [interactive]
+;     diffFilter = delta --color-only
+
+; [rerere]
+;     enabled = false
