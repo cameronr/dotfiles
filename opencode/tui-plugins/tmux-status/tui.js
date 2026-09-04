@@ -66,11 +66,6 @@ import { Plugin } from "@opencode-ai/plugin/tui";
 import { createComponent, createElement, insertNode, setProp } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 
-// Preserved V1 API implementation (V1 tui(api) surface). Referenced so the
-// V2 port stays diffable against it while the remaining gaps are fixed.
-import v1 from "./v1.js";
-export { v1 };
-
 // Module-level state, kept so it survives across events for the TUI's life.
 let lastTitle = ""; // last OSC title pushed, to skip redundant writes
 // Local "user has seen this" watermark per session (epoch ms). Supplements the
