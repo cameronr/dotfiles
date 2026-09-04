@@ -66,19 +66,6 @@ import { Plugin } from "@opencode-ai/plugin/tui";
 import { createComponent, createElement, insertNode, setProp } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 
-// TEMP: debug - remove later
-import { appendFileSync } from "node:fs";
-const debugLog = (event, extra = {}) => {
-  try {
-    appendFileSync(
-      "/Users/cam/dotfiles/opencode/tui-plugins/tmux-status/.debug.log",
-      JSON.stringify({ t: new Date().toISOString(), event, pid: process.pid, ...extra }) + "\n",
-    );
-  } catch {}
-};
-debugLog("tui.module-import");
-// END TEMP: debug
-
 // Module-level state, kept so it survives across events for the TUI's life.
 let lastTitle = ""; // last OSC title pushed, to skip redundant writes
 // Local "user has seen this" watermark per session (epoch ms). Supplements the
@@ -100,11 +87,6 @@ const liveEnd = new Set();
 export default Plugin.define({
   id: "tmux-status",
   setup(context) {
-    // TEMP: debug - remove later
-    debugLog("tui.setup", {
-      keymap_layer: typeof context.keymap?.layer === "function",
-    });
-    // END TEMP: debug
     // Best-effort: a failure here must never take down the TUI.
     try {
       // Last route sessionID seen, for arrival detection (session.viewed and
@@ -419,9 +401,6 @@ export default Plugin.define({
       // toast so the keypress has visible feedback (silent success looks
       // identical to "did nothing" when the check wasn't showing).
       const runRefresh = () => {
-        // TEMP: debug - remove later
-        debugLog("tui.command-run");
-        // END TEMP: debug
         try {
           dismissFocused();
         } catch {
@@ -449,9 +428,6 @@ export default Plugin.define({
       //     so the key never fires while the palette, a dialog, or the
       //     autocomplete/slash menu is open.
       function KeymapSetup() {
-        // TEMP: debug - remove later
-        debugLog("tui.keymap-mount");
-        // END TEMP: debug
         try {
           context.keymap.layer(() => ({
             commands: [
@@ -493,17 +469,11 @@ export default Plugin.define({
         const text = createElement("text");
         insertNode(box, text);
         setProp(text, "attributes", TextAttributes.HIDDEN);
-        // TEMP: debug - remove later
-        box.on("destroyed", () => debugLog("tui.keymap-unmount"));
-        // END TEMP: debug
         return box;
       }
       const releaseStatusSlot = context.ui.slot({
         append: "prompt.footer.status",
         render: () => {
-          // TEMP: debug - remove later
-          debugLog("tui.slot-render");
-          // END TEMP: debug
           return [
             createComponent(KeymapSetup, {}),
             createComponent(SlotAnchor, {}),

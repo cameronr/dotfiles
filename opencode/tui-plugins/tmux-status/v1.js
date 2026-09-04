@@ -28,16 +28,6 @@
 // Requires: tmux with `set -g focus-events on` so terminal focus events reach
 // the TUI (used to clear the "done" check when you focus the pane again).
 
-// TEMP: debug - remove later
-import { appendFileSync } from "node:fs";
-try {
-  appendFileSync(
-    "/Users/cam/dotfiles/opencode/tui-plugins/tmux-status/.debug.log",
-    `${new Date().toISOString()} [v1.module-import pid=${process.pid}]\n`,
-  );
-} catch {}
-// END TEMP: debug
-
 // Module-level state, kept so it survives across events for the TUI's life.
 let status = "-"; // one of: w i e -  ("q" is derived, never stored here)
 let waitingInput = false; // true while a question or permission is pending
