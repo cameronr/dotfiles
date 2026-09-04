@@ -31,7 +31,7 @@ macros:
     --min-p 0.0
     --repeat-penalty 1.0
     --chat-template-kwargs '{"preserve_thinking": true}'
-    --ctx-checkpoints 6
+    --ctx-checkpoints 5
     -ngld 99
     --spec-ckpt-mode auto
 
@@ -79,7 +79,11 @@ models:
 
   qwen3.8-3090:
     aliases:
+      - "qwen3.8"
+      - "qwen3.8-27b"
       - "qwen3.8-27B-MTP-IQ4_KS-3090"
+      - "coding"
+      - "assistant"
     env:
       - "CUDA_VISIBLE_DEVICES=1"
     cmd: ${qwen3_8_iq4_single_cmd}
@@ -87,11 +91,7 @@ models:
   # --- Qwen 3.8 Dual GPU ---
   qwen3.8-ik-dual:
     aliases:
-      - "qwen3.8"
-      - "qwen3.8-27b"
       - "qwen3.8-27B-UD-Q6_K_XL"
-      - "coding"
-      - "assistant"
       - "qwen3.8-dual"
     env:
       - "CUDA_VISIBLE_DEVICES=0,1"
@@ -102,21 +102,21 @@ models:
       --model /models/qwen3.8-27b-gguf/unsloth/Qwen3.8-27B-UD-Q6_K_XL.gguf
       --mmproj /models/qwen3.8-27b-gguf/unsloth/mmproj-Qwen3.8-27B-Q8_0.gguf
       --split-mode layer
-      --tensor-split 45,55
+      --tensor-split 50,50
       --ctx-size 262144
       --spec-type mtp:n_max=2,p_min=0.6
       -ctk q8_0 -ctv q8_0 -ctkd q8_0 -ctvd q8_0
       -b 2048 -ub 2024
-      -cram 16384
+      -cram 12288
       -t 8 -tb 4 -tm 4
 
   qwen3.8-vllm:
-    cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
-    cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
-    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
-    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+    cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
+    cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     proxy: http://qwen38-27b-rtx3090-single:18020
-    healthCheckTimeout: 600
+    healthCheckTimeout: 300
 
   # --- Qwen 3.6 Single GPU (Thinking) ---
   qwen3.6-4090:
@@ -174,6 +174,10 @@ peers:
       - nvidia/nemotron-3-super-120b-a12b:free
       - poolside/laguna-xs-2.1:free
       - google/gemma-4-26b-a4b-it:free
+  local-container:
+    proxy: http://mediabox.theringfamily.org:18020
+    models:
+      - qwen3.8-27b-ext
 
 # ==============================================================================
 # Dynamic Profiles
@@ -200,12 +204,19 @@ profiles:
       "coding": "qwen3.8-vllm"
       "assistant": "qwen3.8-vllm"
       "chat": "qwen3.8-vllm"
+  vllm-external:
+    pins:
+      "qwen3.8": "qwen3.8-27b-ext"
+      "qwen3.8-27b": "qwen3.8-27b-ext"
+      "coding": "qwen3.8-27b-ext"
+      "assistant": "qwen3.8-27b-ext"
+      "chat": "qwen3.8-27b-ext"
   ik-dual:
     pins:
       "qwen3.8": "qwen3.8-ik-dual"
       "qwen3.8-27b": "qwen3.8-ik-dual"
       "coding": "qwen3.8-ik-dual"
-      "assistant": "qwen3.5-A3B"
+      "assistant": "qwen3.8-ik-dual"
       "chat": "qwen3.8-ik-dual"
   external:
     pins:
