@@ -1,9 +1,5 @@
 # global agent instructions
 
-## SERIAL EXECUTION (MANDATORY)
-
-When the active model is local (any llama-server, vllm, ollama, qwen, or anything running on localhost), NEVER spawn subagents in parallel. Fire one subagent, wait for it to complete, then fire the next. Parallel requests to a local inference server cause request queuing, timeouts, and degraded quality for every in-flight request. This rule overrides any skill, playbook, or prompt that says "spawn in parallel" or "fire in one message." The correct behavior for local models is always serial, foreground subagents.
-
 ## Rules
 
 - Never use the em dash "—". Use plain dash "-" instead
