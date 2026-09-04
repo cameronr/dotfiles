@@ -66,6 +66,19 @@ import { Plugin } from "@opencode-ai/plugin/tui";
 import { createComponent, createElement, insertNode, setProp } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 
+// TEMP: debug - remove later
+import { appendFileSync } from "node:fs";
+const debugLog = (event, extra = {}) => {
+  try {
+    appendFileSync(
+      "/Users/cam/dotfiles/opencode/tui-plugins/tmux-status/.debug.log",
+      JSON.stringify({ t: new Date().toISOString(), event, pid: process.pid, ...extra }) + "\n",
+    );
+  } catch {}
+};
+debugLog("tui.module-import");
+// END TEMP: debug
+
 // Module-level state, kept so it survives across events for the TUI's life.
 let lastTitle = ""; // last OSC title pushed, to skip redundant writes
 // Local "user has seen this" watermark per session (epoch ms). Supplements the
@@ -87,6 +100,11 @@ const liveEnd = new Set();
 export default Plugin.define({
   id: "tmux-status",
   setup(context) {
+    // TEMP: debug - remove later
+    debugLog("tui.setup", {
+      keymap_layer: typeof context.keymap?.layer === "function",
+    });
+    // END TEMP: debug
     // Best-effort: a failure here must never take down the TUI.
     try {
       // Last route sessionID seen, for arrival detection (session.viewed and
@@ -397,28 +415,68 @@ export default Plugin.define({
       };
       renderer.on("focus", onFocus);
 
-      // Manual refresh/clear: same dismissal as a terminal focus.
+      // Manual refresh/clear: same dismissal as a terminal focus, plus a
+      // toast so the keypress has visible feedback (silent success looks
+      // identical to "did nothing" when the check wasn't showing).
       const runRefresh = () => {
+        // TEMP: debug - remove later
+        debugLog("tui.command-run");
+        // END TEMP: debug
         try {
           dismissFocused();
         } catch {
           // Ignore.
         }
+        try {
+          context.ui.toast.show({
+            variant: "success",
+            message: "tmux status: checkmark cleared",
+          });
+        } catch {
+          // Ignore.
+        }
       };
 
-      // The keymap layer is owned by this component (per the plugin SDK
-      // contract), so it must be claimed through a UI slot component that
-      // is released on cleanup below. "base" mode at the vim plugin's
-      // bind-layer priority: the key never fires while the palette, a
-      // dialog, or the autocomplete/slash menu is open.
+      // The keymap layers are owned by this component (per the plugin SDK
+      // contract), so they must be claimed through a UI slot component that
+      // is released on cleanup below. Two separate layers, not one:
+      //   - "palette": ungated (no mode), so command discovery (the
+      //     palette itself and slash autocomplete) can see it. A layer's
+      //     mode is checked against the mode-stack top, and the palette
+      //     pushes mode "modal" while open - a mode-gated layer would be
+      //     invisible to the palette at exactly the moment it queries.
+      //   - "ctrl-l": "base" mode at the vim plugin's bind-layer priority,
+      //     so the key never fires while the palette, a dialog, or the
+      //     autocomplete/slash menu is open.
       function KeymapSetup() {
+        // TEMP: debug - remove later
+        debugLog("tui.keymap-mount");
+        // END TEMP: debug
+        try {
+          context.keymap.layer(() => ({
+            commands: [
+              {
+                id: "tmux-status.refresh",
+                title: "Refresh tmux status",
+                group: "Plugin",
+                palette: true,
+                slash: { name: "tmux-refresh" },
+                run: runRefresh,
+              },
+            ],
+          }));
+        } catch {
+          // A keymap contract mismatch must not take down the rest of setup.
+        }
         try {
           context.keymap.layer(() => ({
             mode: "base",
             priority: 100,
             commands: [
               {
-                id: "tmux-status.refresh",
+                // No `id` on purpose: the last confirmed-working build's
+                // ctrl+l command was bind-only. A named id on a bound
+                // command is the one behavioral delta from that build.
                 bind: "ctrl+l",
                 run: runRefresh,
               },
@@ -435,14 +493,22 @@ export default Plugin.define({
         const text = createElement("text");
         insertNode(box, text);
         setProp(text, "attributes", TextAttributes.HIDDEN);
+        // TEMP: debug - remove later
+        box.on("destroyed", () => debugLog("tui.keymap-unmount"));
+        // END TEMP: debug
         return box;
       }
       const releaseStatusSlot = context.ui.slot({
         append: "prompt.footer.status",
-        render: () => [
-          createComponent(KeymapSetup, {}),
-          createComponent(SlotAnchor, {}),
-        ],
+        render: () => {
+          // TEMP: debug - remove later
+          debugLog("tui.slot-render");
+          // END TEMP: debug
+          return [
+            createComponent(KeymapSetup, {}),
+            createComponent(SlotAnchor, {}),
+          ];
+        },
       });
 
       // Initial title.

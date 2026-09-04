@@ -10,14 +10,9 @@
     "session.last": "alt+down"
   },
   "plugins": [
-    // {
-    //   "package": "@leohenon/opencode-vim-plugin",
-    //   "options": {
-    //     "enabled": true,
-    //     "vim_initial_mode": "normal",
-    //     "vim_system_clipboard_register": true
-    //   }
-    // }
+    {
+      "package": "./tui-plugins/tmux-status/"
+    }
   ],
   "attention": {
     "enabled": true,
