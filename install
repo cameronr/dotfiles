@@ -39,7 +39,7 @@ FILE_SYMLINKS=(
   opencode/opencode.json
   opencode/tui.json
   opencode/cli.json
-  opencode/plugins/tmux-status
+  opencode/tui-plugins/tmux-status
   opencode/agents
   opencode/skills
   ./bat/tokyonight_night.tmTheme:bat/themes/tokyonight_night.tmTheme
