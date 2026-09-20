@@ -135,6 +135,9 @@ alias mv='mv -i'
 export EDITOR=vim
 alias vi='vim'
 
+# expand aliases after sudo
+alias sudo='sudo '
+
 if [[ (( $commands[nvim] )) ]]; then
   export EDITOR=nvim
   export MANPAGER="nvim --cmd 'set laststatus=0 | let g:man_pager=1' +'set statuscolumn= nowrap laststatus=0' +Man\!"
