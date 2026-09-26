@@ -1,3 +1,9 @@
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+
 [init]
     defaultBranch = main
 
@@ -6,12 +12,25 @@
 
 [push]
     default = simple
+	autoSetupRemote = true   # Automatically set upstream branch on push
+
+[diff]
+    colorMoved = default
+	algorithm = histogram    # Clearer diffs on moved/edited lines
+	mnemonicPrefix = true    # More intuitive refs in diff output
 
 [merge]
     conflictstyle = diff3
 
-[diff]
-    colorMoved = default
+[column]
+	ui = auto 			     # Output in columns when possible
+[branch]
+	sort = -committerdate    # Sort branches by most recent commit first
+[tag]
+	sort = -version:refname  # Sort version numbers as you would expect
+[rerere]
+	enabled = true           # Record and reuse conflict resolutions
+	autoupdate = true        # Apply stored conflict resolutions automatically
 
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
