@@ -19,7 +19,7 @@ if [[ -n "${commands[npm]}" ]]; then
   (cd "$DOTFILES_DIR/prettier" && npm install --no-audit --no-fund)
 fi
 
-DIR_SYMLINKS=(nvim stylua eza biome)
+DIR_SYMLINKS=(nvim stylua eza biome mise)
 
 for dir in $DIR_SYMLINKS; do
   ln -snf $DOTFILES_DIR/$dir $CONFIG_DIR/$dir

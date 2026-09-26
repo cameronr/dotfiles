@@ -1,0 +1,6 @@
+# [env]
+#   _.python.venv = { path = "{{cwd}}/.venv", create = true }
+
+# ~/.config/mise/config.toml
+[settings]
+  python.uv_venv_auto = "create|source" # creates if missing, or "source" to only activate existing ones
