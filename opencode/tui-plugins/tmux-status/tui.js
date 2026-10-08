@@ -20,7 +20,7 @@
 // dir by dotfiles/install). tui.json is v1-only: the V1 runtime loads the
 // sibling v1.js through its entry there. The sibling index.js is a no-op
 // server plugin so the server's own discovery of this directory doesn't
-// fail (it can't resolve "@opencode-ai/plugin/tui").
+// fail (it can't resolve "@opencode/plugin/tui").
 //
 // Requires:
 //   - cli.json "terminal": { "title": false } so the TUI core's own reactive
@@ -62,7 +62,7 @@
 // whether the user's eyes were on the terminal (e.g. they switched tmux
 // tabs). The check therefore persists until arrival or terminal focus.
 
-import { Plugin } from "@opencode-ai/plugin/tui";
+import { Plugin } from "@opencode/plugin/tui";
 import { createComponent, createElement, insertNode, setProp } from "@opentui/solid";
 import { TextAttributes } from "@opentui/core";
 
