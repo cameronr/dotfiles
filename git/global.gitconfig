@@ -23,7 +23,7 @@
     conflictstyle = diff3
 
 [column]
-	ui = auto 			     # Output in columns when possible
+	; ui = auto 			     # Output in columns when possible
 [branch]
 	sort = -committerdate    # Sort branches by most recent commit first
 [tag]
