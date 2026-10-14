@@ -35,6 +35,7 @@ return {
   },
   {
     'ice345/markdown-table-wrap.nvim',
+    enabled = false,
     -- ft = { 'markdown', 'opencode_output' },
     ft = { 'markdown', 'mdx' },
     opts = {
