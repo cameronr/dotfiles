@@ -1,9 +1,7 @@
 ---@module 'lazy'
 ---@type LazySpec
 return {
-  -- 'aserowy/tmux.nvim',
-  -- use fork below until https://github.com/aserowy/tmux.nvim/pull/144 is merged
-  'askoufis/tmux.nvim',
+  'aserowy/tmux.nvim',
   keys = {
     { '<C-h>', [[<cmd>lua require("tmux").move_left()<cr>]] },
     { '<C-j>', [[<cmd>lua require("tmux").move_bottom()<cr>]] },
