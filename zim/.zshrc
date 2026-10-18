@@ -127,6 +127,9 @@ ZVM_SYSTEM_CLIPBOARD_ENABLED=true
 # Set tmux tab titles with customized icon
 source $DOTFILES/zsh/title-override.zsh
 
+# Auto-recover the terminal after an SSH session drops mid-TUI
+source $DOTFILES/zsh/ssh-term-recovery.zsh
+
 # safe aliases
 alias cp='cp -i'
 alias mv='mv -i'
