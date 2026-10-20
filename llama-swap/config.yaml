@@ -35,75 +35,14 @@ macros:
     -ngld 99
     --spec-ckpt-mode auto
 
-  qwen3_8_params: >-
-    --alias "Qwen3.8-27B"
-
-  qwen3_6_params: >-
-    --model /models/qwen3.6-27b-gguf/ubergarm-mtp-iq4ks/Qwen3.6-27B-MTP-IQ4_KS.gguf
-    --alias "Qwen3.6-27B"
-    --mmproj /models/qwen3.6-27b-gguf/mmproj-F16.gguf
-    --no-mmproj-offload
-    --spec-type mtp:n_max=2,p_min=0.0
-
   kv_quant: >-
     -ctk q4_0 -ctv q4_0
     -khad -vhad
-
-  qwen3_8_iq4_single_cmd: >-
-    ${ik_llama_base}
-    ${qwen3_8_params}
-    -np 1
-    --model /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/Qwen3.8-27B-MTP-IQ4_KS.gguf
-    --mmproj /models/qwen3.8-27b-gguf/ubergarm-mtp-iq4ks/mmproj-Qwen3.8-27B-Q8_0.gguf
-    --no-mmproj-offload
-    --split-mode none
-    --ctx-size 175000
-    --spec-type mtp:n_max=2,p_min=0.6
-    ${kv_quant}
-    -b 1024 -ub 1024
-    -cram 6144
-    -t 1 -tb 8 -tm 8
 
 # ==============================================================================
 # Active Models
 # ==============================================================================
 models:
-  # --- Qwen 3.8 Single GPU ---
-  qwen3.8-4090:
-    aliases:
-      - "qwen3.8-27B-MTP-IQ4_KS-4090"
-    env:
-      - "CUDA_VISIBLE_DEVICES=0"
-    cmd: ${qwen3_8_iq4_single_cmd}
-
-  qwen3.8-3090:
-    aliases:
-      - "qwen3.8-27B-MTP-IQ4_KS-3090"
-    env:
-      - "CUDA_VISIBLE_DEVICES=1"
-    cmd: ${qwen3_8_iq4_single_cmd}
-
-  # --- Qwen 3.8 Dual GPU ---
-  qwen3.8-ik-dual:
-    aliases:
-      - "qwen3.8-27B-UD-Q6_K_XL"
-    env:
-      - "CUDA_VISIBLE_DEVICES=0,1"
-    cmd: >-
-      ${ik_llama_base}
-      ${qwen3_8_params}
-      -np 1
-      --model /models/qwen3.8-27b-gguf/unsloth/Qwen3.8-27B-UD-Q6_K_XL.gguf
-      --mmproj /models/qwen3.8-27b-gguf/unsloth/mmproj-Qwen3.8-27B-Q8_0.gguf
-      --split-mode layer
-      --tensor-split 50,50
-      --ctx-size 262144
-      --spec-type mtp:n_max=2,p_min=0.6
-      -ctk q8_0 -ctv q8_0 -ctkd q8_0 -ctvd q8_0
-      -b 2048 -ub 1536
-      -cram 24576
-      -t 8 -tb 4 -tm 4
-
   qwen3.8-vllm-4090:
     cmd: /home/cam/qwen38-27b-rtx3090/run.sh vllm-batch .env-single "device=0"
     cmdStop: docker stop vllm-batch
@@ -126,35 +65,40 @@ models:
     proxy: http://mediabox:18020
     healthCheckTimeout: 300
 
-  # --- Qwen 3.6 Single GPU (Thinking) ---
-  qwen3.6-4090:
-    env:
-      - "CUDA_VISIBLE_DEVICES=0"
-    cmd: >-
-      ${ik_llama_base}
-      ${qwen3_6_params}
-      -np 1
-      --split-mode none
-      --ctx-size 150000
-      ${kv_quant}
-      -b 1024 -ub 1024
-      -cram 16384
-      -t 1 -tb 8 -tm 8
+  qwen3.8-flash-3090:
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
+    cmd: /home/cam/strata/run-unsloth.sh strata "device=1"
+    cmdStop: docker stop strata
+    proxy: http://mediabox:18020
+    healthCheckTimeout: 300
 
-  qwen3.5-A3B:
-    env:
-      - "CUDA_VISIBLE_DEVICES=1"
-    cmd: >-
-      ${ik_llama_base}
-      -np 1
-      --model /models/Qwen3.5-35B-A3B.i1-Q4_K_M.gguf
-      --mmproj /models/Qwen3.5-35B-A3B.mmproj-f16.gguf
-      ${kv_quant}
-      --ctx-size 64000
-      --spec-ckpt-mode auto
-      -ngld 99
-      --chat-template-kwargs '{"preserve_thinking": true}'
-      --ctx-checkpoints 6
+  qwen3.8-flash-dual:
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
+    cmd: /home/cam/strata/run-unsloth.sh strata all
+    cmdStop: docker stop strata
+    proxy: http://mediabox:18020
+    healthCheckTimeout: 300
+
+  # qwen3.5-A3B:
+  #   env:
+  #     - "CUDA_VISIBLE_DEVICES=1"
+  #   cmd: >-
+  #     ${ik_llama_base}
+  #     -np 1
+  #     --model /models/Qwen3.5-35B-A3B.i1-Q4_K_M.gguf
+  #     --mmproj /models/Qwen3.5-35B-A3B.mmproj-f16.gguf
+  #     ${kv_quant}
+  #     --ctx-size 64000
+  #     --spec-ckpt-mode auto
+  #     -ngld 99
+  #     --chat-template-kwargs '{"preserve_thinking": true}'
+  #     --ctx-checkpoints 6
 
   qwen3.5-A3Bu:
     env:
@@ -191,20 +135,6 @@ peers:
 # Dynamic Profiles
 # ==============================================================================
 profiles:
-  ik-4090:
-    pins:
-      "qwen3.8": "qwen3.8-4090"
-      "qwen3.8-27b": "qwen3.8-4090"
-      "coding": "qwen3.8-4090"
-      "assistant": "qwen3.8-4090"
-      "chat": "qwen3.8-4090"
-  ik-3090:
-    pins:
-      "qwen3.8": "qwen3.8-3090"
-      "qwen3.8-27b": "qwen3.8-3090"
-      "coding": "qwen3.8-3090"
-      "assistant": "qwen3.8-3090"
-      "chat": "qwen3.8-3090"
   vllm-3090:
     pins:
       "qwen3.8": "qwen3.8-vllm-3090"
@@ -226,20 +156,20 @@ profiles:
       "coding": "qwen3.8-vllm-dual"
       "assistant": "qwen3.8-vllm-dual"
       "chat": "qwen3.8-vllm-dual"
-  vllm-external:
+  strata-3090:
     pins:
-      "qwen3.8": "qwen3.8-27b-ext"
-      "qwen3.8-27b": "qwen3.8-27b-ext"
-      "coding": "qwen3.8-27b-ext"
-      "assistant": "qwen3.8-27b-ext"
-      "chat": "qwen3.8-27b-ext"
-  ik-dual:
+      "qwen3.8": "qwen3.8-flash-3090"
+      "qwen3.8-27b": "qwen3.8-flash-3090"
+      "coding": "qwen3.8-flash-3090"
+      "assistant": "qwen3.8-flash-3090"
+      "chat": "qwen3.8-flash-3090"
+  strata-dual:
     pins:
-      "qwen3.8": "qwen3.8-ik-dual"
-      "qwen3.8-27b": "qwen3.8-ik-dual"
-      "coding": "qwen3.8-ik-dual"
-      "assistant": "qwen3.8-ik-dual"
-      "chat": "qwen3.8-ik-dual"
+      "qwen3.8": "qwen3.8-flash-dual"
+      "qwen3.8-27b": "qwen3.8-flash-dual"
+      "coding": "qwen3.8-flash-dual"
+      "assistant": "qwen3.8-flash-dual"
+      "chat": "qwen3.8-flash-dual"
   external:
     pins:
       "coding": "google/gemma-4-26b-a4b-it:free"
@@ -247,4 +177,4 @@ profiles:
 
 hooks:
   on_startup:
-    profile: "vllm-3090"
+    profile: "strata-3090"
