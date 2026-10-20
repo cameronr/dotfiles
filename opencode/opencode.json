@@ -3,6 +3,12 @@
 
   "model": "local/qwen3.8",
 
+  "permissions": [
+    { "action": "external_directory", "resource": "*", "effect": "ask" },
+    { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" }
+  ],
+
   "provider": {
     "local": {
       "npm": "@ai-sdk/openai-compatible",
@@ -12,18 +18,7 @@
       },
       "models": {
         "qwen3.8": {
-          "limit": { "context": 175000, "output": 32768 },
-          "modalities": { "input": ["text", "image"], "output": ["text"] },
-          "variants": {
-            "default": {},
-            "low": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "low" } } },
-            "medium": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "medium" } } },
-            "high": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "high" } } },
-            "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
-          }
-        },
-        "qwen3.8-27b": {
-          "limit": { "context": 175000, "output": 32768 },
+          "limit": { "context": 262144, "output": 32768 },
           "modalities": { "input": ["text", "image"], "output": ["text"] },
           "variants": {
             "default": {},
@@ -55,10 +50,6 @@
             "xhigh": { "extra_body": { "chat_template_kwargs": { "reasoning_effort": "xhigh" } } }
           }
         },
-        "qwen3.6-27B-MTP-IQ4_KS": {
-          "limit": { "context": 175000, "output": 32768 },
-          "modalities": { "input": ["text", "image"], "output": ["text"] }
-        }
       }
     },
     "openrouter": {
