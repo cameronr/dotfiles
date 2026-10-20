@@ -14,7 +14,8 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "local",
       "options": {
-        "baseURL": "{env:LLAMA_URL}"
+        "baseURL": "{env:LLAMA_URL}",
+        "apiKey": "{env:LLAMA_API_KEY}"
       },
       "models": {
         "qwen3.8": {
