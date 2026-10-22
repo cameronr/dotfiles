@@ -6,7 +6,8 @@
   "permissions": [
     { "action": "external_directory", "resource": "*", "effect": "ask" },
     { "action": "external_directory", "resource": "/tmp/*", "effect": "allow" },
-    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" }
+    { "action": "external_directory", "resource": "/private/tmp/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "~/.config/opencode/skills/*", "effect": "allow" }
   ],
 
   "provider": {
