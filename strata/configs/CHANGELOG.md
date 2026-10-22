@@ -22,6 +22,9 @@ This repo holds the real files; the repo clones hold symlinks:
 
 ## 2026-10-21
 
+- Fork runner moved here as `run-unsloth-eddoursul.sh` (was untracked in
+  `~/strata-eddoursul/`); symlinked back, so `bench_single_tune.py` and
+  `bench_vs_fork.py` arm B keep working through `~/strata-eddoursul/run-unsloth.sh`.
 - `run-unsloth.sh` here is now the 0.2.1.4 upstream runner (was
   `~/strata/run-unsloth-2.sh`); the 0.1-era runner that used to live here
   is dropped (image `strata`, `STRATA_STAGE_TRIM`, `/opt/strata/engine`
