@@ -8,7 +8,8 @@ Configs for the two engines benchmarked against each other on mediabox
   `--second-gpu`/`--head-split`, no `--layer-split`/`--batch-groups`/
   `--conversation-cache-*`. Run with `~/strata-eddoursul/run-unsloth.sh`.
 - `upstream-ud-iq4_xs-{single,dual}.json` - upstream Niko1221/Strata
-  (`~/strata`, image `strata-0.2.1.4`). Run with `~/strata/run-unsloth-2.sh`.
+  (`~/strata`, image `strata-0.2.1.4`). Run with `../run-unsloth.sh`
+  (lives here, symlinked as `~/strata/run-unsloth.sh`).
 
 Both are bind-mounted to `/data/eddoursul.json` / `/data/strata-run.json`
 by the run scripts; `@VISION_EXE@` is substituted at container start.
@@ -21,6 +22,11 @@ This repo holds the real files; the repo clones hold symlinks:
 
 ## 2026-10-21
 
+- `run-unsloth.sh` here is now the 0.2.1.4 upstream runner (was
+  `~/strata/run-unsloth-2.sh`); the 0.1-era runner that used to live here
+  is dropped (image `strata`, `STRATA_STAGE_TRIM`, `/opt/strata/engine`
+  paths - all superseded). `~/strata/run-unsloth.sh` keeps its symlink,
+  so `bench_vs_fork.py` arm A now starts the 0.2 image.
 - Moved all four configs here from the (untracked) `configs/` dirs in
   `~/strata` and `~/strata-eddoursul`; symlinked back. Upstream files
   renamed `unsloth-ud-iq4_xs-*` -> `upstream-ud-iq4_xs-*` to distinguish
