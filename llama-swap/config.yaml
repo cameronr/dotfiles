@@ -70,8 +70,8 @@ models:
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
-    cmd: /home/cam/strata/run-unsloth.sh strata "device=1"
-    cmdStop: docker stop strata
+    cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul "device=1"
+    cmdStop: docker stop strata-eddoursul
     proxy: http://mediabox:18020
     healthCheckTimeout: 300
 
@@ -80,8 +80,9 @@ models:
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
-    cmd: /home/cam/strata/run-unsloth.sh strata all
-    cmdStop: docker stop strata
+    # cmd: /home/cam/strata/run-unsloth.sh strata all
+    cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul all
+    cmdStop: docker stop strata-eddoursul
     proxy: http://mediabox:18020
     healthCheckTimeout: 300
 
