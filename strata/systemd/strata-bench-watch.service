@@ -1,0 +1,11 @@
+[Unit]
+Description=Strata upstream watch: pull, build, A/B bench
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/cam/dotfiles/strata/upstream_watch.py
+User=cam
+TimeoutStartSec=6h
+Nice=10
