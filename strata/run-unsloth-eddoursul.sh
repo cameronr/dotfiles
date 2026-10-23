@@ -43,7 +43,7 @@ if [ ! -s "$KEY_FILE" ]; then
   echo "made a new API key: $KEY_FILE"
 fi
 
-docker rm --force "$CONTAINER_NAME" 2>/dev/null
+docker rm --force "$CONTAINER_NAME" 2>/dev/null || true
 
 # STRATA_DRAFT_PROXY: the 2-bit draft head copy. 0 = the exact head over every row (safe; what ran before the copy
 # could handle big draft vocabs). 1 = the 2-bit copy (~2.5x faster draft-head argmax). The copy used to throw
