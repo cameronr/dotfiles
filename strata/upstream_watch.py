@@ -230,8 +230,7 @@ def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
     finally:
         if swap:
             print("restarting llama-swap")
-            # llama-swap-cli only talks to a running server over HTTP; a stopped one needs docker start
-            bvf.docker(["start", "llama-swap"], check=False)
+            subprocess.run(["llama-swap-cli", "start"], check=False)
     if rc != 0:
         fail("sweep", str(out_root))
     return out_root
