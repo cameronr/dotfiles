@@ -219,9 +219,20 @@ def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
            "--image-a", image_a, "--image-b", "strata-eddoursul", "--out", str(out_root)]
     if bvf.docker(["ps", "-q", "--filter", "name=^strata$"]).stdout.strip():
         cmd.append("--restart")
+    swap = bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip())
+    if swap:
+        print("stopping llama-swap for the sweep")
+        bvf.docker(["stop", "-t", "30", "llama-swap"], check=False)
     # env is inherited unmodified on purpose: never export IMAGE here, or bench_vs_fork's --restart
     # would inherit it and restart the production server on the wrong image.
-    if subprocess.run(cmd, cwd=str(SCRIPTS)).returncode != 0:
+    try:
+        rc = subprocess.run(cmd, cwd=str(SCRIPTS)).returncode
+    finally:
+        if swap:
+            print("restarting llama-swap")
+            # llama-swap-cli only talks to a running server over HTTP; a stopped one needs docker start
+            bvf.docker(["start", "llama-swap"], check=False)
+    if rc != 0:
         fail("sweep", str(out_root))
     return out_root
 
