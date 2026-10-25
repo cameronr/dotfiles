@@ -5,11 +5,13 @@
     sudo python3 upstream_watch.py --force       # ignore the no-change gate and the GPU-busy guard
     sudo python3 upstream_watch.py --rounds 1 --force
 
-It pulls ~/strata (upstream main) and its published image ghcr.io/niko1221/strata:<version>-<flavor>, rebuilds
-the fork's image (~/strata-eddoursul is never pulled or modified), runs bench_vs_fork.py as arm A=upstream vs
-arm B=fork, appends a row to ~/strata-data/bench/series.jsonl, rewrites ~/strata-results.md from the whole
-series, and prunes old watch-* fork images. state.json records the last good (upstream_sha, version, fork_sha);
-when tonight matches it the run is a no-op unless --force. The wrapper has no scheduling of its own.
+It pulls ~/strata (upstream main) and its published image ghcr.io/niko1221/strata:<version>-<flavor>; when
+that release has no published image (they are hand-published and often lag) it builds upstream from source
+instead. It rebuilds the fork's image (~/strata-eddoursul is never pulled or modified), runs bench_vs_fork.py
+as arm A=upstream vs arm B=fork, appends a row to ~/strata-data/bench/series.jsonl, rewrites
+~/strata-results.md from the whole series, and prunes old watch-* images. state.json records the last good
+(upstream_sha, version, fork_sha); when tonight matches it the run is a no-op unless --force. The wrapper
+has no scheduling of its own.
 
 Standard library only; run on the host with sudo (docker access needed). Output files are chowned back to the
 invoking user, and git runs as that user, so root leaves nothing it owns behind except container state.
@@ -23,6 +25,8 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
+import urllib.request
 from pathlib import Path
 from typing import NoReturn
 
@@ -38,6 +42,10 @@ SERIES = DATA / "series.jsonl"
 STATE = DATA / "state.json"
 MD = HOME / "strata-results.md"
 TAG_RE = re.compile(r"^v([0-9]+(?:\.[0-9]+)+)$")
+GHCR_REPO = "niko1221/strata"
+MANIFEST_ACCEPT = ",".join(("application/vnd.oci.image.index.v1+json",
+                            "application/vnd.docker.distribution.manifest.list.v2+json",
+                            "application/vnd.docker.distribution.manifest.v1+json"))
 
 ARGS: argparse.Namespace                     # parsed CLI, set by main(); stages read it
 
@@ -141,10 +149,34 @@ def gate(upstream_sha: str, version: str, fork_sha: str) -> None:
             sys.exit(0)
 
 
-def pull_image(version: str, flavor: str) -> str:
-    image = f"ghcr.io/niko1221/strata:{version}-{flavor}"
-    if run(["docker", "pull", image], 3600) != 0:
-        fail("pull_image", image)
+def ghcr_has_tag(tag: str) -> bool:
+    """Registry HEAD, no docker needed. Published images are hand-run per release (see upstream's
+       docker-images.yml), so a fresh release can simply have none; then we build from source."""
+    try:
+        with urllib.request.urlopen(f"https://ghcr.io/token?scope=repository:{GHCR_REPO}:pull",
+                                    timeout=30) as r:
+            token = json.loads(r.read())["token"]
+        req = urllib.request.Request(f"https://ghcr.io/v2/{GHCR_REPO}/manifests/{tag}",
+                                     headers={"Authorization": f"Bearer {token}",
+                                              "Accept": MANIFEST_ACCEPT}, method="HEAD")
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return r.status == 200
+    except (urllib.error.URLError, OSError, ValueError, KeyError):
+        return False
+
+
+def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
+    tag = f"{version}-{flavor}"
+    if ghcr_has_tag(tag):
+        image = f"ghcr.io/{GHCR_REPO}:{tag}"
+        if run(["docker", "pull", image], 3600) != 0:
+            fail("resolve_image", image)
+        return image
+    image = f"strata-upstream:watch-{upstream_sha[:7]}"
+    print(f"no published image {tag}; building upstream from source at {upstream_sha[:7]}")
+    if run(["docker", "build", "-t", image, "--build-arg", f"CUDA_ARCHITECTURES={ARGS.arch}",
+            str(STRATA)], 3 * 3600) != 0:
+        fail("resolve_image", f"{image} (source build)")
     return image
 
 
@@ -265,7 +297,7 @@ def render() -> None:
 def prune() -> None:
     # keep the 2 newest images per repo; the fork's :latest and any latest-* alias are never candidates,
     # so what dies is the old watch-<sha> fork builds and superseded upstream version pulls.
-    for repo in ("ghcr.io/niko1221/strata", "strata-eddoursul"):
+    for repo in ("ghcr.io/niko1221/strata", "strata-upstream", "strata-eddoursul"):
         p = subprocess.run(["docker", "image", "ls", repo, "--format", "{{json .}}"],
                            capture_output=True, text=True)
         if p.returncode != 0:
@@ -305,7 +337,7 @@ def main() -> None:
     upstream_sha, version = pull_upstream()
     fork_sha, fork_dirty = fork_info()
     gate(upstream_sha, version, fork_sha)
-    image_a = pull_image(version, ARGS.flavor)
+    image_a = resolve_image(version, ARGS.flavor, upstream_sha)
     build_fork(fork_sha, ARGS.arch)
     out_root = sweep(ARGS.profile, ARGS.rounds, ARGS.runs, image_a)
     a, b, ratio = collect(out_root, ARGS.profile)
