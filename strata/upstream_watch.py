@@ -92,10 +92,10 @@ def git(repo: Path, *args: str) -> str:
     return p.stdout.strip() if p.returncode == 0 else ""
 
 
-def run(cmd: list[str], timeout: float) -> int:
+def run(cmd: list[str], timeout: float, stdin_text: str | None = None) -> int:
     """Run with inherited stdio; any docker/timeout error collapses to a nonzero code the stage fails on."""
     try:
-        return subprocess.run(cmd, timeout=timeout).returncode
+        return subprocess.run(cmd, input=stdin_text, timeout=timeout).returncode
     except (FileNotFoundError, subprocess.SubprocessError):
         return 1
 
@@ -165,6 +165,19 @@ def ghcr_has_tag(tag: str) -> bool:
         return False
 
 
+TERMINAL_STAGE_RE = re.compile(r"^(FROM .* AS terminal)$", re.MULTILINE)
+
+
+def patched_dockerfile(repo: Path) -> str | None:
+    """Repo Dockerfile with STRATA_COMMIT wired into the terminal stage. The source Dockerfile never
+       declares it, and package_terminal.py refuses to stamp a commit-less archive when the context has
+       no .git; feeding the text to `docker build -f -` keeps the fix out of both checkouts."""
+    text = (repo / "Dockerfile").read_text(encoding="utf-8")
+    patched, n = TERMINAL_STAGE_RE.subn(r"\1\nARG STRATA_COMMIT\nENV STRATA_COMMIT=$STRATA_COMMIT",
+                                        text, count=1)
+    return patched if n else None
+
+
 def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
     tag = f"{version}-{flavor}"
     if ghcr_has_tag(tag):
@@ -174,15 +187,22 @@ def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
         return image
     image = f"strata-upstream:watch-{upstream_sha[:7]}"
     print(f"no published image {tag}; building upstream from source at {upstream_sha[:7]}")
-    if run(["docker", "build", "-t", image, "--build-arg", f"CUDA_ARCHITECTURES={ARGS.arch}",
-            str(STRATA)], 3 * 3600) != 0:
+    df = patched_dockerfile(STRATA)
+    if df is None:
+        fail("resolve_image", "no 'AS terminal' stage in the upstream Dockerfile")
+    if run(["docker", "build", "-f", "-", "-t", image, "--build-arg", f"STRATA_COMMIT={upstream_sha}",
+            "--build-arg", f"CUDA_ARCHITECTURES={ARGS.arch}", str(STRATA)], 3 * 3600, stdin_text=df) != 0:
         fail("resolve_image", f"{image} (source build)")
     return image
 
 
 def build_fork(fork_sha: str, arch: str) -> str:
     tag = f"strata-eddoursul:watch-{fork_sha[:7]}"
-    if run(["docker", "build", "-t", tag, "--build-arg", f"CUDA_ARCHITECTURES={arch}", str(FORK)], 3 * 3600) != 0:
+    df = patched_dockerfile(FORK)
+    if df is None:
+        fail("build_fork", "no 'AS terminal' stage in the fork Dockerfile")
+    if run(["docker", "build", "-f", "-", "-t", tag, "--build-arg", f"STRATA_COMMIT={fork_sha}",
+            "--build-arg", f"CUDA_ARCHITECTURES={arch}", str(FORK)], 3 * 3600, stdin_text=df) != 0:
         fail("build_fork", tag)
     # the fork's launch script runs the image named after its container (strata-eddoursul), so :latest
     # is what the arm actually runs; the watch-<sha> tag is what prune() keeps history by.
