@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Nightly upstream watch: pull upstream, rebuild the fork, A/B them, log a time series, render a report.
 
-    python3 upstream_watch.py                    # gated nightly run (a systemd timer fires this at 01:00)
-    python3 upstream_watch.py --force            # ignore the no-change gate and the GPU-busy guard
-    python3 upstream_watch.py --rounds 1 --runs 3 --profile dual
+    sudo python3 upstream_watch.py               # gated nightly run (a systemd timer fires it at 01:00)
+    sudo python3 upstream_watch.py --force       # ignore the no-change gate and the GPU-busy guard
+    sudo python3 upstream_watch.py --rounds 1 --force
 
 It pulls ~/strata (upstream main) and its published image ghcr.io/niko1221/strata:<version>-<flavor>, rebuilds
 the fork's image (~/strata-eddoursul is never pulled or modified), runs bench_vs_fork.py as arm A=upstream vs
@@ -11,13 +11,15 @@ arm B=fork, appends a row to ~/strata-data/bench/series.jsonl, rewrites ~/strata
 series, and prunes old watch-* fork images. state.json records the last good (upstream_sha, version, fork_sha);
 when tonight matches it the run is a no-op unless --force. The wrapper has no scheduling of its own.
 
-Standard library only; run on the host (docker + nvidia-smi access needed).
+Standard library only; run on the host with sudo (docker access needed). Output files are chowned back to the
+invoking user, and git runs as that user, so root leaves nothing it owns behind except container state.
 """
 from __future__ import annotations
 
 import argparse
 import datetime
 import json
+import os
 import re
 import subprocess
 import sys
@@ -27,7 +29,7 @@ from typing import NoReturn
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bench_vs_fork as bvf
 
-HOME = Path.home()
+HOME = bvf.real_home()                       # under sudo this is still the human's home, not /root
 STRATA = HOME / "strata"                    # upstream checkout, tracks Niko1221/Strata main
 FORK = HOME / "strata-eddoursul"            # fork checkout; never pulled or modified
 SCRIPTS = Path(__file__).resolve().parent
@@ -40,6 +42,29 @@ TAG_RE = re.compile(r"^v([0-9]+(?:\.[0-9]+)+)$")
 ARGS: argparse.Namespace                     # parsed CLI, set by main(); stages read it
 
 
+def sudo_user() -> str | None:
+    """The human behind a root run (sudo sets SUDO_USER; the timer sets WATCH_USER), or None if plain."""
+    if os.geteuid() != 0:
+        return None
+    return os.environ.get("WATCH_USER") or os.environ.get("SUDO_USER") or None
+
+
+def own(*paths: Path) -> None:
+    """Give root-written outputs back to the human so plain runs can still read and append them."""
+    if not (u := sudo_user()):
+        return
+    for p in paths:
+        if p.exists():
+            subprocess.run(["chown", "-R", f"{u}:", str(p)], capture_output=True)
+
+
+def git_cmd(repo: Path, *args: str) -> list[str]:
+    """git as the repo's owner: root trips git's dubious-ownership guard, and root-run pulls would leave
+       root-owned objects (and lose the user's stored credentials) in the checkout."""
+    cmd = ["git", "-c", f"safe.directory={repo}", "-C", str(repo), *args]
+    return ["sudo", "-u", u, "-H", *cmd] if (u := sudo_user()) else cmd
+
+
 def iso() -> str:
     return datetime.datetime.now().isoformat(timespec="minutes")
 
@@ -49,12 +74,13 @@ def fail(stage: str, detail: str) -> NoReturn:
     DATA.mkdir(parents=True, exist_ok=True)
     with SERIES.open("a", encoding="utf-8") as f:
         f.write(json.dumps({"date": iso(), "kind": "fail", "stage": stage, "detail": detail}) + "\n")
+    own(DATA)
     print(f"FAIL {stage}: {detail}", file=sys.stderr)
     sys.exit(1)
 
 
 def git(repo: Path, *args: str) -> str:
-    p = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
+    p = subprocess.run(git_cmd(repo, *args), capture_output=True, text=True)
     return p.stdout.strip() if p.returncode == 0 else ""
 
 
@@ -82,7 +108,7 @@ def guard_gpu() -> None:
 
 
 def pull_upstream() -> tuple[str, str]:
-    if run(["git", "-C", str(STRATA), "pull", "--ff-only"], 300) != 0:
+    if run(git_cmd(STRATA, "pull", "--ff-only"), 300) != 0:
         fail("pull_upstream", "git pull --ff-only failed")
     sha = git(STRATA, "rev-parse", "HEAD")
     if not sha:
@@ -285,6 +311,7 @@ def main() -> None:
     a, b, ratio = collect(out_root, ARGS.profile)
     record(ARGS.profile, fork_sha, fork_dirty, upstream_sha, version, image_a, out_root, a, b, ratio)
     render()
+    own(DATA, MD)
     prune()
     print(f"done: fork {(ratio - 1) * 100:+.1f}% vs upstream (score {b['score']} vs {a['score']})")
 
