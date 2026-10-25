@@ -95,7 +95,8 @@ def git(repo: Path, *args: str) -> str:
 def run(cmd: list[str], timeout: float, stdin_text: str | None = None) -> int:
     """Run with inherited stdio; any docker/timeout error collapses to a nonzero code the stage fails on."""
     try:
-        return subprocess.run(cmd, input=stdin_text, timeout=timeout).returncode
+        return subprocess.run(cmd, input=stdin_text.encode() if stdin_text else None,
+                              timeout=timeout).returncode
     except (FileNotFoundError, subprocess.SubprocessError):
         return 1
 
