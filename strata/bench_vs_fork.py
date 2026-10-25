@@ -117,11 +117,15 @@ def stop_containers(names: list[str]) -> None:
             time.sleep(2)
 
 
-def wait_gpu_idle(timeout: float = 120) -> None:
+def wait_gpu_idle(timeout: float = 120, gpu: str | None = None) -> None:
+    """Wait until no CUDA compute processes remain. With `gpu` (an nvidia-smi index), only that
+    card is checked - other cards may host unrelated work (a game on the 4090 must not block a
+    3090-only sweep; note games DO show up in --query-compute-apps)."""
+    sel = ["--id", gpu] if gpu else []
     t0 = time.time()
     while time.time() - t0 < timeout:
         try:
-            p = subprocess.run(["nvidia-smi", "--query-compute-apps=pid", "--format=csv,noheader"],
+            p = subprocess.run(["nvidia-smi", *sel, "--query-compute-apps=pid", "--format=csv,noheader"],
                                capture_output=True, text=True, timeout=20)
             if not p.stdout.strip():
                 return
@@ -162,10 +166,12 @@ def wait_ready(runner: subprocess.Popen, port: int, timeout: float) -> bool:
 
 
 def run_bench(out_dir: Path, port: int, runs: int, clients: int | None, ready_timeout: float,
-              bench_script: Path) -> Path | None:
+              bench_script: Path, extra: list[str] | None = None) -> Path | None:
     cmd = [sys.executable, str(bench_script),
            "--url", f"http://127.0.0.1:{port}", "--runs", str(runs),
            "--out", str(out_dir), "--ready-timeout", str(ready_timeout)]
+    if extra:
+        cmd += list(extra)
     if KEY_FILE.exists() and KEY_FILE.read_text().strip():       # the fork's server always has a key
         cmd += ["--api-key", KEY_FILE.read_text().strip()]
     if clients:
@@ -189,8 +195,9 @@ def summarize(results_json: Path) -> dict:
     chat = r.get("chat") or {}
     out["decode"] = (chat.get("decode_tps") or {}).get("median")
     out["chat_ttft"] = (chat.get("ttft_s") or {}).get("median")
-    for tag in ("4K", "16K"):
-        p = (r.get("prompts") or {}).get(tag) or {}
+    prompts = r.get("prompts") or {}
+    for tag in prompts:
+        p = prompts.get(tag) or {}
         reqs = [q for q in p.get("requests", []) if q.get("ok")]
         out[f"pre_{tag}"] = med([q["prompt_tps"] for q in reqs if q.get("prompt_tps")])
         out[f"ttft_{tag}"] = med([q["ttft_s"] for q in reqs if q.get("ttft_s")])
@@ -244,16 +251,24 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
                         samples[k].setdefault(key, []).append(val)
 
     if len(latest) == 2:
-        print(f"\n{profile}  {'metric':<18}{'A ' + arms['A']['name']:<20}{'B ' + arms['B']['name']:<24}{'B vs A':>10}")
-        print("-" * 80)
+        cols = (20, 22, 24, 10)
+
+        def trow(a: str, b: str, c: str, d: str) -> str:
+            wa, wb, wc, wd = cols
+            return f"{a:<{wa}}{b:<{wb}}{c:<{wc}}{d:>{wd}}"
+
+        pad = " " * (len(profile) + 2)
+        print("\n" + f"{profile}  " + trow("metric", "A " + arms["A"]["name"],
+                                           "B " + arms["B"]["name"], "B vs A"))
+        print("-" * (len(profile) + 2 + sum(cols)))
         for key, label, more in METRICS:
             va, vb = med(samples["A"].get(key, [])), med(samples["B"].get(key, []))
             if va is None or vb is None:
-                print(f"{'':<18}{label:<20}{'-':<20}{'-':<24}{'-':>10}")
+                print(pad + trow(label, "-", "-", "-"))
                 continue
             delta = (vb - va) / va * 100
             good = (delta > 0) == more
-            print(f"{'':<18}{label:<20}{va:<20}{vb:<24}{delta:+9.1f}%{'' if good else '  <'}")
+            print(pad + trow(label, str(va), str(vb), f"{delta:+.1f}%") + ("" if good else "  <"))
         print(f"per-test detail: python3 tools/strata_bench.py --compare-only {latest['B']} --compare {latest['A']}")
     return latest
 
