@@ -105,7 +105,8 @@ def why_no_slots(since: int = 0) -> None:
 
 
 def bench_arm(arm: str, out_root: Path, rnd: int, runs: int, clients: list[int],
-              extra_env: dict[str, str] | None, client_prompt: int = 0) -> dict:
+              extra_env: dict[str, str] | None, client_prompt: int = 0,
+              client_tokens: int = 0, client_warm: int = 0) -> dict:
     """Start the arm, verify it, bench it once per client count, stop it; return this round's metrics."""
     a, name, port = ARMS[arm], ARMS[arm]["container"], ARMS[arm]["port"]
     ARM["container"] = name              # before the GPU is touched: the watchdog must never stop this arm
@@ -141,8 +142,11 @@ def bench_arm(arm: str, out_root: Path, rnd: int, runs: int, clients: list[int],
             why_no_slots(log_off)
             return {}
         for c in clients:
+            extra = (["--client-prompt", str(client_prompt)] if client_prompt else []) \
+                    + (["--client-tokens", str(client_tokens)] if client_tokens else []) \
+                    + (["--client-warm", str(client_warm)] if client_warm else [])
             d = bvf.run_bench(out_dir / f"c{c}", port, runs=runs, clients=c, ready_timeout=600, bench_script=BENCH,
-                              extra=[f"--client-prompt", str(client_prompt)] if client_prompt else None)
+                              extra=extra or None)
             if d is None:
                 print(f"  {arm} c{c}: bench failed", file=sys.stderr)
                 continue
@@ -180,6 +184,12 @@ def main() -> int:
     ap.add_argument("--client-prompt", type=int, default=0, metavar="TOKENS",
                     help="give each concurrent request a unique prompt of about TOKENS tokens (the context "
                          "A/B; default 0: the bare instruction, a few dozen tokens)")
+    ap.add_argument("--client-tokens", type=int, default=0, metavar="N",
+                    help="new tokens each concurrent request generates (default 128; the real traffic "
+                         "median is ~400, p90 ~1.7K)")
+    ap.add_argument("--client-warm", type=int, default=0, metavar="TOKENS",
+                    help="warm each client's conversation cache with a ~TOKENS-token prompt (untimed), "
+                         "then measure short unique tails: the shape of cached agent sessions")
     ap.add_argument("--arms", default="solo,batch",
                     help="comma list of arms to run (default both; `--arms batch` alone is the quick "
                          "telemetry probe: one arm, one round, no A/B table comparison)")
@@ -218,7 +228,8 @@ def main() -> int:
                 print(f"round {rnd} [{arm}]", flush=True)
                 t0 = time.time()
                 done.setdefault(arm, []).append(
-                    bench_arm(arm, out_root, rnd, a.runs, clients, batch_env if arm == "batch" else None, a.client_prompt))
+                    bench_arm(arm, out_root, rnd, a.runs, clients, batch_env if arm == "batch" else None,
+                              a.client_prompt, a.client_tokens, a.client_warm))
                 print(f"  {arm} done in {time.time() - t0:.0f} s", flush=True)
     finally:
         wd_stop.set()
