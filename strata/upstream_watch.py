@@ -219,18 +219,13 @@ def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
            "--image-a", image_a, "--image-b", "strata-eddoursul", "--out", str(out_root)]
     if bvf.docker(["ps", "-q", "--filter", "name=^strata$"]).stdout.strip():
         cmd.append("--restart")
-    swap = bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip())
-    if swap:
-        print("stopping llama-swap for the sweep")
-        bvf.docker(["stop", "-t", "30", "llama-swap"], check=False)
+    if bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip()):
+        # llama-swap must stay up (it serves agent inference and auto-starts prod); unload only frees VRAM
+        print("unloading llama-swap models for the sweep")
+        subprocess.run(["llama-swap-cli", "unload"], check=False)
     # env is inherited unmodified on purpose: never export IMAGE here, or bench_vs_fork's --restart
     # would inherit it and restart the production server on the wrong image.
-    try:
-        rc = subprocess.run(cmd, cwd=str(SCRIPTS)).returncode
-    finally:
-        if swap:
-            print("restarting llama-swap")
-            subprocess.run(["llama-swap-cli", "start"], check=False)
+    rc = subprocess.run(cmd, cwd=str(SCRIPTS)).returncode
     if rc != 0:
         fail("sweep", str(out_root))
     return out_root
