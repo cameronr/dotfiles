@@ -215,16 +215,10 @@ def build_fork(fork_sha: str, arch: str) -> str:
         fail("build_fork", tag)
     # the fork's launch script runs the image named after its container (strata-eddoursul), so :latest
     # is what the arm actually runs; the watch-<sha> tag is what prune() keeps history by.
-    # :latest moves ONLY while the image is the strata-era layout: run-unsloth.sh starts that image's
-    # python server and cannot boot the lamina one (entrypoint + LAMINA_* env + config format differ),
-    # and prod would crash on the next llama-swap request. When run-unsloth.sh is migrated to the
-    # lamina image, drop this probe and retag unconditionally again.
-    if run(["docker", "run", "--rm", "--entrypoint", "ls", tag, "/opt/strata/terminal"], 120) == 0:
-        if run(["docker", "tag", tag, "strata-eddoursul:latest"], 60) != 0:
-            fail("build_fork", "strata-eddoursul:latest")
-    else:
-        print("NOTE: fork image is the new lamina layout; strata-eddoursul:latest stays on the old "
-              "image until run-unsloth.sh is migrated (the sweep below benches that old image).")
+    # (Prod migrated to the lamina-era image 2026-10-31: run-unsloth-eddoursul.sh starts lamina-server
+    # directly, so a rebuilt image is bootable and :latest moves unconditionally again.)
+    if run(["docker", "tag", tag, "strata-eddoursul:latest"], 60) != 0:
+        fail("build_fork", "strata-eddoursul:latest")
     return tag
 
 

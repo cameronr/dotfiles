@@ -1,12 +1,9 @@
 {
-  "exe": "component:strata-engine",
   "args": [
-    "--pack",
-    "/data/packs/unsloth-ud-iq4_xs",
     "--native",
     "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
     "--expert-profile",
-    "/opt/strata/terminal/data/expert-profile.bin",
+    "./data/expert-profile.bin",
     "--expert-cache",
     "auto",
     "--prefill",
@@ -39,8 +36,7 @@
     "--main-gpu",
     "0"
   ],
-  "cwd": "/opt/strata/terminal",
-  "tokenizer": "/data/packs/unsloth-ud-iq4_xs/tokenizer",
+  "cwd": "/opt/lamina",
   "model_name": "qwen3.8-flash-next-unsloth-ud-iq4_xs",
   "log": "/data/install/eddoursul-unsloth-ud-iq4_xs.log",
   "lib_dirs": [],
@@ -56,7 +52,7 @@
   "reasoning_effort": "low",
   "reasoning_loop_recovery": "stop",
   "vision": {
-    "exe": "@VISION_EXE@",
+    "exe": "/opt/lamina/build-vision/bin/lamina-vision",
     "mmproj": "/data/models/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
     "model": "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
     "gpu": true,
