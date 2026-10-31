@@ -170,13 +170,17 @@ TERMINAL_STAGE_RE = re.compile(r"^(FROM .* AS terminal)$", re.MULTILINE)
 
 
 def patched_dockerfile(repo: Path) -> str | None:
-    """Repo Dockerfile with STRATA_COMMIT wired into the terminal stage. The source Dockerfile never
-       declares it, and package_terminal.py refuses to stamp a commit-less archive when the context has
-       no .git; feeding the text to `docker build -f -` keeps the fix out of both checkouts."""
-    text = (repo / "Dockerfile").read_text(encoding="utf-8")
+    """Repo Dockerfile, ready for `docker build -f -` (the fix never touches either checkout).
+       Two layouts: the strata-era Dockerfile needs STRATA_COMMIT wired into its `AS terminal`
+       stage (package_terminal.py refuses to stamp a commit-less archive when the context has no
+       .git); the lamina-era one stamps nothing (setup.py embeds what it needs), so its text is
+       returned as it is."""
+    text = (repo / "Dockerfile").read_text(encoding="utf-8") if (repo / "Dockerfile").is_file() else None
+    if text is None:
+        return None
     patched, n = TERMINAL_STAGE_RE.subn(r"\1\nARG STRATA_COMMIT\nENV STRATA_COMMIT=$STRATA_COMMIT",
                                         text, count=1)
-    return patched if n else None
+    return patched if n else text
 
 
 def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
@@ -190,7 +194,7 @@ def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
     print(f"no published image {tag}; building upstream from source at {upstream_sha[:7]}")
     df = patched_dockerfile(STRATA)
     if df is None:
-        fail("resolve_image", "no 'AS terminal' stage in the upstream Dockerfile")
+        fail("resolve_image", "no Dockerfile in the upstream checkout")
     if run(["docker", "build", "-f", "-", "-t", image, "--build-arg", f"STRATA_COMMIT={upstream_sha}",
             "--build-arg", f"CUDA_ARCHITECTURES={ARGS.arch}", str(STRATA)], 3 * 3600, stdin_text=df) != 0:
         fail("resolve_image", f"{image} (source build)")
@@ -201,14 +205,26 @@ def build_fork(fork_sha: str, arch: str) -> str:
     tag = f"strata-eddoursul:watch-{fork_sha[:7]}"
     df = patched_dockerfile(FORK)
     if df is None:
-        fail("build_fork", "no 'AS terminal' stage in the fork Dockerfile")
-    if run(["docker", "build", "-f", "-", "-t", tag, "--build-arg", f"STRATA_COMMIT={fork_sha}",
-            "--build-arg", f"CUDA_ARCHITECTURES={arch}", str(FORK)], 3 * 3600, stdin_text=df) != 0:
+        fail("build_fork", "no Dockerfile in the fork checkout")
+    # STRATA_COMMIT only exists in the strata-era Dockerfile (the lamina one stamps nothing; an
+    # unknown --build-arg is only a warning, but a quiet build log keeps real warnings visible).
+    args = ["--build-arg", f"CUDA_ARCHITECTURES={arch}"]
+    if "ARG STRATA_COMMIT" in df:
+        args.insert(0, f"--build-arg=STRATA_COMMIT={fork_sha}")
+    if run(["docker", "build", "-f", "-", "-t", tag, *args, str(FORK)], 3 * 3600, stdin_text=df) != 0:
         fail("build_fork", tag)
     # the fork's launch script runs the image named after its container (strata-eddoursul), so :latest
     # is what the arm actually runs; the watch-<sha> tag is what prune() keeps history by.
-    if run(["docker", "tag", tag, "strata-eddoursul:latest"], 60) != 0:
-        fail("build_fork", "strata-eddoursul:latest")
+    # :latest moves ONLY while the image is the strata-era layout: run-unsloth.sh starts that image's
+    # python server and cannot boot the lamina one (entrypoint + LAMINA_* env + config format differ),
+    # and prod would crash on the next llama-swap request. When run-unsloth.sh is migrated to the
+    # lamina image, drop this probe and retag unconditionally again.
+    if run(["docker", "run", "--rm", "--entrypoint", "ls", tag, "/opt/strata/terminal"], 120) == 0:
+        if run(["docker", "tag", tag, "strata-eddoursul:latest"], 60) != 0:
+            fail("build_fork", "strata-eddoursul:latest")
+    else:
+        print("NOTE: fork image is the new lamina layout; strata-eddoursul:latest stays on the old "
+              "image until run-unsloth.sh is migrated (the sweep below benches that old image).")
     return tag
 
 
