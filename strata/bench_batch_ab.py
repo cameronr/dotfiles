@@ -16,7 +16,7 @@ Two arms alternating per round (order swapped next round, like bench_vs_fork.py)
   solo   ~/strata-eddoursul/run-unsloth.sh         container strata-eddoursul        (prod config)
   batch  ~/strata-eddoursul/run-unsloth-batch.sh   container strata-eddoursul-batch  (4 slots, --batch-mtp)
 
-Each arm is benched with the fork's own client, tools/strata_bench.py --clients N (N streaming
+Each arm is benched with the fork's own client, tools/lamina_bench.py --clients N (N streaming
 requests at once: total tok/s, TTFT and latency percentiles), plus its solo chat decode/TTFT as
 the baseline row.  Before measuring, the batch arm is VERIFIED to have carved its slots (the
 engine's own "the engine runs N" line); a failed carve aborts the arm with the engine's reason
@@ -46,7 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bench_vs_fork as bvf          # noqa: E402  the arm/health/docker helpers of the fork-vs-upstream sweep
 
 REPO = Path("/home/cam/strata-eddoursul")
-BENCH = REPO / "tools" / "strata_bench.py"
+BENCH = REPO / "tools" / "lamina_bench.py"
 PROD = "strata-eddoursul"            # llama-swap's container; the sweep keeps it down, llama-swap revives it after
 # the fork's config saves what the run learns here (container /data = ~/strata-data)
 LEARNED = bvf.HOME / "strata-data" / "unsloth-ud-iq4_xs-learned.bin"
@@ -179,7 +179,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--yes", action="store_true", help="confirm: stop the prod container for the sweep (clients will error)")
     ap.add_argument("--rounds", type=int, default=2, help="A/B rounds (medians over them; default 2)")
-    ap.add_argument("--runs", type=int, default=3, help="runs per strata_bench test (default 3)")
+    ap.add_argument("--runs", type=int, default=3, help="runs per lamina_bench test (default 3)")
     ap.add_argument("--clients", default="2,4", help="comma list of concurrency levels (default 2,4)")
     ap.add_argument("--client-prompt", type=int, default=0, metavar="TOKENS",
                     help="give each concurrent request a unique prompt of about TOKENS tokens (the context "

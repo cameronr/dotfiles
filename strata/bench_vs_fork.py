@@ -334,9 +334,10 @@ def main() -> None:
     stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M")     # per sweep, so reruns never mix folders
     out_root = a.out or HOME / "strata-data" / "bench" / "ab-fork" / stamp
     out_root.mkdir(parents=True, exist_ok=True)
-    bench_script = arms["A"]["repo"] / "tools" / "strata_bench.py"
-    if not bench_script.is_file():
-        sys.exit(f"bench client {bench_script} not found")
+    bench_script = next((arms["A"]["repo"] / "tools" / n for n in ("lamina_bench.py", "strata_bench.py")
+                         if (arms["A"]["repo"] / "tools" / n).is_file()), None)
+    if bench_script is None:
+        sys.exit(f"no bench client (tools/lamina_bench.py or tools/strata_bench.py) in {arms['A']['repo']}")
     ok = False
     try:
         for p in profiles:
