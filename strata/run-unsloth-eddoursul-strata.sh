@@ -29,10 +29,12 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # one card gets the single config, "all" (the 4090+3090 pair) the dual
 # CONF=<file in configs/> overrides (used by bench_single_tune.py for flag variants)
 if [ "$GPUS" = "all" ]; then
-  CONF="${CONF:-eddoursul-ud-iq4_xs-dual.json}"
+  CONF="${CONF:-eddoursul-ud-iq4_xs-dual-strata.json}"
 else
-  CONF="${CONF:-eddoursul-ud-iq4_xs-single.json}"
+  CONF="${CONF:-eddoursul-ud-iq4_xs-single-strata.json}"
 fi
+
+IMAGE="${IMAGE:-strata-eddoursul:watch-dd0390f}"
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))
@@ -66,7 +68,7 @@ docker run --rm \
   -e "STRATA_API_KEY=$(cat "$KEY_FILE")" \
   -e "STRATA_ALLOWED_HOSTS=mediabox.theringfamily.org,mediabox" \
   -e "STRATA_DRAFT_PROXY=${STRATA_DRAFT_PROXY:-0}" \
-  "$CONTAINER_NAME" \
+  "$IMAGE" \
   sh -c 'vexe=$(ls /opt/strata/components/engine/*/strata-vision 2>/dev/null | head -1)
          sed "s|@VISION_EXE@|$vexe|" /data/eddoursul.json > /tmp/eddoursul.json
          cd /opt/strata/terminal
