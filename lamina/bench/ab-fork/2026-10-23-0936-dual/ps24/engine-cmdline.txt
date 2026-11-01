@@ -1,0 +1,5 @@
+/usr/bin/tini -- /opt/strata/entrypoint.sh sh -c vexe=$(ls /opt/strata/components/engine/*/strata-vision 2>/dev/null | head -1)
+         sed "s|@VISION_EXE@|$vexe|" /data/eddoursul.json > /tmp/eddoursul.json
+         cd /opt/strata/terminal
+         exec /opt/strata/terminal/python/bin/python3 serve/server.py \
+           --engine strata --config /tmp/eddoursul.json --port 8080

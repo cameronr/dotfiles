@@ -1,0 +1,108 @@
+++ cat /home/cam/strata-data/api-key
++ docker run --rm --name strata-eddoursul --gpus device=1 --stop-timeout 120 -p 18033:8080 --ulimit memlock=-1 --shm-size 2g -v /home/cam/strata-data:/data -v /home/cam/strata-eddoursul/configs/eddoursul-ud-iq4_xs-single.tune-base.json:/data/eddoursul.json:ro -e STRATA_API_KEY=a480ff15c0f8ba25ccb84f6df5ac0a41abdc8be8e14cc2b8 -e STRATA_ALLOWED_HOSTS=mediabox.theringfamily.org,mediabox -e STRATA_DRAFT_PROXY=0 strata-eddoursul sh -c $'vexe=$(ls /opt/strata/components/engine/*/strata-vision 2>/dev/null | head -1)\n         sed "s|@VISION_EXE@|$vexe|" /data/eddoursul.json > /tmp/eddoursul.json\n         cd /opt/strata/terminal\n         exec /opt/strata/terminal/python/bin/python3 serve/server.py \\\n           --engine strata --config /tmp/eddoursul.json --port 8080'
+[strata] sampling defaults from the config: temperature=0.6, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=0.0
+loading the vision encoder ...
+loading the model (the first start takes a minute or two) ...
+[strata] starting the engine: reading the model's weights ...
+[strata] loading the experts into RAM (tens of GB) and locking part of them for the GPU.
+         YOUR PC CAN BE SLOW OR STOP RESPONDING FOR 1-3 MINUTES NOW - this is normal.
+         Please wait and don't close this window; the server says when it is ready.
+[strata] experts loaded: 55.43 GiB at 6.73 GiB/s (10 s so far)
+[strata] almost ready ...
+[strata] filling the GPU's expert cache (6842 experts, 15.43 GiB of VRAM) ...
+[strata] thinking level: low (reasoning_effort in the config; a request, or the Chat settings shared with other apps, can set its own)
+[strata] also answers to the host names mediabox.theringfamily.org, mediabox (allowed_hosts)
+ready: http://127.0.0.1:8080/v1  (OpenAI: /v1/chat/completions, Anthropic: /v1/messages, context 262144 tokens, images on, API key required)
+       open http://127.0.0.1:8080/ in a browser to chat; close this window to stop the model
+       from other devices: http://172.17.0.2:8080/   (API: http://172.17.0.2:8080/v1)
+[strata] done: 24 tokens in 1 s (63.0 tok/s) (length, cancel=False), expert cache 39.3% hit
+[strata] answering: 1 of max 1 tokens, 262144.0 tok/s, 4 s
+[strata] done: 1 tokens in 4 s (1735.3 tok/s) (length, cancel=False), expert cache 53.8% hit
+[strata] reading the prompt: 899 of 905 tokens, 6 s so far
+[strata] done: 1 tokens in 6 s (1661.8 tok/s) (length, cancel=False), expert cache 55.2% hit
+[strata] reading the prompt: 1,021 of 1,027 tokens, 5 s so far
+[strata] done: 8 tokens in 6 s (50.0 tok/s) (length, cancel=False), expert cache 60.4% hit
+[strata] answering: 39 of max 100 tokens, 77.6 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (79.8 tok/s) (length, cancel=False), expert cache 59.2% hit
+[strata] answering: 36 of max 100 tokens, 59.5 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (72.3 tok/s) (length, cancel=False), expert cache 64.4% hit
+[strata] answering: 36 of max 100 tokens, 58.6 tok/s, 1 s
+[strata] answering: 96 of max 100 tokens, 58.2 tok/s, 2 s
+[strata] done: 100 tokens in 2 s (60.1 tok/s) (length, cancel=False), expert cache 65.9% hit
+[strata] answering: 50 of max 100 tokens, 79.3 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (84.9 tok/s) (length, cancel=False), expert cache 63.4% hit
+[strata] answering: 44 of max 100 tokens, 66.3 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (75.8 tok/s) (length, cancel=False), expert cache 78.2% hit
+[strata] answering: 47 of max 100 tokens, 70.9 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (71.1 tok/s) (length, cancel=False), expert cache 75.9% hit
+[strata] answering: 49 of max 100 tokens, 78.2 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (80.9 tok/s) (length, cancel=False), expert cache 59.4% hit
+[strata] answering: 54 of max 100 tokens, 76.5 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (83.5 tok/s) (length, cancel=False), expert cache 77.6% hit
+[strata] answering: 48 of max 100 tokens, 70.2 tok/s, 1 s
+[strata] done: 100 tokens in 2 s (75.5 tok/s) (length, cancel=False), expert cache 77.2% hit
+[strata] reading the prompt: 4,012 of 4,018 tokens, 7 s so far
+[strata] done: 24 tokens in 8 s (70.4 tok/s) (length, cancel=False), expert cache 64.7% hit
+[strata] reading the prompt: 4,012 of 4,018 tokens, 7 s so far
+[strata] done: 24 tokens in 8 s (85.1 tok/s) (length, cancel=False), expert cache 78.9% hit
+[strata] reading the prompt: 4,012 of 4,018 tokens, 7 s so far
+[strata] done: 24 tokens in 8 s (92.2 tok/s) (length, cancel=False), expert cache 85.5% hit
+[strata] reading the prompt: 0 of 16,057 tokens, 10 s so far
+[strata] answering: 1 of max 24 tokens, 299593.1 tok/s, 12 s
+[strata] done: 24 tokens in 12 s (87.0 tok/s) (length, cancel=False), expert cache 79.8% hit
+[strata] reading the prompt: 0 of 16,057 tokens, 10 s so far
+[strata] answering: 1 of max 24 tokens, 349525.3 tok/s, 12 s
+[strata] done: 24 tokens in 12 s (92.2 tok/s) (length, cancel=False), expert cache 89.0% hit
+[strata] reading the prompt: 0 of 16,057 tokens, 10 s so far
+[strata] answering: 1 of max 24 tokens, 322638.8 tok/s, 12 s
+[strata] done: 24 tokens in 12 s (104.0 tok/s) (length, cancel=False), expert cache 92.1% hit
+[strata] reading the prompt: 0 of 608 tokens, 10 s so far
+[strata] done: 25 tokens in 11 s (62.0 tok/s) (stop, cancel=False), expert cache 61.7% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 419430.4 tok/s, 12 s
+[strata] done: 64 tokens in 13 s (71.6 tok/s) (length, cancel=False), expert cache 66.7% hit
+[strata] answering: 1 of max 64 tokens, 262144.0 tok/s, 10 s
+[strata] done: 64 tokens in 11 s (73.8 tok/s) (length, cancel=False), expert cache 73.4% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 349525.3 tok/s, 11 s
+[strata] done: 4 tokens in 11 s (26.4 tok/s) (stop, cancel=False), expert cache 74.7% hit
+[strata] reading the prompt: 0 of 2,682 tokens, 10 s so far
+[strata] done: 3 tokens in 11 s (63.2 tok/s) (stop, cancel=False), expert cache 76.3% hit
+[strata] reading the prompt: 0 of 2,806 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 279620.3 tok/s, 11 s
+[strata] done: 2 tokens in 11 s (60.2 tok/s) (stop, cancel=False), expert cache 78.7% hit
+[strata] reading the prompt: 0 of 608 tokens, 10 s so far
+[strata] prompt cache: this prompt leaves the engine's last request at token 548 (14149 before its end); it resumed at 0, so 548 tokens were read again. Before: ' them. When the task is done, give a short summary of the changes and how to test them.\n(session '; held ['0', '-a', '-', '1', '7', '9', '2', '8']; prompt ['1', '-a', '-', '1', '7', '9', '2', '8']
+[strata] done: 14 tokens in 11 s (83.1 tok/s) (stop, cancel=False), expert cache 75.8% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 279620.3 tok/s, 12 s
+[strata] done: 64 tokens in 12 s (80.2 tok/s) (length, cancel=False), expert cache 83.0% hit
+[strata] answering: 1 of max 64 tokens, 279620.3 tok/s, 10 s
+[strata] done: 64 tokens in 10 s (94.0 tok/s) (length, cancel=False), expert cache 83.8% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 322638.8 tok/s, 11 s
+[strata] done: 60 tokens in 12 s (86.5 tok/s) (stop, cancel=False), expert cache 85.5% hit
+[strata] reading the prompt: 0 of 2,682 tokens, 10 s so far
+[strata] answering: 7 of max 64 tokens, 25.0 tok/s, 11 s
+[strata] done: 33 tokens in 11 s (68.0 tok/s) (stop, cancel=False), expert cache 89.3% hit
+[strata] reading the prompt: 0 of 2,806 tokens, 10 s so far
+[strata] answering: 4 of max 64 tokens, 32.9 tok/s, 11 s
+[strata] done: 64 tokens in 12 s (83.3 tok/s) (length, cancel=False), expert cache 80.2% hit
+[strata] done: 28 tokens in 1 s (83.4 tok/s) (stop, cancel=False), expert cache 72.9% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 349525.3 tok/s, 12 s
+[strata] done: 64 tokens in 12 s (103.5 tok/s) (length, cancel=False), expert cache 85.6% hit
+[strata] answering: 1 of max 64 tokens, 279620.3 tok/s, 10 s
+[strata] done: 64 tokens in 10 s (105.4 tok/s) (length, cancel=False), expert cache 85.3% hit
+[strata] reading the prompt: 0 of 3,485 tokens, 10 s so far
+[strata] answering: 1 of max 64 tokens, 262144.0 tok/s, 11 s
+[strata] done: 52 tokens in 12 s (86.9 tok/s) (stop, cancel=False), expert cache 86.6% hit
+[strata] reading the prompt: 0 of 2,682 tokens, 10 s so far
+[strata] answering: 24 of max 64 tokens, 101.7 tok/s, 11 s
+[strata] done: 62 tokens in 11 s (119.4 tok/s) (stop, cancel=False), expert cache 88.7% hit
+[strata] reading the prompt: 0 of 2,806 tokens, 10 s so far
+[strata] answering: 13 of max 64 tokens, 73.9 tok/s, 11 s
+[strata] done: 64 tokens in 12 s (96.6 tok/s) (length, cancel=False), expert cache 84.5% hit
+
+[strata] stopping (Ctrl+C again to end the engine at once) ...
+[strata] stopped

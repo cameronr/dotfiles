@@ -1,0 +1,41 @@
+++ cat /home/cam/strata-data/api-key
++ docker run --rm --name strata-eddoursul --gpus device=1 --stop-timeout 120 -p 18033:8080 --ulimit memlock=-1 --shm-size 2g -v /home/cam/strata-data:/data -v /home/cam/strata-eddoursul/configs/eddoursul-ud-iq4_xs-single.tune-spec07.json:/data/eddoursul.json:ro -e STRATA_API_KEY=a480ff15c0f8ba25ccb84f6df5ac0a41abdc8be8e14cc2b8 -e STRATA_ALLOWED_HOSTS=mediabox.theringfamily.org,mediabox -e STRATA_DRAFT_PROXY=0 strata-eddoursul sh -c $'vexe=$(ls /opt/strata/components/engine/*/strata-vision 2>/dev/null | head -1)\n         sed "s|@VISION_EXE@|$vexe|" /data/eddoursul.json > /tmp/eddoursul.json\n         cd /opt/strata/terminal\n         exec /opt/strata/terminal/python/bin/python3 serve/server.py \\\n           --engine strata --config /tmp/eddoursul.json --port 8080'
+[strata] sampling defaults from the config: temperature=0.6, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=0.0
+loading the vision encoder ...
+Traceback (most recent call last):
+  File "/opt/strata/terminal/serve/server.py", line 8266, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/strata/terminal/serve/server.py", line 7938, in main
+    vision = Vision(vcfg, log=open(cfg["log"], "a", encoding="utf-8") if cfg.get("log") else None,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/strata/terminal/serve/server.py", line 2564, in __init__
+    self._start()
+  File "/opt/strata/terminal/serve/server.py", line 2585, in _start
+    self._start_reader()
+  File "/opt/strata/terminal/serve/server.py", line 2602, in _start_reader
+    line = self._readline(VISION_READY_S, "the vision encoder did not start")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/strata/terminal/serve/server.py", line 2631, in _readline
+    return got.get(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/strata/terminal/python/lib/python3.12/queue.py", line 180, in get
+    self.not_empty.wait(remaining)
+  File "/opt/strata/terminal/python/lib/python3.12/threading.py", line 359, in wait
+    gotit = waiter.acquire(True, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+Exception ignored in atexit callback: <function end_children at 0x7f35b27047c0>
+Traceback (most recent call last):
+  File "/opt/strata/terminal/serve/lifeline.py", line 204, in end_children
+    child.wait(timeout=max(0.0, deadline - time.monotonic()))
+  File "/opt/strata/terminal/python/lib/python3.12/subprocess.py", line 1264, in wait
+    return self._wait(timeout=timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/strata/terminal/python/lib/python3.12/subprocess.py", line 2047, in _wait
+    time.sleep(delay)
+  File "/opt/strata/terminal/serve/lifeline.py", line 289, in handler
+    request_stop(reason)
+  File "/opt/strata/terminal/serve/server.py", line 7799, in request_stop
+    raise KeyboardInterrupt
+KeyboardInterrupt: 

@@ -1,0 +1,38 @@
+++ cat /home/cam/strata-data/api-key
++ docker run --rm --name strata-eddoursul --gpus device=1 --stop-timeout 120 -p 18033:8080 --ulimit memlock=-1 --shm-size 2g -v /home/cam/strata-data:/data -v /home/cam/strata-eddoursul/configs/eddoursul-ud-iq4_xs-single.tune-base.json:/data/eddoursul.json:ro -e STRATA_API_KEY=a480ff15c0f8ba25ccb84f6df5ac0a41abdc8be8e14cc2b8 -e STRATA_ALLOWED_HOSTS=mediabox.theringfamily.org,mediabox -e STRATA_DRAFT_PROXY=0 strata-eddoursul sh -c $'vexe=$(ls /opt/strata/components/engine/*/strata-vision 2>/dev/null | head -1)\n         sed "s|@VISION_EXE@|$vexe|" /data/eddoursul.json > /tmp/eddoursul.json\n         cd /opt/strata/terminal\n         exec /opt/strata/terminal/python/bin/python3 serve/server.py \\\n           --engine strata --config /tmp/eddoursul.json --port 8080'
+[strata] sampling defaults from the config: temperature=0.6, top_p=0.95, top_k=20, min_p=0.0, presence_penalty=0.0
+loading the vision encoder ...
+loading the model (the first start takes a minute or two) ...
+[strata] starting the engine: reading the model's weights ...
+Traceback (most recent call last):
+  File "/opt/strata/terminal/serve/server.py", line 8266, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/opt/strata/terminal/serve/server.py", line 7974, in main
+    engine = StrataEngine(exe, engine_args(cfg) + (effort_end or []), cwd=cfg.get("cwd"), log=cfg.get("log"),
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/strata/terminal/serve/server.py", line 1069, in __init__
+    raise EngineDied(why + (f" (see {log})" if log else "") + note +
+EngineDied: the engine exited before it was ready (see /data/install/eddoursul-unsloth-ud-iq4_xs.log)
+the engine process ended: exit code 2
+the engine log's last lines:
+    --no-ple-prefetch     A/B arm: read the PLE table's sixteen rows one at a time, instead of
+                         issuing them in one PrefetchVirtualMemory call.
+    --expert-cache N     R4: keep N expert blobs resident in VRAM and compute their rows on the
+                         GPU via `moe_hit_grouped_s2`.  DEFAULT 0.  Measured at 4096 slots
+                         with --expert-cache-per-layer: 54.4% hits, CPU pool drain 19.1 -> 10.3
+                         ms/token, -2.7 ms/token end to end.
+    --expert-cache-per-layer  R4.2g: give each layer its OWN slots instead of letting the first
+                         position take all of them.  The default policy fills in arrival order
+                         from one shared counter, so 256 slots went to ~26 layers of position 0
+                         and measured **2.97%**.  Per-layer, the same routing gives 21.4% at 8
+                         slots/layer and 70.4% at 64.
+    --no-host-worker     R2.2: the A/B arm.  By default the HOST THREAD joins the drain, so the
+                         pool is six threads on six cores instead of five plus an idle core;
+                         this flag restores the five-worker form for comparison on `pool phases`.
+    --pool-workers N     R2.2: CPU expert pool worker count.  Default 0 = every physical core
+                         except the one the host loop spins on.  A sweep is how the pool's
+                         deviation from `cpu_s2` is attributed.
+    --mmap-experts       R2.1: opt OUT of the resident expert arena, back to MapViewOfFile.
+                         The A/B arm: the mmap's rate depends on the OS page cache holding
+                         34 GB, and measured 71.97 vs 34.78 ms/token cold vs warm.
