@@ -37,6 +37,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import shutil
 import math
 import os
 import pwd
@@ -61,7 +62,8 @@ HOME = real_home()
 KEY_FILE = HOME / "strata-data" / "api-key"
 # the fork's config sets expert_profile_save, so its arm gets warmer every run from this file; the sweep
 # deletes it before every arm so neither arm starts from learned expert routing (upstream never writes it)
-LEARNED_PROFILE = HOME / "strata-data" / "Strata-data" / "unsloth-ud-iq4_xs-learned.bin"
+LEARNED_PROFILE = HOME / "strata-data" / "unsloth-ud-iq4_xs-learned.bin"   # the fork config's expert_profile_save (= /data/... in the container)
+LEARNED_BAK = LEARNED_PROFILE.with_suffix(".sweep-bak")
 # profile -> docker --gpus value passed to each arm's run-unsloth.sh ("all" picks each repo's dual config)
 PROFILES = {"dual": "all", "single-3090": "device=1", "single-4090": "device=0"}
 BENCH_PORT = 18033
@@ -228,8 +230,10 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
             stop_containers([PROD_CONTAINER] + [a["name"] for a in arms.values()])
             wait_gpu_idle()
             if LEARNED_PROFILE.exists():           # cold expert routing for every arm, every round
+                if not LEARNED_BAK.exists():       # the sweep's first arm: keep the original to restore at the end
+                    shutil.copy2(LEARNED_PROFILE, LEARNED_BAK)
                 LEARNED_PROFILE.unlink()
-                print("  cleared the learned expert profile")
+                print("  cleared the learned expert profile (original kept for restore at the end)")
             arm_dir = out_root / profile / k / f"round{rnd}"
             arm_dir.mkdir(parents=True, exist_ok=True)
             try:                                   # whatever happens, this arm's container must not
@@ -346,6 +350,12 @@ def main() -> None:
             ok = ok or len(latest) == 2
     finally:
         stop_containers([PROD_CONTAINER, arms["A"]["name"], arms["B"]["name"]])
+        if LEARNED_BAK.exists():   # prod's learned routing back before its next start
+            if LEARNED_PROFILE.exists():
+                LEARNED_PROFILE.unlink()                      # the last arm rewrote it (root: truncate would fail)
+            shutil.copy2(LEARNED_BAK, LEARNED_PROFILE)
+            LEARNED_BAK.unlink()
+            print("  the learned expert profile was restored")
         if a.restart:
             print(f"\nrestarting the prod {PROD_CONTAINER} server via {a.restart_script}")
             start_arm(a.restart_script, PROD_CONTAINER, "all", a.restart_port,
