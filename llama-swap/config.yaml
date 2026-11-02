@@ -65,11 +65,25 @@ models:
     proxy: http://mediabox:18020
     healthCheckTimeout: 300
 
+  qwen3.8-flash-4090:
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
+    # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
+    # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
+    env:
+      - IMAGE=strata-eddoursul:combined
+    cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul "device=0"
+    cmdStop: docker stop strata-eddoursul
+    proxy: http://mediabox:18020
+    healthCheckTimeout: 300
+
   qwen3.8-flash-3090:
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile single down
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
+    env:
+      - IMAGE=strata-eddoursul:combined
     cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul "device=1"
     cmdStop: docker stop strata-eddoursul
     proxy: http://mediabox:18020
@@ -81,40 +95,28 @@ models:
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     # cmd: /home/cam/strata/run-unsloth.sh strata all
+    env:
+      - IMAGE=strata-eddoursul:combined
     cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul all
     cmdStop: docker stop strata-eddoursul
     proxy: http://mediabox:18020
     healthCheckTimeout: 300
 
-  # qwen3.5-A3B:
-  #   env:
-  #     - "CUDA_VISIBLE_DEVICES=1"
-  #   cmd: >-
-  #     ${ik_llama_base}
-  #     -np 1
-  #     --model /models/Qwen3.5-35B-A3B.i1-Q4_K_M.gguf
-  #     --mmproj /models/Qwen3.5-35B-A3B.mmproj-f16.gguf
-  #     ${kv_quant}
-  #     --ctx-size 64000
-  #     --spec-ckpt-mode auto
-  #     -ngld 99
-  #     --chat-template-kwargs '{"preserve_thinking": true}'
-  #     --ctx-checkpoints 6
-
-  qwen3.5-A3Bu:
+  qwen3.8-flash-iq3_s-3090:
     env:
-      - "CUDA_VISIBLE_DEVICES=1"
-    cmd: >-
-      ${ik_llama_base}
-      -np 1
-      --model /models/Qwen3.5-35B-A3Bu.i1-Q4_K_M.gguf
-      --mmproj /models/Qwen3.5-35B-A3B.mmproj-f16.gguf
-      ${kv_quant}
-      --ctx-size 64000
-      --spec-ckpt-mode auto
-      -ngld 99
-      --chat-template-kwargs '{"preserve_thinking": true}'
-      --ctx-checkpoints 6
+      - CONF=eddoursul-ista-iq3_s-single.json
+    cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul "device=1"
+    cmdStop: docker stop strata-eddoursul
+    proxy: http://mediabox:18020
+    healthCheckTimeout: 300
+
+  qwen3.8-flash-iq3_s-dual:
+    env:
+      - CONF=eddoursul-ista-iq3_s-dual.json
+    cmd: /home/cam/strata-eddoursul/run-unsloth.sh strata-eddoursul all
+    cmdStop: docker stop strata-eddoursul
+    proxy: http://mediabox:18020
+    healthCheckTimeout: 300
 
 peers:
   openrouter:
@@ -157,6 +159,13 @@ profiles:
       "coding": "qwen3.8-vllm-dual"
       "assistant": "qwen3.8-vllm-dual"
       "chat": "qwen3.8-vllm-dual"
+  strata-4090:
+    pins:
+      "qwen3.8": "qwen3.8-flash-4090"
+      "qwen3.8-27b": "qwen3.8-flash-4090"
+      "coding": "qwen3.8-flash-4090"
+      "assistant": "qwen3.8-flash-4090"
+      "chat": "qwen3.8-flash-4090"
   strata-3090:
     pins:
       "qwen3.8": "qwen3.8-flash-3090"
@@ -171,6 +180,20 @@ profiles:
       "coding": "qwen3.8-flash-dual"
       "assistant": "qwen3.8-flash-dual"
       "chat": "qwen3.8-flash-dual"
+  strata-3090-iq3:
+    pins:
+      "qwen3.8": "qwen3.8-flash-iq3_s-3090"
+      "qwen3.8-27b": "qwen3.8-flash-iq3_s-3090"
+      "coding": "qwen3.8-flash-iq3_s-3090"
+      "assistant": "qwen3.8-flash-iq3_s-3090"
+      "chat": "qwen3.8-flash-iq3_s-3090"
+  strata-dual-iq3:
+    pins:
+      "qwen3.8": "qwen3.8-flash-iq3_s-dual"
+      "qwen3.8-27b": "qwen3.8-flash-iq3_s-dual"
+      "coding": "qwen3.8-flash-iq3_s-dual"
+      "assistant": "qwen3.8-flash-iq3_s-dual"
+      "chat": "qwen3.8-flash-iq3_s-dual"
   external:
     pins:
       "coding": "google/gemma-4-26b-a4b-it:free"
@@ -178,4 +201,4 @@ profiles:
 
 hooks:
   on_startup:
-    profile: "strata-3090"
+    profile: "strata-dual"
