@@ -1,9 +1,13 @@
 {
+  "_comment": "Batch test arm of ud-iq4_xs-dual.json: the worktree engine (.p4-cbuild), 4 batch slots with --batch-mtp drafts, the tier rhythm on (STRATA_BATCH_ADAPT=0 freezes it). Full 262K context: slots cost 0.23 GiB each at ANY context (the K/V is elastic, shared), so 4 carve from the --vram-reserve-mib 3072 room; the real limit is the shared K/V pool (~420K cells total: four conversations up to ~100K each, 1-2 truly full ones). No admission control on pool exhaustion yet: an over-full engine exits with 'the K/V cannot grow'.",
+  "exe": "/work/.p4-cbuild/strata",
   "args": [
+    "--pack",
+    "/data/packs/unsloth-ud-iq4_xs",
     "--native",
     "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
     "--expert-profile",
-    "./data/expert-profile.bin",
+    "/opt/strata/terminal/data/expert-profile.bin",
     "--expert-cache",
     "auto",
     "--prefill",
@@ -14,14 +18,13 @@
     "46",
     "--cache-ram",
     "8192",
-    "--relaxed-drafting",
-    "0.5",
     "--spec",
     "4",
     "--spec-min-p",
     "0.5",
     "--spec-lookup",
     "16",
+    "--batch-mtp",
     "--adapt-every",
     "1",
     "--adapt-swaps",
@@ -38,7 +41,7 @@
     "--hc-q8",
     "--vision",
     "--vram-reserve-mib",
-    "896",
+    "3072",
     "--pcie-mode",
     "kernel",
     "--pcie-frac",
@@ -50,12 +53,16 @@
     "--head-split",
     "0"
   ],
-  "cwd": "/opt/lamina",
+  "cwd": "/opt/strata/terminal",
+  "tokenizer": "/data/packs/unsloth-ud-iq4_xs/tokenizer",
   "model_name": "qwen3.8-flash-next-unsloth-ud-iq4_xs",
-  "log": "/data/install/eddoursul-unsloth-ud-iq4_xs.log",
-  "lib_dirs": [],
+  "log": "/data/install/unsloth-ud-iq4_xs-batch.log",
+  "lib_dirs": [
+    "@ENGINE_LIB@"
+  ],
   "port": 8080,
   "host": "0.0.0.0",
+  "parallel": 4,
   "sampling": {
     "temperature": 0.6,
     "top_p": 0.95,
@@ -66,12 +73,13 @@
   "reasoning_effort": "low",
   "reasoning_loop_recovery": "stop",
   "vision": {
-    "exe": "/opt/lamina/build-vision/bin/lamina-vision",
+    "exe": "@VISION_EXE@",
     "mmproj": "/data/models/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
     "model": "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
     "gpu": true,
     "max_tokens": 1024
   },
   "expert_profile_save": "/data/unsloth-ud-iq4_xs-learned.bin",
-  "expert_profile_save_every": 1
+  "expert_profile_save_every": 1,
+  "batch_telemetry": true
 }

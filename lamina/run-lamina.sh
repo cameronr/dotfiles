@@ -27,9 +27,9 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # one card gets the single config, "all" (the 4090+3090 pair) the dual
 if [ "$GPUS" = "all" ]; then
-  CONF="${CONF:-eddoursul-ud-iq4_xs-dual.json}"
+  CONF="${CONF:-ud-iq4_xs-dual.json}"
 else
-  CONF="${CONF:-eddoursul-ud-iq4_xs-single.json}"
+  CONF="${CONF:-ud-iq4_xs-single.json}"
 fi
 # Eval (2026-11-02): combined-relaxed-cache build (relaxed drafting P=0.3 + tier2 conversation
 # caching). The nightly :latest rebuild carries neither (its engine rejects --relaxed-drafting).

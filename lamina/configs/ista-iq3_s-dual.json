@@ -1,7 +1,7 @@
 {
   "args": [
     "--native",
-    "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+    "/data/models/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
     "--expert-profile",
     "./data/expert-profile.bin",
     "--expert-cache",
@@ -14,10 +14,10 @@
     "46",
     "--cache-ram",
     "8192",
-    "--relaxed-drafting",
-    "0.3",
     "--spec",
     "4",
+    "--relaxed-drafting",
+    "0.3",
     "--spec-min-p",
     "0.5",
     "--spec-lookup",
@@ -51,8 +51,8 @@
     "0"
   ],
   "cwd": "/opt/lamina",
-  "model_name": "qwen3.8-flash-next-unsloth-ud-iq4_xs",
-  "log": "/data/install/eddoursul-unsloth-ud-iq4_xs.log",
+  "model_name": "qwen3.8-flash-next-iq3_s",
+  "log": "/data/install/ista-iq3_s.log",
   "lib_dirs": [],
   "port": 8080,
   "host": "0.0.0.0",
@@ -68,10 +68,10 @@
   "vision": {
     "exe": "/opt/lamina/build-vision/bin/lamina-vision",
     "mmproj": "/data/models/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
-    "model": "/data/models/unsloth-UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+    "model": "/data/models/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
     "gpu": true,
     "max_tokens": 1024
   },
-  "expert_profile_save": "/data/unsloth-ud-iq4_xs-learned.bin",
+  "expert_profile_save": "/data/ista-iq3_s-learned.bin",
   "expert_profile_save_every": 1
 }

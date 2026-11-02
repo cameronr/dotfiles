@@ -4,7 +4,7 @@
 # (the phase 1-9 batch code lives on branch batch-phase1-harness and in no image yet).
 #
 # Same image as run-lamina.sh (lamina), new container name (-batch), the worktree
-# mounted at /work, and configs/eddoursul-ud-iq4_xs-dual-batch.json driving serve/server.py:
+# mounted at /work, and configs/ud-iq4_xs-dual-batch.json driving serve/server.py:
 # "parallel": 4 (the server adds --batch 4), --batch-mtp drafts, 32K context and a pinned
 # expert cache so four full-context slot sessions fit (see the config's _comment).
 #
@@ -23,7 +23,7 @@ IMAGE="${IMAGE:-lamina}"
 WORKTREE="${WORKTREE:-/home/cam/lamina/.worktrees/batch-phase1-harness}"
 
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"   # the dotfiles dir, even via the repo symlink
-CONF="${CONF:-eddoursul-ud-iq4_xs-dual-batch.json}"
+CONF="${CONF:-ud-iq4_xs-dual-batch.json}"
 
 # Guard the values that decide whether this arm can run at all (reserve 896 silently degrades the
 # engine to "starting with 1 slot" and starves even the verify graph's instantiate):

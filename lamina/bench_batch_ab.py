@@ -94,7 +94,7 @@ def engine_slots(port: int) -> int | None:
 def why_no_slots(since: int = 0) -> None:
     """The engine's own reason for a failed carve - only from lines written after the arm started
     (the log keeps every earlier run, and an old 'does not fit' line once aborted a good sweep)."""
-    log = bvf.HOME / "strata-data" / "install" / "eddoursul-unsloth-ud-iq4_xs-batch.log"
+    log = bvf.HOME / "strata-data" / "install" / "unsloth-ud-iq4_xs-batch.log"
     if log.exists():
         with log.open("r", errors="replace") as f:
             f.seek(since)
@@ -116,7 +116,7 @@ def bench_arm(arm: str, out_root: Path, rnd: int, runs: int, clients: list[int],
         LEARNED.unlink()            # neither arm warm; the sweep restores the original at the end
     out_dir = out_root / f"r{rnd}" / arm
     out_dir.mkdir(parents=True, exist_ok=True)
-    batch_log = bvf.HOME / "strata-data" / "install" / "eddoursul-unsloth-ud-iq4_xs-batch.log"
+    batch_log = bvf.HOME / "strata-data" / "install" / "unsloth-ud-iq4_xs-batch.log"
     log_off = batch_log.stat().st_size if batch_log.exists() else 0
     print(f"  starting {arm} ({name}, port {port}) ...", flush=True)
     runner = bvf.start_arm(a["script"], name, "all", port, out_dir / "run-unsloth.log", extra_env=extra_env)
