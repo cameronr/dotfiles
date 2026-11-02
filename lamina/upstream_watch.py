@@ -227,7 +227,7 @@ def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
     cmd = [sys.executable, str(SCRIPTS / "bench_vs_fork.py"), "--profile", profile,
            "--rounds", str(rounds), "--runs", str(runs), "--yes",
            "--image-a", image_a, "--image-b", "strata-eddoursul", "--out", str(out_root)]
-    if bvf.docker(["ps", "-q", "--filter", "name=^strata$"]).stdout.strip():
+    if bvf.docker(["ps", "-q", "--filter", "name=^lamina-eddoursul$"]).stdout.strip():
         cmd.append("--restart")
     if bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip()):
         # llama-swap must stay up (it serves agent inference and auto-starts prod); unload only frees VRAM

@@ -7,14 +7,14 @@
 
 MAINTENANCE WINDOW. Both arms need BOTH cards to themselves (the model is bigger than any one
 GPU), and llama-swap revives the prod container on every client request. So the sweep asks for
---yes, then a watchdog keeps `strata-eddoursul` stopped for its whole duration: clients hitting
+--yes, then a watchdog keeps `lamina-eddoursul` stopped for its whole duration: clients hitting
 the server during the sweep get restart delays or errors, and llama-swap brings prod back on the
 first request after it ends. Do not run this while anyone matters is chatting.
 
 Two arms alternating per round (order swapped next round, like bench_vs_fork.py):
 
-  solo   ~/strata-eddoursul/run-unsloth.sh         container strata-eddoursul        (prod config)
-  batch  ~/strata-eddoursul/run-unsloth-batch.sh   container strata-eddoursul-batch  (4 slots, --batch-mtp)
+  solo   ~/strata-eddoursul/run-lamina.sh         container lamina-eddoursul        (prod config)
+  batch  ~/strata-eddoursul/run-lamina-batch.sh   container lamina-eddoursul-batch  (4 slots, --batch-mtp)
 
 Each arm is benched with the fork's own client, tools/lamina_bench.py --clients N (N streaming
 requests at once: total tok/s, TTFT and latency percentiles), plus its solo chat decode/TTFT as
@@ -47,12 +47,12 @@ import bench_vs_fork as bvf          # noqa: E402  the arm/health/docker helpers
 
 REPO = Path("/home/cam/strata-eddoursul")
 BENCH = REPO / "tools" / "lamina_bench.py"
-PROD = "strata-eddoursul"            # llama-swap's container; the sweep keeps it down, llama-swap revives it after
+PROD = "lamina-eddoursul"            # llama-swap's container; the sweep keeps it down, llama-swap revives it after
 # the fork's config saves what the run learns here (container /data = ~/strata-data)
 LEARNED = bvf.HOME / "strata-data" / "unsloth-ud-iq4_xs-learned.bin"
 ARMS = {
-    "solo":  {"script": REPO / "run-unsloth.sh",       "container": PROD,                 "port": 18031},
-    "batch": {"script": REPO / "run-unsloth-batch.sh", "container": "strata-eddoursul-batch", "port": 18032},
+    "solo":  {"script": REPO / "run-lamina.sh",        "container": PROD,                 "port": 18031},
+    "batch": {"script": REPO / "run-lamina-batch.sh", "container": "lamina-eddoursul-batch", "port": 18032},
 }
 
 

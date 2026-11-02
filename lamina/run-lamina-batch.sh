@@ -3,21 +3,21 @@
 # and server (the server.py mount carries the batch telemetry fixes, e.g. BDONE draft counts).
 # (the phase 1-9 batch code lives on branch batch-phase1-harness and in no image yet).
 #
-# Same image as run-unsloth.sh (strata-eddoursul), new container name (-batch), the worktree
+# Same image as run-lamina.sh (strata-eddoursul), new container name (-batch), the worktree
 # mounted at /work, and configs/eddoursul-ud-iq4_xs-dual-batch.json driving serve/server.py:
 # "parallel": 4 (the server adds --batch 4), --batch-mtp drafts, 32K context and a pinned
 # expert cache so four full-context slot sessions fit (see the config's _comment).
 #
-# The container is named strata-eddoursul-batch so `docker ps`, logs and the A/B script can
+# The container is named lamina-eddoursul-batch so `docker ps`, logs and the A/B script can
 # tell the arms apart.  GPU: only one arm can hold the cards - this script stops the prod
 # container first.  llama-swap brings prod back on the next agent chat, so run your tests
 # without chatting in parallel (same rule as the gate runs).
 #
-#   ./run-unsloth-batch.sh [container] [gpus]     gpus: "all" (dual) or a --gpus value
+#   ./run-lamina-batch.sh [container] [gpus]     gpus: "all" (dual) or a --gpus value
 #   PORT=18021 CONF=<file in configs/> WORKTREE=<checkout> STRATA_BATCH_ADAPT=0 (freeze tiers) ...
 set -eu
 
-CONTAINER_NAME="${1:-strata-eddoursul-batch}"
+CONTAINER_NAME="${1:-lamina-eddoursul-batch}"
 GPUS="${2:-all}"
 IMAGE="${IMAGE:-strata-eddoursul}"
 WORKTREE="${WORKTREE:-/home/cam/strata-eddoursul/.worktrees/batch-phase1-harness}"
@@ -53,9 +53,9 @@ PY
     'apt-get update -qq; apt-get install -y -qq cmake ninja-build build-essential git; cd /work/.p4-cbuild && ninja strata')"; exit 1; }
 
 # the prod container holds the GPUs; llama-swap restarts it on the next request (see header)
-if [ -n "$(docker ps -q --filter name=strata-eddoursul$)" ] && [ "$CONTAINER_NAME" != "strata-eddoursul" ]; then
+if [ -n "$(docker ps -q --filter name=lamina-eddoursul$)" ] && [ "$CONTAINER_NAME" != "lamina-eddoursul" ]; then
   echo "stopping the prod container (llama-swap will bring it back on the next agent chat - avoid chatting during the test)"
-  docker stop strata-eddoursul >/dev/null
+  docker stop lamina-eddoursul >/dev/null
 fi
 
 KEY_FILE=/home/cam/strata-data/api-key

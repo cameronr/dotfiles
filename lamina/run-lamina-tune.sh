@@ -4,4 +4,4 @@
 # is inherited from the sweep's environment, so each variant is one env line away from prod.
 set -eu
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
-CONF="${TUNE:?TUNE=<file in configs/>}" exec bash "$HERE/run-unsloth-eddoursul.sh" "$@"
+CONF="${TUNE:?TUNE=<file in configs/>}" exec bash "$HERE/run-lamina.sh" "$@"

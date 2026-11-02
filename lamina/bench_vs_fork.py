@@ -8,7 +8,7 @@
 
 Each arm is started by its own repo's run-unsloth.sh (the fork's engine takes different flags, configs and
 env than upstream's, so there is no shared docker invocation): arm A runs ~/strata/run-unsloth.sh, arm B
-runs ~/strata-eddoursul/run-unsloth.sh.  Both scripts take [container] [gpus] and honour PORT; a fork whose
+runs ~/strata-eddoursul/run-lamina.sh.  Both scripts take [container] [gpus] and honour PORT; a fork whose
 container name is its image name works out of the box (the arm's container name defaults to the repo folder
 name).  An API key in ~/strata-data/api-key (which the fork's script creates and requires) is passed to the
 bench client automatically.
@@ -68,7 +68,7 @@ LEARNED_BAK = LEARNED_PROFILE.with_suffix(".sweep-bak")
 # profile -> docker --gpus value passed to each arm's run-unsloth.sh ("all" picks each repo's dual config)
 PROFILES = {"dual": "all", "single-3090": "device=1", "single-4090": "device=0"}
 BENCH_PORT = 18033
-PROD_CONTAINER = "strata"          # the 0.1.x server serving this agent; stopped for the sweep even when it is not an arm
+PROD_CONTAINER = "lamina-eddoursul"  # llama-swap's prod container; stopped for the sweep even when it is not an arm
 STOP_TIMEOUT = 90          # the fork's own script asks docker for 120; give it room to shut down cleanly
 METRICS = [                # (key, label, higher-is-better)
     ("decode", "chat decode tok/s", True),
@@ -286,8 +286,8 @@ def main() -> None:
                     help="candidate checkout, started by its run-unsloth.sh (default ~/strata-eddoursul)")
     ap.add_argument("--script-a", default="run-unsloth.sh",
                     help="arm A's launch script in its repo (default run-unsloth.sh; e.g. run-unsloth-2.sh)")
-    ap.add_argument("--script-b", default="run-unsloth.sh",
-                    help="arm B's launch script in its repo (default run-unsloth.sh; e.g. run-unsloth-2.sh)")
+    ap.add_argument("--script-b", default="run-lamina.sh",
+                    help="arm B's launch script in its repo (default run-lamina.sh; e.g. run-unsloth.sh)")
     ap.add_argument("--name-a", help="arm A's container name (default the repo folder name)")
     ap.add_argument("--name-b", help="arm B's container name (default the repo folder name)")
     ap.add_argument("--image-a", help="arm A's image for the exists-check (default --name-a; set when the "

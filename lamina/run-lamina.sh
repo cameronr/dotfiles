@@ -11,16 +11,16 @@
 # The model files, MTP draft layer and learned expert profile are already under /data
 # (~/strata-data); nothing is downloaded.
 #
-# Lives here in dotfiles; ~/strata-eddoursul/run-unsloth.sh symlinks here.
+# Lives here in dotfiles; ~/strata-eddoursul/run-lamina.sh symlinks here.
 # Configs come from the configs/ dir next to this script (the fork clone's configs/ symlinks
 # the same files), so it works run from either place.
 # CONF=<file in configs/> overrides the tuned config.
 # IMAGE=<tag> overrides the image (default: the image named after the container, :latest).
 #
-#   ./run-unsloth.sh [container] [gpus]     gpus: "all" (dual) or a --gpus value (single)
+#   ./run-lamina.sh [container] [gpus]     gpus: "all" (dual) or a --gpus value (single)
 set -eu
 
-CONTAINER_NAME="${1:-strata}"
+CONTAINER_NAME="${1:-lamina}"
 GPUS="${2:-all}"
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -49,7 +49,7 @@ fi
 docker rm --force "$CONTAINER_NAME" 2>/dev/null || true
 
 # LAMINA_DRAFT_PROXY: the 2-bit draft head copy. 0 = the exact head over every row (the safe
-# default, as on the strata-era image). Override for an A/B: LAMINA_DRAFT_PROXY=1 ./run-unsloth.sh ...
+# default, as on the strata-era image). Override for an A/B: LAMINA_DRAFT_PROXY=1 ./run-lamina.sh ...
 set -x
 
 docker run --rm \
