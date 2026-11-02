@@ -3,7 +3,7 @@
 # and server (the server.py mount carries the batch telemetry fixes, e.g. BDONE draft counts).
 # (the phase 1-9 batch code lives on branch batch-phase1-harness and in no image yet).
 #
-# Same image as run-lamina.sh (strata-eddoursul), new container name (-batch), the worktree
+# Same image as run-lamina.sh (lamina-eddoursul), new container name (-batch), the worktree
 # mounted at /work, and configs/eddoursul-ud-iq4_xs-dual-batch.json driving serve/server.py:
 # "parallel": 4 (the server adds --batch 4), --batch-mtp drafts, 32K context and a pinned
 # expert cache so four full-context slot sessions fit (see the config's _comment).
@@ -19,7 +19,7 @@ set -eu
 
 CONTAINER_NAME="${1:-lamina-eddoursul-batch}"
 GPUS="${2:-all}"
-IMAGE="${IMAGE:-strata-eddoursul}"
+IMAGE="${IMAGE:-lamina-eddoursul}"
 WORKTREE="${WORKTREE:-/home/cam/strata-eddoursul/.worktrees/batch-phase1-harness}"
 
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"   # the dotfiles dir, even via the repo symlink

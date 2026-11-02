@@ -33,9 +33,9 @@ else
 fi
 # Eval (2026-11-02): combined-relaxed-cache build (relaxed drafting P=0.3 + tier2 conversation
 # caching). The nightly :latest rebuild carries neither (its engine rejects --relaxed-drafting).
-# Rollback: IMAGE=strata-eddoursul:relaxed (relaxed only) or :latest (neither; also drop
+# Rollback: IMAGE=lamina-eddoursul:relaxed (relaxed only) or :latest (neither; also drop
 # --relaxed-drafting from the configs).
-IMAGE="${IMAGE:-strata-eddoursul:combined}"
+IMAGE="${IMAGE:-lamina-eddoursul:combined}"
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))

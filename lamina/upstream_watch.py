@@ -202,7 +202,7 @@ def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
 
 
 def build_fork(fork_sha: str, arch: str) -> str:
-    tag = f"strata-eddoursul:watch-{fork_sha[:7]}"
+    tag = f"lamina-eddoursul:watch-{fork_sha[:7]}"
     df = patched_dockerfile(FORK)
     if df is None:
         fail("build_fork", "no Dockerfile in the fork checkout")
@@ -213,12 +213,12 @@ def build_fork(fork_sha: str, arch: str) -> str:
         args.insert(0, f"--build-arg=STRATA_COMMIT={fork_sha}")
     if run(["docker", "build", "-f", "-", "-t", tag, *args, str(FORK)], 3 * 3600, stdin_text=df) != 0:
         fail("build_fork", tag)
-    # the fork's launch script runs the image named after its container (strata-eddoursul), so :latest
+    # the fork's launch script runs the image named after its container (lamina-eddoursul), so :latest
     # is what the arm actually runs; the watch-<sha> tag is what prune() keeps history by.
-    # (Prod migrated to the lamina-era image 2026-10-31: run-unsloth-eddoursul.sh starts lamina-server
+    # (Prod migrated to the lamina-era image 2026-10-31: run-lamina.sh starts lamina-server
     # directly, so a rebuilt image is bootable and :latest moves unconditionally again.)
-    if run(["docker", "tag", tag, "strata-eddoursul:latest"], 60) != 0:
-        fail("build_fork", "strata-eddoursul:latest")
+    if run(["docker", "tag", tag, "lamina-eddoursul:latest"], 60) != 0:
+        fail("build_fork", "lamina-eddoursul:latest")
     return tag
 
 
@@ -226,7 +226,7 @@ def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
     out_root = DATA / "ab-fork" / datetime.datetime.now().strftime("%Y-%m-%d-%H%M")
     cmd = [sys.executable, str(SCRIPTS / "bench_vs_fork.py"), "--profile", profile,
            "--rounds", str(rounds), "--runs", str(runs), "--yes",
-           "--image-a", image_a, "--image-b", "strata-eddoursul", "--out", str(out_root)]
+           "--image-a", image_a, "--image-b", "lamina-eddoursul", "--out", str(out_root)]
     if bvf.docker(["ps", "-q", "--filter", "name=^lamina-eddoursul$"]).stdout.strip():
         cmd.append("--restart")
     if bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip()):
@@ -333,7 +333,7 @@ def render() -> None:
 def prune() -> None:
     # keep the 2 newest images per repo; the fork's :latest and any latest-* alias are never candidates,
     # so what dies is the old watch-<sha> fork builds and superseded upstream version pulls.
-    for repo in ("ghcr.io/niko1221/strata", "strata-upstream", "strata-eddoursul"):
+    for repo in ("ghcr.io/niko1221/strata", "strata-upstream", "lamina-eddoursul"):
         p = subprocess.run(["docker", "image", "ls", repo, "--format", "{{json .}}"],
                            capture_output=True, text=True)
         if p.returncode != 0:
