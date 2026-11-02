@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """A/B two Strata checkouts (e.g. upstream vs a fork) per machine profile, one at a time on the GPU.
 
-    python3 bench_vs_fork.py                              # ~/strata vs ~/strata-eddoursul, 2 rounds, suite 1
+    python3 bench_vs_fork.py                              # ~/strata vs ~/lamina, 2 rounds, suite 1
     python3 bench_vs_fork.py --profile dual,single-3090   # sweep both machine setups, one table each
     python3 bench_vs_fork.py --rounds 1 --runs 3          # quick pass
     python3 bench_vs_fork.py --yes --restart              # no prompt, bring `strata` back at the end
 
 Each arm is started by its own repo's run-unsloth.sh (the fork's engine takes different flags, configs and
 env than upstream's, so there is no shared docker invocation): arm A runs ~/strata/run-unsloth.sh, arm B
-runs ~/strata-eddoursul/run-lamina.sh.  Both scripts take [container] [gpus] and honour PORT; a fork whose
+runs ~/lamina/run-lamina.sh.  Both scripts take [container] [gpus] and honour PORT; a fork whose
 container name is its image name works out of the box (the arm's container name defaults to the repo folder
 name).  An API key in ~/strata-data/api-key (which the fork's script creates and requires) is passed to the
 bench client automatically.
@@ -28,7 +28,7 @@ geometric-mean score) and the exact `strata_bench.py --compare-only` command for
 Results stay under ~/strata-data/bench/ab-fork/<date>/<profile>/<arm>/round<N>/ . An explicit --image-A is
 exported as IMAGE to that arm's launch script (the arm runs exactly the checked image); --image-B works the
 same way, but the fork's script names its image by container name, so tagging the build is enough there.
-Lives in dotfiles/lamina (~/strata-eddoursul/bench_vs_fork.py symlinks here); the bench client comes from arm A's
+Lives in dotfiles/lamina (~/lamina/bench_vs_fork.py symlinks here); the bench client comes from arm A's
 repo. Docker access is needed: run with sudo if your user cannot talk to docker.  Standard library only;
 run this on the host, not inside a container.
 """
@@ -282,8 +282,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo-a", type=Path, default=HOME / "strata",
                     help="baseline checkout, started by its run-unsloth.sh (default ~/strata)")
-    ap.add_argument("--repo-b", type=Path, default=HOME / "strata-eddoursul",
-                    help="candidate checkout, started by its run-unsloth.sh (default ~/strata-eddoursul)")
+    ap.add_argument("--repo-b", type=Path, default=HOME / "lamina",
+                    help="candidate checkout, started by its run-lamina.sh (default ~/lamina)")
     ap.add_argument("--script-a", default="run-unsloth.sh",
                     help="arm A's launch script in its repo (default run-unsloth.sh; e.g. run-unsloth-2.sh)")
     ap.add_argument("--script-b", default="run-lamina.sh",

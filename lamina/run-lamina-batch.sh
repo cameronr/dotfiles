@@ -20,7 +20,7 @@ set -eu
 CONTAINER_NAME="${1:-lamina-eddoursul-batch}"
 GPUS="${2:-all}"
 IMAGE="${IMAGE:-lamina-eddoursul}"
-WORKTREE="${WORKTREE:-/home/cam/strata-eddoursul/.worktrees/batch-phase1-harness}"
+WORKTREE="${WORKTREE:-/home/cam/lamina/.worktrees/batch-phase1-harness}"
 
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"   # the dotfiles dir, even via the repo symlink
 CONF="${CONF:-eddoursul-ud-iq4_xs-dual-batch.json}"

@@ -13,8 +13,8 @@ first request after it ends. Do not run this while anyone matters is chatting.
 
 Two arms alternating per round (order swapped next round, like bench_vs_fork.py):
 
-  solo   ~/strata-eddoursul/run-lamina.sh         container lamina-eddoursul        (prod config)
-  batch  ~/strata-eddoursul/run-lamina-batch.sh   container lamina-eddoursul-batch  (4 slots, --batch-mtp)
+  solo   ~/lamina/run-lamina.sh         container lamina-eddoursul        (prod config)
+  batch  ~/lamina/run-lamina-batch.sh   container lamina-eddoursul-batch  (4 slots, --batch-mtp)
 
 Each arm is benched with the fork's own client, tools/lamina_bench.py --clients N (N streaming
 requests at once: total tok/s, TTFT and latency percentiles), plus its solo chat decode/TTFT as
@@ -45,7 +45,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bench_vs_fork as bvf          # noqa: E402  the arm/health/docker helpers of the fork-vs-upstream sweep
 
-REPO = Path("/home/cam/strata-eddoursul")
+REPO = Path("/home/cam/lamina")
 BENCH = REPO / "tools" / "lamina_bench.py"
 PROD = "lamina-eddoursul"            # llama-swap's container; the sweep keeps it down, llama-swap revives it after
 # the fork's config saves what the run learns here (container /data = ~/strata-data)

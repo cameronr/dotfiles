@@ -7,7 +7,7 @@
 
 It pulls ~/strata (upstream main) and its published image ghcr.io/niko1221/strata:<version>-<flavor>; when
 that release has no published image (they are hand-published and often lag) it builds upstream from source
-instead. It rebuilds the fork's image (~/strata-eddoursul is never pulled or modified), runs bench_vs_fork.py
+instead. It rebuilds the fork's image (~/lamina is never pulled or modified), runs bench_vs_fork.py
 as arm A=upstream vs arm B=fork, appends a row to ~/strata-data/bench/series.jsonl, rewrites
 ~/strata-results.md from the whole series, and prunes old watch-* images. state.json records the last good
 (upstream_sha, version, fork_sha); when tonight matches it the run is a no-op unless --force. The wrapper
@@ -35,7 +35,7 @@ import bench_vs_fork as bvf
 
 HOME = bvf.real_home()                       # under sudo this is still the human's home, not /root
 STRATA = HOME / "strata"                    # upstream checkout, tracks Niko1221/Strata main
-FORK = HOME / "strata-eddoursul"            # fork checkout; never pulled or modified
+FORK = HOME / "lamina"                      # fork checkout; never pulled or modified
 SCRIPTS = Path(__file__).resolve().parent
 DATA = HOME / "strata-data" / "bench"
 SERIES = DATA / "series.jsonl"

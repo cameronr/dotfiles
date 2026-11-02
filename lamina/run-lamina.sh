@@ -11,7 +11,7 @@
 # The model files, MTP draft layer and learned expert profile are already under /data
 # (~/strata-data); nothing is downloaded.
 #
-# Lives here in dotfiles; ~/strata-eddoursul/run-lamina.sh symlinks here.
+# Lives here in dotfiles; ~/lamina/run-lamina.sh symlinks here.
 # Configs come from the configs/ dir next to this script (the fork clone's configs/ symlinks
 # the same files), so it works run from either place.
 # CONF=<file in configs/> overrides the tuned config.
