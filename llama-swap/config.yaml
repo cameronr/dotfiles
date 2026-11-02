@@ -71,7 +71,7 @@ models:
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     env:
-      - IMAGE=lamina-eddoursul:combined
+      - IMAGE=lamina:combined
     cmd: /home/cam/lamina/run-lamina.sh lamina "device=0"
     cmdStop: docker stop lamina
     proxy: http://mediabox:18020
@@ -83,7 +83,7 @@ models:
     # cmd: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch up
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     env:
-      - IMAGE=lamina-eddoursul:combined
+      - IMAGE=lamina:combined
     cmd: /home/cam/lamina/run-lamina.sh lamina "device=1"
     cmdStop: docker stop lamina
     proxy: http://mediabox:18020
@@ -96,7 +96,7 @@ models:
     # cmdStop: docker compose -f /home/media/qwen38-27b-rtx3090/docker-compose.yml --profile batch down
     # cmd: /home/cam/strata/run-unsloth.sh strata all
     env:
-      - IMAGE=lamina-eddoursul:combined
+      - IMAGE=lamina:combined
     cmd: /home/cam/lamina/run-lamina.sh lamina all
     cmdStop: docker stop lamina
     proxy: http://mediabox:18020
