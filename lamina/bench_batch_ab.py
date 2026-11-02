@@ -7,14 +7,14 @@
 
 MAINTENANCE WINDOW. Both arms need BOTH cards to themselves (the model is bigger than any one
 GPU), and llama-swap revives the prod container on every client request. So the sweep asks for
---yes, then a watchdog keeps `lamina-eddoursul` stopped for its whole duration: clients hitting
+--yes, then a watchdog keeps `lamina` stopped for its whole duration: clients hitting
 the server during the sweep get restart delays or errors, and llama-swap brings prod back on the
 first request after it ends. Do not run this while anyone matters is chatting.
 
 Two arms alternating per round (order swapped next round, like bench_vs_fork.py):
 
-  solo   ~/lamina/run-lamina.sh         container lamina-eddoursul        (prod config)
-  batch  ~/lamina/run-lamina-batch.sh   container lamina-eddoursul-batch  (4 slots, --batch-mtp)
+  solo   ~/lamina/run-lamina.sh         container lamina        (prod config)
+  batch  ~/lamina/run-lamina-batch.sh   container lamina-batch  (4 slots, --batch-mtp)
 
 Each arm is benched with the fork's own client, tools/lamina_bench.py --clients N (N streaming
 requests at once: total tok/s, TTFT and latency percentiles), plus its solo chat decode/TTFT as
@@ -47,12 +47,12 @@ import bench_vs_fork as bvf          # noqa: E402  the arm/health/docker helpers
 
 REPO = Path("/home/cam/lamina")
 BENCH = REPO / "tools" / "lamina_bench.py"
-PROD = "lamina-eddoursul"            # llama-swap's container; the sweep keeps it down, llama-swap revives it after
+PROD = "lamina"  # llama-swap's container; the sweep keeps it down, llama-swap revives it after
 # the fork's config saves what the run learns here (container /data = ~/strata-data)
 LEARNED = bvf.HOME / "strata-data" / "unsloth-ud-iq4_xs-learned.bin"
 ARMS = {
-    "solo":  {"script": REPO / "run-lamina.sh",        "container": PROD,                 "port": 18031},
-    "batch": {"script": REPO / "run-lamina-batch.sh", "container": "lamina-eddoursul-batch", "port": 18032},
+    "solo":  {"script": REPO / "run-lamina.sh",       "container": PROD,           "port": 18031},
+    "batch": {"script": REPO / "run-lamina-batch.sh", "container": "lamina-batch", "port": 18032},
 }
 
 

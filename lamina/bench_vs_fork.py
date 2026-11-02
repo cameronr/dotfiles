@@ -68,7 +68,7 @@ LEARNED_BAK = LEARNED_PROFILE.with_suffix(".sweep-bak")
 # profile -> docker --gpus value passed to each arm's run-unsloth.sh ("all" picks each repo's dual config)
 PROFILES = {"dual": "all", "single-3090": "device=1", "single-4090": "device=0"}
 BENCH_PORT = 18033
-PROD_CONTAINER = "lamina-eddoursul"  # llama-swap's prod container; stopped for the sweep even when it is not an arm
+PROD_CONTAINER = "lamina"  # llama-swap's prod container; stopped for the sweep even when it is not an arm
 STOP_TIMEOUT = 90          # the fork's own script asks docker for 120; give it room to shut down cleanly
 METRICS = [                # (key, label, higher-is-better)
     ("decode", "chat decode tok/s", True),
