@@ -31,10 +31,11 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-eddoursul-ud-iq4_xs-single.json}"
 fi
-# Eval (2026-10-31): relaxed drafting P=0.3 - the perf-decode build, which the nightly :latest
-# rebuild does NOT carry (its engine would reject --relaxed-drafting). Rollback: IMAGE=strata-eddoursul:latest
-# here and drop --relaxed-drafting from the configs.
-IMAGE="${IMAGE:-strata-eddoursul:relaxed}"
+# Eval (2026-11-02): combined-relaxed-cache build (relaxed drafting P=0.3 + tier2 conversation
+# caching). The nightly :latest rebuild carries neither (its engine rejects --relaxed-drafting).
+# Rollback: IMAGE=strata-eddoursul:relaxed (relaxed only) or :latest (neither; also drop
+# --relaxed-drafting from the configs).
+IMAGE="${IMAGE:-strata-eddoursul:combined}"
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))
