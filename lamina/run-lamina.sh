@@ -31,11 +31,11 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-ud-iq4_xs-single.json}"
 fi
-# Eval (2026-11-02): combined-relaxed-cache build (relaxed drafting P=0.3 + tier2 conversation
-# caching). The nightly :latest rebuild carries neither (its engine rejects --relaxed-drafting).
-# Rollback: IMAGE=lamina:relaxed (relaxed only) or :latest (neither; also drop
-# --relaxed-drafting from the configs).
-IMAGE="${IMAGE:-lamina:combined}"
+# Eval (2026-11-03): lamina:relaxed = the perf-decode branch (relaxed drafting P=0.3) on upstream
+# tip, which now carries the merged conversation cache (PR #41). The nightly :latest rebuild
+# carries neither (its engine rejects --relaxed-drafting). Rollback: :latest (drop both; also
+# remove --relaxed-drafting from the configs).
+IMAGE="${IMAGE:-lamina:relaxed}"
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))
