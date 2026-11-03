@@ -1,7 +1,8 @@
 ---@module 'lazy'
 ---@type LazySpec
 return {
-  'sindrets/diffview.nvim',
+  -- 'sindrets/diffview.nvim',
+  'dlyongemallo/diffview-plus.nvim',
   -- lazy = true,
   keys = {
     { '<leader>hd', '<cmd>DiffviewOpen -uno<CR>', desc = 'git diff against index' },
