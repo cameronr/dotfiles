@@ -104,7 +104,8 @@ models:
 
   qwen3.8-flash-iq3_s-3090:
     env:
-      - CONF=eddoursul-ista-iq3_s-single.json
+      - IMAGE=lamina:combined
+      - CONF=ista-iq3_s-single.json
     cmd: /home/cam/lamina/run-lamina.sh lamina "device=1"
     cmdStop: docker stop lamina
     proxy: http://mediabox:18020
@@ -112,7 +113,8 @@ models:
 
   qwen3.8-flash-iq3_s-dual:
     env:
-      - CONF=eddoursul-ista-iq3_s-dual.json
+      - IMAGE=lamina:combined
+      - CONF=ista-iq3_s-dual.json
     cmd: /home/cam/lamina/run-lamina.sh lamina all
     cmdStop: docker stop lamina
     proxy: http://mediabox:18020
