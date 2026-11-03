@@ -22,6 +22,12 @@ return {
       local ai = require('mini.ai')
       ai.setup({
         n_lines = 500,
+
+        -- NOTE: until until 0.13
+        mappings = {
+          around_last = 'aL', -- Change 'al' (around last) to 'aL'
+          inside_last = 'iL', -- Change 'il' (inside last) to 'iL'
+        },
         custom_textobjects = {
           ['%'] = '',
           s = ai.gen_spec.treesitter({ -- code block
@@ -31,6 +37,7 @@ return {
           f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- function
           c = ai.gen_spec.treesitter({ a = '@call.outer', i = '@call.inner' }),
           i = require('mini.extra').gen_ai_spec.indent(),
+          l = require('mini.extra').gen_ai_spec.buffer(),
           g = require('mini.extra').gen_ai_spec.buffer(),
         },
       })
