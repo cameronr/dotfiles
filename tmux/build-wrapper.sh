@@ -3,8 +3,23 @@
 # persistent Local Network permission to it. tmux is ad-hoc signed with no bundle
 # id, so once its launching terminal quits, the server has no grantable identity
 # and macOS blocks LAN access (TN3179). A bundle id + NSLocalNetworkUsageDescription
-# gives it one. Ad-hoc re-sign is fine; the grant binds to the cdhash, so re-run
-# this script after `brew upgrade tmux` and re-grant once.
+# gives it one.
+#
+# The bundle MUST be signed with a real code-signing identity, not `codesign -s -`
+# (ad-hoc). The TCC UI honors ad-hoc grants and nehelper logs "allowed", but the
+# kernel's packet-level enforcement distrusts ad-hoc signatures ("No team ID found")
+# and silently blocks third-party binaries (python, wget, bare ssh) while
+# Apple-signed ones (curl, nc, perl) bypass the policy entirely. Symptom: errno 65
+# "No route to host" from python inside tmux panes, curl fine in the same pane.
+# One-time setup: create a self-signed codeSigning cert ("Tmux Local Signing"),
+# import it into the login keychain, set Trust → Code Signing → Always Trust.
+# The grant binds to the cdhash, so re-run this script after `brew upgrade tmux`
+# and re-grant once.
+#
+# If the kernel ever caches a bad verdict for the bundle id (nehelper logs
+# "allowed by preference" + "UUID cache hit" while python still gets errno 65),
+# bump BUNDLE_ID: the kernel's local-network verdict cache is keyed by bundle id
+# and survives codesign changes and tccutil reset.
 #
 # Two more facts learned the hard way, both handled by the LaunchAgent:
 #   - TCC attributes a terminal-launched process to the terminal (its responsible
@@ -15,7 +30,7 @@
 #     durable.
 set -euo pipefail
 
-BUNDLE_ID="com.cam.tmux"
+BUNDLE_ID="com.cam.tmux.app"
 APP_DIR="${HOME}/apps/Tmux.app"
 BIN_DIR="${HOME}/bin"
 
@@ -29,7 +44,13 @@ cp "$SRC" "$APP_DIR/Contents/MacOS/tmux"
 BUNDLE_VER="$("$SRC" -V | awk '{print $2}')"
 printf '<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n<plist version="1.0"><dict>\n  <key>CFBundleIdentifier</key><string>%s</string>\n  <key>CFBundleName</key><string>Tmux</string>\n  <key>CFBundleExecutable</key><string>tmux</string>\n  <key>CFBundlePackageType</key><string>APPL</string>\n  <key>CFBundleVersion</key><string>%s</string>\n  <key>NSLocalNetworkUsageDescription</key>\n  <string>tmux sessions run shells and tools that reach hosts on the local network.</string>\n</dict></plist>\n' "$BUNDLE_ID" "$BUNDLE_VER" > "$APP_DIR/Contents/Info.plist"
 
-codesign -s - -f "$APP_DIR"
+SIGN_IDENTITY="Tmux Local Signing"
+security find-identity -v -p codesigning | grep -q "$SIGN_IDENTITY" || {
+  echo "signing identity '$SIGN_IDENTITY' not found; see header comment for one-time setup" >&2; exit 1; }
+# No --options runtime: hardened runtime refuses to load brew's ad-hoc signed
+# dylibs (utf8proc etc) under a different Team ID. A plain real signature is
+# what the kernel needs; opencode itself runs without hardened runtime.
+codesign -s "$SIGN_IDENTITY" -f "$APP_DIR"
 ln -sf "$APP_DIR/Contents/MacOS/tmux" "$BIN_DIR/tmux"
 
 # The LaunchAgent starts the server from launchd. PATH must be set there:
