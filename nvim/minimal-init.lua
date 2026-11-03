@@ -241,12 +241,6 @@ vim.keymap.set('n', ']q', '<cmd>cnext<cr>', { desc = 'Next quickfix' })
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -306,13 +300,6 @@ vim.keymap.set({ 'n', 'v' }, 'X', '"_d')
 
 -- Map jk as alternate escape sequence
 vim.keymap.set({ 'i', 'c' }, 'jk', '<Esc>', { desc = 'Exit insert / cmd mode with jk' })
-
--- Sloppy aliases for accidental capital commands
--- in 0.10, could use vim.keymap.set("ca", ...)
-vim.api.nvim_create_user_command('Qa', 'qa', {})
-vim.api.nvim_create_user_command('Q', 'q', {})
-vim.api.nvim_create_user_command('W', 'w', {})
-vim.api.nvim_create_user_command('X', 'x', {})
 
 -- Remap q to Q so I'm not accidentally recording macros all the time
 vim.keymap.set('n', 'q', '<nop>')
@@ -386,9 +373,7 @@ vim.keymap.set('i', ';', ';<c-g>u')
 -- Quickly go to the start/end of the line while in insert mode.
 vim.keymap.set('i', '<C-a>', '<C-o>I', { desc = 'Go to the start of the line' })
 vim.keymap.set('i', '<C-e>', function()
-  if vim.lsp.inline_completion.get({ on_accept = function() return nil end }) then
-    return ''
-  end
+  if vim.lsp.inline_completion.get({ on_accept = function() return nil end }) then return '' end
   return '<C-o>A'
 end, { expr = true, desc = 'Go to end of line / Dismiss inline completion' })
 
