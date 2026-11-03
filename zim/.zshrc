@@ -181,6 +181,11 @@ if [[ (( $commands[bat] )) ]]; then
   FZF_FILE_PREVIEW="bat -n --color=always --line-range :500 {}"
 fi
 
+# set up opencode, if installed
+if [[ (( $commands[opencode] )) ]]; then
+  alias o='opencode'
+fi
+
 # set up fd, if installed
 if [[ (( $commands[fd] )) ]]; then
   export FZF_CTRL_T_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
