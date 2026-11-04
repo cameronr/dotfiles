@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# zig cc drop-in used as $CC for nvim-treesitter parser builds on boxes without a
+# native C compiler. The cc crate that tree-sitter links passes a gcc-style
+# --target=<triple> that zig's clang driver rejects, so drop it and build native.
+args=()
+for a in "$@"; do
+  [[ $a == --target=* ]] && continue
+  args+=("$a")
+done
+exec zig cc "${args[@]}"

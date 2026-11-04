@@ -46,7 +46,10 @@ return {
   ---@type LazySpec
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    event = 'VeryLazy',
+    -- load eagerly: nvim 0.12 ftplugins call vim.treesitter.start() on BufReadPost,
+    -- which needs this plugin's parser/ and queries/ on the rtp before the first file opens.
+    -- VeryLazy is too late for `nvim somefile`.
+    lazy = false,
     dependencies = {
       { 'folke/ts-comments.nvim', opts = {} },
     },
