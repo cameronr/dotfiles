@@ -21,6 +21,14 @@
 # bump BUNDLE_ID: the kernel's local-network verdict cache is keyed by bundle id
 # and survives codesign changes and tccutil reset.
 #
+# LAST RESORT, the one that cost hours: /Library/Preferences/com.apple.networkextension.uuidcache.plist
+# (root-owned, "CUEN" binary format) maps signing identifiers to the UUIDs TCC
+# keys policy on. A poisoned entry (e.g. from a deleted bundle id) makes the
+# kernel consult a stale UUID whose preference is deny, while TCC.db, nehelper
+# logs, and System Settings all show allowed. Reboot does NOT clear it. Fix as
+# root: killall nehelper && rm -f that file, then tccutil reset All <bundle id>
+# and re-approve the fresh prompt.
+#
 # Two more facts learned the hard way, both handled by the LaunchAgent:
 #   - TCC attributes a terminal-launched process to the terminal (its responsible
 #     process), so the server must be started by launchd to own its identity.
@@ -31,7 +39,11 @@
 set -euo pipefail
 
 BUNDLE_ID="com.cam.tmux.app"
-APP_DIR="${HOME}/apps/Tmux.app"
+# NOTE: do not rename/move this bundle casually. Bundle path, id, and signing
+# identity all feed the kernel's local-network identity resolution; churn here
+# is what poisoned the uuidcache (see LAST RESORT above). If identity ever
+# resolves stale, delete the uuidcache as root rather than moving the bundle.
+APP_DIR="${HOME}/apps/tmux-app/Tmux.app"
 BIN_DIR="${HOME}/bin"
 
 SRC="$(brew --prefix tmux)/bin/tmux"
@@ -58,7 +70,8 @@ ln -sf "$APP_DIR/Contents/MacOS/tmux" "$BIN_DIR/tmux"
 # would silently skip every plugin.
 LAUNCH_AGENT="$HOME/Library/LaunchAgents/com.cam.tmux.plist"
 mkdir -p "$(dirname "$LAUNCH_AGENT")"
-cp "$(dirname "$0")/com.cam.tmux.plist" "$LAUNCH_AGENT"
+KEEPER_CMD="T=$APP_DIR/Contents/MacOS/tmux; trap '' HUP; \"\$T\" new-session -d -c $HOME -s 0 2>/dev/null; exec \"\$T\" wait-for keep"
+sed "s|__TMUX_KEEPER_CMD__|$KEEPER_CMD|" "$(dirname "$0")/com.cam.tmux.plist" > "$LAUNCH_AGENT"
 launchctl bootout "gui/$(id -u)/com.cam.tmux" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$LAUNCH_AGENT"
 

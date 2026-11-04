@@ -4,7 +4,7 @@
   <key>Label</key><string>com.cam.tmux</string>
   <key>ProgramArguments</key><array>
     <string>/bin/sh</string><string>-c</string>
-    <string>T=/Users/cam/apps/Tmux.app/Contents/MacOS/tmux; trap '' HUP; "$T" new-session -d -c /Users/cam -s 0 2>/dev/null; exec "$T" wait-for keep</string>
+    <string>__TMUX_KEEPER_CMD__</string>
   </array>
   <key>EnvironmentVariables</key><dict>
     <key>PATH</key><string>/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
