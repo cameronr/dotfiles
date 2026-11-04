@@ -19,11 +19,21 @@ vim.g.picker_engine = vim.env.NVIM_PICKER_ENGINE or 'snacks'
 -- Which completion engine to use
 vim.g.cmp_engine = vim.env.NVIM_CMP_ENGINE or 'blink'
 
--- Default to main branch of treesitter if we have a build environment and tree-sitter
-local default_treesitter_branch = (vim.fn.executable('make') == 1 and vim.fn.executable('tree-sitter') == 1) and 'main'
-  or 'master'
+-- nvim-treesitter master is frozen and unsupported on nvim 0.11+ (it crashes on 0.12's
+-- query API). main is the only supported path there; master stays for legacy nvim < 0.11.
+local default_treesitter_branch = vim.fn.has('nvim-0.11') == 1 and 'main' or 'master'
 -- But allow env var override
 vim.g.treesitter_branch = vim.env.NVIM_TREESITTER_BRANCH or default_treesitter_branch
+
+-- nvim-treesitter main compiles parsers with the `tree-sitter` CLI + a C compiler.
+-- On boxes with no cc/gcc/clang but with zig, point CC at a zig-cc shim so
+-- :TSUpdate / :TSInstall can still build parsers.
+if
+  vim.fn.executable('cc') == 0 and vim.fn.executable('gcc') == 0 and vim.fn.executable('clang') == 0
+  and vim.fn.executable('zig') == 1
+then
+  vim.env.CC = vim.fn.stdpath('config') .. '/bin/zig-cc'
+end
 
 -- Use copilot
 vim.g.use_copilot = vim.env.NVIM_USE_COPILOT == '1'
