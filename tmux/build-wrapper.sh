@@ -29,6 +29,10 @@
 # root: killall nehelper && rm -f that file, then tccutil reset All <bundle id>
 # and re-approve the fresh prompt.
 #
+# If the grant ever breaks (panes get errno 65 "No route to host" from
+# python/telnet/wget while curl works), run tmux/fix-local-network.sh; it
+# re-grants without restarting the tmux server.
+#
 # Two more facts learned the hard way, both handled by the LaunchAgent:
 #   - TCC attributes a terminal-launched process to the terminal (its responsible
 #     process), so the server must be started by launchd to own its identity.
