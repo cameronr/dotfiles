@@ -238,8 +238,11 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
             arm_dir = out_root / profile / k / f"round{rnd}"
             arm_dir.mkdir(parents=True, exist_ok=True)
             try:                                   # whatever happens, this arm's container must not
+                env = dict(IMAGE=arm["image"]) if arm["image_set"] else {}
+                if arm.get("conf"):
+                    env["CONF"] = arm["conf"]
                 runner = start_arm(arm["script"], arm["name"], gpus, port, arm_dir / "run-unsloth.log",
-                                   extra_env={"IMAGE": arm["image"]} if arm["image_set"] else None)
+                                   extra_env=env)
                 res = None                         # outlive the load and the bench, or it squats the port
                 if wait_ready(runner, port, ready_timeout):
                     res = run_bench(arm_dir, port, runs, clients, ready_timeout, bench_script, extra=bench_extra)
@@ -293,6 +296,12 @@ def main() -> None:
     ap.add_argument("--image-a", help="arm A's image for the exists-check (default --name-a; set when the "
                                       "launch script runs a fixed image that is not the container's name)")
     ap.add_argument("--image-b", help="arm B's image for the exists-check (default --name-b)")
+    ap.add_argument("--conf-a", help="arm A's CONF (a config name in the repo's configs/, exported to its "
+                                     "launch script; default the script's own default)")
+    ap.add_argument("--conf-b", help="arm B's CONF, same rules")
+    ap.add_argument("--bench-script", type=Path, help="the bench client to run against each arm (default: "
+                       "arm A's repo tools/lamina_bench.py; point it at a branch worktree's copy for flags "
+                       "the main checkout lacks, e.g. --temperature)")
     ap.add_argument("--profile", default="dual", metavar="NAMES",
                     help=f"comma-separated card setups to sweep (default dual): {', '.join(PROFILES)}")
     ap.add_argument("--rounds", type=int, default=2, help="rounds; arms alternate order per round (default 2)")
@@ -328,7 +337,8 @@ def main() -> None:
         # an explicit --image-X is also exported as IMAGE to the arm's launch script, so the arm runs
         # exactly the image that was checked (the fork's script names its image by container instead)
         arms[k] = {"repo": repo, "script": script, "name": name, "image": image,
-                   "image_set": bool(a.image_a if k == "A" else a.image_b)}
+                   "image_set": bool(a.image_a if k == "A" else a.image_b),
+                   "conf": a.conf_a if k == "A" else a.conf_b}
 
     running = docker(["ps", "--format", "{{.Names}}"]).stdout.split()
     touch = sorted({n for n in (PROD_CONTAINER, arms["A"]["name"], arms["B"]["name"]) if n in running})
@@ -341,8 +351,9 @@ def main() -> None:
     stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M")     # per sweep, so reruns never mix folders
     out_root = a.out or HOME / "strata-data" / "bench" / "ab-fork" / stamp
     out_root.mkdir(parents=True, exist_ok=True)
-    bench_script = next((arms["A"]["repo"] / "tools" / n for n in ("lamina_bench.py", "strata_bench.py")
-                         if (arms["A"]["repo"] / "tools" / n).is_file()), None)
+    bench_script = (a.bench_script.expanduser().resolve() if a.bench_script else
+                    next((arms["A"]["repo"] / "tools" / n for n in ("lamina_bench.py", "strata_bench.py")
+                          if (arms["A"]["repo"] / "tools" / n).is_file()), None))
     if bench_script is None:
         sys.exit(f"no bench client (tools/lamina_bench.py or tools/strata_bench.py) in {arms['A']['repo']}")
     ok = False

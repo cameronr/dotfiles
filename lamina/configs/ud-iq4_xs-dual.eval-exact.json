@@ -12,8 +12,6 @@
     "20",
     "--feed-max",
     "46",
-    "--cache-ram",
-    "8192",
     "--spec",
     "4",
     "--spec-min-p",
