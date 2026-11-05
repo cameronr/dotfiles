@@ -23,7 +23,9 @@ set -eu
 CONTAINER_NAME="${1:-lamina}"
 GPUS="${2:-all}"
 
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# the script's own dir with symlinks resolved (a worktree's run-lamina.sh symlink must land
+# on the dotfiles configs/, not on the worktree it was called from)
+HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 
 # one card gets the single config, "all" (the 4090+3090 pair) the dual
 if [ "$GPUS" = "all" ]; then
