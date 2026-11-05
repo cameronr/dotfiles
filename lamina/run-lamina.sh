@@ -28,10 +28,13 @@ GPUS="${2:-all}"
 HERE="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 
 # one card gets the single config, "all" (the 4090+3090 pair) the dual
+# Eval (2026-11-05): defaults switched to unsloth Dynamic 3.1 UD-IQ4_XS (the -v31 configs: 4-shard
+# V3.1 files, thinking-mode sampling temp 1.0). Rollback: CONF=ud-iq4_xs-dual.json (the V3 files
+# stay under /data/models/unsloth-UD-IQ4_XS).
 if [ "$GPUS" = "all" ]; then
-  CONF="${CONF:-ud-iq4_xs-dual.json}"
+  CONF="${CONF:-ud-iq4_xs-v31-dual.json}"
 else
-  CONF="${CONF:-ud-iq4_xs-single.json}"
+  CONF="${CONF:-ud-iq4_xs-v31-single.json}"
 fi
 # Eval (2026-11-04): lamina:combined = perf-decode (relaxed drafting P=0.3) on upstream tip
 # 91957e20d + the local web-sticky-req-header branch (combined-relaxed-sticky worktree, local
