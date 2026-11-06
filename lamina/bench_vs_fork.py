@@ -216,7 +216,7 @@ def summarize(results_json: Path) -> dict:
 
 def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int,
           clients: int | None, port: int, ready_timeout: float, out_root: Path,
-          bench_script: Path, bench_extra: list[str] | None = None) -> dict[str, Path]:
+          bench_extra: list[str] | None = None) -> dict[str, Path]:
     """Run the alternating A/B rounds for one profile; print its table; return the latest results folder per arm."""
     print(f"\n### profile {profile}: --gpus {gpus}")
     samples: dict[str, dict[str, list[float]]] = {k: {} for k in arms}
@@ -245,7 +245,7 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
                                    extra_env=env)
                 res = None                         # outlive the load and the bench, or it squats the port
                 if wait_ready(runner, port, ready_timeout):
-                    res = run_bench(arm_dir, port, runs, clients, ready_timeout, bench_script, extra=bench_extra)
+                    res = run_bench(arm_dir, port, runs, clients, ready_timeout, arm["bench"], extra=bench_extra)
                     if not res:
                         print(f"  arm {k} bench failed; skipping this round", file=sys.stderr)
                 else:
@@ -281,6 +281,16 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
     return latest
 
 
+def bench_client(repo: Path) -> Path | None:
+    """The bench client in a repo's tools/: the fork's lamina_bench.py if present, else strata_bench.py.
+
+    Each arm is benched by its own repo's client because the two servers report different /health
+    service names (strata vs lamina) and each client only accepts its own, so one client cannot drive
+    both arms."""
+    return next((repo / "tools" / n for n in ("lamina_bench.py", "strata_bench.py")
+                 if (repo / "tools" / n).is_file()), None)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0], formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo-a", type=Path, default=HOME / "strata",
@@ -299,9 +309,9 @@ def main() -> None:
     ap.add_argument("--conf-a", help="arm A's CONF (a config name in the repo's configs/, exported to its "
                                      "launch script; default the script's own default)")
     ap.add_argument("--conf-b", help="arm B's CONF, same rules")
-    ap.add_argument("--bench-script", type=Path, help="the bench client to run against each arm (default: "
-                       "arm A's repo tools/lamina_bench.py; point it at a branch worktree's copy for flags "
-                       "the main checkout lacks, e.g. --temperature)")
+    ap.add_argument("--bench-script", type=Path, help="override the bench client for BOTH arms (default: "
+                       "each arm's own repo tools/, lamina_bench.py then strata_bench.py; the two servers "
+                       "report different /health services, so each arm uses its own client)")
     ap.add_argument("--profile", default="dual", metavar="NAMES",
                     help=f"comma-separated card setups to sweep (default dual): {', '.join(PROFILES)}")
     ap.add_argument("--rounds", type=int, default=2, help="rounds; arms alternate order per round (default 2)")
@@ -338,11 +348,13 @@ def main() -> None:
         # exactly the image that was checked (the fork's script names its image by container instead)
         arms[k] = {"repo": repo, "script": script, "name": name, "image": image,
                    "image_set": bool(a.image_a if k == "A" else a.image_b),
-                   "conf": a.conf_a if k == "A" else a.conf_b}
+                   "conf": a.conf_a if k == "A" else a.conf_b,
+                   "bench": bench_client(repo)}
 
     running = docker(["ps", "--format", "{{.Names}}"]).stdout.split()
     touch = sorted({n for n in (PROD_CONTAINER, arms["A"]["name"], arms["B"]["name"]) if n in running})
-    print(f"arms: A={arms['A']['name']} ({arms['A']['script']})  B={arms['B']['name']} ({arms['B']['script']})")
+    print(f"arms: A={arms['A']['name']} ({arms['A']['script'].name}, bench {arms['A']['bench'].name})  "
+          f"B={arms['B']['name']} ({arms['B']['script'].name}, bench {arms['B']['bench'].name})")
     print(f"profiles={', '.join(profiles)}  rounds={a.rounds} runs={a.runs}  port={a.port}")
     if touch and not a.yes:
         print(f"This will stop: {', '.join(touch)} (the agent container included) and use the GPU alone.")
@@ -351,16 +363,17 @@ def main() -> None:
     stamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M")     # per sweep, so reruns never mix folders
     out_root = a.out or HOME / "strata-data" / "bench" / "ab-fork" / stamp
     out_root.mkdir(parents=True, exist_ok=True)
-    bench_script = (a.bench_script.expanduser().resolve() if a.bench_script else
-                    next((arms["A"]["repo"] / "tools" / n for n in ("lamina_bench.py", "strata_bench.py")
-                          if (arms["A"]["repo"] / "tools" / n).is_file()), None))
-    if bench_script is None:
-        sys.exit(f"no bench client (tools/lamina_bench.py or tools/strata_bench.py) in {arms['A']['repo']}")
+    if a.bench_script:                       # an explicit override applies to both arms
+        for k in arms:
+            arms[k]["bench"] = a.bench_script.expanduser().resolve()
+    for k in arms:
+        if not arms[k]["bench"]:
+            sys.exit(f"arm {k}: no bench client (tools/lamina_bench.py or tools/strata_bench.py) in {arms[k]['repo']}")
     ok = False
     try:
         for p in profiles:
             latest = sweep(p, PROFILES[p], arms, a.rounds, a.runs, a.clients or None, a.port,
-                           a.ready_timeout, out_root, bench_script,
+                           a.ready_timeout, out_root,
                            shlex.split(a.bench_extra) if a.bench_extra else None)
             ok = ok or len(latest) == 2
     finally:
