@@ -23,9 +23,15 @@ IMAGE="${IMAGE:-strata-0.2.1.4}"   # the 0.2.0-beta build; `strata` is the 0.1.x
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# one card gets the single config, "all" (the 4090+3090 pair) the dual
-CONF="upstream-ud-iq4_xs-single.json"
-[ "$GPUS" = "all" ] && CONF="upstream-ud-iq4_xs-dual.json"
+# one card gets the single config, "all" (the 4090+3090 pair) the dual.
+# Default is the v31 pack (the same unsloth v31 the fork's run-lamina.sh now runs), so the nightly
+# watch compares upstream and fork on the same model. CONF=<file> overrides: for the pre-v31 pack
+# use CONF=upstream-ud-iq4_xs-dual.json (or -single).
+if [ "$GPUS" = "all" ]; then
+  CONF="${CONF:-upstream-ud-iq4_xs-v31-dual.json}"
+else
+  CONF="${CONF:-upstream-ud-iq4_xs-v31-single.json}"
+fi
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))

@@ -4,6 +4,7 @@
     sudo python3 upstream_watch.py               # gated nightly run (a systemd timer fires it at 01:00)
     sudo python3 upstream_watch.py --force       # ignore the no-change gate and the GPU-busy guard
     sudo python3 upstream_watch.py --rounds 1 --force
+    sudo python3 upstream_watch.py --fork-image lamina:combined   # A/B upstream vs a local image, no rebuild
 
 It pulls ~/strata (upstream main) and its published image ghcr.io/niko1221/strata:<version>-<flavor>; when
 that release has no published image (they are hand-published and often lag) it builds upstream from source
@@ -12,6 +13,12 @@ as arm A=upstream vs arm B=fork, appends a row to ~/strata-data/bench/series.jso
 ~/strata-results.md from the whole series, and prunes old watch-* images. state.json records the last good
 (upstream_sha, version, fork_sha); when tonight matches it the run is a no-op unless --force. The wrapper
 has no scheduling of its own.
+
+The fork build is stamped lamina:watch-<fork_sha>; when the fork tree is clean and that stamp already
+exists the image is current and the rebuild is skipped. --fork-image TAG skips the fork build entirely and
+runs arm B on an existing local image (e.g. lamina:combined), reporting whether it looks current for the
+fork HEAD. prune() deletes only watch-* tags (plus superseded upstream version pulls), never a hand-built
+tag like lamina:combined or lamina:relaxed.
 
 Standard library only; run on the host with sudo (docker access needed). Output files are chowned back to the
 invoking user, and git runs as that user, so root leaves nothing it owns behind except container state.
@@ -43,6 +50,10 @@ STATE = DATA / "state.json"
 MD = HOME / "strata-results.md"
 TAG_RE = re.compile(r"^v([0-9]+(?:\.[0-9]+)+)$")
 GHCR_REPO = "niko1221/strata"
+# model packs the watch can compare. The stem maps to the config each arm's run script selects: strata
+# uses upstream-<stem>-<card>.json, the fork uses <stem>-<card>.json (card = dual or single). v31 is the
+# current unsloth pack; iq4_xs is the pre-v31 baseline. Add an entry to support another pack.
+MODEL_STEM = {"iq4_xs": "ud-iq4_xs", "v31": "ud-iq4_xs-v31"}
 MANIFEST_ACCEPT = ",".join(("application/vnd.oci.image.index.v1+json",
                             "application/vnd.docker.distribution.manifest.list.v2+json",
                             "application/vnd.docker.distribution.manifest.v1+json"))
@@ -136,10 +147,10 @@ def fork_info() -> tuple[str, bool]:
     return sha, bool(git(FORK, "status", "--porcelain"))
 
 
-def gate(upstream_sha: str, version: str, fork_sha: str) -> None:
+def gate(upstream_sha: str, version: str, fork_sha: str, model: str) -> None:
     if ARGS.force:
         return
-    cur = {"upstream_sha": upstream_sha, "version": version, "fork_sha": fork_sha}
+    cur = {"upstream_sha": upstream_sha, "version": version, "fork_sha": fork_sha, "model": model}
     if STATE.exists():
         try:
             prev = json.loads(STATE.read_text(encoding="utf-8"))
@@ -201,8 +212,20 @@ def resolve_image(version: str, flavor: str, upstream_sha: str) -> str:
     return image
 
 
-def build_fork(fork_sha: str, arch: str) -> str:
+def docker_has(image: str) -> bool:
+    return bool(bvf.docker(["image", "ls", "-q", image]).stdout.strip())
+
+
+def build_fork(fork_sha: str, fork_dirty: bool, arch: str) -> str:
     tag = f"lamina:watch-{fork_sha[:7]}"
+    # A clean tree at fork_sha is fully described by that sha, so an existing watch-<sha> stamp is the
+    # current image; reuse it instead of rebuilding. A dirty tree is not (the stamp would hide uncommitted
+    # edits), so it always rebuilds. Assumes --arch is constant per machine (it is here).
+    if not fork_dirty and docker_has(tag):
+        print(f"fork image current for {fork_sha[:7]}; reusing {tag} (no rebuild)")
+        if run(["docker", "tag", tag, "lamina:latest"], 60) != 0:
+            fail("build_fork", "lamina:latest")
+        return tag
     df = patched_dockerfile(FORK)
     if df is None:
         fail("build_fork", "no Dockerfile in the fork checkout")
@@ -222,13 +245,52 @@ def build_fork(fork_sha: str, arch: str) -> str:
     return tag
 
 
-def sweep(profile: str, rounds: int, runs: int, image_a: str) -> Path:
+def image_id(tag: str) -> str:
+    p = subprocess.run(["docker", "image", "inspect", "-f", "{{.Id}}", tag], capture_output=True, text=True)
+    return p.stdout.strip() if p.returncode == 0 else ""
+
+
+def _epoch(iso: str) -> float | None:
+    iso = re.sub(r"(\.\d{6})\d+", r"\1", iso)   # docker writes nanoseconds; fromisoformat wants microseconds
+    try:
+        return datetime.datetime.fromisoformat(iso).timestamp()
+    except ValueError:
+        return None
+
+
+def report_fork_image(tag: str, fork_sha: str) -> None:
+    """Tell the human whether the local image they asked to bench is current for the fork HEAD."""
+    if not docker_has(tag):
+        fail("fork_image", f"{tag} not found locally")
+    stamp = f"lamina:watch-{fork_sha[:7]}"
+    if docker_has(stamp) and image_id(tag) == image_id(stamp):
+        print(f"local image {tag} is current (built from fork {fork_sha[:7]})")
+        return
+    # not a watch build we can match by sha, so fall back to age: an image built after HEAD's commit is
+    # very likely current, one before it is stale. Not proof (it could be from another branch or dirty).
+    ins = subprocess.run(["docker", "image", "inspect", "-f", "{{.Created}}", tag],
+                         capture_output=True, text=True).stdout.strip()
+    head = git(FORK, "log", "-1", "--format=%cI")
+    ce, he = _epoch(ins), _epoch(head)
+    verdict = "built after HEAD, likely current" if ce and he and ce >= he else "older than HEAD, rebuild it"
+    print(f"local image {tag} is not stamped for fork {fork_sha[:7]}: created {ins}, HEAD committed {head} "
+          f"-> {verdict}")
+
+
+def sweep(profile: str, rounds: int, runs: int, image_a: str, image_b: str,
+          conf_a: str, conf_b: str) -> Path:
     out_root = DATA / "ab-fork" / datetime.datetime.now().strftime("%Y-%m-%d-%H%M")
     cmd = [sys.executable, str(SCRIPTS / "bench_vs_fork.py"), "--profile", profile,
            "--rounds", str(rounds), "--runs", str(runs), "--yes",
-           "--image-a", image_a, "--image-b", "lamina", "--out", str(out_root)]
+           "--image-a", image_a, "--image-b", image_b, "--out", str(out_root)]
+    if conf_a:
+        cmd += ["--conf-a", conf_a]
+    if conf_b:
+        cmd += ["--conf-b", conf_b]
     if bvf.docker(["ps", "-q", "--filter", "name=^lamina$"]).stdout.strip():
-        cmd.append("--restart")
+        # restore prod on the fork's own script: prod migrated to the lamina image, but bench's default
+        # restart-script still points at the strata server, which would bring back the wrong engine.
+        cmd += ["--restart", "--restart-script", str(FORK / "run-lamina.sh")]
     if bool(bvf.docker(["ps", "-q", "--filter", "name=^llama-swap$"]).stdout.strip()):
         # llama-swap must stay up (it serves agent inference and auto-starts prod); unload only frees VRAM
         print("unloading llama-swap models for the sweep")
@@ -257,15 +319,20 @@ def collect(out_root: Path, profile: str) -> tuple[dict, dict, float]:
 
 
 def record(profile: str, fork_sha: str, fork_dirty: bool, upstream_sha: str, version: str,
-           image_a: str, out_root: Path, a: dict, b: dict, ratio: float) -> None:
+           image_a: str, image_b: str, out_root: Path, a: dict, b: dict, ratio: float,
+           model: str, write_state: bool = True) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
     row = {"date": iso(), "kind": "run", "profile": profile, "fork_sha": fork_sha,
-           "fork_dirty": fork_dirty, "upstream_sha": upstream_sha, "version": version,
-           "image_a": image_a, "out": str(out_root), "A": a, "B": b, "ratio": round(ratio, 4)}
+           "fork_dirty": fork_dirty, "upstream_sha": upstream_sha, "version": version, "model": model,
+           "image_a": image_a, "image_b": image_b, "out": str(out_root), "A": a, "B": b,
+           "ratio": round(ratio, 4)}
     with SERIES.open("a", encoding="utf-8") as f:
         f.write(json.dumps(row) + "\n")
-    STATE.write_text(json.dumps({"upstream_sha": upstream_sha, "version": version, "fork_sha": fork_sha}),
-                     encoding="utf-8")
+    # an ad-hoc --fork-image run is a different comparison than the nightly (arm B = rebuilt fork), so it
+    # logs to the series but must not mark the nightly gate done or it would skip tonight's real rebuild.
+    if write_state:
+        STATE.write_text(json.dumps({"upstream_sha": upstream_sha, "version": version, "fork_sha": fork_sha,
+                                     "model": model}), encoding="utf-8")
 
 
 def load_rows() -> list[dict]:
@@ -297,11 +364,16 @@ def render_md(rows: list[dict]) -> str:
     fork = str(last.get("fork_sha", "?"))[:7]
     if last.get("fork_dirty"):
         fork += "-dirty"
+    img_b = last.get("image_b", "lamina")
+    fork_img = "" if img_b in ("", "lamina") else f" [{img_b}]"
     ratio = last.get("ratio")
-    out.append(f"Last run {last.get('date', '?')}: fork {fork}  "
+    out.append(f"Last run {last.get('date', '?')}: model {last.get('model', 'iq4_xs')}  "
+               f"fork {fork}{fork_img}  "
                f"upstream {str(last.get('upstream_sha', '?'))[:7]} ({last.get('version', '?')})")
     out.append(f"Verdict: {'' if ratio is None else f'{(ratio - 1) * 100:+.1f}%'} fork vs upstream")
-    if len(runs) >= 2 and all(r.get("ratio") is not None and r["ratio"] < 1.03 for r in runs[-2:]):
+    last_model = last.get("model", "iq4_xs")
+    recent = [r for r in runs if r.get("model", "iq4_xs") == last_model][-2:]
+    if len(recent) >= 2 and all(r.get("ratio") is not None and r["ratio"] < 1.03 for r in recent):
         out.append("upstream catching up: two straight runs within 3%")
     out.append("")
     if rows[-1].get("kind") == "fail":
@@ -317,11 +389,13 @@ def render_md(rows: list[dict]) -> str:
         delta = f"{(vb - va) / va * 100:+.1f}" if va and vb is not None else "-"
         out.append(f"| {label} | {fmt(va)} | {fmt(vb)} | {delta} |")
     out += ["", "## History", "",
-            "| date | upstream | upstream score | fork score | ratio |", "| --- | --- | ---: | ---: | ---: |"]
+            "| date | model | upstream | upstream score | fork score | ratio |",
+            "| --- | --- | --- | ---: | ---: | ---: |"]
     for r in runs[-20:]:
         rt = r.get("ratio")
-        out.append(f"| {r.get('date', '?')} | {r.get('version', '?')} | {fmt(r.get('A', {}).get('score'))} | "
-                   f"{fmt(r.get('B', {}).get('score'))} | {'-' if rt is None else rt} |")
+        out.append(f"| {r.get('date', '?')} | {r.get('model', 'iq4_xs')} | {r.get('version', '?')} | "
+                   f"{fmt(r.get('A', {}).get('score'))} | {fmt(r.get('B', {}).get('score'))} | "
+                   f"{'-' if rt is None else rt} |")
     out += ["", "Per-test detail folders live under ~/strata-data/bench/ab-fork/.", ""]
     return "\n".join(out)
 
@@ -330,9 +404,12 @@ def render() -> None:
     MD.write_text(render_md(load_rows()), encoding="utf-8")
 
 
-def prune() -> None:
-    # keep the 2 newest images per repo; the fork's :latest and any latest-* alias are never candidates,
-    # so what dies is the old watch-<sha> fork builds and superseded upstream version pulls.
+def prune(fork_sha: str) -> None:
+    # Delete only the watch's own churn: watch-* tags (the fork and upstream source builds), keeping the
+    # 2 newest per repo plus the current fork's stamp so reuse never loses it. For the upstream registry,
+    # where the watch only pulls version tags, keep the 2 newest non-latest. A hand-built tag (combined,
+    # relaxed) is never a candidate, so the watch cannot delete an image it did not create.
+    keep = f"watch-{fork_sha[:7]}"
     for repo in ("ghcr.io/niko1221/strata", "strata-upstream", "lamina"):
         p = subprocess.run(["docker", "image", "ls", repo, "--format", "{{json .}}"],
                            capture_output=True, text=True)
@@ -348,12 +425,21 @@ def prune() -> None:
             except json.JSONDecodeError:
                 continue
             tag = str(d.get("Tag", ""))
-            if tag != "latest" and not tag.startswith("latest-"):
+            if tag == "latest" or tag.startswith("latest-") or tag == keep:
+                continue
+            if repo == "ghcr.io/niko1221/strata" or tag.startswith("watch-"):
                 tagged.append((str(d.get("CreatedAt", "")), str(d.get("ID", ""))))
         tagged.sort(reverse=True)
         for _, img in tagged[2:]:
             if img:
                 bvf.docker(["rmi", img], check=False)
+
+
+def arm_configs(model: str, profile: str) -> tuple[str, str]:
+    """The two config names the watch passes to bench for this model pack and card (one per arm)."""
+    card = "dual" if profile == "dual" else "single"
+    stem = MODEL_STEM[model]
+    return f"upstream-{stem}-{card}.json", f"{stem}-{card}.json"
 
 
 def main() -> None:
@@ -367,20 +453,33 @@ def main() -> None:
     ap.add_argument("--flavor", default="cuda13", help="upstream image flavor tag (default cuda13)")
     ap.add_argument("--arch", default="86;89", help="docker build-arg CUDA_ARCHITECTURES (default 86;89)")
     ap.add_argument("--gpu-busy-pct", type=int, default=20, help="skip if any GPU util >= this (default 20)")
+    ap.add_argument("--fork-image", metavar="TAG",
+                    help="run arm B on this existing local image (e.g. lamina:combined) instead of "
+                         "rebuilding the fork; reports whether it is current for the fork HEAD")
+    ap.add_argument("--model", default="v31", choices=sorted(MODEL_STEM),
+                    help="model pack to compare (default v31; iq4_xs is the pre-v31 baseline)")
     ARGS = ap.parse_args()
 
+    conf_a, conf_b = arm_configs(ARGS.model, ARGS.profile)
     guard_gpu()
     upstream_sha, version = pull_upstream()
     fork_sha, fork_dirty = fork_info()
-    gate(upstream_sha, version, fork_sha)
+    if not ARGS.fork_image:                 # an explicit --fork-image bench is its own request, not the nightly
+        gate(upstream_sha, version, fork_sha, ARGS.model)
     image_a = resolve_image(version, ARGS.flavor, upstream_sha)
-    build_fork(fork_sha, ARGS.arch)
-    out_root = sweep(ARGS.profile, ARGS.rounds, ARGS.runs, image_a)
+    if ARGS.fork_image:
+        report_fork_image(ARGS.fork_image, fork_sha)
+        image_b = ARGS.fork_image
+    else:
+        build_fork(fork_sha, fork_dirty, ARGS.arch)
+        image_b = "lamina"
+    out_root = sweep(ARGS.profile, ARGS.rounds, ARGS.runs, image_a, image_b, conf_a, conf_b)
     a, b, ratio = collect(out_root, ARGS.profile)
-    record(ARGS.profile, fork_sha, fork_dirty, upstream_sha, version, image_a, out_root, a, b, ratio)
+    record(ARGS.profile, fork_sha, fork_dirty, upstream_sha, version, image_a, image_b, out_root, a, b, ratio,
+           ARGS.model, write_state=not ARGS.fork_image)
     render()
     own(DATA, MD)
-    prune()
+    prune(fork_sha)
     print(f"done: fork {(ratio - 1) * 100:+.1f}% vs upstream (score {b['score']} vs {a['score']})")
 
 
