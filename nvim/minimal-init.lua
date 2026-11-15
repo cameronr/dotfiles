@@ -607,19 +607,29 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- Both of these from https://www.reddit.com/r/neovim/comments/1abd2cq/what_are_your_favorite_tricks_using_neovim/
 -- Jump to last position when reopening a file
+-- vim.api.nvim_create_autocmd('BufReadPost', {
+--   desc = 'Open file at the last position it was edited earlier',
+--   group = user_autocmds_augroup,
+--   command = 'silent! normal! g`"zv',
+-- })
+
 vim.api.nvim_create_autocmd('BufReadPost', {
   desc = 'Open file at the last position it was edited earlier',
   group = user_autocmds_augroup,
-  command = 'silent! normal! g`"zv',
-})
+  callback = function(ev)
+    -- Git reuses one message file per repo, so a restored mark lands inside the
+    -- comment block instead of at the top of the message you are about to write.
+    for comp in (vim.fs.dirname(vim.api.nvim_buf_get_name(ev.buf)) or ''):gmatch('[^/]+') do
+      if comp:sub(-4) == '.git' then return end
+    end
 
--- vim.api.nvim_create_autocmd('BufReadPost', {
---   desc = 'Open file at the last position it was edited earlier',
---   callback = function()
---     local mark = vim.api.nvim_buf_get_mark(0, '"')
---     if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(0) then vim.api.nvim_win_set_cursor(0, mark) end
---   end,
--- })
+    local mark = vim.api.nvim_buf_get_mark(ev.buf, '"')
+    if mark[1] > 1 and mark[1] <= vim.api.nvim_buf_line_count(ev.buf) then
+      vim.api.nvim_win_set_cursor(0, mark)
+      vim.cmd('normal! zv')
+    end
+  end,
+})
 
 -- Always open help on the right
 -- Open help window in a vertical split to the right.
@@ -631,7 +641,10 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
 
     local function has_diffview_in_current_tab()
       return vim.tbl_contains(
-        vim.tbl_map(function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype end, vim.api.nvim_tabpage_list_wins(0)),
+        vim.tbl_map(
+          function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype end,
+          vim.api.nvim_tabpage_list_wins(0)
+        ),
         'DiffviewFiles'
       )
     end
