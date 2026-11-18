@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Start the fork container running THIS FORK's engine (lamina-era image layout).
 #
-# The lamina image (eddoursul/Lamina, renamed tree) boots nothing of the strata-era layout:
-# its entrypoint is env-driven (MODEL=..., LAMINA_* keys) and only knows upstream's models,
-# so we bypass it and run build/lamina-server with our own config, exactly like the old
-# run-unsloth-strata.sh did for the python server. The server starts its engine from its own
-# folder (build/lamina), so the config needs no exe key; --pack is gone upstream (the native
-# GGUFs are the weight source). Rollback: run-unsloth-eddoursul-strata.sh + *-strata.json.
+# The lamina image builds THIS FORK from the Dockerfile in the fork clone's root (upstream
+# removed its own image, db378e8ba). Its programs sit flat in /opt/lamina/build, lamina-vision
+# beside lamina-server like the server has expected since the vision "exe" config key was
+# removed (the configs keep their exe keys: the rollback images still read them, the new
+# server ignores them). We override the entrypoint and run build/lamina-server with our own
+# config; the engine starts from the server's own folder (build/lamina). --pack is gone
+# upstream (the native GGUFs are the weight source). Rollback: run-unsloth-eddoursul-strata.sh + *-strata.json.
 #
 # The model files, MTP draft layer and learned expert profile are already under /data
 # (~/strata-data); nothing is downloaded.
@@ -36,11 +37,16 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-ud-iq4_xs-v31-single.json}"
 fi
-# Eval (2026-11-04): lamina:combined = perf-decode (relaxed drafting P=0.3) on upstream tip
-# 91957e20d + the local web-sticky-req-header branch (combined-relaxed-sticky worktree, local
-# only). The nightly :latest rebuild carries neither (its engine rejects --relaxed-drafting).
-# Rollback: :latest (drop both; also remove --relaxed-drafting from the configs).
-IMAGE="${IMAGE:-lamina:combined}"
+# Default: lamina:main = clean upstream (ec30341b3). It carries the sampled-draft rule
+# ("Sampled requests keep their drafts by the number each position is drawn with"), which
+# replaces the fork's --relaxed-drafting (now removed from the configs: upstream's rule is on
+# by default for sampled requests, tuned by --spec-min-p), and the --vram-pin-gib pins.
+# Rollback: IMAGE=lamina:combined (the fork build with --relaxed-drafting), and put
+# --relaxed-drafting 0.3 back in the configs.
+if [ -z "${IMAGE:-}" ]; then
+  IMAGE=lamina:main
+  docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "run-lamina: $IMAGE not built yet; using lamina:combined" >&2; IMAGE=lamina:combined; }
+fi
 
 # the server always serves with an API key; keep a stable one
 # (clients send: Authorization: Bearer $(cat /home/cam/strata-data/api-key))
