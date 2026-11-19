@@ -117,6 +117,16 @@ def http_json(url: str, timeout: float = 5):
         return None
 
 
+def swap_api(path: str) -> bool:
+    """POST a llama-swap admin call (pause/resume), best effort: no llama-swap here is not a sweep error."""
+    try:
+        req = urllib.request.Request(f"http://localhost:8020/api/models/{path}", method="POST")
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return r.status == 200
+    except (urllib.error.URLError, OSError):
+        return False
+
+
 def stop_containers(names: list[str]) -> None:
     for n in names:
         if docker(["ps", "-aq", "--filter", f"name=^{n}$"]).stdout.strip():
@@ -419,6 +429,8 @@ def main() -> None:
     lp = a.learned_profile.expanduser().resolve() if a.learned_profile else LEARNED_PROFILE
     lpbak = lp.with_suffix(".sweep-bak")
     ok = False
+    if swap_api("pause"):   # a request mid-round must not start prod on the GPUs beside an arm
+        print("paused llama-swap inference (resumes at the end)")
     try:
         for p in profiles:
             latest = sweep(p, PROFILES[p], arms, a.rounds, a.runs, a.clients or None, a.port,
@@ -426,6 +438,7 @@ def main() -> None:
                            shlex.split(a.bench_extra) if a.bench_extra else None, learned_profile=lp)
             ok = ok or len(latest) == 2
     finally:
+        swap_api("resume")
         stop_containers([PROD_CONTAINER, arms["A"]["name"], arms["B"]["name"]])
         if lpbak.exists():   # prod's learned routing back before its next start
             if lp.exists():
