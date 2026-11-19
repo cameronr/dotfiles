@@ -68,7 +68,7 @@ docker run --rm \
   --gpus "$GPUS" \
   --stop-timeout 120 \
   --memory=88g \
-  --memory-swap=-1 \
+  --memory-swap=88g \
   -p "${PORT:-18020}:8080" \
   --ulimit memlock=-1 \
   --shm-size 2g \
