@@ -17,12 +17,38 @@
 # the same files), so it works run from either place.
 # CONF=<file in configs/> overrides the tuned config.
 # IMAGE=<tag> overrides the image (default: the image named after the container, :latest).
+# MEM_MIN_GIB=<n> overrides the free-memory floor (default 70); DRY_RUN=1 resolves everything and exits.
 #
 #   ./run-lamina.sh [container] [gpus]     gpus: "all" (dual) or a --gpus value (single)
 set -eu
 
 CONTAINER_NAME="${1:-lamina}"
 GPUS="${2:-all}"
+
+# Free-memory guard. Loading pins about 56 GiB (the model plus the cudaHostRegister'd expert
+# arena); launching on top of an already tight host memcg-thrashes or OOM-reboots the machine
+# (this box rebooted on 2026-11-12 from two arenas at once). Require MEM_MIN_GIB free before
+# the engine starts: default 70, MEM_MIN_GIB=0 disables it.
+#
+# A container already running under this same name is about to be replaced by us, so its pages
+# are counted as free: that keeps a restart from being blocked by the very server it restarts.
+MEM_MIN_GIB="${MEM_MIN_GIB:-70}"
+if [ "${MEM_MIN_GIB}" -gt 0 ]; then
+  avail_kb=$(awk '/^MemAvailable:/{print $2}' /proc/meminfo)
+  old_pid=$(docker inspect -f '{{.State.Pid}}' "$CONTAINER_NAME" 2>/dev/null || true)
+  if [ -n "${old_pid:-}" ] && [ "${old_pid:-0}" != "0" ]; then
+    old_cg=$(awk -F'::' '$1=="0"{print $2}' /proc/"$old_pid"/cgroup 2>/dev/null || true)
+    if [ -n "${old_cg:-}" ] && [ -f "/sys/fs/cgroup${old_cg}/memory.current" ]; then
+      avail_kb=$(( avail_kb + $(awk '{print int($1/1024)}' "/sys/fs/cgroup${old_cg}/memory.current") ))
+    fi
+  fi
+  min_kb=$(( MEM_MIN_GIB * 1024 * 1024 ))
+  if [ "$avail_kb" -lt "$min_kb" ]; then
+    echo "run-lamina: $(( avail_kb / 1048576 )) GiB available, below the ${MEM_MIN_GIB} GiB floor; not launching." >&2
+    echo "run-lamina: free some memory, lower MEM_MIN_GIB, or set MEM_MIN_GIB=0 to skip this check." >&2
+    exit 1
+  fi
+fi
 
 # the script's own dir with symlinks resolved (a worktree's run-lamina.sh symlink must land
 # on the dotfiles configs/, not on the worktree it was called from)
@@ -37,15 +63,18 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-ud-iq4_xs-v31-single.json}"
 fi
-# Default: lamina:main = clean upstream (ec30341b3). It carries the sampled-draft rule
-# ("Sampled requests keep their drafts by the number each position is drawn with"), which
-# replaces the fork's --relaxed-drafting (now removed from the configs: upstream's rule is on
-# by default for sampled requests, tuned by --spec-min-p), and the --vram-pin-gib pins.
-# Rollback: IMAGE=lamina:combined (the fork build with --relaxed-drafting), and put
-# --relaxed-drafting 0.3 back in the configs.
+# Default: lamina:main, the fork image built from THIS repo's Dockerfile (as of 2026-11-19 it
+# is upstream v0.3.1 + the fork's docker commits: see the fork/docker branch). Rollback: keep
+# the image you leave (e.g. docker tag lamina:main lamina:main-<date> before promoting) and
+# retag it, or run with IMAGE=<tag>.
 if [ -z "${IMAGE:-}" ]; then
   IMAGE=lamina:main
-  docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "run-lamina: $IMAGE not built yet; using lamina:combined" >&2; IMAGE=lamina:combined; }
+  docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "run-lamina: $IMAGE not built; build it or pass IMAGE=<tag>" >&2; exit 1; }
+fi
+
+if [ "${DRY_RUN:-0}" = 1 ]; then
+  echo "run-lamina: checks passed. image=$IMAGE conf=$CONF gpus=$GPUS available=$(( $(awk '/^MemAvailable:/{print int($2/1048576)}' /proc/meminfo) )) GiB (no launch)"
+  exit 0
 fi
 
 # the server always serves with an API key; keep a stable one
