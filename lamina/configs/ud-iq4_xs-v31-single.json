@@ -10,8 +10,6 @@
     "16384",
     "--spec",
     "4",
-    "--relaxed-drafting",
-    "0.3",
     "--spec-min-p",
     "0.5",
     "--spec-lookup",
