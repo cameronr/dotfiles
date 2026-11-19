@@ -198,6 +198,10 @@ def run_bench(style: str, container: str, out_dir: Path, stage_rel: str, runs: i
     report's dir is written by root, and cam can still move it (the parent is cam's)."""
     stage = STAGING / stage_rel
     stage.mkdir(parents=True, exist_ok=True)
+    try:
+        os.chmod(stage, 0o777)   # the bench writes as the container's user; open the staging door for it
+    except OSError:
+        pass                     # a leftover owned by someone else: fine, the bench runs as root anyway
     if style == "new":   # the key is already in the container's env (LAMINA_API_KEY), where the exec inherits it
         cmd = ["docker", "exec", container, "/opt/lamina/build/lamina-server",
                "--bench-url", f"http://127.0.0.1:{CTR_PORT}", "--bench-runs", str(runs),
@@ -220,8 +224,14 @@ def run_bench(style: str, container: str, out_dir: Path, stage_rel: str, runs: i
                   key=lambda d: d.stat().st_mtime)
     if not dirs:
         return None
-    dest = out_dir / dirs[-1].name
-    shutil.move(str(dirs[-1]), str(dest))
+    src, dest = dirs[-1], out_dir / dirs[-1].name
+    try:
+        os.rename(str(src), str(dest))     # same filesystem: the report moves whole, ownership kept
+    except OSError:                        # the container user's tree can resist a rename (root-owned files,
+        if dest.exists():                  # btrfs quirks); the copy is the report then, and a staging leftover
+            shutil.rmtree(str(dest), ignore_errors=True)
+        shutil.copytree(str(src), str(dest))
+    shutil.rmtree(str(src), ignore_errors=True)   # leftovers under bench-staging are cosmetic
     return dest
 
 
@@ -331,12 +341,12 @@ def sweep(profile: str, gpus: str, arms: dict[str, dict], rounds: int, runs: int
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0], formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--repo-a", type=Path, default=HOME / "strata",
-                    help="baseline checkout, started by its run-unsloth.sh (default ~/strata)")
+    ap.add_argument("--repo-a", type=Path, default=HOME / "lamina",
+                    help="baseline checkout, started by its launch script (default ~/lamina)")
     ap.add_argument("--repo-b", type=Path, default=HOME / "lamina",
-                    help="candidate checkout, started by its run-lamina.sh (default ~/lamina)")
-    ap.add_argument("--script-a", default="run-unsloth.sh",
-                    help="arm A's launch script in its repo (default run-unsloth.sh; e.g. run-unsloth-2.sh)")
+                    help="candidate checkout, started by its launch script (default ~/lamina)")
+    ap.add_argument("--script-a", default="run-lamina.sh",
+                    help="arm A's launch script in its repo (default run-lamina.sh; e.g. run-unsloth.sh for a strata arm)")
     ap.add_argument("--script-b", default="run-lamina.sh",
                     help="arm B's launch script in its repo (default run-lamina.sh; e.g. run-unsloth.sh)")
     ap.add_argument("--name-a", help="arm A's container name (default the repo folder name)")
