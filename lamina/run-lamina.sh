@@ -66,12 +66,15 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-ud-iq4_xs-v31-single.json}"
 fi
-# Default: lamina:main, the fork image built from THIS repo's Dockerfile (as of 2026-11-19 it
-# is upstream v0.3.1 + the fork's docker commits: see the fork/docker branch). Rollback: keep
-# the image you leave (e.g. docker tag lamina:main lamina:main-<date> before promoting) and
-# retag it, or run with IMAGE=<tag>.
+# Default: lamina:in-engine-vision, built from the in-engine-vision work (plans/13-in-engine-vision:
+# the model's engine encodes pictures on expert-cache slots it lends back, so lamina-vision is not
+# resident on a card). Until 2026-11-20 :main pointed at this same image; :main has gone back to
+# naming a build of fork main, which encodes pictures with the sidecar. Either image runs either
+# config: an image without the feature simply ignores "in_engine" and starts the sidecar, so
+# rolling the feature back is a tag, not a config edit.
+# Rollback: IMAGE=lamina:main ./run-lamina.sh ... (main-<date> tags are kept before each promote)
 if [ -z "${IMAGE:-}" ]; then
-  IMAGE=lamina:main
+  IMAGE=lamina:in-engine-vision
   docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "run-lamina: $IMAGE not built; build it or pass IMAGE=<tag>" >&2; exit 1; }
 fi
 
