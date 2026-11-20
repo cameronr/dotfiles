@@ -66,15 +66,17 @@ if [ "$GPUS" = "all" ]; then
 else
   CONF="${CONF:-ud-iq4_xs-v31-single.json}"
 fi
-# Default: lamina:in-engine-vision, built from the in-engine-vision work (plans/13-in-engine-vision:
-# the model's engine encodes pictures on expert-cache slots it lends back, so lamina-vision is not
-# resident on a card). Until 2026-11-20 :main pointed at this same image; :main has gone back to
-# naming a build of fork main, which encodes pictures with the sidecar. Either image runs either
-# config: an image without the feature simply ignores "in_engine" and starts the sidecar, so
-# rolling the feature back is a tag, not a config edit.
-# Rollback: IMAGE=lamina:main ./run-lamina.sh ... (main-<date> tags are kept before each promote)
+# Default: lamina:main, a build of fork main. Since upstream's ef99402c8..3aed0f4f7 that build
+# encodes pictures inside lamina-server itself, on the engine's kernels, borrowing the engine's
+# expert-cache slots for each picture ("vision": {"gpu": true, "lend": true}) and holding nothing on
+# a card between pictures; there is no lamina-vision binary in it at all. The fork's own answer to
+# the same problem (plans/13-in-engine-vision: the encode inside the ENGINE process, so no second
+# CUDA context anywhere) stays built: IMAGE=lamina:in-engine-vision, and it needs a config that sets
+# "vision": {"in_engine": true}, because with this one it starts its sidecar and names "lend" as a
+# key it does not read. Both are A/B-able; :main is the default because it is upstream's path.
+# Rollback to the pre-lend build of main: IMAGE=lamina:main-20261120 (main-<date> tags are kept).
 if [ -z "${IMAGE:-}" ]; then
-  IMAGE=lamina:in-engine-vision
+  IMAGE=lamina:main
   docker image inspect "$IMAGE" >/dev/null 2>&1 || { echo "run-lamina: $IMAGE not built; build it or pass IMAGE=<tag>" >&2; exit 1; }
 fi
 
