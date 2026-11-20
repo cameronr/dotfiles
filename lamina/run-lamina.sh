@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Start the fork container running THIS FORK's engine (lamina-era image layout).
 #
-# The lamina image builds THIS FORK from the Dockerfile in the fork clone's root (upstream
-# removed its own image, db378e8ba). Its programs sit flat in /opt/lamina/build, lamina-vision
+# The lamina image builds THIS FORK from the Dockerfile on the fork's fork/docker branch
+# (upstream removed its own image, db378e8ba, and the fork's recipe was never merged to main).
+# Copy that branch's Dockerfile and .dockerignore into a clean checkout before `docker build`;
+# the ignore matters, a worktree's build-*/ trees are gigabytes. Its programs sit flat in
+# /opt/lamina/build, lamina-vision
 # beside lamina-server like the server has expected since the vision "exe" config key was
 # removed (the configs keep their exe keys: the rollback images still read them, the new
 # server ignores them). We override the entrypoint and run build/lamina-server with our own
