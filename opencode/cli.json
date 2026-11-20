@@ -12,22 +12,14 @@
   "plugins": [
     {
       // from npm: @beta = 0.2.0-beta.3 (same code as local branch)
-      "package": "@leohenon/opencode-vim-plugin@beta",
+      // "package": "./tui-plugins/opencode-vim-plugin",
+      "package": "@leohenon/opencode-vim-plugin",
       "options": {
         "enabled": true,
         "vim_initial_mode": "normal",
         "vim_system_clipboard_register": true
       }
     },
-    // local build, revert here if needed (symlink -> /Users/cam/Dev/opencode-vim-plugin/dist)
-    // {
-    //   "package": "./tui-plugins/opencode-vim-plugin",
-    //   "options": {
-    //     "enabled": true,
-    //     "vim_initial_mode": "normal",
-    //     "vim_system_clipboard_register": true
-    //   }
-    // },
     {
       "package": "./tui-plugins/tmux-status/"
     }
