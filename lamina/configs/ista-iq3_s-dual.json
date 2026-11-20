@@ -14,8 +14,6 @@
     "46",
     "--spec",
     "4",
-    "--relaxed-drafting",
-    "0.3",
     "--spec-min-p",
     "0.5",
     "--spec-lookup",
@@ -68,6 +66,7 @@
     "mmproj": "/data/models/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
     "model": "/data/models/IQ3_S/Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
     "gpu": true,
+    "lend": true,
     "max_tokens": 1024
   },
   "expert_profile_save": "/data/ista-iq3_s-learned.bin",

@@ -49,13 +49,14 @@
     "min_p": 0.0,
     "presence_penalty": 0.0
   },
-  "reasoning_effort": "low",
+  "reasoning_effort": "high",
   "reasoning_loop_recovery": "stop",
   "vision": {
     "exe": "/opt/lamina/build-vision/bin/lamina-vision",
     "mmproj": "/data/models/mmproj-Qwen3.8-Flash-Next-BF16.gguf",
     "model": "/data/models/unsloth-UD-IQ4_XS-v31/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00004.gguf",
     "gpu": true,
+    "lend": true,
     "max_tokens": 1024
   },
   "expert_profile_save": "/data/unsloth-ud-iq4_xs-v31-learned.bin",
