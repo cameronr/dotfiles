@@ -5,12 +5,12 @@
 # (upstream removed its own image, db378e8ba, and the fork's recipe was never merged to main).
 # Copy that branch's Dockerfile and .dockerignore into a clean checkout before `docker build`;
 # the ignore matters, a worktree's build-*/ trees are gigabytes. Its programs sit flat in
-# /opt/lamina/build, lamina-vision
-# beside lamina-server like the server has expected since the vision "exe" config key was
-# removed (the configs keep their exe keys: the rollback images still read them, the new
-# server ignores them). We override the entrypoint and run build/lamina-server with our own
-# config; the engine starts from the server's own folder (build/lamina). --pack is gone
-# upstream (the native GGUFs are the weight source). Rollback: run-unsloth-eddoursul-strata.sh + *-strata.json.
+# /opt/lamina/build: lamina-server, with the engine beside it. Since upstream's ef99402c8..3aed0f4f7
+# there is no lamina-vision to ship at all (the image encoder is a part of the server), and a config's
+# "vision.exe" and "vision.model" keys are read by nothing in it: they stay only for the pre-lend
+# rollback images, which do read them. We override the entrypoint and run build/lamina-server with our
+# own config; --pack is gone upstream (the native GGUFs are the weight source).
+# Rollback: run-unsloth-eddoursul-strata.sh + *-strata.json.
 #
 # The model files, MTP draft layer and learned expert profile are already under /data
 # (~/strata-data); nothing is downloaded.
@@ -70,10 +70,12 @@ fi
 # encodes pictures inside lamina-server itself, on the engine's kernels, borrowing the engine's
 # expert-cache slots for each picture ("vision": {"gpu": true, "lend": true}) and holding nothing on
 # a card between pictures; there is no lamina-vision binary in it at all. The fork's own answer to
-# the same problem (plans/13-in-engine-vision: the encode inside the ENGINE process, so no second
-# CUDA context anywhere) stays built: IMAGE=lamina:in-engine-vision, and it needs a config that sets
-# "vision": {"in_engine": true}, because with this one it starts its sidecar and names "lend" as a
-# key it does not read. Both are A/B-able; :main is the default because it is upstream's path.
+# the same problem (the encode inside the ENGINE process) is CLOSED: upstream shipped it first and
+# better, and the second CUDA context that was the last argument for it does not exist, because with
+# one engine the engine runs as a thread in the server process. See
+# ~/lamina/plans/13-in-engine-vision/CLOSED.md. The image is still on disk
+# (IMAGE=lamina:in-engine-vision) only until it is pruned; it needs a config that sets
+# "vision": {"in_engine": true}, which no config here does any more.
 # Rollback to the pre-lend build of main: IMAGE=lamina:main-20261120 (main-<date> tags are kept).
 if [ -z "${IMAGE:-}" ]; then
   IMAGE=lamina:main
