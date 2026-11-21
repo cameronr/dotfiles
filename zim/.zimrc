@@ -42,6 +42,10 @@ zmodule docker/cli --name docker --use mkdir --on-pull 'curl -fsSL -o _docker ht
 # completion must be sourced after all modules that add completion definitions.
 zmodule zimfw/completion
 
+# OMZ git plugin must load after completion: its compdef alias-completion
+# calls (compdef _git gst=git-status, ...) need compinit to have run.
+zmodule ohmyzsh/ohmyzsh --root plugins/git --use degit
+
 # Load fzf and zsh-vi-mode after completion
 
 # fzf support, if installed
