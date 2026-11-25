@@ -1,0 +1,46 @@
+theme = TokyoNight Night
+
+font-family = "FiraCode Nerd Font"
+font-size = 19
+font-feature = "cv02"
+# font-feature = "cv29"
+font-feature = "ss03"
+font-feature = "ss01"
+font-feature = "ss02"
+font-feature = "ss05"
+
+
+keybind = alt+left=unbind
+keybind = alt+right=unbind
+
+# Ghostty owns ctrl+tab / ctrl+shift+tab as next_tab / previous_tab, so tmux
+# never sees them. Send the encodings tmux decodes as C-Tab (next-window) and
+# C-BTab (previous-window).
+keybind = ctrl+tab=esc:[27;5;9~
+keybind = ctrl+shift+tab=esc:[27;6;9~
+
+# Same trick for the other muscle memory: ESC-{ / ESC-} are what tmux binds as
+# M-{ / M-} (previous / next window).
+#
+# Ghostty matches a character trigger against the codepoint the key produces,
+# so both the W3C physical code spelling and the codepoint spelling are listed
+# (physical codes match at higher priority). Keep macos-option-as-alt OFF: with
+# option remapped to alt, this chord produces a different codepoint and nothing
+# matches. The action writes raw bytes, so tmux still receives Meta either way.
+keybind = alt+shift+bracket_left=esc:{
+keybind = alt+shift+bracket_right=esc:}
+keybind = alt+shift+{=esc:{
+keybind = alt+shift+}=esc:}
+
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = clipboard
+
+# to fix slightly washed out colors
+# https://github.com/ghostty-org/ghostty/discussions/3470#discussioncomment-11690523
+#window-colorspace = display-p3
+
+#macos-non-native-fullscreen = true
+
+# put this in ~/.config/ghostty/conf
+#custom-shader = shaders/bloom.glsl
